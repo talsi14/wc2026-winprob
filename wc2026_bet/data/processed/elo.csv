@@ -1,0 +1,49 @@
+team,slug,elo_blended,elo_eloratings,elo_market_implied,market_prob,elo_raw_computed
+Spain,spain,2116.3,2165,2076.5,0.1923,1725.5
+France,france,2075.1,2081,2070.3,0.1786,1630.5
+Argentina,argentina,2058.6,2113,2014.0,0.0909,1652.8
+England,england,2034.3,2020,2046.0,0.1333,1678.5
+Brazil,brazil,2007.2,1984,2026.2,0.1053,1585.0
+Portugal,portugal,2000.5,1984,2014.0,0.0909,1610.3
+Netherlands,netherlands,1970.2,1961,1977.7,0.0588,1644.9
+Germany,germany,1962.0,1923,1993.9,0.0714,1650.5
+Colombia,colombia,1936.1,1975,1904.2,0.0244,1600.9
+Belgium,belgium,1914.0,1867,1952.5,0.0435,1583.9
+Norway,norway,1913.7,1912,1915.1,0.0278,1657.1
+Japan,japan,1898.9,1904,1894.6,0.0217,1683.0
+Croatia,croatia,1890.6,1930,1858.4,0.0141,1618.9
+Uruguay,uruguay,1880.5,1892,1871.1,0.0164,1547.5
+Ecuador,ecuador,1876.7,1935,1829.0,0.0099,1580.3
+Switzerland,switzerland,1875.5,1889,1864.5,0.0152,1592.1
+Turkey,turkey,1872.0,1902,1847.4,0.0123,1615.4
+Mexico,mexico,1866.1,1868,1864.5,0.0152,1607.1
+Morocco,morocco,1849.0,1822,1871.1,0.0164,1678.0
+Senegal,senegal,1840.9,1878,1810.6,0.0079,1665.8
+Austria,austria,1818.0,1827,1810.6,0.0079,1613.9
+United States,united-states,1803.6,1721,1871.1,0.0164,1552.4
+Paraguay,paraguay,1799.2,1833,1771.6,0.005,1523.8
+Canada,canada,1783.3,1784,1782.7,0.0057,1569.9
+Australia,australia,1775.0,1775,,,1650.2
+Sweden,sweden,1754.0,1719,1782.7,0.0057,1525.2
+Scotland,scotland,1752.4,1770,1737.9,0.0033,1505.2
+Algeria,algeria,1743.0,1743,,,1628.4
+Panama,panama,1737.0,1737,,,1579.1
+Ivory Coast,ivory-coast,1734.7,1676,1782.7,0.0057,1640.3
+Egypt,egypt,1728.8,1699,1753.1,0.004,1606.2
+Uzbekistan,uzbekistan,1727.0,1727,,,1612.0
+South Korea,south-korea,1707.3,1756,1667.4,0.0014,1625.5
+Czech Republic,czech-republic,1700.8,1726,1680.3,0.0017,1560.5
+Iran,iran,1694.5,1764,1637.7,0.001,1629.3
+Jordan,jordan,1690.0,1690,,,1561.8
+Bosnia and Herzegovina,bosnia-and-herzegovina,1658.7,1591,1714.0,0.0025,1493.4
+DR Congo,dr-congo,1655.0,1655,,,1618.5
+Tunisia,tunisia,1636.0,1636,,,1580.1
+Iraq,iraq,1608.0,1608,,,1544.2
+Ghana,ghana,1600.5,1503,1680.3,0.0017,1535.1
+New Zealand,new-zealand,1585.0,1585,,,1595.4
+Saudi Arabia,saudi-arabia,1566.0,1566,,,1512.9
+Cape Verde,cape-verde,1549.0,1549,,,1549.3
+Haiti,haiti,1532.0,1532,,,1569.6
+South Africa,south-africa,1517.0,1517,,,1560.7
+Curaçao,curacao,1433.0,1433,,,1586.1
+Qatar,qatar,1423.0,1423,,,1443.4

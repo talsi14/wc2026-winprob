@@ -1,0 +1,63 @@
+{
+  "source": "old_bets_data/entries.csv (Euro 2024 + Qatar 2022)",
+  "n_source_entries": 89,
+  "tier_top_share": 0.441,
+  "scoring_top_share": 0.429,
+  "conceding_top_share": 0.306,
+  "top_scorer_top_share": 0.515,
+  "doubling_rate": 0.439,
+  "per_tournament": {
+    "euro2024": {
+      "n_entries": 49,
+      "tierA_top_share": 0.429,
+      "tierB_top_share": 0.408,
+      "tierC_top_share": 0.51,
+      "scoring_top_share": 0.408,
+      "conceding_top_share": 0.388,
+      "golden_boot_top_share": 0.755,
+      "doubling_rate": 0.429,
+      "tierA_counts": {
+        "France": 21,
+        "Germany": 11,
+        "England": 10,
+        "Portugal": 4,
+        "Spain": 2,
+        "Netherlands": 1
+      },
+      "top_scorer_counts": {
+        "Kylian Mbappe": 37,
+        "Harry Kane": 8,
+        "Cristiano Ronaldo": 3,
+        "Jamal Musiala": 1
+      }
+    },
+    "qatar2022": {
+      "n_entries": 40,
+      "tierA_top_share": 0.45,
+      "tierB_top_share": 0.475,
+      "tierC_top_share": 0.375,
+      "scoring_top_share": 0.45,
+      "conceding_top_share": 0.225,
+      "golden_boot_top_share": 0.275,
+      "doubling_rate": 0.45,
+      "tierA_counts": {
+        "Brazil": 18,
+        "Argentina": 12,
+        "France": 5,
+        "Portugal": 3,
+        "England": 1,
+        "Germany": 1
+      },
+      "top_scorer_counts": {
+        "Lionel Messi": 11,
+        "Kylian Mbappe": 11,
+        "Neymar": 9,
+        "Cristiano Ronaldo": 3,
+        "Harry Kane": 3,
+        "Lautaro Martinez": 2,
+        "Vinicius": 1
+      }
+    }
+  },
+  "note": "Pool is favorite-chasing, not EV-optimizing: ownership concentrates on the strongest/most-famous candidate in each slot. The 2026 field reproduces these top-shares over market-ranked candidates."
+}

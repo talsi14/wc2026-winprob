@@ -1,0 +1,921 @@
+date,ts,home,away,hg,ag,league,importance,age_years,weight,home_finalist,away_finalist
+2023-10-12,1697148000,suriname,Haiti,1,1,CONCACAF Nations League,0.55,2.664,0.34664,False,True
+2023-10-13,1697222700,liechtenstein,Bosnia and Herzegovina,0,2,Euro Championship - Qualification,0.55,2.661,0.34681,False,True
+2023-10-15,1697395500,Norway,Spain,0,1,Euro Championship - Qualification,0.55,2.656,0.34714,True,True
+2023-10-16,1697414400,Haiti,jamaica,2,3,CONCACAF Nations League,0.55,2.653,0.3473,True,False
+2023-10-16,1697481900,Bosnia and Herzegovina,Portugal,0,5,Euro Championship - Qualification,0.55,2.653,0.3473,True,True
+2023-11-16,1700154000,azerbaijan,Sweden,3,0,Euro Championship - Qualification,0.55,2.568,0.35245,False,True
+2023-11-16,1700154000,Norway,faroe islands,2,0,Friendlies,0.3,2.568,0.19224,True,False
+2023-11-16,1700163900,luxembourg,Bosnia and Herzegovina,4,1,Euro Championship - Qualification,0.55,2.568,0.35245,False,True
+2023-11-19,1700413200,Sweden,estonia,2,0,Euro Championship - Qualification,0.55,2.56,0.35295,True,False
+2023-11-19,1700423100,Scotland,Norway,3,3,Euro Championship - Qualification,0.55,2.56,0.35295,True,True
+2023-11-19,1700423100,Bosnia and Herzegovina,slovakia,1,2,Euro Championship - Qualification,0.55,2.56,0.35295,True,False
+2023-11-21,1700524800,Curaçao,el salvador,1,1,Friendlies,0.3,2.554,0.1927,True,False
+2024-01-12,1705082400,Sweden,estonia,2,1,Friendlies,0.3,2.412,0.19751,True,False
+2024-01-23,1706009400,Australia,Uzbekistan,1,1,Asian Cup,0.7,2.382,0.46328,True,True
+2024-01-28,1706441400,Australia,indonesia,4,0,Asian Cup,0.7,2.368,0.46438,True,False
+2024-01-29,1706547600,Cape Verde,mauritania,1,0,Africa Cup of Nations,0.75,2.366,0.49778,True,False
+2024-03-21,1711012200,Australia,lebanon,2,0,World Cup - Qualification Asia,0.65,2.223,0.44219,True,False
+2024-03-21,1711016580,Japan,north korea,1,0,World Cup - Qualification Asia,0.65,2.223,0.44219,True,False
+2024-03-21,1711018800,South Korea,thailand,1,1,World Cup - Qualification Asia,0.65,2.223,0.44219,True,False
+2024-03-21,1711026000,hull city,Curaçao,0,1,Friendlies,0.3,2.223,0.20409,False,True
+2024-03-21,1711036800,Iran,turkmenistan,5,0,World Cup - Qualification Asia,0.65,2.223,0.44219,True,False
+2024-03-21,1711047600,Cape Verde,guyana,1,0,Friendlies,0.3,2.223,0.20409,True,False
+2024-03-21,1711050300,Portugal,Sweden,5,2,Friendlies,0.3,2.223,0.20409,True,True
+2024-03-21,1711050300,Bosnia and Herzegovina,ukraine,1,2,Euro Championship - Qualification,0.55,2.223,0.37416,True,False
+2024-03-22,1711123200,nigeria,Ghana,2,1,Friendlies,0.3,2.22,0.20418,False,True
+2024-03-22,1711126800,Norway,Czech Republic,1,2,Friendlies,0.3,2.22,0.20418,True,True
+2024-03-22,1711136700,Netherlands,Scotland,4,0,Friendlies,0.3,2.22,0.20418,True,True
+2024-03-22,1711137600,Egypt,New Zealand,1,0,Friendlies,0.3,2.22,0.20418,True,True
+2024-03-23,1711224000,french guyana,Haiti,1,1,Friendlies,0.3,2.218,0.20428,False,True
+2024-03-24,1711283400,alanyaspor,Curaçao,2,2,Friendlies,0.3,2.215,0.20438,False,True
+2024-03-25,1711389600,Sweden,albania,1,0,Friendlies,0.3,2.212,0.20447,True,False
+2024-03-25,1711393200,Cape Verde,equatorial guinea,1,0,Friendlies,0.3,2.212,0.20447,True,False
+2024-03-26,1711442700,lebanon,Australia,0,5,World Cup - Qualification Asia,0.65,2.209,0.44324,False,True
+2024-03-26,1711456200,thailand,South Korea,0,3,World Cup - Qualification Asia,0.65,2.209,0.44324,False,True
+2024-03-26,1711465200,turkmenistan,Iran,0,1,World Cup - Qualification Asia,0.65,2.209,0.44324,False,True
+2024-03-26,1711468800,uganda,Ghana,2,2,Friendlies,0.3,2.209,0.20457,False,True
+2024-03-26,1711476000,Norway,slovakia,1,1,Friendlies,0.3,2.209,0.20457,True,False
+2024-03-26,1711479600,Czech Republic,armenia,2,1,Friendlies,0.3,2.209,0.20457,True,False
+2024-03-26,1711482300,England,Belgium,2,2,Friendlies,0.3,2.209,0.20457,True,True
+2024-03-26,1711482300,Austria,Turkey,6,1,Friendlies,0.3,2.209,0.20457,True,True
+2024-03-26,1711482300,Scotland,northern ireland,0,1,Friendlies,0.3,2.209,0.20457,True,False
+2024-03-26,1711483200,Egypt,Croatia,2,4,Friendlies,0.3,2.209,0.20457,True,True
+2024-03-26,1711485000,Spain,Brazil,3,3,Friendlies,0.3,2.209,0.20457,True,True
+2024-06-03,1717430400,gibraltar,Scotland,0,2,Friendlies,0.3,2.021,0.21138,False,True
+2024-06-03,1717434000,Croatia,fyr macedonia,3,0,Friendlies,0.3,2.021,0.21138,True,False
+2024-06-03,1717440300,Germany,ukraine,0,0,Friendlies,0.3,2.021,0.21138,True,False
+2024-06-03,1717440300,England,Bosnia and Herzegovina,3,0,Friendlies,0.3,2.021,0.21138,True,True
+2024-06-04,1717524900,Switzerland,estonia,4,0,Friendlies,0.3,2.018,0.21148,True,False
+2024-06-04,1717526700,Austria,serbia,2,1,Friendlies,0.3,2.018,0.21148,True,False
+2024-06-04,1717527600,italy,Turkey,0,0,Friendlies,0.3,2.018,0.21148,False,True
+2024-06-05,1717606800,denmark,Sweden,2,1,Friendlies,0.3,2.015,0.21158,False,True
+2024-06-05,1717606800,Norway,kosovo,3,0,Friendlies,0.3,2.015,0.21158,True,False
+2024-06-05,1717612200,Belgium,montenegro,2,0,Friendlies,0.3,2.015,0.21158,True,False
+2024-06-05,1717630200,Curaçao,barbados,4,1,World Cup - Qualification CONCACAF,0.65,2.015,0.45842,True,False
+2024-06-06,1717670700,bangladesh,Australia,0,2,World Cup - Qualification Asia,0.65,2.012,0.45864,False,True
+2024-06-06,1717675200,hong kong,Iran,2,4,World Cup - Qualification Asia,0.65,2.012,0.45864,False,True
+2024-06-06,1717675200,singapore,South Korea,0,7,World Cup - Qualification Asia,0.65,2.012,0.45864,False,True
+2024-06-06,1717675800,myanmar,Japan,0,5,World Cup - Qualification Asia,0.65,2.012,0.45864,False,True
+2024-06-06,1717684200,Uzbekistan,turkmenistan,3,1,World Cup - Qualification Asia,0.65,2.012,0.45864,True,False
+2024-06-06,1717700400,mali,Ghana,1,2,World Cup - Qualification Africa,0.65,2.012,0.45864,False,True
+2024-06-06,1717707600,Haiti,st lucia,2,1,World Cup - Qualification CONCACAF,0.65,2.012,0.45864,True,False
+2024-06-07,1717774200,Czech Republic,malta,7,1,Friendlies,0.3,2.01,0.21178,True,False
+2024-06-07,1717785900,Germany,greece,2,1,Friendlies,0.3,2.01,0.21178,True,False
+2024-06-07,1717785900,Scotland,finland,2,2,Friendlies,0.3,2.01,0.21178,True,False
+2024-06-08,1717806600,peru,Paraguay,0,0,Friendlies,0.3,2.007,0.21188,False,True
+2024-06-08,1717851600,cameroon,Cape Verde,4,1,World Cup - Qualification Africa,0.65,2.007,0.45907,False,True
+2024-06-08,1717862400,Sweden,serbia,0,3,Friendlies,0.3,2.007,0.21188,True,False
+2024-06-08,1717862400,Switzerland,Austria,1,1,Friendlies,0.3,2.007,0.21188,True,True
+2024-06-08,1717865100,Portugal,Croatia,1,2,Friendlies,0.3,2.007,0.21188,True,True
+2024-06-08,1717867800,denmark,Norway,3,1,Friendlies,0.3,2.007,0.21188,False,True
+2024-06-08,1717869600,Belgium,luxembourg,3,0,Friendlies,0.3,2.007,0.21188,True,False
+2024-06-09,1717891200,aruba,Curaçao,0,2,World Cup - Qualification CONCACAF,0.65,2.004,0.45929,False,True
+2024-06-09,1717894800,Mexico,Brazil,2,3,Friendlies,0.3,2.004,0.21198,True,True
+2024-06-09,1717958700,italy,Bosnia and Herzegovina,1,0,Friendlies,0.3,2.004,0.21198,False,True
+2024-06-09,1717960500,France,Canada,0,0,Friendlies,0.3,2.004,0.21198,True,True
+2024-06-09,1717966800,barbados,Haiti,1,3,World Cup - Qualification CONCACAF,0.65,2.004,0.45929,False,True
+2024-06-09,1717974000,Argentina,Ecuador,1,0,Friendlies,0.3,2.004,0.21198,True,True
+2024-06-10,1718035200,Czech Republic,fyr macedonia,2,1,Friendlies,0.3,2.001,0.21208,True,False
+2024-06-10,1718045100,poland,Turkey,2,1,Friendlies,0.3,2.001,0.21208,False,True
+2024-06-10,1718045100,Netherlands,iceland,4,0,Friendlies,0.3,2.001,0.21208,True,False
+2024-06-10,1718046000,Ghana,central african republic,4,3,World Cup - Qualification Africa,0.65,2.001,0.45951,True,False
+2024-06-11,1718100840,Japan,syria,5,0,World Cup - Qualification Asia,0.65,1.999,0.45973,True,False
+2024-06-11,1718103600,South Korea,china,1,0,World Cup - Qualification Asia,0.65,1.999,0.45973,True,False
+2024-06-11,1718107800,Australia,palestine,5,0,World Cup - Qualification Asia,0.65,1.999,0.45973,True,False
+2024-06-11,1718121600,Cape Verde,libya,1,0,World Cup - Qualification Africa,0.65,1.999,0.45973,True,False
+2024-06-11,1718125200,Iran,Uzbekistan,0,0,World Cup - Qualification Asia,0.65,1.999,0.45973,True,True
+2024-06-11,1718128800,Iraq,vietnam,3,1,World Cup - Qualification Asia,0.65,1.999,0.45973,True,False
+2024-06-11,1718131500,Portugal,rep of ireland,3,0,Friendlies,0.3,1.999,0.21218,True,False
+2024-06-12,1718150400,chile,Paraguay,3,0,Friendlies,0.3,1.996,0.21228,False,True
+2024-06-12,1718233200,United States,Brazil,1,1,Friendlies,0.3,1.996,0.21228,True,True
+2024-06-13,1718238600,Ecuador,bolivia,3,1,Friendlies,0.3,1.993,0.21238,True,False
+2024-06-14,1718391600,Germany,Scotland,5,1,Euro Championship,0.85,1.99,0.60204,True,True
+2024-06-15,1718456400,hungary,Switzerland,1,3,Euro Championship,0.85,1.988,0.60233,False,True
+2024-06-15,1718467200,Spain,Croatia,3,0,Euro Championship,0.85,1.988,0.60233,True,True
+2024-06-15,1718485200,Colombia,bolivia,3,0,Friendlies,0.3,1.988,0.21259,True,False
+2024-06-16,1718542800,poland,Netherlands,1,2,Euro Championship,0.85,1.985,0.60261,False,True
+2024-06-16,1718564400,serbia,England,0,1,Euro Championship,0.85,1.985,0.60261,False,True
+2024-06-16,1718566200,Ecuador,honduras,2,1,Friendlies,0.3,1.985,0.21269,True,False
+2024-06-16,1718577000,Panama,Paraguay,0,1,Friendlies,0.3,1.985,0.21269,True,True
+2024-06-17,1718640000,Belgium,slovakia,0,1,Euro Championship,0.85,1.982,0.6029,True,False
+2024-06-17,1718650800,Austria,France,0,1,Euro Championship,0.85,1.982,0.6029,True,True
+2024-06-18,1718683200,New Zealand,solomon islands,3,0,OFC Nations Cup,0.45,1.979,0.31933,True,False
+2024-06-18,1718726400,Turkey,georgia,3,1,Euro Championship,0.85,1.979,0.60318,True,False
+2024-06-18,1718737200,Portugal,Czech Republic,2,1,Euro Championship,0.85,1.979,0.60318,True,True
+2024-06-19,1718802000,Croatia,albania,2,2,Euro Championship,0.85,1.977,0.60347,True,False
+2024-06-19,1718812800,Germany,hungary,2,0,Euro Championship,0.85,1.977,0.60347,True,False
+2024-06-19,1718823600,Scotland,Switzerland,1,1,Euro Championship,0.85,1.977,0.60347,True,True
+2024-06-20,1718899200,denmark,England,1,1,Euro Championship,0.85,1.974,0.60376,False,True
+2024-06-20,1718910000,Spain,italy,1,0,Euro Championship,0.85,1.974,0.60376,True,False
+2024-06-21,1718928000,Argentina,Canada,2,0,Copa America,0.85,1.971,0.60404,True,True
+2024-06-21,1718942400,vanuatu,New Zealand,0,4,OFC Nations Cup,0.45,1.971,0.31979,False,True
+2024-06-21,1718985600,poland,Austria,1,3,Euro Championship,0.85,1.971,0.60404,False,True
+2024-06-21,1718996400,Netherlands,France,0,0,Euro Championship,0.85,1.971,0.60404,True,True
+2024-06-22,1719061200,georgia,Czech Republic,1,1,Euro Championship,0.85,1.969,0.60433,False,True
+2024-06-22,1719072000,Turkey,Portugal,0,3,Euro Championship,0.85,1.969,0.60433,True,True
+2024-06-22,1719082800,Belgium,romania,2,0,Euro Championship,0.85,1.969,0.60433,True,False
+2024-06-22,1719093600,Ecuador,venezuela,1,2,Copa America,0.85,1.969,0.60433,True,False
+2024-06-23,1719169200,Switzerland,Germany,1,1,Euro Championship,0.85,1.966,0.60462,True,True
+2024-06-23,1719169200,Scotland,hungary,0,1,Euro Championship,0.85,1.966,0.60462,True,False
+2024-06-24,1719190800,Uruguay,Panama,3,1,Copa America,0.85,1.963,0.6049,True,True
+2024-06-24,1719255600,Croatia,italy,1,1,Euro Championship,0.85,1.963,0.6049,True,False
+2024-06-24,1719255600,albania,Spain,0,1,Euro Championship,0.85,1.963,0.6049,False,True
+2024-06-24,1719266400,Colombia,Paraguay,2,1,Copa America,0.85,1.963,0.6049,True,True
+2024-06-25,1719277200,Brazil,costa rica,0,0,Copa America,0.85,1.96,0.60519,True,False
+2024-06-25,1719331200,France,poland,1,1,Euro Championship,0.85,1.96,0.60519,True,False
+2024-06-25,1719331200,Netherlands,Austria,2,3,Euro Championship,0.85,1.96,0.60519,True,True
+2024-06-25,1719342000,England,slovenia,0,0,Euro Championship,0.85,1.96,0.60519,True,False
+2024-06-26,1719363600,chile,Argentina,0,1,Copa America,0.85,1.958,0.60548,False,True
+2024-06-26,1719417600,ukraine,Belgium,0,0,Euro Championship,0.85,1.958,0.60548,False,True
+2024-06-26,1719428400,georgia,Portugal,2,0,Euro Championship,0.85,1.958,0.60548,False,True
+2024-06-26,1719428400,Czech Republic,Turkey,1,2,Euro Championship,0.85,1.958,0.60548,True,True
+2024-06-27,1719446400,New Zealand,tahiti,5,0,OFC Nations Cup,0.45,1.955,0.3207,True,False
+2024-06-27,1719525600,Ecuador,jamaica,3,1,Copa America,0.85,1.955,0.60576,True,False
+2024-06-28,1719536400,Uruguay,bolivia,5,0,Copa America,0.85,1.952,0.60605,True,False
+2024-06-29,1719622800,Paraguay,Brazil,1,4,Copa America,0.85,1.949,0.60634,True,True
+2024-06-29,1719676800,Switzerland,italy,2,0,Euro Championship,0.85,1.949,0.60634,True,False
+2024-06-29,1719687600,Germany,denmark,2,0,Euro Championship,0.85,1.949,0.60634,True,False
+2024-06-29,1719698400,Colombia,costa rica,3,0,Copa America,0.85,1.949,0.60634,True,False
+2024-06-30,1719705600,Argentina,peru,2,0,Copa America,0.85,1.947,0.60663,True,False
+2024-06-30,1719720000,New Zealand,vanuatu,3,0,OFC Nations Cup,0.45,1.947,0.32116,True,False
+2024-06-30,1719774000,Spain,georgia,4,1,Euro Championship,0.85,1.947,0.60663,True,False
+2024-07-01,1719792000,Mexico,Ecuador,0,0,Copa America,0.85,1.944,0.60691,True,True
+2024-07-01,1719849600,France,Belgium,1,0,Euro Championship,0.85,1.944,0.60691,True,True
+2024-07-02,1719882000,United States,Uruguay,0,1,Copa America,0.85,1.941,0.6072,True,True
+2024-07-02,1719882000,bolivia,Panama,1,3,Copa America,0.85,1.941,0.6072,False,True
+2024-07-02,1719936000,romania,Netherlands,0,3,Euro Championship,0.85,1.941,0.6072,False,True
+2024-07-02,1719946800,Austria,Turkey,1,2,Euro Championship,0.85,1.941,0.6072,True,True
+2024-07-03,1719968400,Brazil,Colombia,1,1,Copa America,0.85,1.938,0.60749,True,True
+2024-07-03,1719968400,costa rica,Paraguay,2,1,Copa America,0.85,1.938,0.60749,False,True
+2024-07-06,1720292400,Netherlands,Turkey,2,1,Euro Championship,0.85,1.93,0.60836,True,True
+2024-07-06,1720303200,Colombia,Panama,5,0,Copa America,0.85,1.93,0.60836,True,True
+2024-07-09,1720551600,Spain,France,2,1,Euro Championship,0.85,1.922,0.60922,True,True
+2024-07-10,1720569600,Argentina,Canada,2,0,Copa America,0.85,1.919,0.60951,True,True
+2024-07-10,1720638000,Netherlands,England,1,2,Euro Championship,0.85,1.919,0.60951,True,True
+2024-07-11,1720656000,Uruguay,Colombia,0,1,Copa America,0.85,1.916,0.6098,True,True
+2024-07-14,1720983600,Spain,England,2,1,Euro Championship,0.85,1.908,0.61067,True,True
+2024-09-01,1725231600,Uruguay,guatemala,1,1,Friendlies,0.3,1.774,0.2206,True,False
+2024-09-05,1725531000,Australia,bahrain,0,1,World Cup - Qualification Asia,0.65,1.763,0.47887,True,False
+2024-09-05,1725532500,Japan,china,7,0,World Cup - Qualification Asia,0.65,1.763,0.47887,True,False
+2024-09-05,1725534000,South Korea,palestine,0,0,World Cup - Qualification Asia,0.65,1.763,0.47887,True,False
+2024-09-05,1725544800,Uzbekistan,north korea,1,0,World Cup - Qualification Asia,0.65,1.763,0.47887,True,False
+2024-09-05,1725552000,azerbaijan,Sweden,1,3,UEFA Nations League,0.55,1.763,0.4052,False,True
+2024-09-05,1725552000,Iran,kyrgyzstan,1,0,World Cup - Qualification Asia,0.65,1.763,0.47887,True,False
+2024-09-05,1725552000,Ghana,angola,0,1,Africa Cup of Nations - Qualification,0.45,1.763,0.33153,True,False
+2024-09-05,1725552000,Iraq,oman,1,0,World Cup - Qualification Asia,0.65,1.763,0.47887,True,False
+2024-09-05,1725561900,Portugal,Croatia,2,1,UEFA Nations League,0.55,1.763,0.4052,True,True
+2024-09-05,1725561900,serbia,Spain,0,0,UEFA Nations League,0.55,1.763,0.4052,False,True
+2024-09-05,1725561900,denmark,Switzerland,2,0,UEFA Nations League,0.55,1.763,0.4052,False,True
+2024-09-05,1725561900,Scotland,poland,2,3,UEFA Nations League,0.55,1.763,0.4052,True,False
+2024-09-06,1725580800,Argentina,chile,3,0,World Cup - Qualification South America,0.65,1.76,0.4791,True,False
+2024-09-06,1725631200,kazakhstan,Norway,0,0,UEFA Nations League,0.55,1.76,0.40539,False,True
+2024-09-06,1725648300,Belgium,israel,3,1,UEFA Nations League,0.55,1.76,0.40539,True,False
+2024-09-06,1725648300,France,italy,1,3,UEFA Nations League,0.55,1.76,0.40539,True,False
+2024-09-06,1725648300,slovenia,Austria,1,1,UEFA Nations League,0.55,1.76,0.40539,False,True
+2024-09-06,1725648300,wales,Turkey,0,0,UEFA Nations League,0.55,1.76,0.40539,False,True
+2024-09-06,1725649200,Ivory Coast,zambia,2,0,Africa Cup of Nations - Qualification,0.45,1.76,0.33169,True,False
+2024-09-06,1725649200,Egypt,Cape Verde,3,0,Africa Cup of Nations - Qualification,0.45,1.76,0.33169,True,True
+2024-09-06,1725656400,st lucia,Curaçao,2,1,CONCACAF Nations League,0.55,1.76,0.40539,False,True
+2024-09-06,1725665400,Uruguay,Paraguay,0,0,World Cup - Qualification South America,0.65,1.76,0.4791,True,True
+2024-09-07,1725667200,puerto rico,Haiti,1,4,CONCACAF Nations League,0.55,1.758,0.40559,False,True
+2024-09-07,1725670800,Brazil,Ecuador,1,0,World Cup - Qualification South America,0.65,1.758,0.47933,True,True
+2024-09-07,1725672600,peru,Colombia,1,1,World Cup - Qualification South America,0.65,1.758,0.47933,False,True
+2024-09-07,1725724800,rep of ireland,England,0,2,UEFA Nations League,0.55,1.758,0.40559,False,True
+2024-09-07,1725724800,georgia,Czech Republic,4,1,UEFA Nations League,0.55,1.758,0.40559,False,True
+2024-09-07,1725734700,Netherlands,Bosnia and Herzegovina,5,2,UEFA Nations League,0.55,1.758,0.40559,True,True
+2024-09-07,1725734700,Germany,hungary,5,0,UEFA Nations League,0.55,1.758,0.40559,True,False
+2024-09-07,1725739200,United States,Canada,1,2,Friendlies,0.3,1.758,0.22123,True,True
+2024-09-08,1725757200,Mexico,New Zealand,3,0,Friendlies,0.3,1.755,0.22133,True,True
+2024-09-08,1725821100,Croatia,poland,1,0,UEFA Nations League,0.55,1.755,0.40578,True,False
+2024-09-08,1725821100,Sweden,estonia,3,0,UEFA Nations League,0.55,1.755,0.40578,True,False
+2024-09-08,1725821100,Switzerland,Spain,1,4,UEFA Nations League,0.55,1.755,0.40578,True,True
+2024-09-08,1725821100,Portugal,Scotland,2,1,UEFA Nations League,0.55,1.755,0.40578,True,True
+2024-09-09,1725894000,niger,Ghana,1,1,Africa Cup of Nations - Qualification,0.45,1.752,0.33216,False,True
+2024-09-09,1725907500,France,Belgium,2,0,UEFA Nations League,0.55,1.752,0.40597,True,True
+2024-09-09,1725907500,Norway,Austria,2,1,UEFA Nations League,0.55,1.752,0.40597,True,True
+2024-09-09,1725907500,Turkey,iceland,3,1,UEFA Nations League,0.55,1.752,0.40597,True,False
+2024-09-09,1725915600,Haiti,sint maarten,6,0,CONCACAF Nations League,0.55,1.752,0.40597,True,False
+2024-09-09,1725915600,Curaçao,saint martin,4,0,CONCACAF Nations League,0.55,1.752,0.40597,True,False
+2024-09-10,1725969600,north korea,Qatar,2,2,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725969600,indonesia,Australia,0,0,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725976800,oman,South Korea,1,3,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725976800,kyrgyzstan,Uzbekistan,2,3,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725984000,bahrain,Japan,0,5,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725984000,united arab emirates,Iran,0,1,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725991200,kuwait,Iraq,0,0,World Cup - Qualification Asia,0.65,1.749,0.48001,False,True
+2024-09-10,1725993900,England,finland,2,0,UEFA Nations League,0.55,1.749,0.40616,True,False
+2024-09-10,1725993900,Netherlands,Germany,2,2,UEFA Nations League,0.55,1.749,0.40616,True,True
+2024-09-10,1725993900,Czech Republic,ukraine,3,2,UEFA Nations League,0.55,1.749,0.40616,True,False
+2024-09-10,1725993900,hungary,Bosnia and Herzegovina,0,0,UEFA Nations League,0.55,1.749,0.40616,False,True
+2024-09-10,1725994800,chad,Ivory Coast,0,2,Africa Cup of Nations - Qualification,0.45,1.749,0.33232,False,True
+2024-09-10,1725994800,Cape Verde,mauritania,2,0,Africa Cup of Nations - Qualification,0.45,1.749,0.33232,True,False
+2024-09-10,1726000200,Colombia,Argentina,2,1,World Cup - Qualification South America,0.65,1.749,0.48001,True,True
+2024-09-10,1726002000,Ecuador,peru,1,0,World Cup - Qualification South America,0.65,1.749,0.48001,True,False
+2024-09-10,1726005600,venezuela,Uruguay,0,0,World Cup - Qualification South America,0.65,1.749,0.48001,False,True
+2024-09-10,1726009200,United States,New Zealand,1,1,Friendlies,0.3,1.749,0.22154,True,True
+2024-09-11,1726014600,Paraguay,Brazil,1,0,World Cup - Qualification South America,0.65,1.747,0.48024,True,True
+2024-09-11,1726016400,Mexico,Canada,0,0,Friendlies,0.3,1.747,0.22165,True,True
+2024-10-10,1728551400,Australia,china,3,1,World Cup - Qualification Asia,0.65,1.667,0.48689,True,False
+2024-10-10,1728568800,Jordan,South Korea,0,2,World Cup - Qualification Asia,0.65,1.667,0.48689,True,True
+2024-10-10,1728568800,Uzbekistan,Iran,0,0,World Cup - Qualification Asia,0.65,1.667,0.48689,True,True
+2024-10-10,1728576000,Ghana,sudan,0,0,Africa Cup of Nations - Qualification,0.45,1.667,0.33708,True,False
+2024-10-10,1728576000,Cape Verde,botswana,0,1,Africa Cup of Nations - Qualification,0.45,1.667,0.33708,True,False
+2024-10-10,1728576000,Qatar,kyrgyzstan,3,1,World Cup - Qualification Asia,0.65,1.667,0.48689,True,False
+2024-10-10,1728583200,Saudi Arabia,Japan,0,2,World Cup - Qualification Asia,0.65,1.667,0.48689,True,True
+2024-10-10,1728583200,Iraq,palestine,1,0,World Cup - Qualification Asia,0.65,1.667,0.48689,True,False
+2024-10-10,1728585900,Austria,kazakhstan,4,0,UEFA Nations League,0.55,1.667,0.41199,True,False
+2024-10-10,1728585900,England,greece,1,2,UEFA Nations League,0.55,1.667,0.41199,True,False
+2024-10-10,1728585900,Norway,slovenia,3,0,UEFA Nations League,0.55,1.667,0.41199,True,False
+2024-10-10,1728585900,italy,Belgium,2,2,UEFA Nations League,0.55,1.667,0.41199,False,True
+2024-10-10,1728585900,israel,France,1,4,UEFA Nations League,0.55,1.667,0.41199,False,True
+2024-10-10,1728590400,bolivia,Colombia,1,0,World Cup - Qualification South America,0.65,1.667,0.48689,False,True
+2024-10-10,1728594000,venezuela,Argentina,1,1,World Cup - Qualification South America,0.65,1.667,0.48689,False,True
+2024-10-10,1728594000,Ecuador,Paraguay,0,0,World Cup - Qualification South America,0.65,1.667,0.48689,True,True
+2024-10-11,1728604800,chile,Brazil,1,2,World Cup - Qualification South America,0.65,1.665,0.48712,False,True
+2024-10-11,1728612000,New Zealand,tahiti,3,0,World Cup - Qualification Oceania,0.65,1.665,0.48712,True,False
+2024-10-11,1728672300,slovakia,Sweden,2,2,UEFA Nations League,0.55,1.665,0.41218,False,True
+2024-10-11,1728672300,Bosnia and Herzegovina,Germany,1,2,UEFA Nations League,0.55,1.665,0.41218,True,True
+2024-10-11,1728672300,Czech Republic,albania,2,0,UEFA Nations League,0.55,1.665,0.41218,True,False
+2024-10-11,1728672300,Turkey,montenegro,1,0,UEFA Nations League,0.55,1.665,0.41218,True,False
+2024-10-11,1728672300,hungary,Netherlands,1,1,UEFA Nations League,0.55,1.665,0.41218,False,True
+2024-10-11,1728673200,Ivory Coast,sierra leone,4,1,Africa Cup of Nations - Qualification,0.45,1.665,0.33724,True,False
+2024-10-11,1728680400,grenada,Curaçao,0,0,CONCACAF Nations League,0.55,1.665,0.41218,False,True
+2024-10-12,1728691200,aruba,Haiti,1,3,CONCACAF Nations League,0.55,1.662,0.41238,False,True
+2024-10-12,1728696600,peru,Uruguay,1,0,World Cup - Qualification South America,0.65,1.662,0.48735,False,True
+2024-10-12,1728748800,Croatia,Scotland,2,1,UEFA Nations League,0.55,1.662,0.41238,True,True
+2024-10-12,1728758700,Spain,denmark,1,0,UEFA Nations League,0.55,1.662,0.41238,True,False
+2024-10-12,1728758700,serbia,Switzerland,2,0,UEFA Nations League,0.55,1.662,0.41238,False,True
+2024-10-12,1728758700,poland,Portugal,1,3,UEFA Nations League,0.55,1.662,0.41238,False,True
+2024-10-13,1728781200,United States,Panama,2,0,Friendlies,0.3,1.659,0.22504,True,True
+2024-10-13,1728835200,finland,England,1,3,UEFA Nations League,0.55,1.659,0.41257,False,True
+2024-10-13,1728845100,Austria,Norway,5,1,UEFA Nations League,0.55,1.659,0.41257,True,True
+2024-10-14,1728885600,New Zealand,malaysia,4,0,Friendlies,0.3,1.656,0.22515,True,False
+2024-10-14,1728931500,Bosnia and Herzegovina,hungary,0,2,UEFA Nations League,0.55,1.656,0.41277,True,False
+2024-10-14,1728931500,iceland,Turkey,2,4,UEFA Nations League,0.55,1.656,0.41277,False,True
+2024-10-14,1728931500,ukraine,Czech Republic,1,1,UEFA Nations League,0.55,1.656,0.41277,False,True
+2024-10-14,1728931500,estonia,Sweden,0,3,UEFA Nations League,0.55,1.656,0.41277,False,True
+2024-10-14,1728931500,Belgium,France,1,2,UEFA Nations League,0.55,1.656,0.41277,True,True
+2024-10-14,1728931500,Germany,Netherlands,1,0,UEFA Nations League,0.55,1.656,0.41277,True,True
+2024-10-14,1728936000,Curaçao,grenada,1,0,CONCACAF Nations League,0.55,1.656,0.41277,True,False
+2024-10-15,1728950400,Haiti,aruba,5,3,CONCACAF Nations League,0.55,1.654,0.41296,True,False
+2024-10-15,1728988500,Japan,Australia,1,1,World Cup - Qualification Asia,0.65,1.654,0.48805,True,True
+2024-10-15,1728990000,South Korea,Iraq,3,2,World Cup - Qualification Asia,0.65,1.654,0.48805,True,True
+2024-10-15,1728997200,sudan,Ghana,2,0,Africa Cup of Nations - Qualification,0.45,1.654,0.33788,False,True
+2024-10-15,1729000800,Uzbekistan,united arab emirates,1,0,World Cup - Qualification Asia,0.65,1.654,0.48805,True,False
+2024-10-15,1729008000,Jordan,oman,4,0,World Cup - Qualification Asia,0.65,1.654,0.48805,True,False
+2024-10-15,1729008000,Iran,Qatar,4,1,World Cup - Qualification Asia,0.65,1.654,0.48805,True,True
+2024-10-15,1729008000,sierra leone,Ivory Coast,1,0,Africa Cup of Nations - Qualification,0.45,1.654,0.33788,False,True
+2024-10-15,1729008000,botswana,Cape Verde,1,0,Africa Cup of Nations - Qualification,0.45,1.654,0.33788,False,True
+2024-10-15,1729017900,Scotland,Portugal,0,0,UEFA Nations League,0.55,1.654,0.41296,True,True
+2024-10-15,1729017900,Switzerland,denmark,2,2,UEFA Nations League,0.55,1.654,0.41296,True,False
+2024-10-15,1729017900,poland,Croatia,3,3,UEFA Nations League,0.55,1.654,0.41296,False,True
+2024-10-15,1729017900,Spain,serbia,3,0,UEFA Nations League,0.55,1.654,0.41296,True,False
+2024-10-15,1729024200,Colombia,chile,4,0,World Cup - Qualification South America,0.65,1.654,0.48805,True,False
+2024-10-15,1729033200,Paraguay,venezuela,2,1,World Cup - Qualification South America,0.65,1.654,0.48805,True,False
+2024-10-15,1729035000,Uruguay,Ecuador,0,0,World Cup - Qualification South America,0.65,1.654,0.48805,True,True
+2024-10-15,1729035000,Canada,Panama,2,1,Friendlies,0.3,1.654,0.22525,True,True
+2024-10-16,1729036800,Argentina,bolivia,6,0,World Cup - Qualification South America,0.65,1.651,0.48828,True,False
+2024-10-16,1729039500,Brazil,peru,4,0,World Cup - Qualification South America,0.65,1.651,0.48828,True,False
+2024-10-16,1729045800,Mexico,United States,2,0,Friendlies,0.3,1.651,0.22536,True,True
+2024-11-14,1731575400,Australia,Saudi Arabia,0,0,World Cup - Qualification Asia,0.65,1.572,0.49504,True,True
+2024-11-14,1731585600,north korea,Iran,2,3,World Cup - Qualification Asia,0.65,1.572,0.49504,False,True
+2024-11-14,1731592800,kuwait,South Korea,1,3,World Cup - Qualification Asia,0.65,1.572,0.49504,False,True
+2024-11-14,1731596400,kazakhstan,Austria,0,2,UEFA Nations League,0.55,1.572,0.41888,False,True
+2024-11-14,1731600900,Qatar,Uzbekistan,3,2,World Cup - Qualification Asia,0.65,1.572,0.49504,True,True
+2024-11-14,1731600900,Iraq,Jordan,0,0,World Cup - Qualification Asia,0.65,1.572,0.49504,True,True
+2024-11-14,1731613500,Belgium,italy,0,1,UEFA Nations League,0.55,1.572,0.41888,True,False
+2024-11-14,1731613500,France,israel,0,0,UEFA Nations League,0.55,1.572,0.41888,True,False
+2024-11-14,1731613500,greece,England,0,3,UEFA Nations League,0.55,1.572,0.41888,False,True
+2024-11-14,1731613500,slovenia,Norway,1,4,UEFA Nations League,0.55,1.572,0.41888,False,True
+2024-11-14,1731618000,venezuela,Brazil,1,1,World Cup - Qualification South America,0.65,1.572,0.49504,False,True
+2024-11-14,1731627000,Paraguay,Argentina,2,1,World Cup - Qualification South America,0.65,1.572,0.49504,True,True
+2024-11-15,1731628800,Ecuador,bolivia,4,0,World Cup - Qualification South America,0.65,1.569,0.49528,True,False
+2024-11-15,1731632400,jamaica,United States,0,1,CONCACAF Nations League,0.55,1.569,0.41908,False,True
+2024-11-15,1731636000,costa rica,Panama,0,1,CONCACAF Nations League,0.55,1.569,0.41908,False,True
+2024-11-15,1731652200,New Zealand,vanuatu,8,1,World Cup - Qualification Oceania,0.65,1.569,0.49528,True,False
+2024-11-15,1731672000,indonesia,Japan,0,4,World Cup - Qualification Asia,0.65,1.569,0.49528,False,True
+2024-11-15,1731686400,Cape Verde,Egypt,1,1,Africa Cup of Nations - Qualification,0.45,1.569,0.34289,True,True
+2024-11-15,1731686400,zambia,Ivory Coast,1,0,Africa Cup of Nations - Qualification,0.45,1.569,0.34289,False,True
+2024-11-15,1731697200,angola,Ghana,1,1,Africa Cup of Nations - Qualification,0.45,1.569,0.34289,False,True
+2024-11-15,1731699900,Scotland,Croatia,1,0,UEFA Nations League,0.55,1.569,0.41908,True,True
+2024-11-15,1731699900,denmark,Spain,1,2,UEFA Nations League,0.55,1.569,0.41908,False,True
+2024-11-15,1731699900,Switzerland,serbia,1,1,UEFA Nations League,0.55,1.569,0.41908,True,False
+2024-11-15,1731699900,Portugal,poland,5,1,UEFA Nations League,0.55,1.569,0.41908,True,False
+2024-11-15,1731704400,sint maarten,Haiti,0,8,CONCACAF Nations League,0.55,1.569,0.41908,False,True
+2024-11-15,1731711600,saint martin,Curaçao,0,5,CONCACAF Nations League,0.55,1.569,0.41908,False,True
+2024-11-15,1731713400,suriname,Canada,0,1,CONCACAF Nations League,0.55,1.569,0.41908,False,True
+2024-11-16,1731715200,Uruguay,Colombia,3,2,World Cup - Qualification South America,0.65,1.566,0.49551,True,True
+2024-11-16,1731722400,honduras,Mexico,2,0,CONCACAF Nations League,0.55,1.566,0.41928,False,True
+2024-11-16,1731776400,Turkey,wales,0,0,UEFA Nations League,0.55,1.566,0.41928,True,False
+2024-11-16,1731783600,guinea,DR Congo,1,0,Africa Cup of Nations - Qualification,0.45,1.566,0.34305,False,True
+2024-11-16,1731786300,Netherlands,hungary,4,0,UEFA Nations League,0.55,1.566,0.41928,True,False
+2024-11-16,1731786300,albania,Czech Republic,0,0,UEFA Nations League,0.55,1.566,0.41928,False,True
+2024-11-16,1731786300,Germany,Bosnia and Herzegovina,7,0,UEFA Nations League,0.55,1.566,0.41928,True,True
+2024-11-16,1731786300,Sweden,slovakia,2,1,UEFA Nations League,0.55,1.566,0.41928,True,False
+2024-11-17,1731862800,England,rep of ireland,5,0,UEFA Nations League,0.55,1.563,0.41948,True,False
+2024-11-17,1731862800,Austria,slovenia,1,1,UEFA Nations League,0.55,1.563,0.41948,True,False
+2024-11-17,1731862800,Norway,kazakhstan,5,0,UEFA Nations League,0.55,1.563,0.41948,True,False
+2024-11-17,1731872700,israel,Belgium,1,0,UEFA Nations League,0.55,1.563,0.41948,False,True
+2024-11-17,1731872700,italy,France,1,3,UEFA Nations League,0.55,1.563,0.41948,False,True
+2024-11-18,1731911400,samoa,New Zealand,0,8,World Cup - Qualification Oceania,0.65,1.561,0.49598,False,True
+2024-11-18,1731945600,Ghana,niger,1,2,Africa Cup of Nations - Qualification,0.45,1.561,0.34337,True,False
+2024-11-18,1731956400,Tunisia,gambia,0,1,Africa Cup of Nations - Qualification,0.45,1.561,0.34337,True,False
+2024-11-18,1731959100,Croatia,Portugal,1,1,UEFA Nations League,0.55,1.561,0.41968,True,True
+2024-11-18,1731959100,Spain,Switzerland,3,2,UEFA Nations League,0.55,1.561,0.41968,True,True
+2024-11-18,1731959100,poland,Scotland,1,2,UEFA Nations League,0.55,1.561,0.41968,False,True
+2024-11-18,1731970800,Curaçao,st lucia,4,1,CONCACAF Nations League,0.55,1.561,0.41968,True,False
+2024-11-19,1731974400,Haiti,puerto rico,3,0,CONCACAF Nations League,0.55,1.558,0.41988,True,False
+2024-11-19,1731978000,United States,jamaica,4,2,CONCACAF Nations League,0.55,1.558,0.41988,True,False
+2024-11-19,1731981600,Panama,costa rica,2,2,CONCACAF Nations League,0.55,1.558,0.41988,True,False
+2024-11-19,1732017600,china,Japan,1,3,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732017600,north korea,Uzbekistan,0,1,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732024800,palestine,South Korea,1,1,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732024800,kyrgyzstan,Iran,2,3,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732028400,mauritania,Cape Verde,1,0,Africa Cup of Nations - Qualification,0.45,1.558,0.34354,False,True
+2024-11-19,1732032000,Ivory Coast,chad,4,0,Africa Cup of Nations - Qualification,0.45,1.558,0.34354,True,False
+2024-11-19,1732032000,DR Congo,ethiopia,1,2,Africa Cup of Nations - Qualification,0.45,1.558,0.34354,True,False
+2024-11-19,1732032000,oman,Iraq,0,1,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732032000,united arab emirates,Qatar,5,0,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732040100,bahrain,Australia,2,2,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732040100,kuwait,Jordan,1,1,World Cup - Qualification Asia,0.65,1.558,0.49622,False,True
+2024-11-19,1732045500,Bosnia and Herzegovina,Netherlands,1,1,UEFA Nations League,0.55,1.558,0.41988,True,True
+2024-11-19,1732045500,Czech Republic,georgia,2,1,UEFA Nations League,0.55,1.558,0.41988,True,False
+2024-11-19,1732045500,montenegro,Turkey,3,1,UEFA Nations League,0.55,1.558,0.41988,False,True
+2024-11-19,1732045500,Sweden,azerbaijan,6,0,UEFA Nations League,0.55,1.558,0.41988,True,False
+2024-11-19,1732045500,hungary,Germany,1,1,UEFA Nations League,0.55,1.558,0.41988,False,True
+2024-11-19,1732046400,bolivia,Paraguay,2,2,World Cup - Qualification South America,0.65,1.558,0.49622,False,True
+2024-11-19,1732057200,Colombia,Ecuador,0,1,World Cup - Qualification South America,0.65,1.558,0.49622,True,True
+2024-11-20,1732060800,Argentina,peru,1,0,World Cup - Qualification South America,0.65,1.555,0.49646,True,False
+2024-11-20,1732062600,Canada,suriname,3,0,CONCACAF Nations League,0.55,1.555,0.42008,True,False
+2024-11-20,1732063500,Brazil,Uruguay,1,1,World Cup - Qualification South America,0.65,1.555,0.49646,True,True
+2024-11-20,1732069800,Mexico,honduras,4,0,CONCACAF Nations League,0.55,1.555,0.42008,True,False
+2024-12-21,1734796800,chad,DR Congo,1,1,African Nations Championship - Qualification,0.45,1.47,0.34879,False,True
+2024-12-21,1734807600,Qatar,united arab emirates,1,1,Gulf Cup of Nations,0.45,1.47,0.34879,True,False
+2024-12-22,1734877500,Iraq,yemen,1,0,Gulf Cup of Nations,0.45,1.467,0.34896,True,False
+2024-12-22,1734883200,Ivory Coast,burkina faso,2,0,African Nations Championship - Qualification,0.45,1.467,0.34896,True,False
+2024-12-22,1734883200,Ghana,nigeria,0,0,African Nations Championship - Qualification,0.45,1.467,0.34896,True,False
+2024-12-24,1735050300,oman,Qatar,2,1,Gulf Cup of Nations,0.45,1.462,0.34929,False,True
+2024-12-25,1735147800,bahrain,Iraq,2,0,Gulf Cup of Nations,0.45,1.459,0.34945,False,True
+2024-12-27,1735309800,kuwait,Qatar,1,1,Gulf Cup of Nations,0.45,1.454,0.34979,False,True
+2024-12-28,1735396200,Iraq,Saudi Arabia,1,3,Gulf Cup of Nations,0.45,1.451,0.34995,True,True
+2024-12-28,1735401600,nigeria,Ghana,3,1,African Nations Championship - Qualification,0.45,1.451,0.34995,False,True
+2024-12-28,1735401600,DR Congo,chad,3,1,African Nations Championship - Qualification,0.45,1.451,0.34995,True,False
+2024-12-31,1735655400,oman,Saudi Arabia,2,1,Gulf Cup of Nations,0.45,1.443,0.35045,False,True
+2025-01-18,1737230400,United States,venezuela,3,1,Friendlies,0.3,1.394,0.23564,True,False
+2025-01-23,1737590400,United States,costa rica,3,0,Friendlies,0.3,1.38,0.2362,True,False
+2025-01-27,1737997200,Uzbekistan,Jordan,0,0,Friendlies,0.3,1.369,0.23665,True,True
+2025-02-08,1739057400,chile,Panama,6,1,Friendlies,0.3,1.336,0.238,False,True
+2025-03-09,1741548600,Egypt,South Africa,1,3,African Nations Championship - Qualification,0.45,1.257,0.36194,True,True
+2025-03-14,1741976100,Jordan,north korea,1,1,Friendlies,0.3,1.243,0.24187,True,False
+2025-03-19,1742400000,liberia,Tunisia,0,1,World Cup - Qualification Africa,0.65,1.229,0.52529,False,True
+2025-03-19,1742401800,kazakhstan,Curaçao,2,0,Friendlies,0.3,1.229,0.24244,False,True
+2025-03-20,1742461800,Australia,indonesia,5,1,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742466900,Japan,bahrain,2,0,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742468400,South Korea,oman,1,1,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742486400,Iran,united arab emirates,2,0,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742486400,Cape Verde,mauritius,1,0,World Cup - Qualification Africa,0.65,1.227,0.52554,True,False
+2025-03-20,1742486400,Uzbekistan,kyrgyzstan,1,0,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742490000,Turkey,hungary,3,1,UEFA Nations League,0.55,1.227,0.44469,True,False
+2025-03-20,1742494500,Saudi Arabia,china,1,0,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742494500,Jordan,palestine,3,1,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742494500,Iraq,kuwait,2,2,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742494500,Qatar,north korea,5,1,World Cup - Qualification Asia,0.65,1.227,0.52554,True,False
+2025-03-20,1742499900,greece,Scotland,0,1,UEFA Nations League,0.55,1.227,0.44469,False,True
+2025-03-20,1742499900,Austria,serbia,1,1,UEFA Nations League,0.55,1.227,0.44469,True,False
+2025-03-20,1742499900,italy,Germany,1,2,UEFA Nations League,0.55,1.227,0.44469,False,True
+2025-03-20,1742499900,denmark,Portugal,1,0,UEFA Nations League,0.55,1.227,0.44469,False,True
+2025-03-20,1742499900,Croatia,France,2,0,UEFA Nations League,0.55,1.227,0.44469,True,True
+2025-03-20,1742499900,ukraine,Belgium,3,1,UEFA Nations League,0.55,1.227,0.44469,False,True
+2025-03-20,1742499900,Netherlands,Spain,2,2,UEFA Nations League,0.55,1.227,0.44469,True,True
+2025-03-20,1742511600,United States,Panama,0,1,CONCACAF Nations League,0.55,1.227,0.44469,True,True
+2025-03-20,1742511600,Paraguay,chile,1,0,World Cup - Qualification South America,0.65,1.227,0.52554,True,False
+2025-03-21,1742517900,Brazil,Colombia,2,1,World Cup - Qualification South America,0.65,1.224,0.52579,True,True
+2025-03-21,1742524200,Canada,Mexico,0,2,CONCACAF Nations League,0.55,1.224,0.4449,True,True
+2025-03-21,1742536800,New Zealand,fiji,7,0,World Cup - Qualification Oceania,0.65,1.224,0.52579,True,False
+2025-03-21,1742572800,DR Congo,south sudan,1,0,World Cup - Qualification Africa,0.65,1.224,0.52579,True,False
+2025-03-21,1742583600,burundi,Ivory Coast,0,1,World Cup - Qualification Africa,0.65,1.224,0.52579,False,True
+2025-03-21,1742583600,Ghana,chad,5,0,World Cup - Qualification Africa,0.65,1.224,0.52579,True,False
+2025-03-21,1742586300,romania,Bosnia and Herzegovina,0,1,World Cup - Qualification Europe,0.65,1.224,0.52579,False,True
+2025-03-21,1742586300,England,albania,2,0,World Cup - Qualification Europe,0.65,1.224,0.52579,True,False
+2025-03-21,1742586300,northern ireland,Switzerland,1,1,Friendlies,0.3,1.224,0.24267,False,True
+2025-03-21,1742590800,Ecuador,venezuela,2,1,World Cup - Qualification South America,0.65,1.224,0.52579,True,False
+2025-03-21,1742590800,ethiopia,Egypt,0,2,World Cup - Qualification Africa,0.65,1.224,0.52579,False,True
+2025-03-21,1742599800,Uruguay,Argentina,0,1,World Cup - Qualification South America,0.65,1.224,0.52579,True,True
+2025-03-22,1742662800,luxembourg,Sweden,1,0,Friendlies,0.3,1.221,0.24279,False,True
+2025-03-22,1742662800,moldova,Norway,0,5,World Cup - Qualification Europe,0.65,1.221,0.52604,False,True
+2025-03-22,1742664600,azerbaijan,Haiti,0,3,Friendlies,0.3,1.221,0.24279,False,True
+2025-03-22,1742672700,Czech Republic,faroe islands,2,1,World Cup - Qualification Europe,0.65,1.221,0.52604,True,False
+2025-03-22,1742680800,Canada,United States,2,1,CONCACAF Nations League,0.55,1.221,0.44511,True,True
+2025-03-23,1742749200,serbia,Austria,2,0,UEFA Nations League,0.55,1.218,0.44532,False,True
+2025-03-23,1742749200,hungary,Turkey,0,3,UEFA Nations League,0.55,1.218,0.44532,False,True
+2025-03-23,1742749200,Scotland,greece,0,3,UEFA Nations League,0.55,1.218,0.44532,True,False
+2025-03-23,1742759100,Belgium,ukraine,3,0,UEFA Nations League,0.55,1.218,0.44532,True,False
+2025-03-23,1742759100,Germany,italy,3,3,UEFA Nations League,0.55,1.218,0.44532,True,False
+2025-03-24,1742779800,Mexico,Panama,2,1,CONCACAF Nations League,0.55,1.216,0.44553,True,True
+2025-03-24,1742796000,new caledonia,New Zealand,0,3,World Cup - Qualification Oceania,0.65,1.216,0.52654,False,True
+2025-03-24,1742842800,madagascar,Ghana,0,3,World Cup - Qualification Africa,0.65,1.216,0.52654,False,True
+2025-03-24,1742842800,Ivory Coast,gambia,1,0,World Cup - Qualification Africa,0.65,1.216,0.52654,True,False
+2025-03-24,1742845500,England,latvia,3,0,World Cup - Qualification Europe,0.65,1.216,0.52654,True,False
+2025-03-24,1742845500,Bosnia and Herzegovina,cyprus,2,1,World Cup - Qualification Europe,0.65,1.216,0.52654,True,False
+2025-03-24,1742850000,Tunisia,malawi,2,0,World Cup - Qualification Africa,0.65,1.216,0.52654,True,False
+2025-03-25,1742898900,Japan,Saudi Arabia,0,0,World Cup - Qualification Asia,0.65,1.213,0.52679,True,True
+2025-03-25,1742900400,South Korea,Jordan,1,1,World Cup - Qualification Asia,0.65,1.213,0.52679,True,True
+2025-03-25,1742900400,china,Australia,0,2,World Cup - Qualification Asia,0.65,1.213,0.52679,False,True
+2025-03-25,1742910300,kyrgyzstan,Qatar,3,1,World Cup - Qualification Asia,0.65,1.213,0.52679,False,True
+2025-03-25,1742918400,Iran,Uzbekistan,2,2,World Cup - Qualification Asia,0.65,1.213,0.52679,True,True
+2025-03-25,1742918400,angola,Cape Verde,1,2,World Cup - Qualification Africa,0.65,1.213,0.52679,False,True
+2025-03-25,1742925600,Sweden,northern ireland,5,1,Friendlies,0.3,1.213,0.24313,True,False
+2025-03-25,1742926500,palestine,Iraq,2,1,World Cup - Qualification Asia,0.65,1.213,0.52679,False,True
+2025-03-25,1742929200,Egypt,sierra leone,1,0,World Cup - Qualification Africa,0.65,1.213,0.52679,True,False
+2025-03-25,1742931900,israel,Norway,2,4,World Cup - Qualification Europe,0.65,1.213,0.52679,False,True
+2025-03-25,1742931900,gibraltar,Czech Republic,0,4,World Cup - Qualification Europe,0.65,1.213,0.52679,False,True
+2025-03-25,1742931900,Switzerland,luxembourg,3,1,Friendlies,0.3,1.213,0.24313,True,False
+2025-03-25,1742932800,bolivia,Uruguay,0,0,World Cup - Qualification South America,0.65,1.213,0.52679,False,True
+2025-03-25,1742936400,mauritania,DR Congo,0,2,World Cup - Qualification Africa,0.65,1.213,0.52679,False,True
+2025-03-26,1742947200,Argentina,Brazil,4,1,World Cup - Qualification South America,0.65,1.21,0.52704,True,True
+2025-03-26,1742947200,Colombia,Paraguay,2,2,World Cup - Qualification South America,0.65,1.21,0.52704,True,True
+2025-03-26,1742947200,chile,Ecuador,0,0,World Cup - Qualification South America,0.65,1.21,0.52704,False,True
+2025-05-03,1746277200,malawi,South Africa,1,0,African Nations Championship - Qualification,0.45,1.106,0.37151,False,True
+2025-05-09,1746813600,Algeria,gambia,3,0,African Nations Championship - Qualification,0.45,1.09,0.37257,True,False
+2025-05-11,1746968400,South Africa,malawi,2,0,African Nations Championship - Qualification,0.45,1.084,0.37292,True,False
+2025-05-28,1748457900,Ghana,nigeria,1,2,Friendlies,0.3,1.038,0.25063,True,False
+2025-05-29,1748523600,malaysia,Cape Verde,1,1,Friendlies,0.3,1.035,0.25075,False,True
+2025-05-30,1748619600,Saudi Arabia,Jordan,2,0,Friendlies,0.3,1.032,0.25087,True,True
+2025-05-31,1748691000,trinidad and tobago,Ghana,0,4,Friendlies,0.3,1.029,0.25099,False,True
+2025-06-02,1748885400,Tunisia,burkina faso,2,0,Friendlies,0.3,1.024,0.25122,True,False
+2025-06-03,1748952000,malaysia,Cape Verde,0,3,Friendlies,0.3,1.021,0.25134,False,True
+2025-06-04,1749042000,South Africa,mozambique,0,1,COSAFA Cup,0.45,1.018,0.37719,True,False
+2025-06-04,1749064200,Germany,Portugal,1,2,UEFA Nations League,0.55,1.018,0.46101,True,True
+2025-06-05,1749121800,Australia,Japan,1,0,World Cup - Qualification Asia,0.65,1.016,0.54509,True,True
+2025-06-05,1749139200,bahrain,Saudi Arabia,0,2,World Cup - Qualification Asia,0.65,1.016,0.54509,False,True
+2025-06-05,1749139200,Algeria,rwanda,2,0,Friendlies,0.3,1.016,0.25158,True,False
+2025-06-05,1749139200,oman,Jordan,0,3,World Cup - Qualification Asia,0.65,1.016,0.54509,False,True
+2025-06-05,1749139200,united arab emirates,Uzbekistan,0,0,World Cup - Qualification Asia,0.65,1.016,0.54509,False,True
+2025-06-05,1749146400,DR Congo,mali,1,0,Friendlies,0.3,1.016,0.25158,True,False
+2025-06-05,1749147300,Iraq,South Korea,0,2,World Cup - Qualification Asia,0.65,1.016,0.54509,True,True
+2025-06-05,1749147300,Qatar,Iran,1,0,World Cup - Qualification Asia,0.65,1.016,0.54509,True,True
+2025-06-05,1749150000,Spain,France,5,4,UEFA Nations League,0.55,1.016,0.46123,True,True
+2025-06-05,1749164400,Ecuador,Brazil,0,0,World Cup - Qualification South America,0.65,1.016,0.54509,True,True
+2025-06-05,1749164400,Paraguay,Uruguay,2,0,World Cup - Qualification South America,0.65,1.016,0.54509,True,True
+2025-06-06,1749171600,chile,Argentina,0,1,World Cup - Qualification South America,0.65,1.013,0.54535,False,True
+2025-06-06,1749231000,hungary,Sweden,0,2,Friendlies,0.3,1.013,0.2517,False,True
+2025-06-06,1749231000,South Africa,tanzania,0,0,Friendlies,0.3,1.013,0.2517,True,False
+2025-06-06,1749235500,fyr macedonia,Belgium,1,1,World Cup - Qualification Europe,0.65,1.013,0.54535,False,True
+2025-06-06,1749235500,gibraltar,Croatia,0,7,World Cup - Qualification Europe,0.65,1.013,0.54535,False,True
+2025-06-06,1749235500,Czech Republic,montenegro,2,0,World Cup - Qualification Europe,0.65,1.013,0.54535,True,False
+2025-06-06,1749235500,Norway,italy,3,0,World Cup - Qualification Europe,0.65,1.013,0.54535,True,False
+2025-06-06,1749235500,Scotland,iceland,1,3,Friendlies,0.3,1.013,0.2517,True,False
+2025-06-06,1749240000,Morocco,Tunisia,2,0,Friendlies,0.3,1.013,0.2517,True,True
+2025-06-06,1749241800,Colombia,peru,0,0,World Cup - Qualification South America,0.65,1.013,0.54535,True,False
+2025-06-06,1749252600,Curaçao,st lucia,4,0,World Cup - Qualification CONCACAF,0.65,1.013,0.54535,True,False
+2025-06-07,1749301200,Bosnia and Herzegovina,san marino,1,0,World Cup - Qualification Europe,0.65,1.01,0.54561,True,False
+2025-06-07,1749301200,South Africa,zimbabwe,2,0,COSAFA Cup,0.45,1.01,0.37773,True,False
+2025-06-07,1749312000,andorra,England,0,1,World Cup - Qualification Europe,0.65,1.01,0.54561,False,True
+2025-06-07,1749321900,Austria,romania,2,1,World Cup - Qualification Europe,0.65,1.01,0.54561,True,False
+2025-06-07,1749321900,finland,Netherlands,0,2,World Cup - Qualification Europe,0.65,1.01,0.54561,False,True
+2025-06-07,1749324600,United States,Turkey,1,2,Friendlies,0.3,1.01,0.25182,True,True
+2025-06-07,1749324600,Canada,ukraine,4,2,Friendlies,0.3,1.01,0.25182,True,False
+2025-06-07,1749326400,Mexico,Switzerland,2,4,Friendlies,0.3,1.01,0.25182,True,True
+2025-06-07,1749330000,aruba,Haiti,0,5,World Cup - Qualification CONCACAF,0.65,1.01,0.54561,False,True
+2025-06-07,1749338100,Ivory Coast,New Zealand,0,1,Friendlies,0.3,1.01,0.25182,True,True
+2025-06-08,1749344400,belize,Panama,0,2,World Cup - Qualification CONCACAF,0.65,1.008,0.54587,False,True
+2025-06-08,1749387600,Germany,France,0,2,UEFA Nations League,0.55,1.008,0.46189,True,True
+2025-06-08,1749391200,DR Congo,madagascar,3,1,Friendlies,0.3,1.008,0.25194,True,False
+2025-06-08,1749398400,georgia,Cape Verde,1,1,Friendlies,0.3,1.008,0.25194,False,True
+2025-06-09,1749484800,liechtenstein,Scotland,0,4,Friendlies,0.3,1.005,0.25206,False,True
+2025-06-09,1749494700,Croatia,Czech Republic,5,1,World Cup - Qualification Europe,0.65,1.005,0.54613,True,True
+2025-06-09,1749494700,estonia,Norway,0,1,World Cup - Qualification Europe,0.65,1.005,0.54613,False,True
+2025-06-09,1749494700,Belgium,wales,4,3,World Cup - Qualification Europe,0.65,1.005,0.54613,True,False
+2025-06-10,1749551700,Japan,indonesia,6,0,World Cup - Qualification Asia,0.65,1.002,0.54639,True,False
+2025-06-10,1749553200,South Korea,kuwait,4,0,World Cup - Qualification Asia,0.65,1.002,0.54639,True,False
+2025-06-10,1749560400,South Africa,mauritius,0,0,COSAFA Cup,0.45,1.002,0.37827,True,False
+2025-06-10,1749563100,Uzbekistan,Qatar,3,0,World Cup - Qualification Asia,0.65,1.002,0.54639,True,True
+2025-06-10,1749571200,Iran,north korea,3,0,World Cup - Qualification Asia,0.65,1.002,0.54639,True,False
+2025-06-10,1749571200,slovenia,Bosnia and Herzegovina,2,1,Friendlies,0.3,1.002,0.25218,False,True
+2025-06-10,1749574800,Sweden,Algeria,4,3,Friendlies,0.3,1.002,0.25218,True,True
+2025-06-10,1749576600,South Africa,mozambique,2,0,Friendlies,0.3,1.002,0.25218,True,False
+2025-06-10,1749579300,Saudi Arabia,Australia,1,2,World Cup - Qualification Asia,0.65,1.002,0.54639,True,True
+2025-06-10,1749579300,Jordan,Iraq,0,1,World Cup - Qualification Asia,0.65,1.002,0.54639,True,True
+2025-06-10,1749581100,Netherlands,malta,8,0,World Cup - Qualification Europe,0.65,1.002,0.54639,True,False
+2025-06-10,1749581100,san marino,Austria,0,4,World Cup - Qualification Europe,0.65,1.002,0.54639,False,True
+2025-06-10,1749581100,England,Senegal,1,3,Friendlies,0.3,1.002,0.25218,True,True
+2025-06-10,1749589200,New Zealand,ukraine,1,2,Friendlies,0.3,1.002,0.25218,True,False
+2025-06-10,1749592800,Haiti,Curaçao,1,5,World Cup - Qualification CONCACAF,0.65,1.002,0.54639,True,True
+2025-06-10,1749596400,Uruguay,venezuela,2,0,World Cup - Qualification South America,0.65,1.002,0.54639,True,False
+2025-06-11,1749600000,Argentina,Colombia,1,1,World Cup - Qualification South America,0.65,0.999,0.54665,True,True
+2025-06-11,1749600000,Panama,nicaragua,3,0,World Cup - Qualification CONCACAF,0.65,0.999,0.54665,True,False
+2025-06-11,1749600000,United States,Switzerland,0,4,Friendlies,0.3,0.999,0.2523,True,True
+2025-06-11,1749602700,Brazil,Paraguay,1,0,World Cup - Qualification South America,0.65,0.999,0.54665,True,True
+2025-06-11,1749603600,Mexico,Turkey,1,0,Friendlies,0.3,0.999,0.2523,True,True
+2025-06-11,1749605400,peru,Ecuador,0,0,World Cup - Qualification South America,0.65,0.999,0.54665,False,True
+2025-06-13,1749830400,South Africa,comoros,3,1,COSAFA Cup,0.45,0.994,0.37881,True,False
+2025-06-15,1749953700,Mexico,dominican republic,3,2,CONCACAF Gold Cup,0.65,0.988,0.54769,True,False
+2025-06-15,1749992400,angola,South Africa,3,0,COSAFA Cup,0.45,0.988,0.37917,False,True
+2025-06-15,1750024800,United States,trinidad and tobago,5,0,CONCACAF Gold Cup,0.65,0.988,0.54769,True,False
+2025-06-16,1750032900,Haiti,Saudi Arabia,0,1,CONCACAF Gold Cup,0.65,0.986,0.54795,True,True
+2025-06-16,1750114800,Panama,guadeloupe,5,2,CONCACAF Gold Cup,0.65,0.986,0.54795,True,False
+2025-06-18,1750205700,Curaçao,el salvador,0,0,CONCACAF Gold Cup,0.65,0.98,0.54847,True,False
+2025-06-18,1750213800,Canada,honduras,6,0,CONCACAF Gold Cup,0.65,0.98,0.54847,True,False
+2025-06-19,1750298400,suriname,Mexico,0,2,CONCACAF Gold Cup,0.65,0.977,0.54873,False,True
+2025-06-19,1750373100,trinidad and tobago,Haiti,1,1,CONCACAF Gold Cup,0.65,0.977,0.54873,False,True
+2025-06-20,1750382100,Saudi Arabia,United States,0,1,CONCACAF Gold Cup,0.65,0.975,0.54899,True,True
+2025-06-21,1750471200,guatemala,Panama,0,1,CONCACAF Gold Cup,0.65,0.972,0.54925,False,True
+2025-06-21,1750546800,Curaçao,Canada,1,1,CONCACAF Gold Cup,0.65,0.972,0.54925,True,True
+2025-06-22,1750633200,Saudi Arabia,trinidad and tobago,1,1,CONCACAF Gold Cup,0.65,0.969,0.54951,True,False
+2025-06-22,1750633200,United States,Haiti,2,1,CONCACAF Gold Cup,0.65,0.969,0.54951,True,True
+2025-06-23,1750644000,Mexico,costa rica,0,0,CONCACAF Gold Cup,0.65,0.966,0.54977,True,False
+2025-06-24,1750806000,Panama,jamaica,4,1,CONCACAF Gold Cup,0.65,0.964,0.55003,True,False
+2025-06-25,1750816800,Canada,el salvador,2,0,CONCACAF Gold Cup,0.65,0.961,0.55029,True,False
+2025-06-25,1750816800,honduras,Curaçao,2,1,CONCACAF Gold Cup,0.65,0.961,0.55029,False,True
+2025-06-29,1751163300,Mexico,Saudi Arabia,2,0,CONCACAF Gold Cup,0.65,0.95,0.55134,True,True
+2025-07-02,1751497200,United States,guatemala,2,1,CONCACAF Gold Cup,0.65,0.942,0.55212,True,False
+2025-07-03,1751508000,Mexico,honduras,1,0,CONCACAF Gold Cup,0.65,0.939,0.55238,True,False
+2025-07-06,1751842800,United States,Mexico,1,2,CONCACAF Gold Cup,0.65,0.931,0.55317,True,True
+2025-07-07,1751886000,South Korea,china,3,0,EAFF E-1 Football Championship,0.45,0.928,0.38315,True,False
+2025-07-08,1751970240,Japan,hong kong,6,1,EAFF E-1 Football Championship,0.45,0.925,0.38333,True,False
+2025-07-11,1752231600,hong kong,South Korea,0,2,EAFF E-1 Football Championship,0.45,0.917,0.38387,False,True
+2025-07-12,1752315840,Japan,china,2,0,EAFF E-1 Football Championship,0.45,0.914,0.38406,True,False
+2025-07-15,1752575040,South Korea,Japan,0,1,EAFF E-1 Football Championship,0.45,0.906,0.3846,True,True
+2025-07-24,1753358400,uganda,Senegal,2,1,Friendlies,0.3,0.882,0.2575,False,True
+2025-07-24,1753358400,Senegal,uganda,1,2,Friendlies,0.3,0.882,0.2575,True,False
+2025-07-27,1753617600,tanzania,Senegal,2,1,Friendlies,0.3,0.873,0.25787,False,True
+2025-08-03,1754222400,kenya,DR Congo,1,0,African Nations Championship,0.45,0.854,0.38808,False,True
+2025-08-04,1754326800,uganda,Algeria,0,3,African Nations Championship,0.45,0.851,0.38827,False,True
+2025-08-05,1754413200,Senegal,nigeria,1,0,African Nations Championship,0.45,0.849,0.38845,True,False
+2025-08-07,1754571600,DR Congo,zambia,2,0,African Nations Championship,0.45,0.843,0.38882,True,False
+2025-08-08,1754661600,Algeria,South Africa,1,1,African Nations Championship,0.45,0.841,0.38901,True,True
+2025-08-11,1754920800,South Africa,guinea,2,1,African Nations Championship,0.45,0.832,0.38956,True,False
+2025-08-12,1755007200,Senegal,congo,1,1,African Nations Championship,0.45,0.83,0.38975,True,False
+2025-08-14,1755190800,angola,DR Congo,0,2,African Nations Championship,0.45,0.824,0.39012,False,True
+2025-08-15,1755266400,guinea,Algeria,1,1,African Nations Championship,0.45,0.821,0.3903,False,True
+2025-08-15,1755277200,niger,South Africa,0,0,African Nations Championship,0.45,0.821,0.3903,False,True
+2025-08-17,1755432000,DR Congo,Morocco,1,3,African Nations Championship,0.45,0.816,0.39067,True,True
+2025-08-18,1755536400,South Africa,uganda,3,3,African Nations Championship,0.45,0.813,0.39086,True,False
+2025-08-18,1755536400,Algeria,niger,0,0,African Nations Championship,0.45,0.813,0.39086,True,False
+2025-08-19,1755622800,sudan,Senegal,0,0,African Nations Championship,0.45,0.81,0.39104,False,True
+2025-08-23,1755957600,uganda,Senegal,0,1,African Nations Championship,0.45,0.799,0.39178,False,True
+2025-08-24,1756049400,Qatar,lebanon,0,1,Friendlies,0.3,0.797,0.26131,True,False
+2025-08-29,1756468800,Iran,afghanistan,3,1,CAFA Nations Cup,0.45,0.783,0.3929,True,False
+2025-08-30,1756564200,Uzbekistan,oman,1,1,CAFA Nations Cup,0.45,0.78,0.39309,True,False
+2025-08-30,1756566000,madagascar,Morocco,2,3,African Nations Championship,0.45,0.78,0.39309,False,True
+2025-09-01,1756728000,india,Iran,0,3,CAFA Nations Cup,0.45,0.775,0.39346,False,True
+2025-09-02,1756823400,turkmenistan,Uzbekistan,1,2,CAFA Nations Cup,0.45,0.772,0.39365,False,True
+2025-09-03,1756912500,Qatar,bahrain,2,2,Friendlies,0.3,0.769,0.26256,True,False
+2025-09-04,1756976400,Iraq,hong kong,2,1,King's Cup,0.45,0.767,0.39402,True,False
+2025-09-04,1756990800,chad,Ghana,1,1,World Cup - Qualification Africa,0.65,0.767,0.56914,False,True
+2025-09-04,1756998000,Saudi Arabia,fyr macedonia,2,1,Friendlies,0.3,0.767,0.26268,True,False
+2025-09-04,1756999800,tajikistan,Iran,2,2,CAFA Nations Cup,0.45,0.767,0.39402,False,True
+2025-09-04,1757001600,georgia,Turkey,2,3,World Cup - Qualification Europe,0.65,0.767,0.56914,False,True
+2025-09-04,1757001600,Norway,finland,1,0,Friendlies,0.3,0.767,0.26268,True,False
+2025-09-04,1757001600,mauritius,Cape Verde,0,2,World Cup - Qualification Africa,0.65,0.767,0.56914,False,True
+2025-09-04,1757005200,russia,Jordan,0,0,Friendlies,0.3,0.767,0.26268,False,True
+2025-09-04,1757011500,Netherlands,poland,1,1,World Cup - Qualification Europe,0.65,0.767,0.56914,True,False
+2025-09-04,1757011500,slovakia,Germany,2,0,World Cup - Qualification Europe,0.65,0.767,0.56914,False,True
+2025-09-04,1757011500,liechtenstein,Belgium,0,6,World Cup - Qualification Europe,0.65,0.767,0.56914,False,True
+2025-09-04,1757011500,bulgaria,Spain,0,3,World Cup - Qualification Europe,0.65,0.767,0.56914,False,True
+2025-09-04,1757012400,Tunisia,liberia,3,0,World Cup - Qualification Africa,0.65,0.767,0.56914,True,False
+2025-09-04,1757012400,Algeria,botswana,3,1,World Cup - Qualification Africa,0.65,0.767,0.56914,True,False
+2025-09-04,1757021400,suriname,Panama,0,0,World Cup - Qualification CONCACAF,0.65,0.767,0.56914,False,True
+2025-09-04,1757028600,Uruguay,peru,3,0,World Cup - Qualification South America,0.65,0.767,0.56914,True,False
+2025-09-04,1757028600,Colombia,bolivia,3,0,World Cup - Qualification South America,0.65,0.767,0.56914,True,False
+2025-09-04,1757028600,Argentina,venezuela,3,0,World Cup - Qualification South America,0.65,0.767,0.56914,True,False
+2025-09-04,1757028600,Paraguay,Ecuador,0,0,World Cup - Qualification South America,0.65,0.767,0.56914,True,True
+2025-09-05,1757032200,Brazil,chile,3,0,World Cup - Qualification South America,0.65,0.764,0.56941,True,False
+2025-09-05,1757065500,Australia,New Zealand,1,0,Friendlies,0.3,0.764,0.26281,True,True
+2025-09-05,1757077200,south sudan,DR Congo,1,4,World Cup - Qualification Africa,0.65,0.764,0.56941,False,True
+2025-09-05,1757082600,Uzbekistan,kyrgyzstan,4,0,CAFA Nations Cup,0.45,0.764,0.39421,True,False
+2025-09-05,1757088000,lesotho,South Africa,0,3,World Cup - Qualification Africa,0.65,0.764,0.56941,False,True
+2025-09-05,1757095200,romania,Canada,0,3,Friendlies,0.3,0.764,0.26281,False,True
+2025-09-05,1757097900,ukraine,France,0,2,World Cup - Qualification Europe,0.65,0.764,0.56941,False,True
+2025-09-05,1757097900,faroe islands,Croatia,0,1,World Cup - Qualification Europe,0.65,0.764,0.56941,False,True
+2025-09-05,1757097900,slovenia,Sweden,2,2,World Cup - Qualification Europe,0.65,0.764,0.56941,False,True
+2025-09-05,1757097900,Switzerland,kosovo,4,0,World Cup - Qualification Europe,0.65,0.764,0.56941,True,False
+2025-09-05,1757097900,montenegro,Czech Republic,0,2,World Cup - Qualification Europe,0.65,0.764,0.56941,False,True
+2025-09-05,1757097900,denmark,Scotland,0,0,World Cup - Qualification Europe,0.65,0.764,0.56941,False,True
+2025-09-05,1757098800,Senegal,sudan,2,0,World Cup - Qualification Africa,0.65,0.764,0.56941,True,False
+2025-09-05,1757098800,Morocco,niger,5,0,World Cup - Qualification Africa,0.65,0.764,0.56941,True,False
+2025-09-05,1757098800,Egypt,ethiopia,2,0,World Cup - Qualification Africa,0.65,0.764,0.56941,True,False
+2025-09-05,1757098800,Ivory Coast,burundi,1,0,World Cup - Qualification Africa,0.65,0.764,0.56941,True,False
+2025-09-06,1757116800,Haiti,honduras,0,0,World Cup - Qualification CONCACAF,0.65,0.761,0.56968,True,False
+2025-09-06,1757116800,trinidad and tobago,Curaçao,0,0,World Cup - Qualification CONCACAF,0.65,0.761,0.56968,False,True
+2025-09-06,1757174400,England,andorra,2,0,World Cup - Qualification Europe,0.65,0.761,0.56968,True,False
+2025-09-06,1757174400,armenia,Portugal,0,5,World Cup - Qualification Europe,0.65,0.761,0.56968,False,True
+2025-09-06,1757178000,Egypt,Tunisia,1,0,Friendlies,0.3,0.761,0.26293,True,True
+2025-09-06,1757184300,Austria,cyprus,1,0,World Cup - Qualification Europe,0.65,0.761,0.56968,True,False
+2025-09-06,1757184300,san marino,Bosnia and Herzegovina,0,6,World Cup - Qualification Europe,0.65,0.761,0.56968,False,True
+2025-09-06,1757192400,United States,South Korea,0,2,Friendlies,0.3,0.761,0.26293,True,True
+2025-09-07,1757210400,Mexico,Japan,0,0,Friendlies,0.3,0.758,0.26306,True,True
+2025-09-07,1757250000,thailand,Iraq,0,1,King's Cup,0.45,0.758,0.39458,False,True
+2025-09-07,1757258100,Qatar,russia,1,4,Friendlies,0.3,0.758,0.26306,True,False
+2025-09-07,1757260800,lithuania,Netherlands,2,3,World Cup - Qualification Europe,0.65,0.758,0.56995,False,True
+2025-09-07,1757270700,Belgium,kazakhstan,6,0,World Cup - Qualification Europe,0.65,0.758,0.56995,True,False
+2025-09-07,1757270700,Turkey,Spain,0,6,World Cup - Qualification Europe,0.65,0.758,0.56995,True,True
+2025-09-07,1757270700,Germany,northern ireland,3,1,World Cup - Qualification Europe,0.65,0.758,0.56995,True,False
+2025-09-08,1757336400,equatorial guinea,Tunisia,0,1,World Cup - Qualification Africa,0.65,0.756,0.57022,False,True
+2025-09-08,1757336400,zambia,Morocco,0,2,World Cup - Qualification Africa,0.65,0.756,0.57022,False,True
+2025-09-08,1757347200,guinea,Algeria,0,0,World Cup - Qualification Africa,0.65,0.756,0.57022,False,True
+2025-09-08,1757351700,Czech Republic,Saudi Arabia,1,1,Friendlies,0.3,0.756,0.26318,True,True
+2025-09-08,1757357100,Croatia,montenegro,4,0,World Cup - Qualification Europe,0.65,0.756,0.57022,True,False
+2025-09-08,1757357100,kosovo,Sweden,2,0,World Cup - Qualification Europe,0.65,0.756,0.57022,False,True
+2025-09-08,1757357100,Switzerland,slovenia,3,0,World Cup - Qualification Europe,0.65,0.756,0.57022,True,False
+2025-09-08,1757357100,belarus,Scotland,0,2,World Cup - Qualification Europe,0.65,0.756,0.57022,False,True
+2025-09-08,1757358000,Ghana,mali,1,0,World Cup - Qualification Africa,0.65,0.756,0.57022,True,False
+2025-09-09,1757381400,Panama,guatemala,1,1,World Cup - Qualification CONCACAF,0.65,0.753,0.57049,True,False
+2025-09-09,1757401200,New Zealand,Australia,1,3,Friendlies,0.3,0.753,0.26331,True,True
+2025-09-09,1757433600,DR Congo,Senegal,2,3,World Cup - Qualification Africa,0.65,0.753,0.57049,True,True
+2025-09-09,1757433600,burkina faso,Egypt,0,0,World Cup - Qualification Africa,0.65,0.753,0.57049,False,True
+2025-09-09,1757433600,South Africa,nigeria,1,1,World Cup - Qualification Africa,0.65,0.753,0.57049,True,False
+2025-09-09,1757433600,Cape Verde,cameroon,1,0,World Cup - Qualification Africa,0.65,0.753,0.57049,True,False
+2025-09-09,1757437200,Jordan,dominican republic,3,0,Friendlies,0.3,0.753,0.26331,True,False
+2025-09-09,1757443500,serbia,England,0,5,World Cup - Qualification Europe,0.65,0.753,0.57049,False,True
+2025-09-09,1757443500,wales,Canada,0,1,Friendlies,0.3,0.753,0.26331,False,True
+2025-09-09,1757443500,Norway,moldova,11,1,World Cup - Qualification Europe,0.65,0.753,0.57049,True,False
+2025-09-09,1757443500,France,iceland,2,1,World Cup - Qualification Europe,0.65,0.753,0.57049,True,False
+2025-09-09,1757443500,hungary,Portugal,2,3,World Cup - Qualification Europe,0.65,0.753,0.57049,False,True
+2025-09-09,1757443500,Bosnia and Herzegovina,Austria,1,2,World Cup - Qualification Europe,0.65,0.753,0.57049,True,True
+2025-09-09,1757444400,Egypt,Tunisia,3,0,Friendlies,0.3,0.753,0.26331,True,True
+2025-09-09,1757444400,gabon,Ivory Coast,0,0,World Cup - Qualification Africa,0.65,0.753,0.57049,False,True
+2025-09-09,1757458800,Ecuador,Argentina,1,0,World Cup - Qualification South America,0.65,0.753,0.57049,True,True
+2025-09-09,1757460600,bolivia,Brazil,1,0,World Cup - Qualification South America,0.65,0.753,0.57049,False,True
+2025-09-09,1757460600,chile,Uruguay,0,0,World Cup - Qualification South America,0.65,0.753,0.57049,False,True
+2025-09-09,1757460600,venezuela,Colombia,3,6,World Cup - Qualification South America,0.65,0.753,0.57049,False,True
+2025-09-09,1757460600,United States,Japan,2,0,Friendlies,0.3,0.753,0.26331,True,True
+2025-09-09,1757460600,peru,Paraguay,0,1,World Cup - Qualification South America,0.65,0.753,0.57049,False,True
+2025-09-10,1757462400,Curaçao,bermuda,3,2,World Cup - Qualification CONCACAF,0.65,0.75,0.57077,True,False
+2025-09-10,1757467800,Mexico,South Korea,2,2,Friendlies,0.3,0.75,0.26343,True,True
+2025-09-10,1757469600,costa rica,Haiti,3,3,World Cup - Qualification CONCACAF,0.65,0.75,0.57077,False,True
+2025-10-08,1759928400,libya,Cape Verde,3,3,World Cup - Qualification Africa,0.65,0.674,0.5784,False,True
+2025-10-08,1759935600,oman,Qatar,0,0,World Cup - Qualification Asia,0.65,0.674,0.5784,False,True
+2025-10-08,1759939200,djibouti,Egypt,0,3,World Cup - Qualification Africa,0.65,0.674,0.5784,False,True
+2025-10-08,1759939200,central african republic,Ghana,0,5,World Cup - Qualification Africa,0.65,0.674,0.5784,False,True
+2025-10-08,1759943700,indonesia,Saudi Arabia,2,3,World Cup - Qualification Asia,0.65,0.674,0.5784,False,True
+2025-10-09,1760014800,Uzbekistan,kuwait,2,0,Friendlies,0.3,0.671,0.26708,True,False
+2025-10-09,1760025600,somalia,Algeria,0,3,World Cup - Qualification Africa,0.65,0.671,0.57867,False,True
+2025-10-09,1760035500,malta,Netherlands,0,4,World Cup - Qualification Europe,0.65,0.671,0.57867,False,True
+2025-10-09,1760035500,cyprus,Bosnia and Herzegovina,2,2,World Cup - Qualification Europe,0.65,0.671,0.57867,False,True
+2025-10-09,1760035500,Scotland,greece,3,1,World Cup - Qualification Europe,0.65,0.671,0.57867,True,False
+2025-10-09,1760035500,poland,New Zealand,1,0,Friendlies,0.3,0.671,0.26708,False,True
+2025-10-09,1760035500,England,wales,3,0,Friendlies,0.3,0.671,0.26708,True,False
+2025-10-09,1760035500,Czech Republic,Croatia,0,0,World Cup - Qualification Europe,0.65,0.671,0.57867,True,True
+2025-10-09,1760035500,Austria,san marino,10,0,World Cup - Qualification Europe,0.65,0.671,0.57867,True,False
+2025-10-09,1760036400,Morocco,bahrain,1,0,Friendlies,0.3,0.671,0.26708,True,False
+2025-10-10,1760054400,nicaragua,Haiti,0,3,World Cup - Qualification CONCACAF,0.65,0.668,0.57895,False,True
+2025-10-10,1760091600,Japan,Paraguay,2,2,Friendlies,0.3,0.668,0.26721,True,True
+2025-10-10,1760094000,South Korea,Brazil,0,5,Friendlies,0.3,0.668,0.26721,True,True
+2025-10-10,1760100300,Uruguay,dominican republic,1,0,Friendlies,0.3,0.668,0.26721,True,False
+2025-10-10,1760101200,south sudan,Senegal,0,5,World Cup - Qualification Africa,0.65,0.668,0.57895,False,True
+2025-10-10,1760101200,seychelles,Ivory Coast,0,7,World Cup - Qualification Africa,0.65,0.668,0.57895,False,True
+2025-10-10,1760101200,togo,DR Congo,0,1,World Cup - Qualification Africa,0.65,0.668,0.57895,False,True
+2025-10-10,1760112000,sao tome and principe,Tunisia,0,6,World Cup - Qualification Africa,0.65,0.668,0.57895,False,True
+2025-10-10,1760112000,zimbabwe,South Africa,0,0,World Cup - Qualification Africa,0.65,0.668,0.57895,False,True
+2025-10-10,1760112000,bolivia,Jordan,1,0,Friendlies,0.3,0.668,0.26721,False,True
+2025-10-10,1760115600,russia,Iran,2,1,Friendlies,0.3,0.668,0.26721,False,True
+2025-10-10,1760121900,Belgium,fyr macedonia,0,0,World Cup - Qualification Europe,0.65,0.668,0.57895,True,False
+2025-10-10,1760121900,France,azerbaijan,3,0,World Cup - Qualification Europe,0.65,0.668,0.57895,True,False
+2025-10-10,1760121900,Sweden,Switzerland,0,2,World Cup - Qualification Europe,0.65,0.668,0.57895,True,True
+2025-10-10,1760121900,Germany,luxembourg,4,0,World Cup - Qualification Europe,0.65,0.668,0.57895,True,False
+2025-10-10,1760137200,Curaçao,jamaica,2,0,World Cup - Qualification CONCACAF,0.65,0.668,0.57895,True,False
+2025-10-10,1760139000,Canada,Australia,0,1,Friendlies,0.3,0.668,0.26721,True,True
+2025-10-11,1760140800,Argentina,venezuela,1,0,Friendlies,0.3,0.665,0.26733,True,False
+2025-10-11,1760142600,United States,Ecuador,1,1,Friendlies,0.3,0.665,0.26733,True,True
+2025-10-11,1760144400,el salvador,Panama,0,1,World Cup - Qualification CONCACAF,0.65,0.665,0.57922,False,True
+2025-10-11,1760198400,Norway,israel,5,0,World Cup - Qualification Europe,0.65,0.665,0.57922,True,False
+2025-10-11,1760208300,Spain,georgia,2,0,World Cup - Qualification Europe,0.65,0.665,0.57922,True,False
+2025-10-11,1760208300,Portugal,rep of ireland,1,0,World Cup - Qualification Europe,0.65,0.665,0.57922,True,False
+2025-10-11,1760208300,bulgaria,Turkey,1,6,World Cup - Qualification Europe,0.65,0.665,0.57922,False,True
+2025-10-11,1760211000,Iraq,indonesia,1,0,World Cup - Qualification Asia,0.65,0.665,0.57922,True,False
+2025-10-12,1760230800,Mexico,Colombia,0,4,Friendlies,0.3,0.663,0.26746,True,True
+2025-10-12,1760284800,Scotland,belarus,2,1,World Cup - Qualification Europe,0.65,0.663,0.5795,True,False
+2025-10-12,1760284800,Netherlands,finland,4,0,World Cup - Qualification Europe,0.65,0.663,0.5795,True,False
+2025-10-12,1760284800,faroe islands,Czech Republic,2,1,World Cup - Qualification Europe,0.65,0.663,0.5795,False,True
+2025-10-12,1760288400,malta,Bosnia and Herzegovina,1,4,Friendlies,0.3,0.663,0.26746,False,True
+2025-10-12,1760294700,Croatia,gibraltar,3,0,World Cup - Qualification Europe,0.65,0.663,0.5795,True,False
+2025-10-12,1760294700,romania,Austria,1,0,World Cup - Qualification Europe,0.65,0.663,0.5795,False,True
+2025-10-12,1760295600,Egypt,guinea bissau,1,0,World Cup - Qualification Africa,0.65,0.663,0.5795,True,False
+2025-10-12,1760295600,Ghana,comoros,1,0,World Cup - Qualification Africa,0.65,0.663,0.5795,True,False
+2025-10-13,1760359500,Uzbekistan,Uruguay,1,2,Friendlies,0.3,0.66,0.26759,True,True
+2025-10-13,1760360400,Tunisia,namibia,3,0,World Cup - Qualification Africa,0.65,0.66,0.57977,True,False
+2025-10-13,1760371200,Cape Verde,eswatini,3,0,World Cup - Qualification Africa,0.65,0.66,0.57977,True,False
+2025-10-13,1760381100,wales,Belgium,2,4,World Cup - Qualification Europe,0.65,0.66,0.57977,False,True
+2025-10-13,1760381100,iceland,France,2,2,World Cup - Qualification Europe,0.65,0.66,0.57977,False,True
+2025-10-13,1760381100,Sweden,kosovo,0,1,World Cup - Qualification Europe,0.65,0.66,0.57977,True,False
+2025-10-13,1760381100,slovenia,Switzerland,0,0,World Cup - Qualification Europe,0.65,0.66,0.57977,False,True
+2025-10-13,1760381100,northern ireland,Germany,0,1,World Cup - Qualification Europe,0.65,0.66,0.57977,False,True
+2025-10-14,1760400000,honduras,Haiti,3,0,World Cup - Qualification CONCACAF,0.65,0.657,0.58005,False,True
+2025-10-14,1760437800,Japan,Brazil,3,2,Friendlies,0.3,0.657,0.26771,True,True
+2025-10-14,1760439600,South Korea,Paraguay,2,0,Friendlies,0.3,0.657,0.26771,True,True
+2025-10-14,1760454000,Iran,tanzania,2,0,Friendlies,0.3,0.657,0.26771,True,False
+2025-10-14,1760457600,Norway,New Zealand,1,1,Friendlies,0.3,0.657,0.26771,True,True
+2025-10-14,1760457600,South Africa,rwanda,3,0,World Cup - Qualification Africa,0.65,0.657,0.58005,True,False
+2025-10-14,1760457600,Algeria,uganda,2,1,World Cup - Qualification Africa,0.65,0.657,0.58005,True,False
+2025-10-14,1760461200,albania,Jordan,4,2,Friendlies,0.3,0.657,0.26771,False,True
+2025-10-14,1760461200,Qatar,united arab emirates,2,1,World Cup - Qualification Asia,0.65,0.657,0.58005,True,False
+2025-10-14,1760467500,Spain,bulgaria,4,0,World Cup - Qualification Europe,0.65,0.657,0.58005,True,False
+2025-10-14,1760467500,latvia,England,0,5,World Cup - Qualification Europe,0.65,0.657,0.58005,False,True
+2025-10-14,1760467500,Saudi Arabia,Iraq,0,0,World Cup - Qualification Asia,0.65,0.657,0.58005,True,True
+2025-10-14,1760467500,Portugal,hungary,2,2,World Cup - Qualification Europe,0.65,0.657,0.58005,True,False
+2025-10-14,1760467500,Turkey,georgia,4,1,World Cup - Qualification Europe,0.65,0.657,0.58005,True,False
+2025-10-14,1760468400,DR Congo,sudan,1,0,World Cup - Qualification Africa,0.65,0.657,0.58005,True,False
+2025-10-14,1760468400,Ivory Coast,kenya,3,0,World Cup - Qualification Africa,0.65,0.657,0.58005,True,False
+2025-10-14,1760468400,Senegal,mauritania,4,0,World Cup - Qualification Africa,0.65,0.657,0.58005,True,False
+2025-10-14,1760468400,Morocco,congo,1,0,World Cup - Qualification Africa,0.65,0.657,0.58005,True,False
+2025-10-14,1760482800,Curaçao,trinidad and tobago,1,1,World Cup - Qualification CONCACAF,0.65,0.657,0.58005,True,False
+2025-10-15,1760486400,puerto rico,Argentina,0,6,Friendlies,0.3,0.654,0.26784,False,True
+2025-10-15,1760488200,Canada,Colombia,0,0,Friendlies,0.3,0.654,0.26784,True,True
+2025-10-15,1760490000,Panama,suriname,1,1,World Cup - Qualification CONCACAF,0.65,0.654,0.58032,True,False
+2025-10-15,1760490000,United States,Australia,2,1,Friendlies,0.3,0.654,0.26784,True,True
+2025-10-15,1760495400,Mexico,Ecuador,1,1,Friendlies,0.3,0.654,0.26784,True,True
+2025-11-12,1762965900,Tunisia,mauritania,1,1,Friendlies,0.3,0.578,0.27142,True,False
+2025-11-13,1763049600,united arab emirates,Iraq,1,1,World Cup - Qualification Asia,0.65,0.575,0.58836,False,True
+2025-11-13,1763051400,Algeria,zimbabwe,3,1,Friendlies,0.3,0.575,0.27155,True,False
+2025-11-13,1763053200,Norway,estonia,4,1,World Cup - Qualification Europe,0.65,0.575,0.58836,True,False
+2025-11-13,1763053200,Czech Republic,san marino,1,0,Friendlies,0.3,0.575,0.27155,True,False
+2025-11-13,1763060400,cameroon,DR Congo,0,1,World Cup - Qualification Africa,0.65,0.575,0.58836,False,True
+2025-11-13,1763063100,France,ukraine,4,0,World Cup - Qualification Europe,0.65,0.575,0.58836,True,False
+2025-11-13,1763063100,England,serbia,2,0,World Cup - Qualification Europe,0.65,0.575,0.58836,True,False
+2025-11-13,1763063100,rep of ireland,Portugal,2,0,World Cup - Qualification Europe,0.65,0.575,0.58836,False,True
+2025-11-14,1763078400,bermuda,Curaçao,0,7,World Cup - Qualification CONCACAF,0.65,0.572,0.58864,False,True
+2025-11-14,1763080200,Canada,Ecuador,0,0,Friendlies,0.3,0.572,0.27168,True,True
+2025-11-14,1763085600,guatemala,Panama,2,3,World Cup - Qualification CONCACAF,0.65,0.572,0.58864,False,True
+2025-11-14,1763085600,Haiti,costa rica,1,0,World Cup - Qualification CONCACAF,0.65,0.572,0.58864,True,False
+2025-11-14,1763115600,Japan,Ghana,2,0,Friendlies,0.3,0.572,0.27168,True,True
+2025-11-14,1763118000,South Korea,bolivia,2,0,Friendlies,0.3,0.572,0.27168,True,False
+2025-11-14,1763136000,angola,Argentina,0,2,Friendlies,0.3,0.572,0.27168,False,True
+2025-11-14,1763136000,Uzbekistan,Egypt,2,0,Friendlies,0.3,0.572,0.27168,True,True
+2025-11-14,1763137800,Saudi Arabia,Ivory Coast,1,0,Friendlies,0.3,0.572,0.27168,True,True
+2025-11-14,1763138700,Tunisia,Jordan,3,2,Friendlies,0.3,0.572,0.27168,True,True
+2025-11-14,1763146800,Morocco,mozambique,1,0,Friendlies,0.3,0.572,0.27168,True,False
+2025-11-14,1763149500,Croatia,faroe islands,3,1,World Cup - Qualification Europe,0.65,0.572,0.58864,True,False
+2025-11-14,1763149500,luxembourg,Germany,0,2,World Cup - Qualification Europe,0.65,0.572,0.58864,False,True
+2025-11-14,1763149500,poland,Netherlands,1,1,World Cup - Qualification Europe,0.65,0.572,0.58864,False,True
+2025-11-15,1763173800,venezuela,Australia,1,0,Friendlies,0.3,0.569,0.27181,False,True
+2025-11-15,1763211600,South Africa,zambia,3,1,Friendlies,0.3,0.569,0.27181,True,False
+2025-11-15,1763215200,kazakhstan,Belgium,1,1,World Cup - Qualification Europe,0.65,0.569,0.58892,False,True
+2025-11-15,1763222400,Brazil,Senegal,2,0,Friendlies,0.3,0.569,0.27181,True,True
+2025-11-15,1763226000,georgia,Spain,0,4,World Cup - Qualification Europe,0.65,0.569,0.58892,False,True
+2025-11-15,1763226000,cyprus,Austria,0,2,World Cup - Qualification Europe,0.65,0.569,0.58892,False,True
+2025-11-15,1763226000,Turkey,bulgaria,2,0,World Cup - Qualification Europe,0.65,0.569,0.58892,True,False
+2025-11-15,1763235900,Switzerland,Sweden,4,1,World Cup - Qualification Europe,0.65,0.569,0.58892,True,True
+2025-11-15,1763235900,greece,Scotland,3,2,World Cup - Qualification Europe,0.65,0.569,0.58892,False,True
+2025-11-15,1763235900,Bosnia and Herzegovina,romania,3,1,World Cup - Qualification Europe,0.65,0.569,0.58892,True,False
+2025-11-15,1763244000,United States,Paraguay,2,1,Friendlies,0.3,0.569,0.27181,True,True
+2025-11-16,1763253000,Colombia,New Zealand,2,1,Friendlies,0.3,0.567,0.27194,True,True
+2025-11-16,1763254800,Mexico,Uruguay,0,0,Friendlies,0.3,0.567,0.27194,True,True
+2025-11-16,1763301600,Portugal,armenia,9,1,World Cup - Qualification Europe,0.65,0.567,0.5892,True,False
+2025-11-16,1763312400,azerbaijan,France,1,3,World Cup - Qualification Europe,0.65,0.567,0.5892,False,True
+2025-11-16,1763312400,albania,England,0,2,World Cup - Qualification Europe,0.65,0.567,0.5892,False,True
+2025-11-16,1763322300,italy,Norway,1,4,World Cup - Qualification Europe,0.65,0.567,0.5892,False,True
+2025-11-17,1763397000,Qatar,zimbabwe,1,2,Friendlies,0.3,0.564,0.27207,True,False
+2025-11-17,1763408700,montenegro,Croatia,2,3,World Cup - Qualification Europe,0.65,0.564,0.58948,False,True
+2025-11-17,1763408700,Germany,slovakia,6,0,World Cup - Qualification Europe,0.65,0.564,0.58948,True,False
+2025-11-17,1763408700,Czech Republic,gibraltar,6,0,World Cup - Qualification Europe,0.65,0.564,0.58948,True,False
+2025-11-17,1763408700,Netherlands,lithuania,4,0,World Cup - Qualification Europe,0.65,0.564,0.58948,True,False
+2025-11-18,1763460900,Japan,bolivia,3,0,Friendlies,0.3,0.561,0.2722,True,False
+2025-11-18,1763463600,South Korea,Ghana,1,0,Friendlies,0.3,0.561,0.2722,True,True
+2025-11-18,1763478000,oman,Ivory Coast,0,2,Friendlies,0.3,0.561,0.2722,False,True
+2025-11-18,1763478000,Senegal,kenya,8,0,Friendlies,0.3,0.561,0.2722,True,False
+2025-11-18,1763481600,Iraq,united arab emirates,2,1,World Cup - Qualification Asia,0.65,0.561,0.58976,True,False
+2025-11-18,1763483400,Saudi Arabia,Algeria,0,2,Friendlies,0.3,0.561,0.2722,True,True
+2025-11-18,1763488800,Jordan,mali,0,0,Friendlies,0.3,0.561,0.2722,True,False
+2025-11-18,1763492400,Morocco,uganda,4,0,Friendlies,0.3,0.561,0.2722,True,False
+2025-11-18,1763494200,Brazil,Tunisia,1,1,Friendlies,0.3,0.561,0.2722,True,True
+2025-11-18,1763495100,Belgium,liechtenstein,7,0,World Cup - Qualification Europe,0.65,0.561,0.58976,True,False
+2025-11-18,1763495100,Sweden,slovenia,1,1,World Cup - Qualification Europe,0.65,0.561,0.58976,True,False
+2025-11-18,1763495100,Spain,Turkey,2,2,World Cup - Qualification Europe,0.65,0.561,0.58976,True,True
+2025-11-18,1763495100,kosovo,Switzerland,1,1,World Cup - Qualification Europe,0.65,0.561,0.58976,False,True
+2025-11-18,1763495100,Austria,Bosnia and Herzegovina,1,1,World Cup - Qualification Europe,0.65,0.561,0.58976,True,True
+2025-11-18,1763495100,Scotland,denmark,4,2,World Cup - Qualification Europe,0.65,0.561,0.58976,True,False
+2025-11-19,1763510400,United States,Uruguay,5,1,Friendlies,0.3,0.559,0.27233,True,True
+2025-11-19,1763514000,Haiti,nicaragua,2,0,World Cup - Qualification CONCACAF,0.65,0.559,0.59004,True,False
+2025-11-19,1763514000,jamaica,Curaçao,0,0,World Cup - Qualification CONCACAF,0.65,0.559,0.59004,False,True
+2025-11-19,1763514000,Panama,el salvador,3,0,World Cup - Qualification CONCACAF,0.65,0.559,0.59004,True,False
+2025-11-19,1763515800,Colombia,Australia,3,0,Friendlies,0.3,0.559,0.27233,True,True
+2025-11-19,1763515800,Mexico,Paraguay,1,2,Friendlies,0.3,0.559,0.27233,True,True
+2025-11-19,1763515800,Ecuador,New Zealand,2,0,Friendlies,0.3,0.559,0.27233,True,True
+2025-11-19,1763515800,Canada,venezuela,2,0,Friendlies,0.3,0.559,0.27233,True,False
+2025-12-01,1764594000,Tunisia,syria,0,1,Arab Cup,0.45,0.526,0.41082,True,False
+2025-12-01,1764603900,Qatar,palestine,0,1,Arab Cup,0.45,0.526,0.41082,True,False
+2025-12-02,1764676800,Morocco,comoros,3,1,Arab Cup,0.45,0.523,0.41102,True,False
+2025-12-02,1764685800,Egypt,kuwait,1,1,Arab Cup,0.45,0.523,0.41102,True,False
+2025-12-02,1764694800,Saudi Arabia,oman,2,1,Arab Cup,0.45,0.523,0.41102,True,False
+2025-12-03,1764763200,Algeria,sudan,0,0,Arab Cup,0.45,0.52,0.41121,True,False
+2025-12-03,1764772200,Iraq,bahrain,2,1,Arab Cup,0.45,0.52,0.41121,True,False
+2025-12-03,1764781200,Jordan,united arab emirates,2,1,Arab Cup,0.45,0.52,0.41121,True,False
+2025-12-04,1764858600,palestine,Tunisia,2,2,Arab Cup,0.45,0.517,0.41141,False,True
+2025-12-04,1764867600,syria,Qatar,1,1,Arab Cup,0.45,0.517,0.41141,False,True
+2025-12-05,1764945000,oman,Morocco,0,0,Arab Cup,0.45,0.515,0.4116,False,True
+2025-12-05,1764959400,comoros,Saudi Arabia,1,3,Arab Cup,0.45,0.515,0.4116,False,True
+2025-12-06,1765018800,kuwait,Jordan,1,3,Arab Cup,0.45,0.512,0.4118,False,True
+2025-12-06,1765027800,bahrain,Algeria,1,5,Arab Cup,0.45,0.512,0.4118,False,True
+2025-12-06,1765036800,sudan,Iraq,0,2,Arab Cup,0.45,0.512,0.4118,False,True
+2025-12-06,1765045800,united arab emirates,Egypt,1,1,Arab Cup,0.45,0.512,0.4118,False,True
+2025-12-07,1765126800,Qatar,Tunisia,0,3,Arab Cup,0.45,0.509,0.41199,True,True
+2025-12-08,1765213200,Morocco,Saudi Arabia,1,0,Arab Cup,0.45,0.507,0.41219,True,True
+2025-12-09,1765290600,Egypt,Jordan,0,3,Arab Cup,0.45,0.504,0.41238,True,True
+2025-12-09,1765299600,Algeria,Iraq,2,0,Arab Cup,0.45,0.504,0.41238,True,True
+2025-12-11,1765463400,Morocco,syria,1,0,Arab Cup,0.45,0.498,0.41277,True,False
+2025-12-12,1765549800,Jordan,Iraq,1,0,Arab Cup,0.45,0.496,0.41297,True,True
+2025-12-15,1765809000,Morocco,united arab emirates,3,0,Arab Cup,0.45,0.487,0.41356,True,False
+2025-12-15,1765819800,Saudi Arabia,Jordan,0,1,Arab Cup,0.45,0.487,0.41356,True,True
+2025-12-16,1765893600,South Africa,ghana b,1,0,Friendlies,0.3,0.485,0.27584,True,False
+2025-12-16,1765897200,DR Congo,zambia,2,0,Friendlies,0.3,0.485,0.27584,True,False
+2025-12-16,1765908000,Egypt,nigeria,2,1,Friendlies,0.3,0.485,0.27584,True,False
+2025-12-21,1766343600,Morocco,comoros,2,0,Africa Cup of Nations,0.75,0.471,0.69123,True,False
+2025-12-22,1766422800,South Africa,angola,2,1,Africa Cup of Nations,0.75,0.468,0.69156,True,False
+2025-12-22,1766433600,Egypt,zimbabwe,2,1,Africa Cup of Nations,0.75,0.468,0.69156,True,False
+2025-12-23,1766493000,DR Congo,benin,1,0,Africa Cup of Nations,0.75,0.465,0.69188,True,False
+2025-12-23,1766502000,Senegal,botswana,3,0,Africa Cup of Nations,0.75,0.465,0.69188,True,False
+2025-12-23,1766520000,Tunisia,uganda,3,1,Africa Cup of Nations,0.75,0.465,0.69188,True,False
+2025-12-24,1766588400,Algeria,sudan,3,0,Africa Cup of Nations,0.75,0.463,0.69221,True,False
+2025-12-24,1766597400,Ivory Coast,mozambique,1,0,Africa Cup of Nations,0.75,0.463,0.69221,True,False
+2025-12-26,1766761200,Egypt,South Africa,1,0,Africa Cup of Nations,0.75,0.457,0.69287,True,True
+2025-12-26,1766779200,Morocco,mali,1,1,Africa Cup of Nations,0.75,0.457,0.69287,True,False
+2025-12-27,1766847600,Senegal,DR Congo,1,1,Africa Cup of Nations,0.75,0.454,0.6932,True,True
+2025-12-27,1766865600,nigeria,Tunisia,3,2,Africa Cup of Nations,0.75,0.454,0.6932,False,True
+2025-12-28,1766943000,Algeria,burkina faso,1,0,Africa Cup of Nations,0.75,0.452,0.69353,True,False
+2025-12-28,1766952000,Ivory Coast,cameroon,1,1,Africa Cup of Nations,0.75,0.452,0.69353,True,False
+2025-12-29,1767024000,angola,Egypt,0,0,Africa Cup of Nations,0.75,0.449,0.69386,False,True
+2025-12-29,1767024000,zimbabwe,South Africa,2,3,Africa Cup of Nations,0.75,0.449,0.69386,False,True
+2025-12-29,1767034800,zambia,Morocco,0,3,Africa Cup of Nations,0.75,0.449,0.69386,False,True
+2025-12-30,1767110400,tanzania,Tunisia,1,1,Africa Cup of Nations,0.75,0.446,0.69419,False,True
+2025-12-30,1767121200,benin,Senegal,0,3,Africa Cup of Nations,0.75,0.446,0.69419,False,True
+2025-12-30,1767121200,botswana,DR Congo,0,3,Africa Cup of Nations,0.75,0.446,0.69419,False,True
+2025-12-31,1767196800,equatorial guinea,Algeria,1,3,Africa Cup of Nations,0.75,0.444,0.69452,False,True
+2025-12-31,1767207600,gabon,Ivory Coast,2,3,Africa Cup of Nations,0.75,0.444,0.69452,False,True
+2026-01-03,1767456000,Senegal,sudan,3,1,Africa Cup of Nations,0.75,0.435,0.69551,True,False
+2026-01-04,1767542400,Morocco,tanzania,1,0,Africa Cup of Nations,0.75,0.433,0.69584,True,False
+2026-01-04,1767553200,South Africa,cameroon,1,2,Africa Cup of Nations,0.75,0.433,0.69584,True,False
+2026-01-06,1767726000,Ivory Coast,burkina faso,3,0,Africa Cup of Nations,0.75,0.427,0.6965,True,False
+2026-01-09,1767974400,mali,Senegal,0,1,Africa Cup of Nations,0.75,0.419,0.69749,False,True
+2026-01-09,1767985200,cameroon,Morocco,0,2,Africa Cup of Nations,0.75,0.419,0.69749,False,True
+2026-01-10,1768060800,Algeria,nigeria,0,2,Africa Cup of Nations,0.75,0.416,0.69782,True,False
+2026-01-10,1768071600,Egypt,Ivory Coast,3,2,Africa Cup of Nations,0.75,0.416,0.69782,True,True
+2026-01-14,1768410000,Senegal,Egypt,1,0,Africa Cup of Nations,0.75,0.405,0.69914,True,True
+2026-01-18,1768705200,Canada,guatemala,1,0,Friendlies,0.3,0.394,0.28019,True,False
+2026-01-18,1768770000,bolivia,Panama,1,1,Friendlies,0.3,0.394,0.28019,False,True
+2026-01-23,1769130000,Panama,Mexico,0,1,Friendlies,0.3,0.381,0.28085,True,True
+2026-01-25,1769369400,bolivia,Mexico,0,1,Friendlies,0.3,0.375,0.28112,False,True
+2026-01-26,1769430600,Uzbekistan,china,2,2,Friendlies,0.3,0.372,0.28125,True,False
+2026-01-30,1769778000,Uzbekistan,fc urartu,4,2,Friendlies,0.3,0.361,0.28179,True,False
+2026-02-26,1772071200,Mexico,iceland,4,0,Friendlies,0.3,0.287,0.28542,True,False
+2026-03-25,1774472400,DR Congo,bermuda,2,0,Friendlies,0.3,0.214,0.2891,True,False
+2026-03-26,1774544400,Turkey,romania,1,0,World Cup - Qualification Europe,0.65,0.211,0.62668,True,False
+2026-03-26,1774554300,ukraine,Sweden,1,3,World Cup - Qualification Europe,0.65,0.211,0.62668,False,True
+2026-03-26,1774555200,Brazil,France,1,2,Friendlies,0.3,0.211,0.28924,True,True
+2026-03-26,1774567800,Colombia,Croatia,1,2,Friendlies,0.3,0.211,0.28924,True,True
+2026-03-27,1774580400,chile,Cape Verde,4,2,FIFA Series,0.45,0.208,0.43406,False,True
+2026-03-27,1774591200,china,Curaçao,2,0,FIFA Series,0.45,0.208,0.43406,False,True
+2026-03-27,1774592100,New Zealand,finland,0,2,FIFA Series,0.45,0.208,0.43406,True,False
+2026-03-27,1774602600,Australia,cameroon,1,0,FIFA Series,0.45,0.208,0.43406,True,False
+2026-03-27,1774614600,Iran,nigeria,1,2,Friendlies,0.3,0.208,0.28938,True,False
+2026-03-27,1774620000,Uzbekistan,gabon,3,1,FIFA Series,0.45,0.208,0.43406,True,False
+2026-03-27,1774630800,South Africa,Panama,1,1,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774630800,Austria,Ghana,5,1,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774632600,Saudi Arabia,Egypt,0,4,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774632600,Jordan,costa rica,2,2,Friendlies,0.3,0.208,0.28938,True,False
+2026-03-27,1774638000,greece,Paraguay,0,1,Friendlies,0.3,0.208,0.28938,False,True
+2026-03-27,1774639800,Algeria,guatemala,7,0,Friendlies,0.3,0.208,0.28938,True,False
+2026-03-27,1774640700,England,Uruguay,1,1,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774640700,Switzerland,Germany,3,4,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774640700,Netherlands,Norway,2,1,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774641600,Spain,serbia,3,0,Friendlies,0.3,0.208,0.28938,True,False
+2026-03-27,1774642500,Morocco,Ecuador,1,1,Friendlies,0.3,0.208,0.28938,True,True
+2026-03-27,1774653300,Argentina,mauritania,2,1,Friendlies,0.3,0.208,0.28938,True,False
+2026-03-28,1774706400,South Korea,Ivory Coast,0,4,Friendlies,0.3,0.205,0.28951,True,True
+2026-03-28,1774713600,Senegal,peru,2,0,Friendlies,0.3,0.205,0.28951,True,False
+2026-03-28,1774717200,Scotland,Japan,0,1,Friendlies,0.3,0.205,0.28951,True,True
+2026-03-28,1774717200,Canada,iceland,2,2,Friendlies,0.3,0.205,0.28951,True,False
+2026-03-28,1774726200,United States,Belgium,2,5,Friendlies,0.3,0.205,0.28951,True,True
+2026-03-29,1774742400,Haiti,Tunisia,0,1,Friendlies,0.3,0.203,0.28965,True,True
+2026-03-29,1774746000,Mexico,Portugal,0,0,Friendlies,0.3,0.203,0.28965,True,True
+2026-03-29,1774810800,Colombia,France,1,3,Friendlies,0.3,0.203,0.28965,True,True
+2026-03-30,1774851300,New Zealand,chile,4,1,FIFA Series,0.45,0.2,0.43468,True,False
+2026-03-30,1774896300,Germany,Ghana,2,1,Friendlies,0.3,0.2,0.28979,True,True
+2026-03-31,1774948200,Australia,Curaçao,5,1,FIFA Series,0.45,0.197,0.43489,True,True
+2026-03-31,1774962000,costa rica,Iran,0,5,Friendlies,0.3,0.197,0.28993,False,True
+2026-03-31,1774972800,Norway,Switzerland,0,0,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774972800,serbia,Saudi Arabia,2,1,Friendlies,0.3,0.197,0.28993,False,True
+2026-03-31,1774978200,South Africa,Panama,1,2,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774978200,Jordan,nigeria,2,2,Friendlies,0.3,0.197,0.28993,True,False
+2026-03-31,1774978200,Haiti,iceland,1,1,Friendlies,0.3,0.197,0.28993,True,False
+2026-03-31,1774980000,Morocco,Paraguay,2,1,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774981800,Algeria,Uruguay,0,0,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774981800,Scotland,Ivory Coast,0,1,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774982700,Netherlands,Ecuador,1,1,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774982700,kosovo,Turkey,0,1,World Cup - Qualification Europe,0.65,0.197,0.62817,False,True
+2026-03-31,1774982700,Sweden,poland,3,2,World Cup - Qualification Europe,0.65,0.197,0.62817,True,False
+2026-03-31,1774982700,England,Japan,0,1,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774982700,Austria,South Korea,1,0,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774983600,Spain,Egypt,0,0,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774983600,Senegal,gambia,3,1,Friendlies,0.3,0.197,0.28993,True,False
+2026-03-31,1774998000,United States,Portugal,0,2,Friendlies,0.3,0.197,0.28993,True,True
+2026-03-31,1774999800,Argentina,zambia,5,0,Friendlies,0.3,0.197,0.28993,True,False
+2026-03-31,1774999800,Canada,Tunisia,0,0,Friendlies,0.3,0.197,0.28993,True,True
+2026-04-01,1775001600,Brazil,Croatia,3,1,Friendlies,0.3,0.194,0.29006,True,True
+2026-04-01,1775005200,Mexico,Belgium,1,1,Friendlies,0.3,0.194,0.29006,True,True
+2026-04-01,1775012400,Iraq,bolivia,2,1,World Cup - Qualification Intercontinental Play-offs,0.65,0.194,0.62847,True,False
+2026-05-23,1779501600,Mexico,Ghana,2,0,Friendlies,0.3,0.052,0.29731,True,True
+2026-05-26,1779793200,Morocco,burundi,5,0,Friendlies,0.3,0.044,0.29773,True,False
+2026-05-28,1779991200,Egypt,russia,1,0,Friendlies,0.3,0.038,0.29801,True,False
+2026-05-28,1779993900,rep of ireland,Qatar,1,0,Friendlies,0.3,0.038,0.29801,False,True

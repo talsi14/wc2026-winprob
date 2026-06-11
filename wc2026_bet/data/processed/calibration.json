@@ -1,0 +1,123 @@
+{
+  "strength_spread": 1.2,
+  "strength_offsets": {
+    "United States": 0.0,
+    "Canada": 0.0,
+    "Mexico": 0.0,
+    "Panama": -0.3531065248358014,
+    "Curaçao": -0.3734282522212345,
+    "Haiti": -0.4157207903384136,
+    "Argentina": 0.0,
+    "Brazil": 0.0,
+    "Uruguay": 0.0,
+    "Colombia": 0.0,
+    "Paraguay": 0.0010061786808691024,
+    "Ecuador": 0.0,
+    "France": 0.0,
+    "England": 0.0,
+    "Spain": 0.0,
+    "Germany": 0.0,
+    "Portugal": 0.0,
+    "Netherlands": 0.0,
+    "Belgium": 0.0,
+    "Croatia": -0.1476051647559519,
+    "Switzerland": 0.0,
+    "Austria": 0.06410282755574999,
+    "Norway": 0.0,
+    "Scotland": -0.014224941850898015,
+    "Sweden": 0.23562550489158815,
+    "Turkey": -0.02915719921717652,
+    "Czech Republic": 0.22569285865699945,
+    "Bosnia and Herzegovina": 0.22040340456332688,
+    "Morocco": 0.0,
+    "Senegal": -0.11753853923633023,
+    "Egypt": 0.08543137018364377,
+    "Algeria": 0.17632850817618945,
+    "Tunisia": 0.12201029912169566,
+    "Ghana": 0.2795605401786236,
+    "Ivory Coast": 0.02606403276842844,
+    "Cape Verde": 0.10659335192642047,
+    "South Africa": 0.33474579393079573,
+    "DR Congo": 0.09072363255046895,
+    "Japan": -0.11462562944812389,
+    "South Korea": 0.2213191405956453,
+    "Iran": -0.03322260579363807,
+    "Australia": -0.20675282761782224,
+    "Saudi Arabia": 0.24447567501234832,
+    "Qatar": 0.31944019545125746,
+    "Jordan": -0.283093211242305,
+    "Uzbekistan": -0.29490842591686733,
+    "Iraq": -0.16637852016095633,
+    "New Zealand": -0.1014179107745512
+  },
+  "player_share_factor": {
+    "Harry Kane": 1.9046563903184914,
+    "Erling Haaland": 1.0892385828442228,
+    "Kylian Mbappé": 2.2296965130318505,
+    "Lionel Messi": 1.4914377431197603,
+    "Cristiano Ronaldo": 1.1646568376407807,
+    "Lautaro Martínez": 1.0838426766934408,
+    "Raphinha": 1.157929938708688,
+    "Enner Valencia": 0.6614826076410404,
+    "Vinícius Júnior": 1.1748322195536633,
+    "Julián Alvarez": 1.1183953311648138,
+    "Mohamed Salah": 0.47794125963322304,
+    "Mehdi Taremi": 0.49458720884205887,
+    "Viktor Gyökeres": 0.5262070486276417,
+    "Mikel Merino": 0.5297843750583558,
+    "Cody Gakpo": 0.9349319589452163,
+    "Mikel Oyarzabal": 1.5419392927080608,
+    "Luis Díaz": 0.7905929937831969,
+    "Memphis Depay": 0.7320496817401992,
+    "Mohamed Amoura": 0.5227809123640844,
+    "Florian Wirtz": 0.9341775039672731,
+    "Romelu Lukaku": 0.7780658739812449,
+    "Bruno Fernandes": 0.746799395328723,
+    "Andrej Kramarić": 0.5863986145892361,
+    "Kevin De Bruyne": 0.45573079150333445,
+    "Marko Arnautović": 0.5163669210207956,
+    "Breel Embolo": 0.513996668016305,
+    "Jamal Musiala": 0.873850616521957,
+    "Eldor Shomurodov": 0.27819786554252096,
+    "Darwin Núñez": 0.9456816718852411,
+    "Brahim Díaz": 0.5212368368663999,
+    "Leroy Sané": 1.1391057047877884,
+    "Lamine Yamal": 1.4517659537652816,
+    "Ousmane Dembélé": 1.4154940549242194
+  },
+  "advance_trace": [
+    {
+      "round": 0,
+      "max_abs_advance_err": 0.2711
+    },
+    {
+      "round": 1,
+      "max_abs_advance_err": 0.0693
+    },
+    {
+      "round": 2,
+      "max_abs_advance_err": 0.0411
+    },
+    {
+      "round": 3,
+      "max_abs_advance_err": 0.0348
+    },
+    {
+      "round": 4,
+      "max_abs_advance_err": 0.0404
+    },
+    {
+      "round": 5,
+      "max_abs_advance_err": 0.0206
+    },
+    {
+      "round": 6,
+      "max_abs_advance_err": 0.0177
+    },
+    {
+      "round": 7,
+      "max_abs_advance_err": 0.0189
+    }
+  ],
+  "best_sse": 0.001877950000000001
+}

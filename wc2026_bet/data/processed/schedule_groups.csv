@@ -1,0 +1,73 @@
+match,group,home,away,venue,city,venue_country
+1,A,Mexico,South Africa,Mexico City Stadium,"Mexico City, MEX",Mexico
+2,A,South Korea,Czech Republic,Guadalajara Stadium,"Guadalajara, MEX",Mexico
+3,B,Canada,Bosnia and Herzegovina,Toronto Stadium,"Toronto, CAN",Canada
+4,D,United States,Paraguay,Los Angeles Stadium,"Los Angeles, USA",United States
+5,B,Qatar,Switzerland,San Francisco Bay Area Stadium,"San Francisco Bay, USA",United States
+6,C,Brazil,Morocco,New York/New Jersey Stadium,"New York/NJ, USA",United States
+7,C,Haiti,Scotland,Boston Stadium,"Boston, USA",United States
+8,D,Australia,Turkey,BC Place Vancouver,"Vancouver, CAN",Canada
+9,E,Germany,Curaçao,Houston Stadium,"Houston, USA",United States
+10,F,Netherlands,Japan,Dallas Stadium,"Dallas, USA",United States
+11,E,Ivory Coast,Ecuador,Philadelphia Stadium,"Philadelphia, USA",United States
+12,F,Sweden,Tunisia,Monterrey Stadium,"Monterrey, MEX",Mexico
+13,H,Spain,Cape Verde,Atlanta Stadium,"Atlanta, USA",United States
+14,G,Belgium,Egypt,Seattle Stadium,"Seattle, USA",United States
+15,H,Saudi Arabia,Uruguay,Miami Stadium,"Miami, USA",United States
+16,G,Iran,New Zealand,Los Angeles Stadium,"Los Angeles, USA",United States
+17,I,France,Senegal,New York/New Jersey Stadium,"New York/NJ, USA",United States
+18,I,Iraq,Norway,Boston Stadium,"Boston, USA",United States
+19,J,Argentina,Algeria,Kansas City Stadium,"Kansas City, USA",United States
+20,J,Austria,Jordan,San Francisco Bay Area Stadium,"San Francisco Bay, USA",United States
+21,K,Portugal,DR Congo,Houston Stadium,"Houston, USA",United States
+22,L,England,Croatia,Dallas Stadium,"Dallas, USA",United States
+23,L,Ghana,Panama,Toronto Stadium,"Toronto, CAN",Canada
+24,K,Uzbekistan,Colombia,Mexico City Stadium,"Mexico City, MEX",Mexico
+25,A,Czech Republic,South Africa,Atlanta Stadium,"Atlanta, USA",United States
+26,B,Switzerland,Bosnia and Herzegovina,Los Angeles Stadium,"Los Angeles, USA",United States
+27,B,Canada,Qatar,BC Place Vancouver,"Vancouver, CAN",Canada
+28,A,Mexico,South Korea,Guadalajara Stadium,"Guadalajara, MEX",Mexico
+29,D,United States,Australia,Seattle Stadium,"Seattle, USA",United States
+30,C,Scotland,Morocco,Boston Stadium,"Boston, USA",United States
+31,D,Turkey,Paraguay,San Francisco Bay Area Stadium,"San Francisco Bay, USA",United States
+32,C,Brazil,Haiti,Philadelphia Stadium,"Philadelphia, USA",United States
+33,F,Netherlands,Sweden,Houston Stadium,"Houston, USA",United States
+34,E,Germany,Ivory Coast,Toronto Stadium,"Toronto, CAN",Canada
+35,E,Ecuador,Curaçao,Kansas City Stadium,"Kansas City, USA",United States
+36,F,Tunisia,Japan,Monterrey Stadium,"Monterrey, MEX",Mexico
+37,H,Spain,Saudi Arabia,Atlanta Stadium,"Atlanta, USA",United States
+38,G,Belgium,Iran,Los Angeles Stadium,"Los Angeles, USA",United States
+39,H,Uruguay,Cape Verde,Miami Stadium,"Miami, USA",United States
+40,G,New Zealand,Egypt,BC Place Vancouver,"Vancouver, CAN",Canada
+41,J,Argentina,Austria,Dallas Stadium,"Dallas, USA",United States
+42,I,France,Iraq,Philadelphia Stadium,"Philadelphia, USA",United States
+43,I,Norway,Senegal,New York/New Jersey Stadium,"New York/NJ, USA",United States
+44,J,Jordan,Algeria,San Francisco Bay Area Stadium,"San Francisco Bay, USA",United States
+45,K,Portugal,Uzbekistan,Houston Stadium,"Houston, USA",United States
+46,L,England,Ghana,Boston Stadium,"Boston, USA",United States
+47,L,Panama,Croatia,Toronto Stadium,"Toronto, CAN",Canada
+48,K,Colombia,DR Congo,Guadalajara Stadium,"Guadalajara, MEX",Mexico
+49,B,Switzerland,Canada,BC Place Vancouver,"Vancouver, CAN",Canada
+50,B,Bosnia and Herzegovina,Qatar,Seattle Stadium,"Seattle, USA",United States
+51,C,Scotland,Brazil,Miami Stadium,"Miami, USA",United States
+52,C,Morocco,Haiti,Atlanta Stadium,"Atlanta, USA",United States
+53,A,Czech Republic,Mexico,Mexico City Stadium,"Mexico City, MEX",Mexico
+54,A,South Africa,South Korea,Monterrey Stadium,"Monterrey, MEX",Mexico
+55,E,Curaçao,Ivory Coast,Philadelphia Stadium,"Philadelphia, USA",United States
+56,E,Ecuador,Germany,New York/New Jersey Stadium,"New York/NJ, USA",United States
+57,F,Japan,Sweden,Dallas Stadium,"Dallas, USA",United States
+58,F,Tunisia,Netherlands,Kansas City Stadium,"Kansas City, USA",United States
+59,D,Turkey,United States,Los Angeles Stadium,"Los Angeles, USA",United States
+60,D,Paraguay,Australia,San Francisco Bay Area Stadium,"San Francisco Bay, USA",United States
+61,I,Norway,France,Boston Stadium,"Boston, USA",United States
+62,I,Senegal,Iraq,Toronto Stadium,"Toronto, CAN",Canada
+63,H,Uruguay,Spain,Guadalajara Stadium,"Guadalajara, MEX",Mexico
+64,H,Cape Verde,Saudi Arabia,Houston Stadium,"Houston, USA",United States
+65,G,Egypt,Iran,Seattle Stadium,"Seattle, USA",United States
+66,G,New Zealand,Belgium,BC Place Vancouver,"Vancouver, CAN",Canada
+67,L,Panama,England,New York/New Jersey Stadium,"New York/NJ, USA",United States
+68,L,Croatia,Ghana,Philadelphia Stadium,"Philadelphia, USA",United States
+69,K,Colombia,Portugal,Miami Stadium,"Miami, USA",United States
+70,K,DR Congo,Uzbekistan,Atlanta Stadium,"Atlanta, USA",United States
+71,J,Algeria,Austria,Kansas City Stadium,"Kansas City, USA",United States
+72,J,Jordan,Argentina,Dallas Stadium,"Dallas, USA",United States

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Generated per-run outputs (recreated by the pipeline every run)
+wc2026_bet/report/
+wc2026_bet/results/
+wc2026_bet/data/live/state_*.json
+wc2026_bet/data/live/win_probabilities_*.json
+wc2026_bet/data/live/odds_status_*.json
+wc2026_bet/data/live/market_*_2026-*.csv
+wc2026_bet/data/live/odds_raw/
+wc2026_bet/data/processed/calibration_*.json
+
+# GitHub Pages build dir (assembled in CI, uploaded as artifact, never committed)
+public/
+
+# Local screenshots / scratch
+_*.png
+
+# Local sync helper output (if any)
+*.log

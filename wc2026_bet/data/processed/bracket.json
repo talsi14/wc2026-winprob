@@ -1,0 +1,562 @@
+[
+  {
+    "match": 73,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_runner",
+      "group": "A"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "B"
+    },
+    "venue": "Los Angeles Stadium",
+    "city": "Los Angeles, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 74,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "E"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "F"
+      ]
+    },
+    "venue": "Boston Stadium",
+    "city": "Boston, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 75,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "F"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "C"
+    },
+    "venue": "Monterrey Stadium",
+    "city": "Monterrey, MEX",
+    "venue_country": "Mexico"
+  },
+  {
+    "match": 76,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "C"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "F"
+    },
+    "venue": "Houston Stadium",
+    "city": "Houston, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 77,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "I"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "C",
+        "D",
+        "F",
+        "G",
+        "H"
+      ]
+    },
+    "venue": "Dallas Stadium",
+    "city": "Dallas, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 78,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_runner",
+      "group": "E"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "I"
+    },
+    "venue": "New York/New Jersey Stadium",
+    "city": "New York/NJ, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 79,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "A"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "C",
+        "E",
+        "F",
+        "H",
+        "I"
+      ]
+    },
+    "venue": "Mexico City Stadium",
+    "city": "Mexico City, MEX",
+    "venue_country": "Mexico"
+  },
+  {
+    "match": 80,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "L"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "E",
+        "H",
+        "I",
+        "J",
+        "K"
+      ]
+    },
+    "venue": "Atlanta Stadium",
+    "city": "Atlanta, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 81,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "D"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "B",
+        "E",
+        "F",
+        "I",
+        "J"
+      ]
+    },
+    "venue": "Seattle Stadium",
+    "city": "Seattle, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 82,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "G"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "A",
+        "E",
+        "H",
+        "I",
+        "J"
+      ]
+    },
+    "venue": "San Francisco Bay Area Stadium",
+    "city": "San Francisco Bay, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 83,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_runner",
+      "group": "K"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "L"
+    },
+    "venue": "Los Angeles Stadium",
+    "city": "Los Angeles, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 84,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "H"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "J"
+    },
+    "venue": "Toronto Stadium",
+    "city": "Toronto, CAN",
+    "venue_country": "Canada"
+  },
+  {
+    "match": 85,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "B"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "E",
+        "F",
+        "G",
+        "I",
+        "J"
+      ]
+    },
+    "venue": "BC Place Vancouver",
+    "city": "Vancouver, CAN",
+    "venue_country": "Canada"
+  },
+  {
+    "match": 86,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "J"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "H"
+    },
+    "venue": "Dallas Stadium",
+    "city": "Dallas, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 87,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_winner",
+      "group": "K"
+    },
+    "away_ref": {
+      "type": "third",
+      "eligible": [
+        "D",
+        "E",
+        "I",
+        "J",
+        "L"
+      ]
+    },
+    "venue": "Miami Stadium",
+    "city": "Miami, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 88,
+    "stage": "Round of 32",
+    "round_code": 1,
+    "home_ref": {
+      "type": "group_runner",
+      "group": "D"
+    },
+    "away_ref": {
+      "type": "group_runner",
+      "group": "G"
+    },
+    "venue": "Kansas City Stadium",
+    "city": "Kansas City, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 89,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 74
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 77
+    },
+    "venue": "Houston Stadium",
+    "city": "Houston, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 90,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 73
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 75
+    },
+    "venue": "Philadelphia Stadium",
+    "city": "Philadelphia, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 91,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 76
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 78
+    },
+    "venue": "New York/New Jersey Stadium",
+    "city": "New York/NJ, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 92,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 79
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 80
+    },
+    "venue": "Mexico City Stadium",
+    "city": "Mexico City, MEX",
+    "venue_country": "Mexico"
+  },
+  {
+    "match": 93,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 83
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 84
+    },
+    "venue": "Dallas Stadium",
+    "city": "Dallas, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 94,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 81
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 82
+    },
+    "venue": "Seattle Stadium",
+    "city": "Seattle, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 95,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 86
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 88
+    },
+    "venue": "Atlanta Stadium",
+    "city": "Atlanta, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 96,
+    "stage": "Round of 16",
+    "round_code": 2,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 85
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 87
+    },
+    "venue": "BC Place Vancouver",
+    "city": "Vancouver, CAN",
+    "venue_country": "Canada"
+  },
+  {
+    "match": 97,
+    "stage": "Quarter-final",
+    "round_code": 3,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 89
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 90
+    },
+    "venue": "Boston Stadium",
+    "city": "Boston, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 98,
+    "stage": "Quarter-final",
+    "round_code": 3,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 93
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 94
+    },
+    "venue": "Los Angeles Stadium",
+    "city": "Los Angeles, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 99,
+    "stage": "Quarter-final",
+    "round_code": 3,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 91
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 92
+    },
+    "venue": "Miami Stadium",
+    "city": "Miami, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 100,
+    "stage": "Quarter-final",
+    "round_code": 3,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 95
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 96
+    },
+    "venue": "Kansas City Stadium",
+    "city": "Kansas City, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 101,
+    "stage": "Semi-final",
+    "round_code": 4,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 97
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 98
+    },
+    "venue": "Dallas Stadium",
+    "city": "Dallas, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 102,
+    "stage": "Semi-final",
+    "round_code": 4,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 99
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 100
+    },
+    "venue": "Atlanta Stadium",
+    "city": "Atlanta, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 103,
+    "stage": "Third place",
+    "round_code": 5,
+    "home_ref": {
+      "type": "match_loser",
+      "match": 101
+    },
+    "away_ref": {
+      "type": "match_loser",
+      "match": 102
+    },
+    "venue": "Miami Stadium",
+    "city": "Miami, USA",
+    "venue_country": "United States"
+  },
+  {
+    "match": 104,
+    "stage": "Final",
+    "round_code": 6,
+    "home_ref": {
+      "type": "match_winner",
+      "match": 101
+    },
+    "away_ref": {
+      "type": "match_winner",
+      "match": 102
+    },
+    "venue": "New York/New Jersey Stadium",
+    "city": "New York/NJ, USA",
+    "venue_country": "United States"
+  }
+]

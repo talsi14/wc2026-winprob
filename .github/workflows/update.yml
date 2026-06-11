@@ -1,0 +1,94 @@
+name: Update win-probabilities
+
+# Three times a day (UTC), each just after a daily cluster of matches finishes.
+# WC2026 group-stage kickoffs run 12:00 PM-12:00 AM ET (= 16:00-04:00 UTC, June
+# ET = UTC-4); a match + stoppage is ~2h. GitHub's scheduler is UTC-only and may
+# be delayed a few minutes under load (the :30 offsets absorb that).
+on:
+  schedule:
+    - cron: "30 22 * * *"   # 22:30 UTC - after the afternoon block (12-4 PM ET)
+    - cron: "30 1 * * *"    # 01:30 UTC - after the evening block (6-7 PM ET)
+    - cron: "30 6 * * *"    # 06:30 UTC - daily wrap: last night game (incl. 12 AM ET) is done
+  workflow_dispatch: {}      # allow manual "Run workflow"
+
+permissions:
+  contents: write            # commit the snapshot archive back to the repo
+  pages: write               # deploy to GitHub Pages
+  id-token: write            # required by deploy-pages
+
+concurrency:
+  group: winprob
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure Pages (auto-enable on first run)
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Refresh win-probabilities + rebuild shareable page
+        run: bash run_update.sh
+
+      - name: Assemble published site + timestamped archive
+        run: |
+          set -euo pipefail
+          TS="$(date -u +%Y-%m-%dT%H%M)"
+          mkdir -p published
+          cp friends_bet/report/index.html "published/winprob_${TS}.html"
+
+          rm -rf public
+          mkdir -p public/history
+          cp friends_bet/report/index.html public/index.html
+          cp published/*.html public/history/ 2>/dev/null || true
+
+          # auto-generated history index (newest first)
+          {
+            echo '<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8">'
+            echo '<title>היסטוריית עדכונים</title>'
+            echo '<body style="font-family:system-ui,Arial;max-width:680px;margin:40px auto;padding:0 16px">'
+            echo '<h1>היסטוריית סיכויי זכייה</h1><p><a href="../index.html">← לעדכון האחרון</a></p><ul>'
+            ls -1r published/*.html | sed -E 's#published/##' \
+              | while read -r f; do echo "<li><a href=\"$f\">$f</a></li>"; done
+            echo '</ul></body></html>'
+          } > public/history/index.html
+
+      - name: Commit snapshot archive back to repo
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add friends_bet/report/index.html published/
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "snapshot: win-probabilities update [skip ci]"
+            git push
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

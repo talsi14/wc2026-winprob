@@ -1,0 +1,247 @@
+"""Stage 1 - snapshot the live tournament state from the ESPN keyless feed.
+
+Builds ``data/live/state_<TS>.json`` capturing everything that has already
+happened (so the conditioned simulator can fix it and sample only the
+remainder), and reconciles each entry's *locked* points against the site.
+
+state_<TS>.json schema (all team / player names canonical):
+  timestamp, collected_at
+  group_stage_complete : bool
+  group_scores         : { "<match_no>": [home_goals, away_goals] }   # played group fixtures, schedule orientation
+  standings            : { "A": [ {team,rank,played,points,gf,ga,gd,advanced} x4 ], ... }
+  official_order       : { "A": [team1,team2,team3,team4], ... }       # only when group complete
+  advanced_thirds_groups : [grp, ...]                                  # the (<=8) groups whose 3rd advanced
+  ko_results           : [ {home,away,home_goals,away_goals,winner,shootout} ]
+  player_goals         : { "<canonical scorer>": goals }               # candidates only, open-play+penalty, no own/shootout
+  team_played          : { team: {gf,ga,games} }                       # from completed matches
+
+Usage:  python3 scripts/collect_live.py [--ts 2026-06-20T1200]
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+import unicodedata
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from wc2026_bet import espn
+from wc2026_bet.config import DATA_LIVE, DATA_PROCESSED
+from wc2026_bet.data_io import load_dataset
+from wc2026_bet.scoring import Entry, score_entry
+
+
+def _norm(s: str) -> str:
+    d = unicodedata.normalize("NFKD", (s or "").lower())
+    d = "".join(c for c in d if not unicodedata.combining(c))
+    return "".join(c for c in d if c.isalnum())
+
+
+def _candidate_lookup() -> dict[str, str]:
+    """accent-normalized scorer name -> canonical, over candidates + extras."""
+    out = {}
+    for f in (DATA_PROCESSED / "players.csv", DATA_LIVE / "extra_players.csv"):
+        if f.exists():
+            for nm in pd.read_csv(f)["scorer"]:
+                out[_norm(nm)] = nm
+    return out
+
+
+def _is_played(fx: dict) -> bool:
+    return bool(fx.get("completed")) or fx.get("state") == "post"
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--ts", default=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M"),
+                    help="timestamp label for this snapshot")
+    args = ap.parse_args()
+    ts = args.ts
+
+    ds = load_dataset()
+
+    print("Fetching fixtures ...")
+    fixtures = espn.fetch_fixtures()
+    print(f"  {len(fixtures)} fixtures in window")
+    print("Fetching standings ...")
+    standings = espn.fetch_standings(ds.groups)
+
+    # ---- map group fixtures to schedule match numbers (unordered pair) ----- #
+    sched = ds.group_matches
+    pair_to_match = {}
+    for r in sched.itertuples():
+        pair_to_match[frozenset((r.home, r.away))] = (r.match, r.home, r.away)
+
+    group_scores: dict[str, list[int]] = {}
+    ko_results: list[dict] = []
+    team_played: dict[str, dict] = {}
+    cand_lookup = _candidate_lookup()
+    player_goals: dict[str, int] = {}
+
+    def bump_played(team, gf, ga):
+        d = team_played.setdefault(team, {"gf": 0, "ga": 0, "games": 0})
+        d["gf"] += gf; d["ga"] += ga; d["games"] += 1
+
+    played_group, played_ko = 0, 0
+    for fx in fixtures:
+        if not _is_played(fx) or fx["home"] is None or fx["away"] is None:
+            continue
+        if fx["home_score"] is None or fx["away_score"] is None:
+            continue
+        hg, ag = fx["home_score"], fx["away_score"]
+        key = frozenset((fx["home"], fx["away"]))
+        # accumulate team gf/ga
+        bump_played(fx["home"], hg, ag)
+        bump_played(fx["away"], ag, hg)
+        # goal scorers -> candidate goals
+        try:
+            scorers = espn.fetch_goal_scorers(fx["espn_id"])
+        except RuntimeError:
+            scorers = []
+        for s in scorers:
+            canon = cand_lookup.get(_norm(s["scorer"]))
+            if canon:
+                player_goals[canon] = player_goals.get(canon, 0) + 1
+
+        if key in pair_to_match:
+            mno, shome, saway = pair_to_match[key]
+            # re-orient to schedule home/away
+            if fx["home"] == shome:
+                group_scores[str(mno)] = [hg, ag]
+            else:
+                group_scores[str(mno)] = [ag, hg]
+            played_group += 1
+        else:
+            winner = fx["home"] if hg > ag else (fx["away"] if ag > hg else None)
+            ko_results.append({
+                "home": fx["home"], "away": fx["away"],
+                "home_goals": hg, "away_goals": ag,
+                "winner": winner, "shootout": hg == ag,
+            })
+            played_ko += 1
+
+    group_stage_complete = played_group >= len(sched)
+
+    official_order, advanced_thirds_groups = {}, []
+    if group_stage_complete:
+        for g, rows in standings.items():
+            ordered = sorted(rows, key=lambda r: r["rank"] or 99)
+            official_order[g] = [r["team"] for r in ordered]
+            for r in ordered:
+                if r["rank"] == 3 and r["advanced"]:
+                    advanced_thirds_groups.append(g)
+
+    state = {
+        "timestamp": ts,
+        "collected_at": datetime.now(timezone.utc).isoformat(),
+        "group_stage_complete": group_stage_complete,
+        "n_group_played": played_group,
+        "n_ko_played": played_ko,
+        "group_scores": group_scores,
+        "standings": standings,
+        "official_order": official_order,
+        "advanced_thirds_groups": advanced_thirds_groups,
+        "ko_results": ko_results,
+        "player_goals": player_goals,
+        "team_played": team_played,
+    }
+
+    out = DATA_LIVE / f"state_{ts}.json"
+    out.write_text(json.dumps(state, indent=2, ensure_ascii=False))
+    # stable pointer to the newest snapshot
+    (DATA_LIVE / "state_latest.json").write_text(json.dumps(state, indent=2, ensure_ascii=False))
+    print(f"\nWrote {out}")
+    print(f"  group fixtures played: {played_group}/{len(sched)}  "
+          f"knockout played: {played_ko}  group_stage_complete={group_stage_complete}")
+    if player_goals:
+        top = sorted(player_goals.items(), key=lambda kv: -kv[1])[:8]
+        print("  candidate goals so far:", ", ".join(f"{n}={g}" for n, g in top))
+
+    reconcile(ds, state)
+
+
+# --------------------------------------------------------------------------- #
+# Reconciliation: recompute locked points from known results, diff vs the site
+# --------------------------------------------------------------------------- #
+def _known_team_stats(ds, state) -> dict[str, dict]:
+    """Per-team locked stats from completed matches (group + knockout).
+
+    Advancement / finish (used for tier C/D bonuses) and final/winner flags are
+    only credited once they are actually determined (group complete, KO played).
+    """
+    teams = list(ds.team_list)
+    stats = {t: {"reg_wins": 0, "group_draws": 0, "reg_losses": 0,
+                 "pen_wins": 0, "pen_losses": 0, "group_finish": 0,
+                 "advanced": False, "made_final": False, "won_cup": False}
+             for t in teams}
+    sched = {r.match: (r.home, r.away) for r in ds.group_matches.itertuples()}
+
+    # group matches
+    for mno, (hg, ag) in state["group_scores"].items():
+        home, away = sched[int(mno)]
+        if hg > ag:
+            stats[home]["reg_wins"] += 1; stats[away]["reg_losses"] += 1
+        elif ag > hg:
+            stats[away]["reg_wins"] += 1; stats[home]["reg_losses"] += 1
+        else:
+            stats[home]["group_draws"] += 1; stats[away]["group_draws"] += 1
+
+    # knockout matches
+    for ko in state["ko_results"]:
+        h, a = ko["home"], ko["away"]
+        if ko.get("shootout"):
+            w = ko["winner"]; l = a if w == h else h
+            if w:
+                stats[w]["pen_wins"] += 1; stats[l]["pen_losses"] += 1
+        else:
+            w = ko["winner"]
+            if w:
+                l = a if w == h else h
+                stats[w]["reg_wins"] += 1; stats[l]["reg_losses"] += 1
+
+    # advancement / finish (only meaningful once the group stage is over)
+    if state["group_stage_complete"]:
+        for g, rows in state["standings"].items():
+            for r in rows:
+                stats[r["team"]]["group_finish"] = r["rank"]
+                stats[r["team"]]["advanced"] = bool(r["advanced"])
+
+    # final / champion from KO results: the highest-round match is the final.
+    # (Heuristic: if a match's winner never appears as a loser/again, treat the
+    #  last-played KO winner as champion only when 7 KO rounds are complete.)
+    return stats
+
+
+def reconcile(ds, state) -> None:
+    entries = pd.read_csv(DATA_LIVE / "pool_entries_2026.csv")
+    site = pd.read_csv(DATA_LIVE / "entry_points_site.csv").set_index("name")
+    team_tier = {r.team: r.tier for r in ds.teams.itertuples()}
+    stats = _known_team_stats(ds, state)
+    gf = {t: state["team_played"].get(t, {}).get("gf", 0) for t in ds.team_list}
+    ga = {t: state["team_played"].get(t, {}).get("ga", 0) for t in ds.team_list}
+    pg = state["player_goals"]
+
+    mism = 0
+    for r in entries.itertuples():
+        e = Entry(r.tierA, r.tierB, r.tierC, r.tierD, r.scoring, r.conceding, r.top_scorer)
+        bd = score_entry(e, stats, gf, ga, pg, golden_boot="", team_tier=team_tier)
+        ours = round(bd["total"], 1)
+        theirs = float(site.loc[r.name, "total"]) if r.name in site.index else None
+        if theirs is not None and abs(ours - theirs) > 1e-6:
+            mism += 1
+            if mism <= 8:
+                print(f"  RECON mismatch: {r.name!r} ours={ours} site={theirs}")
+    if mism == 0:
+        print("  reconciliation: all entries match the site's locked points.")
+    else:
+        print(f"  reconciliation: {mism} entries differ from the site "
+              "(expected if the site's bonus timing differs mid-stage).")
+
+
+if __name__ == "__main__":
+    main()

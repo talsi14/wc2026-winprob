@@ -1,0 +1,49 @@
+team,slug,confederation,host,tier,group,elo,elo_eloratings,elo_market,market_prob
+United States,united-states,CONCACAF,True,B,D,1803.6,1721,1871.1,0.0164
+Canada,canada,CONCACAF,True,B,B,1783.3,1784,1782.7,0.0057
+Mexico,mexico,CONCACAF,True,B,A,1866.1,1868,1864.5,0.0152
+Panama,panama,CONCACAF,False,D,L,1737.0,1737,,
+Curaçao,curacao,CONCACAF,False,D,E,1433.0,1433,,
+Haiti,haiti,CONCACAF,False,D,C,1532.0,1532,,
+Argentina,argentina,CONMEBOL,False,A,J,2058.6,2113,2014.0,0.0909
+Brazil,brazil,CONMEBOL,False,A,C,2007.2,1984,2026.2,0.1053
+Uruguay,uruguay,CONMEBOL,False,B,H,1880.5,1892,1871.1,0.0164
+Colombia,colombia,CONMEBOL,False,B,K,1936.1,1975,1904.2,0.0244
+Paraguay,paraguay,CONMEBOL,False,C,D,1799.2,1833,1771.6,0.005
+Ecuador,ecuador,CONMEBOL,False,B,E,1876.7,1935,1829.0,0.0099
+France,france,UEFA,False,A,I,2075.1,2081,2070.3,0.1786
+England,england,UEFA,False,A,L,2034.3,2020,2046.0,0.1333
+Spain,spain,UEFA,False,A,H,2116.3,2165,2076.5,0.1923
+Germany,germany,UEFA,False,A,E,1962.0,1923,1993.9,0.0714
+Portugal,portugal,UEFA,False,A,K,2000.5,1984,2014.0,0.0909
+Netherlands,netherlands,UEFA,False,A,F,1970.2,1961,1977.7,0.0588
+Belgium,belgium,UEFA,False,A,G,1914.0,1867,1952.5,0.0435
+Croatia,croatia,UEFA,False,B,L,1890.6,1930,1858.4,0.0141
+Switzerland,switzerland,UEFA,False,B,B,1875.5,1889,1864.5,0.0152
+Austria,austria,UEFA,False,B,J,1818.0,1827,1810.6,0.0079
+Norway,norway,UEFA,False,B,I,1913.7,1912,1915.1,0.0278
+Scotland,scotland,UEFA,False,C,C,1752.4,1770,1737.9,0.0033
+Sweden,sweden,UEFA,False,C,F,1754.0,1719,1782.7,0.0057
+Turkey,turkey,UEFA,False,B,D,1872.0,1902,1847.4,0.0123
+Czech Republic,czech-republic,UEFA,False,B,A,1700.8,1726,1680.3,0.0017
+Bosnia and Herzegovina,bosnia-and-herzegovina,UEFA,False,C,B,1658.7,1591,1714.0,0.0025
+Morocco,morocco,CAF,False,B,C,1849.0,1822,1871.1,0.0164
+Senegal,senegal,CAF,False,C,I,1840.9,1878,1810.6,0.0079
+Egypt,egypt,CAF,False,C,G,1728.8,1699,1753.1,0.004
+Algeria,algeria,CAF,False,C,J,1743.0,1743,,
+Tunisia,tunisia,CAF,False,D,F,1636.0,1636,,
+Ghana,ghana,CAF,False,C,L,1600.5,1503,1680.3,0.0017
+Ivory Coast,ivory-coast,CAF,False,C,E,1734.7,1676,1782.7,0.0057
+Cape Verde,cape-verde,CAF,False,D,H,1549.0,1549,,
+South Africa,south-africa,CAF,False,D,A,1517.0,1517,,
+DR Congo,dr-congo,CAF,False,D,K,1655.0,1655,,
+Japan,japan,AFC,False,B,F,1898.9,1904,1894.6,0.0217
+South Korea,south-korea,AFC,False,C,A,1707.3,1756,1667.4,0.0014
+Iran,iran,AFC,False,C,G,1694.5,1764,1637.7,0.001
+Australia,australia,AFC,False,C,D,1775.0,1775,,
+Saudi Arabia,saudi-arabia,AFC,False,C,H,1566.0,1566,,
+Qatar,qatar,AFC,False,D,B,1423.0,1423,,
+Jordan,jordan,AFC,False,D,J,1690.0,1690,,
+Uzbekistan,uzbekistan,AFC,False,D,K,1727.0,1727,,
+Iraq,iraq,AFC,False,D,I,1608.0,1608,,
+New Zealand,new-zealand,OFC,False,D,G,1585.0,1585,,

@@ -1,0 +1,49 @@
+group,team,pos
+A,Mexico,1
+A,South Africa,2
+A,South Korea,3
+A,Czech Republic,4
+B,Canada,1
+B,Bosnia and Herzegovina,2
+B,Qatar,3
+B,Switzerland,4
+C,Brazil,1
+C,Morocco,2
+C,Haiti,3
+C,Scotland,4
+D,United States,1
+D,Paraguay,2
+D,Australia,3
+D,Turkey,4
+E,Germany,1
+E,Curaçao,2
+E,Ivory Coast,3
+E,Ecuador,4
+F,Netherlands,1
+F,Japan,2
+F,Sweden,3
+F,Tunisia,4
+G,Belgium,1
+G,Egypt,2
+G,Iran,3
+G,New Zealand,4
+H,Spain,1
+H,Cape Verde,2
+H,Saudi Arabia,3
+H,Uruguay,4
+I,France,1
+I,Senegal,2
+I,Iraq,3
+I,Norway,4
+J,Argentina,1
+J,Algeria,2
+J,Austria,3
+J,Jordan,4
+K,Portugal,1
+K,DR Congo,2
+K,Uzbekistan,3
+K,Colombia,4
+L,England,1
+L,Croatia,2
+L,Ghana,3
+L,Panama,4

@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-06-07T23:26:10.701546Z",
+  "reference_date": "2026-06-11",
+  "sources": {
+    "hicruben_world-cup-2026-prediction-model": {
+      "url": "https://github.com/Hicruben/world-cup-2026-prediction-model.git",
+      "commit": "0f776ff8b57d3fe2d437348afe840225072a5786",
+      "commit_date": "2026-05-31 14:51:49 +0800"
+    },
+    "0xNadr_wc2026": {
+      "url": "https://github.com/0xNadr/wc2026.git",
+      "commit": "d1796a789319608ec6e0f0c5f6d32c0e60e8deb8",
+      "commit_date": "2026-05-07 15:10:23 +0200"
+    },
+    "opta_title_prob": {
+      "url": "https://theanalyst.com/articles/who-will-win-2026-fifa-world-cup-predictions-opta-supercomputer",
+      "note": "Pre-tournament 10k-sim title probabilities, top teams + hosts."
+    },
+    "eloratings_net": {
+      "url": "https://www.international-football.net/elo-ratings-table?day=30&month=05&year=2026",
+      "as_of": "2026-05-30",
+      "file": "data/raw/eloratings_2026-05-30.md",
+      "note": "World Football Elo for all 48 finalists (strength prior)."
+    },
+    "market_outright_odds": {
+      "url": "https://www.si.com/betting/every-teams-championship-group-odds-for-the-2026-world-cup-spain-and-france-top-odds-list-01kt4yygesqb",
+      "as_of": "2026-06",
+      "file": "data/raw/market_outright_2026-06.md",
+      "note": "Outright-winner odds (FanDuel via SI) for the 33 informative teams; blended into the prior (Opta-style) to correct Elo's lag on brand teams (Germany/France/England/Brazil). The 15 floored (+250000) minnows are dropped."
+    },
+    "market_advance_odds": {
+      "url": "https://www.foxsports.com/stories/soccer/2026-world-cup-odds-teams-favored-advance-knockout-stage",
+      "as_of": "2026-06-04",
+      "file": "data/raw/market_advance_2026-06.md",
+      "note": "To-advance-to-R32 odds (DraftKings via FOX) for all 48 teams; de-vigged to sum to 32. The key weak-team strength signal (calibrate_team_strengths target)."
+    },
+    "market_golden_boot_odds": {
+      "url": "https://www.rotowire.com/soccer/article/2026-world-cup-golden-boot-odds-full-player-list-mbappe-kane-haaland-108917",
+      "as_of": "2026-06-01",
+      "file": "data/raw/market_golden_boot_2026-06.md",
+      "note": "Golden Boot odds (DraftKings via RotoWire) for 142 players; de-vigged to sum 1; blended onto players.csv as market_p_gb (top-scorer calibration target)."
+    },
+    "official_bracket": {
+      "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage",
+      "note": "Authoritative R32-Final bracket; the bundled schedule.json had scrambled knockout slots, corrected here."
+    }
+  },
+  "outputs": {
+    "teams.csv": 48,
+    "groups.csv": 48,
+    "schedule_groups.csv": 72,
+    "bracket.json": 32,
+    "results.csv": 920,
+    "elo.csv": 48,
+    "players.csv": 30,
+    "market_title_odds.csv": 9,
+    "market_advance.csv": 48,
+    "market_golden_boot.csv": 142
+  }
+}
