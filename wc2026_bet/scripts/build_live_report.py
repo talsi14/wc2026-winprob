@@ -289,6 +289,36 @@ def pct(x):
     return f"{x*100:.1f}%"
 
 
+def groups_block(d) -> str:
+    """Group-stage standings cards: played / points / GD / qualify% (P reach R32).
+    Top two of each group (by the run_live_update sort) are highlighted."""
+    groups = d.get("groups") or {}
+    if not groups:
+        return ""
+    cards = []
+    for g in sorted(groups):
+        rows = []
+        for i, t in enumerate(groups[g]):
+            cls = ' class="qual"' if i < 2 else ""
+            rows.append(
+                f'<tr{cls}><td class="gt">{escape(t["team"])}</td>'
+                f'<td>{t["played"]}</td><td>{t["points"]}</td>'
+                f'<td>{t["gd"]:+d}</td>'
+                f'<td class="gq">{t["p_advance"]*100:.0f}%</td></tr>')
+        cards.append(
+            f'<div class="gcard"><h3>Group {g}</h3>'
+            f'<table class="gtbl"><thead><tr><th>Team</th><th>P</th>'
+            f'<th>Pts</th><th>GD</th><th>Qualify</th></tr></thead>'
+            f'<tbody>{"".join(rows)}</tbody></table></div>')
+    return (
+        '<div class="card"><h2>Group-stage standings &amp; qualification odds</h2>'
+        '<p class="sub">Per group: matches played (P), points (Pts), goal '
+        'difference (GD) and the simulated probability of reaching the Round of '
+        '32 (Qualify). The two highlighted teams are each group\'s leading '
+        'qualifiers; standings fill in automatically as real results land.</p>'
+        f'<div class="ggrid">{"".join(cards)}</div></div>')
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--me", default="", help="optional entry nickname to highlight "
@@ -373,6 +403,9 @@ def main() -> None:
     cm_header, cm_body, cm_w = svg_matrix(champs, cm["p_title"], cm_entries, getp,
                                           summary_cols=summary_cols)
     cm_body_maxh = 18 * 24 + 6   # show ~18 rows, scroll for the rest
+
+    # ---------- group-stage standings + qualify% ---------- #
+    groups_blk = groups_block(d)
 
     # ---------- projected vs current bump ---------- #
     # current rank from site (ties -> stable); projected = exp_rank ordering
@@ -473,7 +506,18 @@ def main() -> None:
     .pick span{display:block;font-size:.66rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em}
     .pick b{font-size:.82rem;color:#e2e8f0}
     code{background:#111c30;padding:1px 6px;border-radius:5px;font-size:.82em}
-    @media(max-width:760px){.kpis{grid-template-columns:repeat(3,1fr)}.picks{grid-template-columns:repeat(2,1fr)}}
+    .ggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+    .gcard{background:#0b1626;border:1px solid #1e293b;border-radius:12px;padding:12px 14px}
+    .gcard h3{margin:0 0 6px;font-size:.95rem;color:#f1f5f9}
+    table.gtbl{width:100%;border-collapse:collapse;font-size:.8rem}
+    table.gtbl th{font-size:.62rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.03em;text-align:center;padding:2px 3px;font-weight:600}
+    table.gtbl th:first-child{text-align:left}
+    table.gtbl td{padding:4px 3px;text-align:center;border-top:1px solid #18243b;color:#cbd5e1;font-variant-numeric:tabular-nums}
+    table.gtbl td.gt{text-align:left;font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:112px;border-left:3px solid transparent;padding-left:7px}
+    table.gtbl td.gq{font-weight:700;color:#38bdf8}
+    table.gtbl tr.qual td{background:rgba(52,211,153,.10)}
+    table.gtbl tr.qual td.gt{border-left-color:#34d399;color:#fff}
+    @media(max-width:760px){.kpis{grid-template-columns:repeat(3,1fr)}.picks{grid-template-columns:repeat(2,1fr)}.ggrid{grid-template-columns:repeat(2,1fr)}}
     """
     js = """
     let sortState={};
@@ -530,6 +574,8 @@ its prize sources; contrarian entries earn most of theirs from the 1st-place gol
 <p class="sub">"Who do I root for?" — gold cells = P(entry wins the pool | that team wins the World Cup); the % under each champion is its title probability. The three right-hand columns are each entry's overall P(1st), P(in the money = top-2) and P(last). Showing the top 18 by expected winnings; scroll within the panel for the rest.</p>
 <div style="overflow-x:auto"><div style="width:{cm_w}px">{cm_header}
 <div style="max-height:{cm_body_maxh}px;overflow-y:auto">{cm_body}</div></div></div></div>
+
+{groups_blk}
 
 <div class="card"><h2>Projected vs current standings</h2>
 <p class="sub">Today's points-rank (left) → projected expected-final rank (right). Green lines climb, grey lines slip.</p>
