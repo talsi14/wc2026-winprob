@@ -151,6 +151,29 @@ def main() -> None:
         site = {r.name: {"total": float(r.total), "rank": int(r.rank)}
                 for r in sdf.itertuples()}
 
+    # per-group standings: current played/points/GD (from the frozen state) plus
+    # simulated qualify% (P reach the Round of 32).
+    adv = O["advanced"].mean(0)                       # [T] P(advance to R32)
+    cur_stats: dict[str, dict] = {}
+    for _g, rows in (state.get("standings") or {}).items():
+        for r in rows:
+            cur_stats[r["team"]] = {"played": r.get("played", 0),
+                                    "points": r.get("points", 0),
+                                    "gd": r.get("gd", 0)}
+    groups_payload: dict[str, list] = {}
+    for g in sorted(ds.groups):
+        lst = []
+        for t in ds.groups[g]:
+            c = cur_stats.get(t, {})
+            lst.append({"team": t,
+                        "played": int(c.get("played", 0)),
+                        "points": int(c.get("points", 0)),
+                        "gd": int(c.get("gd", 0)),
+                        "p_advance": round(float(adv[ds.team_index[t]]), 4)})
+        # current points/GD first; qualify% breaks ties (and orders pre-tournament)
+        lst.sort(key=lambda x: (-x["points"], -x["gd"], -x["p_advance"]))
+        groups_payload[g] = lst
+
     prev = previous_metrics(ts)
     N = len(entries)
     out_entries = []
@@ -201,6 +224,7 @@ def main() -> None:
         "calibration": {"strength_spread": cal["strength_spread"],
                         "golden_boot_scale": round(gb_scale, 3)},
         "champion_matrix": chmat,
+        "groups": groups_payload,
         "entries": out_entries,
     }
     jdump(payload, DATA_LIVE / f"win_probabilities_{ts}.json")

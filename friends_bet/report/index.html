@@ -88,8 +88,6 @@
 
 
 
-
-
 /* WINPROB:CSS:START */
 
   /* live win-probability banner */
@@ -118,6 +116,23 @@
   .freshness .fresh-when{font-weight:800; color:#7dd3fc; white-space:nowrap;
              font-variant-numeric:tabular-nums;}
   .freshness .fresh-body b{color:#fff;}
+  /* group-stage standings cards */
+  .ggrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:8px;}
+  .gcard{border:1px solid var(--line); border-radius:12px; padding:12px 14px; background:#fff;}
+  .gh{font-weight:800; color:var(--ink); margin-bottom:6px;}
+  table.gtbl{width:100%; border-collapse:collapse; font-size:.84rem;}
+  table.gtbl th{font-size:.66rem; color:var(--muted); text-transform:uppercase;
+             letter-spacing:.02em; text-align:center; padding:2px 3px; font-weight:600;}
+  table.gtbl th:first-child{text-align:right;}
+  table.gtbl td{padding:4px 3px; text-align:center; border-top:1px solid #f1f5f9;
+             font-variant-numeric:tabular-nums; color:#475569;}
+  table.gtbl td.gt{text-align:right; font-weight:600; color:#334155; white-space:nowrap;
+             overflow:hidden; text-overflow:ellipsis; max-width:104px;
+             border-right:3px solid transparent; padding-right:7px;}
+  table.gtbl td.gq{font-weight:700; color:var(--blue);}
+  table.gtbl tr.qual td{background:rgba(22,163,74,.08);}
+  table.gtbl tr.qual td.gt{border-right-color:var(--green); color:var(--ink);}
+  @media (max-width:760px){ .ggrid{grid-template-columns:repeat(2,1fr);} }
 
 /* WINPROB:CSS:END */
 </style></head>
@@ -140,6 +155,61 @@
   <div class="stats" id="statStrip"></div>
 
   <div class="callout" id="headline"></div>
+<!-- WINPROB:START -->
+
+  <h2 class="bigsec">סימולציית סיכויי זכיה מתעדכנת</h2>
+  <div class="freshness"><span class="fresh-when">עודכן: 11/06/2026 21:03 UTC</span><span class="fresh-body"><b>מצב הנתונים:</b> טרם שוחקו משחקים — זוהי תחזית הבסיס לפני פתיחת הטורניר. כל המשחקים מדומים.</span></div>
+
+  <section>
+    <h2 style="margin-top:6px">איך נבנה הניתוח</h2>
+    <p class="sub">נתונים + סימולציה — בשפה פשוטה.</p>
+    <p><b>הנתונים.</b> לכל אחת מ‑48 הנבחרות חושב דירוג כוח (Elo) ששוקלל עם <b>הימורי השוק</b>:
+      יחסי זכייה בגביע, יחסי "העפלה מהבית" ויחסי מלך השערים מאתרי ההימורים המובילים. כך הדירוג
+      "מיושר" לחוכמת ההמונים ולא מסתמך רק על נוסחה. במקביל נמשכו <b>כל 53 הטפסים</b> ישירות
+      מהאתר, כדי לדעת מי בחר במה.</p>
+    <p><b>הסימולציה.</b> הטורניר כולו הורץ <b>50,000 פעמים</b> (מונטה‑קרלו). בכל הרצה מוגרלת
+      תוצאה לכל משחק לפי הסתברות שנגזרת מהפרשי הכוח בין הנבחרות (מודל Dixon‑Coles להבקעת שערים),
+      מתקדמים שלב‑שלב מהבתים ועד הגמר, ומגרילים גם מבקיעי שערים. בכל הרצה מחושבות נקודות לכל טופס
+      לפי חוקי ההגרלה, 53 הטפסים מדורגים, והקופה מתחלקת לפי המיקום (כולל חלוקת פרס בין שווים).
+      מתוך 50,000 ההרצות מתקבלים המספרים: הסתברות לזכייה, הסתברות ל"תוך הכסף" (מקום 1–2),
+      הסתברות למקום אחרון, ותוחלת הנקודות והדירוג.</p>
+    <div class="callout">
+      <b>איך זה יתעדכן במהלך הטורניר.</b> ברגע שמשחקים מתחילים, ההרצה הבאה "מקבעת" את מה שכבר קרה —
+      תוצאות, מבקיעים ודירוג הבתים ננעלים כעובדה, ומוגרל רק מה שעדיין לא ידוע. במקביל נמשכים יחסי
+      הימורים מעודכנים לרענון דירוגי הכוח. כל עדכון יוצר חותמת זמן חדשה, וכך אפשר לעקוב מי עולה ומי
+      יורד ככל שהמציאות מתבהרת. התהליך אוטומטי — מספיק להריץ אותו מחדש.
+    </div>
+    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;">
+      <b>למה לבוחרי ספרד סיכוי זכייה נמוך.</b> ספרד היא המועמדת מספר 1 בשוק, ולכן חלק ניכר מהמשתתפים
+      עיגנו עליה את הטופס (ורבים בחרו במבאפה כמלך שערים) — כך שגם אם ספרד תזכה, הפרס יתחלק בין המון
+      מתחרים כמעט זהים, ואיש מהם לא ייבדל. כדי לנצח את הקופה לא מספיק לצדוק — צריך <b>לצדוק במקום
+      שבו אחרים טעו</b>. הטפסים שמובילים בתוחלת הם דווקא ה"קונטראריאניים" שזנחו את ספרד לטובת בחירות
+      פחות פופולריות (אנגליה, נורווגיה, ארגנטינה), כי הם זוכים בקופה כמעט לבדם כשהבחירות האלה מצליחות.
+      כלומר: ספרד מקטינה את הסיכון להפסד גדול, אבל גם <b>כמעט מבטלת את הסיכוי לזכייה בולטת</b> —
+      בדיוק מפני שכל כך הרבה עשו אותו דבר.
+    </div>
+  </section>
+
+  <section>
+    <h2 style="margin-top:6px">סיכויי ניצחון בהתערבות - מותנה בזהות האלופה</h2>
+    <p class="sub">לכל שילוב של טופס (שורה) ואלוף עולמי אפשרי (עמודה): ההסתברות שאותו טופס יזכה
+      בקופה בהינתן שאותה נבחרת זוכה במונדיאל. האחוז מתחת לשם הנבחרת = ההסתברות שלה לתואר. שלוש
+      העמודות הימניות הן הנתונים הכלליים של כל טופס: סיכוי לזכייה, סיכוי לכסף (מקום 1–2), וסיכוי
+      למקום אחרון. מוצגים מדורגים לפי תוחלת הרווח — גללו בתוך החלון לשאר.</p>
+    <div class="scrollbox"><div id="cmMatrix"></div></div>
+    <p class="sub" style="margin-top:8px">תאים זהובים = סיכוי גבוה יותר לזכות בקופה בהינתן האלוף.</p>
+  </section>
+
+  <section>
+    <h2 style="margin-top:6px">טבלאות הבתים — סיכויי העפלה</h2>
+    <p class="sub">לכל בית: מספר משחקים ששוחקו (מ׳), נקודות (נק׳), הפרש שערים, וההסתברות להעפיל לשלב הנוק‑אאוט לפי הסימולציה (העפלה). שתי הנבחרות המודגשות הן המועמדות המובילות להעפלה מכל בית.</p>
+    <div class="ggrid"><div class="gcard"><div class="gh">בית A</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">מקסיקו</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">85%</td></tr><tr class="qual"><td class="gt">צ׳כיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">72%</td></tr><tr><td class="gt">דרום קוריאה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">70%</td></tr><tr><td class="gt">דרום אפריקה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">43%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית B</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">שווייץ</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">90%</td></tr><tr class="qual"><td class="gt">קנדה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">85%</td></tr><tr><td class="gt">בוסניה והרצגובינה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">67%</td></tr><tr><td class="gt">קטאר</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">27%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית C</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">ברזיל</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">97%</td></tr><tr class="qual"><td class="gt">מרוקו</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">90%</td></tr><tr><td class="gt">סקוטלנד</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">72%</td></tr><tr><td class="gt">האיטי</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">11%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית D</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">טורקיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">80%</td></tr><tr class="qual"><td class="gt">ארה"ב</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">78%</td></tr><tr><td class="gt">פרגוואי</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">63%</td></tr><tr><td class="gt">אוסטרליה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">50%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית E</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">גרמניה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">97%</td></tr><tr class="qual"><td class="gt">אקוודור</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">88%</td></tr><tr><td class="gt">חוף השנהב</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">80%</td></tr><tr><td class="gt">קוראסאו</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">8%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית F</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">הולנד</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">88%</td></tr><tr class="qual"><td class="gt">יפן</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">76%</td></tr><tr><td class="gt">שוודיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">66%</td></tr><tr><td class="gt">תוניסיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">39%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית G</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">בלגיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">92%</td></tr><tr class="qual"><td class="gt">מצרים</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">74%</td></tr><tr><td class="gt">איראן</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">64%</td></tr><tr><td class="gt">ניו זילנד</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">38%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית H</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">ספרד</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">98%</td></tr><tr class="qual"><td class="gt">אורוגוואי</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">79%</td></tr><tr><td class="gt">ערב הסעודית</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">45%</td></tr><tr><td class="gt">כף ורדה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">32%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית I</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">צרפת</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">94%</td></tr><tr class="qual"><td class="gt">נורווגיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">87%</td></tr><tr><td class="gt">סנגל</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">66%</td></tr><tr><td class="gt">עיראק</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">18%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית J</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">ארגנטינה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">95%</td></tr><tr class="qual"><td class="gt">אוסטריה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">79%</td></tr><tr><td class="gt">אלג'יריה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">72%</td></tr><tr><td class="gt">ירדן</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">22%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית K</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">פורטוגל</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">93%</td></tr><tr class="qual"><td class="gt">קולומביה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">87%</td></tr><tr><td class="gt">קונגו</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">51%</td></tr><tr><td class="gt">אוזבקיסטן</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">31%</td></tr></tbody></table></div><div class="gcard"><div class="gh">בית L</div><table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th><th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead><tbody><tr class="qual"><td class="gt">אנגליה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">96%</td></tr><tr class="qual"><td class="gt">קרואטיה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">79%</td></tr><tr><td class="gt">גאנה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">58%</td></tr><tr><td class="gt">פנמה</td><td>0</td><td>0</td><td dir="ltr">+0</td><td class="gq">30%</td></tr></tbody></table></div></div>
+  </section>
+
+  <!-- WINPROB:END -->
+
+
+
 
   <section>
     <h2 style="margin-top:6px">כמה בחרו בכל קבוצה — לפי דרג</h2>
@@ -191,52 +261,7 @@
     <h2 style="margin-top:6px">נקודות מעניינות</h2>
     <div id="facts"></div>
   </section>
-<!-- WINPROB:START -->
 
-  <h2 class="bigsec">סימולציית סיכויי זכיה מתעדכנת</h2>
-  <div class="freshness"><span class="fresh-when">עודכן: 11/06/2026 21:12 UTC</span><span class="fresh-body"><b>מצב הנתונים:</b> נכללו <b>1/72</b> משחקי בתים ו‑<b>0/32</b> משחקי נוק‑אאוט שכבר שוחקו (ו‑0 שערים שנרשמו למועמדי נעל הזהב). שלב הבתים בעיצומו; רק מה שטרם נקבע מדומה.</span></div>
-
-  <section>
-    <h2 style="margin-top:6px">איך נבנה הניתוח</h2>
-    <p class="sub">נתונים + סימולציה — בשפה פשוטה.</p>
-    <p><b>הנתונים.</b> לכל אחת מ‑48 הנבחרות חושב דירוג כוח (Elo) ששוקלל עם <b>הימורי השוק</b>:
-      יחסי זכייה בגביע, יחסי "העפלה מהבית" ויחסי מלך השערים מאתרי ההימורים המובילים. כך הדירוג
-      "מיושר" לחוכמת ההמונים ולא מסתמך רק על נוסחה. במקביל נמשכו <b>כל 53 הטפסים</b> ישירות
-      מהאתר, כדי לדעת מי בחר במה.</p>
-    <p><b>הסימולציה.</b> הטורניר כולו הורץ <b>50,000 פעמים</b> (מונטה‑קרלו). בכל הרצה מוגרלת
-      תוצאה לכל משחק לפי הסתברות שנגזרת מהפרשי הכוח בין הנבחרות (מודל Dixon‑Coles להבקעת שערים),
-      מתקדמים שלב‑שלב מהבתים ועד הגמר, ומגרילים גם מבקיעי שערים. בכל הרצה מחושבות נקודות לכל טופס
-      לפי חוקי ההגרלה, 53 הטפסים מדורגים, והקופה מתחלקת לפי המיקום (כולל חלוקת פרס בין שווים).
-      מתוך 50,000 ההרצות מתקבלים המספרים: הסתברות לזכייה, הסתברות ל"תוך הכסף" (מקום 1–2),
-      הסתברות למקום אחרון, ותוחלת הנקודות והדירוג.</p>
-    <div class="callout">
-      <b>איך זה יתעדכן במהלך הטורניר.</b> ברגע שמשחקים מתחילים, ההרצה הבאה "מקבעת" את מה שכבר קרה —
-      תוצאות, מבקיעים ודירוג הבתים ננעלים כעובדה, ומוגרל רק מה שעדיין לא ידוע. במקביל נמשכים יחסי
-      הימורים מעודכנים לרענון דירוגי הכוח. כל עדכון יוצר חותמת זמן חדשה, וכך אפשר לעקוב מי עולה ומי
-      יורד ככל שהמציאות מתבהרת. התהליך אוטומטי — מספיק להריץ אותו מחדש.
-    </div>
-    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;">
-      <b>למה לבוחרי ספרד סיכוי זכייה נמוך.</b> ספרד היא המועמדת מספר 1 בשוק, ולכן חלק ניכר מהמשתתפים
-      עיגנו עליה את הטופס (ורבים בחרו במבאפה כמלך שערים) — כך שגם אם ספרד תזכה, הפרס יתחלק בין המון
-      מתחרים כמעט זהים, ואיש מהם לא ייבדל. כדי לנצח את הקופה לא מספיק לצדוק — צריך <b>לצדוק במקום
-      שבו אחרים טעו</b>. הטפסים שמובילים בתוחלת הם דווקא ה"קונטראריאניים" שזנחו את ספרד לטובת בחירות
-      פחות פופולריות (אנגליה, נורווגיה, ארגנטינה), כי הם זוכים בקופה כמעט לבדם כשהבחירות האלה מצליחות.
-      כלומר: ספרד מקטינה את הסיכון להפסד גדול, אבל גם <b>כמעט מבטלת את הסיכוי לזכייה בולטת</b> —
-      בדיוק מפני שכל כך הרבה עשו אותו דבר.
-    </div>
-  </section>
-
-  <section>
-    <h2 style="margin-top:6px">סיכויי ניצחון בהתערבות - מותנה בזהות האלופה</h2>
-    <p class="sub">לכל שילוב של טופס (שורה) ואלוף עולמי אפשרי (עמודה): ההסתברות שאותו טופס יזכה
-      בקופה בהינתן שאותה נבחרת זוכה במונדיאל. האחוז מתחת לשם הנבחרת = ההסתברות שלה לתואר. שלוש
-      העמודות הימניות הן הנתונים הכלליים של כל טופס: סיכוי לזכייה, סיכוי לכסף (מקום 1–2), וסיכוי
-      למקום אחרון. מוצגים מדורגים לפי תוחלת הרווח — גללו בתוך החלון לשאר.</p>
-    <div class="scrollbox"><div id="cmMatrix"></div></div>
-    <p class="sub" style="margin-top:8px">תאים זהובים = סיכוי גבוה יותר לזכות בקופה בהינתן האלוף.</p>
-  </section>
-
-  <!-- WINPROB:END -->
 
 
 
@@ -388,10 +413,6 @@ document.getElementById('tblBody').innerHTML = ENTRIES.map(e=>
 requestAnimationFrame(()=>requestAnimationFrame(()=>{
   document.querySelectorAll('.bar-fill').forEach(b=> b.style.width = b.dataset.w + '%');
 }));
-
-
-
-
 
 
 

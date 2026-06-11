@@ -36,6 +36,58 @@ CHAMP_HE = {
     "Germany": "גרמניה", "Norway": "נורווגיה", "Colombia": "קולומביה",
 }
 
+# Teams not present in he_aliases.json (nobody picked them) - filled in manually
+# so the group tables can show every team in Hebrew.
+TEAM_HE_EXTRA = {
+    "Bosnia and Herzegovina": "בוסניה והרצגובינה", "Paraguay": "פרגוואי",
+    "Ecuador": "אקוודור", "Saudi Arabia": "ערב הסעודית",
+    "Algeria": "אלג'יריה", "Ghana": "גאנה",
+}
+
+
+def _team_he_map() -> dict:
+    """English canonical -> Hebrew, inverted from he_aliases.json + extras."""
+    f = WC_ROOT / "data" / "processed" / "he_aliases.json"
+    en2he = {}
+    if f.exists():
+        teams = json.loads(f.read_text()).get("teams", {})
+        en2he = {v: k for k, v in teams.items()}
+    en2he.update(TEAM_HE_EXTRA)
+    return en2he
+
+
+def groups_html(data: dict) -> str:
+    """Per-group standings cards: played / points / GD / qualify% (P reach R32).
+    Top two of each group (by the run_live_update sort) are highlighted."""
+    groups = data.get("groups") or {}
+    if not groups:
+        return ""
+    he = _team_he_map()
+    cards = []
+    for g in sorted(groups):
+        rows = []
+        for i, t in enumerate(groups[g]):
+            nm = he.get(t["team"], t["team"])
+            cls = " class=\"qual\"" if i < 2 else ""
+            rows.append(
+                f'<tr{cls}><td class="gt">{nm}</td>'
+                f'<td>{t["played"]}</td><td>{t["points"]}</td>'
+                f'<td dir="ltr">{t["gd"]:+d}</td>'
+                f'<td class="gq">{t["p_advance"]*100:.0f}%</td></tr>')
+        cards.append(
+            f'<div class="gcard"><div class="gh">בית {g}</div>'
+            f'<table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th>'
+            f'<th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead>'
+            f'<tbody>{"".join(rows)}</tbody></table></div>')
+    return (
+        '\n  <section>\n'
+        '    <h2 style="margin-top:6px">טבלאות הבתים — סיכויי העפלה</h2>\n'
+        '    <p class="sub">לכל בית: מספר משחקים ששוחקו (מ׳), נקודות (נק׳), הפרש שערים, '
+        'וההסתברות להעפיל לשלב הנוק‑אאוט לפי הסימולציה (העפלה). שתי הנבחרות המודגשות הן '
+        'המועמדות המובילות להעפלה מכל בית.</p>\n'
+        f'    <div class="ggrid">{"".join(cards)}</div>\n'
+        '  </section>\n')
+
 HTML_START, HTML_END = "<!-- WINPROB:START -->", "<!-- WINPROB:END -->"
 JS_START, JS_END = "/* WINPROB:JS:START */", "/* WINPROB:JS:END */"
 CSS_START, CSS_END = "/* WINPROB:CSS:START */", "/* WINPROB:CSS:END */"
@@ -201,6 +253,23 @@ CMTBL_CSS = """
   .freshness .fresh-when{font-weight:800; color:#7dd3fc; white-space:nowrap;
              font-variant-numeric:tabular-nums;}
   .freshness .fresh-body b{color:#fff;}
+  /* group-stage standings cards */
+  .ggrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:8px;}
+  .gcard{border:1px solid var(--line); border-radius:12px; padding:12px 14px; background:#fff;}
+  .gh{font-weight:800; color:var(--ink); margin-bottom:6px;}
+  table.gtbl{width:100%; border-collapse:collapse; font-size:.84rem;}
+  table.gtbl th{font-size:.66rem; color:var(--muted); text-transform:uppercase;
+             letter-spacing:.02em; text-align:center; padding:2px 3px; font-weight:600;}
+  table.gtbl th:first-child{text-align:right;}
+  table.gtbl td{padding:4px 3px; text-align:center; border-top:1px solid #f1f5f9;
+             font-variant-numeric:tabular-nums; color:#475569;}
+  table.gtbl td.gt{text-align:right; font-weight:600; color:#334155; white-space:nowrap;
+             overflow:hidden; text-overflow:ellipsis; max-width:104px;
+             border-right:3px solid transparent; padding-right:7px;}
+  table.gtbl td.gq{font-weight:700; color:var(--blue);}
+  table.gtbl tr.qual td{background:rgba(22,163,74,.08);}
+  table.gtbl tr.qual td.gt{border-right-color:var(--green); color:var(--ink);}
+  @media (max-width:760px){ .ggrid{grid-template-columns:repeat(2,1fr);} }
 """
 
 
@@ -231,10 +300,11 @@ def main() -> None:
     css = f"{CSS_START}\n{CMTBL_CSS}\n{CSS_END}\n"
     html = html.replace("</style>", css + "</style>", 1)
 
-    # 2) HTML sections, placed just before the "כל הטפסים" table so that table
-    #    stays at the very end of the page.
-    block = f"{HTML_START}\n{explanation_html(n_ent, n_sims, coverage_html(data))}\n  {HTML_END}\n"
-    anchor = re.compile(r"(\n\s*<section>\s*\n\s*<h2[^>]*>כל הטפסים</h2>)")
+    # 2) HTML sections, placed near the TOP of the page - right after the stat
+    #    boxes + headline callout, before the "כמה בחרו" tier-breakdown section.
+    body = explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data)
+    block = f"{HTML_START}\n{body}\n  {HTML_END}\n"
+    anchor = re.compile(r"(\n\s*<section>\s*\n\s*<h2[^>]*>כמה בחרו)")
     if anchor.search(html):
         html = anchor.sub("\n" + block + r"\1", html, count=1)
     else:                                   # fallback: before the footer
