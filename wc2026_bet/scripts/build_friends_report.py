@@ -88,6 +88,99 @@ def groups_html(data: dict) -> str:
         f'    <div class="ggrid">{"".join(cards)}</div>\n'
         '  </section>\n')
 
+def _player_he_map() -> dict:
+    """English canonical player -> Hebrew, inverted from he_aliases.json."""
+    f = WC_ROOT / "data" / "processed" / "he_aliases.json"
+    en2he = {}
+    if f.exists():
+        for he, en in (json.loads(f.read_text()).get("players", {})).items():
+            en2he.setdefault(en, he)          # first (canonical) spelling wins
+    return en2he
+
+
+def _g(x) -> str:
+    """Compact number: 3.0 -> '3', 2.5 -> '2.5'."""
+    return f"{x:g}"
+
+
+def podium_html(data: dict) -> str:
+    """Podium for the live standings: 1st / 2nd / 3rd + the last place, each with
+    its prize, in the lovable-style 4-card layout (gold centre, elevated)."""
+    ents = data.get("entries") or []
+    by_rank = {e.get("current_rank"): e for e in ents if e.get("current_rank")}
+    if not by_rank:
+        return ""
+    n = data.get("n_entries", len(ents))
+    prize = {1: 1800, 2: 750, 3: 50, n: 50}
+    # visual order: silver, gold (centre/elevated), bronze, last
+    spec = [(2, "silver", "🥈"), (1, "gold", "🥇"), (3, "bronze", "🥉"), (n, "last", "💩")]
+    cards = []
+    for rk, cls, medal in spec:
+        e = by_rank.get(rk)
+        if not e:
+            continue
+        cards.append(
+            f'<div class="pcard {cls}"><div class="medal">{medal}</div>'
+            f'<div class="pname" title="{e["name"]}">{e["name"]}</div>'
+            f'<div class="ppts">{_g(e["current_points"])} <small>נק׳</small></div>'
+            f'<div class="pprize">₪{prize.get(rk, 0):,}</div></div>')
+    return (
+        '\n  <section class="podwrap">\n'
+        '    <h2 class="bigsec real">טבלת הדירוג</h2>\n'
+        f'    <div class="podium">{"".join(cards)}</div>\n  </section>\n')
+
+
+def standings_table_html(data: dict) -> str:
+    """Full standings table: rank, change, name, points, P(1st), in-money, and the
+    7 picks — each pick annotated with the points it has earned so far."""
+    ents = data.get("entries") or []
+    if not ents:
+        return ""
+    team_he, pl_he = _team_he_map(), _player_he_map()
+    rows_sorted = sorted(ents, key=lambda e: e.get("current_rank") or 1e9)
+
+    def chg(e) -> str:
+        d = e.get("d_current_rank")
+        if not d:
+            return '<span class="chg-eq">–</span>'
+        return (f'<span class="chg-up">▲{-d}</span>' if d < 0
+                else f'<span class="chg-dn">▼{d}</span>')
+
+    def pick(name_en, pts, player=False) -> str:
+        he = (pl_he if player else team_he).get(name_en, name_en)
+        return f'<td class="pick">{he} <small>({_g(pts)})</small></td>'
+
+    trs = []
+    for e in rows_sorted:
+        p, bd = e["picks"], e.get("pts_breakdown", {})
+        trs.append(
+            f'<tr><td class="rk">{e["current_rank"]}</td>'
+            f'<td>{chg(e)}</td>'
+            f'<td class="nm" title="{e["name"]}">{e["name"]}</td>'
+            f'<td class="pts">{_g(e["current_points"])}</td>'
+            + pick(p["tierA"], bd.get("tierA", 0))
+            + pick(p["tierB"], bd.get("tierB", 0))
+            + pick(p["tierC"], bd.get("tierC", 0))
+            + pick(p["tierD"], bd.get("tierD", 0))
+            + pick(p["scoring"], bd.get("scoring", 0))
+            + pick(p["conceding"], bd.get("conceding", 0))
+            + pick(p["top_scorer"], bd.get("top_scorer", 0), player=True)
+            + f'<td class="p1">{e["P_first"]*100:.1f}%</td>'
+            + f'<td class="pm">{e["P_top2"]*100:.1f}%</td>'
+            + '</tr>')
+    head = ('<tr><th>מקום</th><th>שינוי</th><th class="nm">שם</th><th>נק׳</th>'
+            '<th>דרג א׳</th><th>דרג ב׳</th><th>דרג ג׳</th><th>דרג ד׳</th>'
+            '<th>כובשת</th><th>סופגת</th><th>מלך שערים</th>'
+            '<th>זכייה</th><th>תוך הכסף</th></tr>')
+    return (
+        '\n  <section>\n'
+        '    <p class="sub" style="margin-top:4px">כל הטפסים מדורגים לפי הניקוד בפועל. '
+        'העמודות <b>זכייה</b> ו<b>תוך הכסף</b> הן הסתברויות מהסימולציה (מקום 1, ומקום 1–2). '
+        'בכל בחירה מוצג בסוגריים מספר הנקודות שצברה עד כה.</p>\n'
+        f'    <div class="standwrap"><table class="standtbl"><thead>{head}</thead>'
+        f'<tbody>{"".join(trs)}</tbody></table></div>\n  </section>\n')
+
+
 HTML_START, HTML_END = "<!-- WINPROB:START -->", "<!-- WINPROB:END -->"
 JS_START, JS_END = "/* WINPROB:JS:START */", "/* WINPROB:JS:END */"
 CSS_START, CSS_END = "/* WINPROB:CSS:START */", "/* WINPROB:CSS:END */"
@@ -227,10 +320,58 @@ const CMDATA = __DATA__;
 
 
 CMTBL_CSS = """
+  /* lovable-style top hero (logo + title banner image) */
+  .herotop{background:#0a1530; text-align:center; line-height:0;}
+  .herotop .herologo{display:block; width:100%; max-width:1024px; margin:0 auto; height:auto;}
+  header.hero.intro{border-radius:16px; margin:16px 0 4px; padding:30px 22px 24px;}
   /* live win-probability banner */
   h2.bigsec{font-size:1.9rem; margin:56px 0 8px; padding:16px 22px; color:#fff; line-height:1.2;
             background:linear-gradient(135deg,#0b1220,#1e3a8a); border-radius:14px;
             box-shadow:0 6px 20px -10px rgba(30,58,138,.6);}
+  h2.bigsec.real{margin-top:14px; background:linear-gradient(135deg,#052e26,#16a34a);
+            box-shadow:0 6px 20px -10px rgba(22,163,74,.6);}
+  /* live standings podium */
+  .podwrap{margin:6px 0 4px;}
+  .podium{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-items:end;}
+  .pcard{border:1px solid var(--line); border-radius:14px; padding:16px 12px; text-align:center;
+            background:#fff; position:relative;}
+  .pcard .medal{font-size:1.9rem; line-height:1;}
+  .pcard .pname{font-weight:800; color:var(--ink); margin:7px 0 2px; font-size:1rem;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .pcard .ppts{font-size:1.55rem; font-weight:800; color:var(--blue);}
+  .pcard .ppts small{font-size:.66rem; color:var(--muted); font-weight:600;}
+  .pcard .pprize{font-size:.86rem; color:var(--muted); margin-top:2px;}
+  .pcard.gold{border-color:#f5c518; box-shadow:0 10px 24px -12px rgba(245,197,24,.85);
+            transform:translateY(-10px);}
+  .pcard.silver{border-color:#cbd5e1;}
+  .pcard.bronze{border-color:#d8b384;}
+  .pcard.last{border-color:#fca5a5;}
+  /* live standings table */
+  .standwrap{max-height:600px; overflow:auto; border:1px solid var(--line);
+            border-radius:12px; margin-top:8px;}
+  table.standtbl{border-collapse:separate; border-spacing:0; width:100%; font-size:.82rem;
+            font-variant-numeric:tabular-nums;}
+  table.standtbl thead th{position:sticky; top:0; z-index:2; background:#f8fafc;
+            border-bottom:1px solid var(--line); font-weight:700; color:#334155;
+            padding:7px 8px; white-space:nowrap;}
+  table.standtbl td{padding:6px 8px; border-bottom:1px solid #f1f5f9; white-space:nowrap;
+            text-align:center; color:#475569;}
+  table.standtbl td.rk{font-weight:800; color:#334155;}
+  table.standtbl td.nm{text-align:right; font-weight:700; color:var(--ink); position:sticky;
+            right:0; z-index:1; background:#fff; box-shadow:-6px 0 6px -6px rgba(0,0,0,.10);
+            max-width:160px; overflow:hidden; text-overflow:ellipsis;}
+  table.standtbl thead th.nm{z-index:3; right:0; position:sticky;}
+  table.standtbl td.pts{font-weight:800; color:var(--ink);}
+  table.standtbl td.p1{font-weight:700; color:var(--blue);}
+  table.standtbl td.pm{font-weight:700; color:var(--green);}
+  table.standtbl td.pick small{color:var(--muted); font-weight:700; font-size:.78em;}
+  table.standtbl tbody tr:nth-child(odd){background:#fcfcfd;}
+  table.standtbl tbody tr:nth-child(odd) td.nm{background:#fcfcfd;}
+  table.standtbl tbody tr:hover td{background:#f1f5f9;}
+  .chg-up{color:var(--green); font-weight:800;}
+  .chg-dn{color:#dc2626; font-weight:800;}
+  .chg-eq{color:var(--muted);}
+  @media (max-width:760px){ .podium{grid-template-columns:repeat(2,1fr);} }
   /* champion-conditional matrix */
   table.cmtbl{border-collapse:separate; border-spacing:0; font-size:.8rem;
               font-variant-numeric:tabular-nums;}
@@ -300,13 +441,17 @@ def main() -> None:
     css = f"{CSS_START}\n{CMTBL_CSS}\n{CSS_END}\n"
     html = html.replace("</style>", css + "</style>", 1)
 
-    # 2) HTML sections, placed near the TOP of the page - right after the stat
-    #    boxes + headline callout, before the "כמה בחרו" tier-breakdown section.
-    body = explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data)
+    # 2) HTML sections, placed at the very TOP of the content (right after the
+    #    <div class="wrap"> open) so the live standings + simulation + group
+    #    tables lead the page; the choices-analysis intro follows below them.
+    body = (podium_html(data) + standings_table_html(data)
+            + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data))
     block = f"{HTML_START}\n{body}\n  {HTML_END}\n"
-    anchor = re.compile(r"(\n\s*<section>\s*\n\s*<h2[^>]*>כמה בחרו)")
-    if anchor.search(html):
-        html = anchor.sub("\n" + block + r"\1", html, count=1)
+    wrap_marker = '<div class="wrap">'
+    wi = html.find(wrap_marker)
+    if wi >= 0:
+        cut = wi + len(wrap_marker)
+        html = html[:cut] + "\n" + block + html[cut:]
     else:                                   # fallback: before the footer
         html = re.sub(r"(\n\s*<footer)", "\n" + block + r"\1", html, count=1)
 

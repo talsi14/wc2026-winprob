@@ -10,9 +10,10 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .config import DATA_LIVE, prize_vector
+from .config import DATA_LIVE, DEFAULT_RULES, prize_vector
 from .contributions import Contributions
 from .data_io import Dataset, load_dataset
+from .scoring import Entry, score_entry
 
 
 def load_live_dataset() -> Dataset:
@@ -53,6 +54,66 @@ def score_entries(ds: Dataset, contrib: Contributions, O: dict,
              + contrib.topscorer[:, pcol[r.top_scorer]])
         scores[:, e] = s
     return scores
+
+
+def known_team_stats(ds: Dataset, state: dict) -> dict[str, dict]:
+    """Per-team locked stats from completed matches (group + knockout).
+
+    Advancement / finish (tier C/D bonuses) and final/winner flags are only
+    credited once actually determined (group complete, KO played). Shared by the
+    live collector (reconciliation) and the win-prob engine (current points).
+    """
+    stats = {t: {"reg_wins": 0, "group_draws": 0, "reg_losses": 0,
+                 "pen_wins": 0, "pen_losses": 0, "group_finish": 0,
+                 "advanced": False, "made_final": False, "won_cup": False}
+             for t in ds.team_list}
+    sched = {r.match: (r.home, r.away) for r in ds.group_matches.itertuples()}
+
+    for mno, (hg, ag) in (state.get("group_scores") or {}).items():
+        home, away = sched[int(mno)]
+        if hg > ag:
+            stats[home]["reg_wins"] += 1; stats[away]["reg_losses"] += 1
+        elif ag > hg:
+            stats[away]["reg_wins"] += 1; stats[home]["reg_losses"] += 1
+        else:
+            stats[home]["group_draws"] += 1; stats[away]["group_draws"] += 1
+
+    for ko in (state.get("ko_results") or []):
+        h, a, w = ko["home"], ko["away"], ko.get("winner")
+        if not w:
+            continue
+        l = a if w == h else h
+        if ko.get("shootout"):
+            stats[w]["pen_wins"] += 1; stats[l]["pen_losses"] += 1
+        else:
+            stats[w]["reg_wins"] += 1; stats[l]["reg_losses"] += 1
+
+    if state.get("group_stage_complete"):
+        for _g, rows in (state.get("standings") or {}).items():
+            for r in rows:
+                stats[r["team"]]["group_finish"] = r["rank"]
+                stats[r["team"]]["advanced"] = bool(r["advanced"])
+    return stats
+
+
+def current_points_breakdown(ds: Dataset, state: dict, entries: pd.DataFrame,
+                             golden_boot: str = "") -> dict[str, dict]:
+    """Real locked points per entry from the actual results so far, using the
+    canonical scoring engine. Returns {entry name: breakdown} where the
+    breakdown has tier_a/b/c/d, scoring_team, conceding_team, top_scorer, total.
+    """
+    stats = known_team_stats(ds, state)
+    tp = state.get("team_played") or {}
+    gf = {t: tp.get(t, {}).get("gf", 0) for t in ds.team_list}
+    ga = {t: tp.get(t, {}).get("ga", 0) for t in ds.team_list}
+    pg = state.get("player_goals") or {}
+    team_tier = {r.team: r.tier for r in ds.teams.itertuples()}
+    out = {}
+    for r in entries.itertuples():
+        e = Entry(r.tierA, r.tierB, r.tierC, r.tierD, r.scoring, r.conceding, r.top_scorer)
+        out[r.name] = score_entry(e, stats, gf, ga, pg, golden_boot, team_tier,
+                                  DEFAULT_RULES)
+    return out
 
 
 def rank_and_metrics(scores: np.ndarray, seed: int = 7) -> dict:

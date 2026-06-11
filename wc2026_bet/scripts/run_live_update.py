@@ -37,8 +37,8 @@ from wc2026_bet.config import (DATA_LIVE, DATA_PROCESSED, N_SIMULATIONS,
                                RESULTS_DIR)
 from wc2026_bet.contributions import build_contributions
 from wc2026_bet.data_io import apply_share_factors, load_calibration
-from wc2026_bet.live import (load_entries, load_live_dataset, rank_and_metrics,
-                             score_entries)
+from wc2026_bet.live import (current_points_breakdown, load_entries,
+                             load_live_dataset, rank_and_metrics, score_entries)
 from wc2026_bet.model import fit_match_model
 from wc2026_bet.simulate import KnownState, Simulator
 
@@ -142,14 +142,16 @@ def main() -> None:
     M = rank_and_metrics(scores)
     chmat = champion_matrix(M["ranks"], O, ds, list(entries["name"]))
 
-    # site points (current locked) for display + projected bump
-    site = {}
-    sp = DATA_LIVE / "entry_points_site.csv"
-    if sp.exists():
-        import pandas as pd
-        sdf = pd.read_csv(sp)
-        site = {r.name: {"total": float(r.total), "rank": int(r.rank)}
-                for r in sdf.itertuples()}
+    # real current (locked) points from the actual results so far, via the
+    # canonical scoring engine (replaces the pool site's buggy/lagging totals).
+    bd_map = current_points_breakdown(ds, state, entries)
+    name_idx = {r.name: i for i, r in enumerate(entries.itertuples())}
+    totals = {nm: round(float(bd_map[nm]["total"]), 1) for nm in name_idx}
+    # rank by current points; ties broken by model P(1st) so the leader is the
+    # strongest among equals (sequential 1..N for a clean leaderboard).
+    cur_order = sorted(name_idx, key=lambda n: (-totals[n],
+                                                -float(M["P_first"][name_idx[n]]), n))
+    cur_rank = {n: i + 1 for i, n in enumerate(cur_order)}
 
     # per-group standings: current played/points/GD (from the frozen state) plus
     # simulated qualify% (P reach the Round of 32).
@@ -179,14 +181,23 @@ def main() -> None:
     out_entries = []
     for e, r in enumerate(entries.itertuples()):
         nm = r.name
-        cur = site.get(nm, {})
+        bd = bd_map[nm]
         rec = {
             "name": nm,
             "picks": {"tierA": r.tierA, "tierB": r.tierB, "tierC": r.tierC,
                       "tierD": r.tierD, "scoring": r.scoring,
                       "conceding": r.conceding, "top_scorer": r.top_scorer},
-            "current_points": cur.get("total", 0.0),
-            "current_rank": cur.get("rank"),
+            "current_points": totals[nm],
+            "current_rank": cur_rank[nm],
+            "pts_breakdown": {
+                "tierA": round(float(bd["tier_a"]), 1),
+                "tierB": round(float(bd["tier_b"]), 1),
+                "tierC": round(float(bd["tier_c"]), 1),
+                "tierD": round(float(bd["tier_d"]), 1),
+                "scoring": round(float(bd["scoring_team"]), 1),
+                "conceding": round(float(bd["conceding_team"]), 1),
+                "top_scorer": round(float(bd["top_scorer"]), 1),
+            },
             "exp_winnings": round(float(M["exp_winnings"][e]), 1),
             "P_first": round(float(M["P_first"][e]), 4),
             "P_second": round(float(M["P_second"][e]), 4),
@@ -205,6 +216,8 @@ def main() -> None:
             rec["d_exp_winnings"] = round(rec["exp_winnings"] - p.get("exp_winnings", 0), 1)
             rec["d_P_top2"] = round(rec["P_top2"] - p.get("P_top2", 0), 4)
             rec["d_exp_rank"] = round(rec["exp_rank"] - p.get("exp_rank", 0), 2)
+            if p.get("current_rank") is not None:
+                rec["d_current_rank"] = rec["current_rank"] - p["current_rank"]
         out_entries.append(rec)
 
     # sort by expected winnings (headline), then P_top2

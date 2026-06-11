@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from wc2026_bet import espn
 from wc2026_bet.config import DATA_LIVE, DATA_PROCESSED
 from wc2026_bet.data_io import load_dataset
+from wc2026_bet.live import known_team_stats
 from wc2026_bet.scoring import Entry, score_entry
 
 
@@ -168,60 +169,14 @@ def main() -> None:
 # --------------------------------------------------------------------------- #
 # Reconciliation: recompute locked points from known results, diff vs the site
 # --------------------------------------------------------------------------- #
-def _known_team_stats(ds, state) -> dict[str, dict]:
-    """Per-team locked stats from completed matches (group + knockout).
-
-    Advancement / finish (used for tier C/D bonuses) and final/winner flags are
-    only credited once they are actually determined (group complete, KO played).
-    """
-    teams = list(ds.team_list)
-    stats = {t: {"reg_wins": 0, "group_draws": 0, "reg_losses": 0,
-                 "pen_wins": 0, "pen_losses": 0, "group_finish": 0,
-                 "advanced": False, "made_final": False, "won_cup": False}
-             for t in teams}
-    sched = {r.match: (r.home, r.away) for r in ds.group_matches.itertuples()}
-
-    # group matches
-    for mno, (hg, ag) in state["group_scores"].items():
-        home, away = sched[int(mno)]
-        if hg > ag:
-            stats[home]["reg_wins"] += 1; stats[away]["reg_losses"] += 1
-        elif ag > hg:
-            stats[away]["reg_wins"] += 1; stats[home]["reg_losses"] += 1
-        else:
-            stats[home]["group_draws"] += 1; stats[away]["group_draws"] += 1
-
-    # knockout matches
-    for ko in state["ko_results"]:
-        h, a = ko["home"], ko["away"]
-        if ko.get("shootout"):
-            w = ko["winner"]; l = a if w == h else h
-            if w:
-                stats[w]["pen_wins"] += 1; stats[l]["pen_losses"] += 1
-        else:
-            w = ko["winner"]
-            if w:
-                l = a if w == h else h
-                stats[w]["reg_wins"] += 1; stats[l]["reg_losses"] += 1
-
-    # advancement / finish (only meaningful once the group stage is over)
-    if state["group_stage_complete"]:
-        for g, rows in state["standings"].items():
-            for r in rows:
-                stats[r["team"]]["group_finish"] = r["rank"]
-                stats[r["team"]]["advanced"] = bool(r["advanced"])
-
-    # final / champion from KO results: the highest-round match is the final.
-    # (Heuristic: if a match's winner never appears as a loser/again, treat the
-    #  last-played KO winner as champion only when 7 KO rounds are complete.)
-    return stats
-
-
 def reconcile(ds, state) -> None:
     entries = pd.read_csv(DATA_LIVE / "pool_entries_2026.csv")
-    site = pd.read_csv(DATA_LIVE / "entry_points_site.csv").set_index("name")
+    site_path = DATA_LIVE / "entry_points_site.csv"
+    if not site_path.exists():
+        return
+    site = pd.read_csv(site_path).set_index("name")
     team_tier = {r.team: r.tier for r in ds.teams.itertuples()}
-    stats = _known_team_stats(ds, state)
+    stats = known_team_stats(ds, state)
     gf = {t: state["team_played"].get(t, {}).get("gf", 0) for t in ds.team_list}
     ga = {t: state["team_played"].get(t, {}).get("ga", 0) for t in ds.team_list}
     pg = state["player_goals"]

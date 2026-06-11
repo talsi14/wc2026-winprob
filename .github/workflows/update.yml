@@ -54,6 +54,7 @@ jobs:
           rm -rf public
           mkdir -p public/history
           cp friends_bet/report/index.html public/index.html
+          cp friends_bet/report/hero.png   public/hero.png
           cp wc2026_bet/report/live.html  public/live.html
           cp published/*.html public/history/ 2>/dev/null || true
 
