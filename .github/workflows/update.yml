@@ -48,19 +48,27 @@ jobs:
           TS="$(date -u +%Y-%m-%dT%H%M)"
           mkdir -p published
           cp friends_bet/report/index.html "published/winprob_${TS}.html"
+          # the detailed English analyst page (probability table + all charts)
+          cp wc2026_bet/report/live.html "published/live_${TS}.html"
 
           rm -rf public
           mkdir -p public/history
           cp friends_bet/report/index.html public/index.html
+          cp wc2026_bet/report/live.html  public/live.html
           cp published/*.html public/history/ 2>/dev/null || true
 
-          # auto-generated history index (newest first)
+          # auto-generated history index (newest first), separating the two pages
           {
             echo '<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8">'
             echo '<title>היסטוריית עדכונים</title>'
             echo '<body style="font-family:system-ui,Arial;max-width:680px;margin:40px auto;padding:0 16px">'
-            echo '<h1>היסטוריית סיכויי זכייה</h1><p><a href="../index.html">← לעדכון האחרון</a></p><ul>'
-            ls -1r published/*.html | sed -E 's#published/##' \
+            echo '<h1>היסטוריית סיכויי זכייה</h1>'
+            echo '<p><a href="../index.html">← לעדכון האחרון</a> · <a href="../live.html">הדף המפורט (אנגלית)</a></p>'
+            echo '<h2>הדף לשיתוף (עברית)</h2><ul>'
+            ls -1r published/winprob_*.html | sed -E 's#published/##' \
+              | while read -r f; do echo "<li><a href=\"$f\">$f</a></li>"; done
+            echo '</ul><h2>הדף המפורט (אנגלית)</h2><ul>'
+            ls -1r published/live_*.html | sed -E 's#published/##' \
               | while read -r f; do echo "<li><a href=\"$f\">$f</a></li>"; done
             echo '</ul></body></html>'
           } > public/history/index.html
