@@ -13,6 +13,7 @@ state_<TS>.json schema (all team / player names canonical):
   advanced_thirds_groups : [grp, ...]                                  # the (<=8) groups whose 3rd advanced
   ko_results           : [ {home,away,home_goals,away_goals,winner,shootout} ]
   player_goals         : { "<canonical scorer>": goals }               # candidates only, open-play+penalty, no own/shootout
+  all_scorers          : [ {scorer, team, goals} ]                     # every scorer (Golden-Boot board), sorted desc
   team_played          : { team: {gf,ga,games} }                       # from completed matches
 
 Usage:  python3 scripts/collect_live.py [--ts 2026-06-20T1200]
@@ -83,6 +84,9 @@ def main() -> None:
     team_played: dict[str, dict] = {}
     cand_lookup = _candidate_lookup()
     player_goals: dict[str, int] = {}
+    # full tournament scorer board (every scorer, not just pick candidates):
+    #   key -> {"scorer": display name, "team": canonical team, "goals": n}
+    all_scorers: dict[str, dict] = {}
 
     def bump_played(team, gf, ga):
         d = team_played.setdefault(team, {"gf": 0, "ga": 0, "games": 0})
@@ -99,7 +103,9 @@ def main() -> None:
         # accumulate team gf/ga
         bump_played(fx["home"], hg, ag)
         bump_played(fx["away"], ag, hg)
-        # goal scorers -> candidate goals
+        # team-id -> canonical team for this fixture (to attribute each scorer)
+        id2team = {str(fx.get("home_id")): fx["home"], str(fx.get("away_id")): fx["away"]}
+        # goal scorers -> candidate goals (for scoring) + full board (for display)
         try:
             scorers = espn.fetch_goal_scorers(fx["espn_id"])
         except RuntimeError:
@@ -108,6 +114,13 @@ def main() -> None:
             canon = cand_lookup.get(_norm(s["scorer"]))
             if canon:
                 player_goals[canon] = player_goals.get(canon, 0) + 1
+            # full board: prefer the canonical (Hebrew-mappable) name when known
+            disp = canon or s["scorer"]
+            team = id2team.get(str(s.get("team_id"))) or ""
+            row = all_scorers.setdefault(disp, {"scorer": disp, "team": team, "goals": 0})
+            row["goals"] += 1
+            if not row["team"] and team:
+                row["team"] = team
 
         if key in pair_to_match:
             mno, shome, saway = pair_to_match[key]
@@ -149,6 +162,8 @@ def main() -> None:
         "advanced_thirds_groups": advanced_thirds_groups,
         "ko_results": ko_results,
         "player_goals": player_goals,
+        "all_scorers": sorted(all_scorers.values(),
+                              key=lambda r: (-r["goals"], r["scorer"])),
         "team_played": team_played,
     }
 

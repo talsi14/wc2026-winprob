@@ -17,7 +17,9 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PYTHON="${PYTHON:-python3}"
 
 cd "$HERE/wc2026_bet"
-"$PYTHON" scripts/run_live_pipeline.py --recalibrate
+# extra args are forwarded to the pipeline (e.g. CI passes --skip-collect after
+# it has already collected the live state for the change-gate).
+"$PYTHON" scripts/run_live_pipeline.py --recalibrate "$@"
 "$PYTHON" scripts/build_friends_report.py
 
 echo "Built shareable page -> $HERE/friends_bet/report/index.html"

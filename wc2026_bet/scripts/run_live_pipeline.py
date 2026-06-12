@@ -41,6 +41,9 @@ def main() -> None:
     ap.add_argument("--recalibrate", action="store_true")
     ap.add_argument("--entries", action="store_true",
                     help="re-pull the 53 pool entries from Supabase first")
+    ap.add_argument("--skip-collect", action="store_true",
+                    help="reuse the existing state_latest.json instead of re-fetching "
+                    "from ESPN (used by the CI change-gate, which already collected)")
     ap.add_argument("--me", default="", help="optional entry nickname to highlight "
                     "(blank by default -> neutral, shareable report)")
     args = ap.parse_args()
@@ -49,7 +52,10 @@ def main() -> None:
 
     if args.entries:
         run("ingest_pool_entries_2026.py")
-    run("collect_live.py", "--ts", ts)
+    if args.skip_collect:
+        print("\n(skip-collect: reusing existing state_latest.json)")
+    else:
+        run("collect_live.py", "--ts", ts)
     run("refresh_odds.py", "--ts", ts)
     upd = ["--ts", ts, "--sims", str(args.sims),
            "--state", str(HERE.parent / "data" / "live" / "state_latest.json")]
