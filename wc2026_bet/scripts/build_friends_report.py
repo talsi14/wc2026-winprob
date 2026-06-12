@@ -181,34 +181,6 @@ def standings_table_html(data: dict) -> str:
         f'<tbody>{"".join(trs)}</tbody></table></div>\n  </section>\n')
 
 
-def scorers_table_html(data: dict, top: int = 5) -> str:
-    """Top goal scorers of the tournament so far (the real Golden-Boot board) -
-    name + team + goals. Shows a placeholder until the first goal is scored."""
-    scorers = data.get("scorers") or []
-    pl_he, team_he = _player_he_map(), _team_he_map()
-    medal = {0: "🥇", 1: "🥈", 2: "🥉"}
-    if not scorers:
-        rows = ('<tr><td class="rk">—</td><td class="nm" colspan="2">'
-                'טרם נרשמו שערים בטורניר</td><td class="pts">0</td></tr>')
-    else:
-        rows = ""
-        for i, s in enumerate(scorers[:top]):
-            nm = pl_he.get(s["scorer"], s["scorer"])
-            team = team_he.get(s.get("team", ""), s.get("team", "") or "—")
-            rows += (f'<tr><td class="rk">{medal.get(i, str(i + 1))}</td>'
-                     f'<td class="nm" title="{s["scorer"]}">{nm}</td>'
-                     f'<td class="team">{team}</td>'
-                     f'<td class="pts">{s["goals"]}</td></tr>')
-    head = '<tr><th>#</th><th class="nm">שחקן</th><th>נבחרת</th><th>שערים</th></tr>'
-    return (
-        '\n  <section class="scorwrap">\n'
-        '    <h2 class="bigsec real">מלכי השערים</h2>\n'
-        '    <p class="sub" style="margin-top:4px">חמשת הכובשים המובילים בטורניר עד כה '
-        '(כולל בעיטות עונשין במשחק, לא כולל שערים עצמיים ופנדלים בהכרעה).</p>\n'
-        f'    <div class="scortbl-wrap"><table class="scortbl"><thead>{head}</thead>'
-        f'<tbody>{rows}</tbody></table></div>\n  </section>\n')
-
-
 # thin white-line icons for the leader widgets (match the dark-card screenshot)
 _IC_CROWN = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
              'stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4 4 5-6 5 6 4-4-2 12H5L3 7z"/></svg>')
@@ -500,21 +472,6 @@ CMTBL_CSS = """
   .chg-dn{color:#dc2626; font-weight:800;}
   .chg-eq{color:var(--muted);}
   @media (max-width:760px){ .podium{grid-template-columns:repeat(2,1fr);} }
-  /* tournament top-scorers board */
-  .scorwrap{margin:6px 0 4px;}
-  .scortbl-wrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; max-width:520px;}
-  table.scortbl{border-collapse:separate; border-spacing:0; width:100%; font-size:.92rem;
-            font-variant-numeric:tabular-nums;}
-  table.scortbl thead th{background:#f8fafc; border-bottom:1px solid var(--line);
-            font-weight:700; color:#334155; padding:9px 12px; white-space:nowrap;}
-  table.scortbl td{padding:9px 12px; border-bottom:1px solid #f1f5f9; text-align:center;
-            color:#475569;}
-  table.scortbl tbody tr:last-child td{border-bottom:0;}
-  table.scortbl td.rk{font-weight:800; width:48px;}
-  table.scortbl th.nm, table.scortbl td.nm{text-align:right; font-weight:700; color:var(--ink);}
-  table.scortbl td.team{color:#475569;}
-  table.scortbl td.pts{font-weight:800; color:var(--green); width:64px;}
-  table.scortbl tbody tr:nth-child(odd){background:#fcfcfd;}
   /* live-leader widgets (clickable dark cards + hovering category tables) */
   .leaders{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; direction:rtl;
             margin:16px 0 6px;}
@@ -630,7 +587,6 @@ def main() -> None:
     #    <div class="wrap"> open) so the live standings + simulation + group
     #    tables lead the page; the choices-analysis intro follows below them.
     body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
-            + scorers_table_html(data)
             + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data))
     block = f"{HTML_START}\n{body}\n  {HTML_END}\n"
     wrap_marker = '<div class="wrap">'
