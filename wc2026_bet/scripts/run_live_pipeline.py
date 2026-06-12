@@ -62,6 +62,9 @@ def main() -> None:
     if args.recalibrate:
         upd.append("--recalibrate")
     run("run_live_update.py", *upd)
+    # snapshot the calibration / simulated-odds the run actually used, for the
+    # committed "over time" history powering the Odds & ELO dashboard.
+    run("snapshot_metrics.py", "--ts", ts)
     run("build_live_report.py", *(["--me", args.me] if args.me else []))
     print(f"\n=== Done. Open report/live.html (snapshot {ts}). ===")
 

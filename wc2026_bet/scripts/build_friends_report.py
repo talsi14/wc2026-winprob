@@ -16,12 +16,16 @@ Usage: python3 scripts/build_friends_report.py
 """
 from __future__ import annotations
 
+import csv
 import json
 import os
 import re
 from pathlib import Path
 
 WC_ROOT = Path(__file__).resolve().parents[1]          # .../wc2026_bet
+DATA_PROCESSED = WC_ROOT / "data" / "processed"
+DATA_LIVE = WC_ROOT / "data" / "live"
+DATA_HISTORY = WC_ROOT / "data" / "history"
 # The shareable page lives in a sibling ``friends_bet`` folder. By default we
 # resolve it relative to the parent of wc2026_bet (the repo root), and allow an
 # explicit override via FRIENDS_REPORT_OUT so the pipeline is portable.
@@ -284,6 +288,21 @@ LEADERS_JS = """
 HTML_START, HTML_END = "<!-- WINPROB:START -->", "<!-- WINPROB:END -->"
 JS_START, JS_END = "/* WINPROB:JS:START */", "/* WINPROB:JS:END */"
 CSS_START, CSS_END = "/* WINPROB:CSS:START */", "/* WINPROB:CSS:END */"
+WHATIF_START, WHATIF_END = "<!-- WHATIF:START -->", "<!-- WHATIF:END -->"
+ODDS_START, ODDS_END = "<!-- ODDS:START -->", "<!-- ODDS:END -->"
+
+
+def replace_region(html: str, start: str, end: str, content: str) -> str:
+    """Replace the text between persistent ``start``/``end`` markers in place.
+
+    Idempotent: re-running the build always overwrites the prior content. Uses a
+    function replacement so backslashes in ``content`` are inserted literally.
+    """
+    pat = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
+    repl = f"{start}\n{content}\n{end}"
+    if not pat.search(html):
+        raise SystemExit(f"markers {start!r}..{end!r} not found in the base page")
+    return pat.sub(lambda _m: repl, html, count=1)
 
 
 N_GROUP_MATCHES = 72   # 12 groups x 6
@@ -556,8 +575,794 @@ CMTBL_CSS = """
 """
 
 
+TABS_CSS = """
+  /* sticky tab navigation */
+  nav.tabs{position:sticky; top:0; z-index:50; display:flex; gap:6px; flex-wrap:wrap;
+           background:rgba(241,245,249,.92); backdrop-filter:saturate(1.4) blur(6px);
+           padding:10px 0 8px; margin:0 0 6px; border-bottom:1px solid var(--line);}
+  nav.tabs button{appearance:none; border:1px solid var(--line); background:#fff; color:#475569;
+           font-family:inherit; font-size:.96rem; font-weight:700; cursor:pointer;
+           padding:9px 16px; border-radius:999px; transition:all .15s;}
+  nav.tabs button:hover{border-color:#cbd5e1; color:var(--ink);}
+  nav.tabs button.active{background:linear-gradient(135deg,#0b1220,#1e3a8a); color:#fff;
+           border-color:transparent; box-shadow:0 6px 16px -8px rgba(30,58,138,.7);}
+  .tabpanel[hidden]{display:none;}
+"""
+
+WHATIF_CSS = """
+  /* What-If tab */
+  .wibar{display:flex; align-items:center; gap:12px; margin:14px 0 4px; flex-wrap:wrap;}
+  .wibtn{appearance:none; border:1px solid var(--line); background:#fff; color:#334155;
+         font-family:inherit; font-weight:700; font-size:.9rem; cursor:pointer;
+         padding:8px 14px; border-radius:10px;}
+  .wibtn:hover{border-color:#cbd5e1; background:#f8fafc;}
+  .wihint{color:var(--muted); font-size:.86rem;}
+  .wigrid{display:grid; grid-template-columns:330px minmax(0,1fr); gap:18px; margin-top:10px; align-items:start;}
+  .wicol{min-width:0;}
+  .wicolhd{font-weight:800; color:var(--ink); margin-bottom:8px; font-size:1.02rem;}
+  #wiMatches{max-height:560px; overflow:auto; border:1px solid var(--line); border-radius:12px; padding:6px 10px;}
+  .wistage{font-weight:800; color:#1e3a8a; margin:12px 4px 6px; font-size:.98rem;
+           border-bottom:2px solid #e2e8f0; padding-bottom:4px;}
+  .wisub{font-weight:700; color:#64748b; margin:8px 4px 4px; font-size:.82rem;}
+  .wimatch{padding:7px 6px; border-bottom:1px solid #f1f5f9;}
+  .wimrow{display:flex; align-items:center; gap:8px;}
+  .witeam{flex:1; font-size:.9rem; color:#334155; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .witeam.h{text-align:left;} .witeam.a{text-align:right;}
+  .wiscore{width:42px; text-align:center; font-variant-numeric:tabular-nums; font-weight:700;
+           border:1px solid var(--line); border-radius:8px; padding:5px 2px; font-family:inherit;}
+  .wiscore:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 2px rgba(37,99,235,.15);}
+  .widash{color:var(--muted); font-weight:800;}
+  .wiso{margin-top:5px; font-size:.82rem; color:#475569; display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .wiso label{display:inline-flex; align-items:center; gap:4px; cursor:pointer;}
+  .wiscorers{margin-top:7px; padding-top:6px; border-top:1px dashed var(--line);}
+  .wisc-hd{font-size:.78rem; font-weight:700; color:#334155; margin-bottom:4px;}
+  .wisc-hd small{font-weight:600; color:#64748b;}
+  .wisc-row{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:2px 0;}
+  .wisc-nm{font-size:.82rem; color:#1e293b;}
+  .wisc-nm small{color:#94a3b8; font-weight:400;}
+  .wistep{display:inline-flex; align-items:center; gap:7px;}
+  .wisc-v{min-width:14px; text-align:center; font-size:.85rem; font-weight:700;
+          font-variant-numeric:tabular-nums; color:#0f172a;}
+  .wistepbtn{appearance:none; border:1px solid var(--line); background:#fff; color:#1e3a8a;
+             border-radius:7px; width:22px; height:22px; line-height:1; cursor:pointer;
+             font-weight:800; font-size:.95rem; padding:0;}
+  .wistepbtn:hover:not(:disabled){background:#eff6ff; border-color:#bfdbfe;}
+  .wistepbtn:disabled{opacity:.4; cursor:default;}
+  .wiboardwrap{max-height:560px; overflow:auto; border:1px solid var(--line); border-radius:12px;}
+  table.witbl{border-collapse:separate; border-spacing:0; width:100%; font-size:.85rem;
+              font-variant-numeric:tabular-nums;}
+  table.witbl thead th{position:sticky; top:0; z-index:2; background:#f8fafc; font-weight:700;
+              color:#334155; padding:8px; border-bottom:1px solid var(--line); white-space:nowrap;}
+  table.witbl td{padding:7px 8px; border-bottom:1px solid #f1f5f9; text-align:center; color:#475569;}
+  table.witbl td.rk{font-weight:800; color:#334155;}
+  table.witbl td.nm{text-align:right; font-weight:700; color:var(--ink); max-width:200px;
+              overflow:hidden; text-overflow:ellipsis;}
+  table.witbl td.pts{font-weight:800; color:var(--ink);}
+  table.witbl tbody tr:nth-child(odd){background:#fcfcfd;}
+  @media (max-width:760px){ .wigrid{grid-template-columns:1fr;} }
+"""
+
+ODDS_CSS = """
+  /* Odds & ELO tab */
+  .odcal{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+  .odchip{background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 16px;
+          display:flex; flex-direction:column; gap:2px; min-width:130px;}
+  .odchip .odk{color:var(--muted); font-size:.78rem; font-weight:600;}
+  .odchip .odv{color:var(--ink); font-size:1.3rem; font-weight:800; font-variant-numeric:tabular-nums;}
+  table.odtbl{border-collapse:separate; border-spacing:0; width:100%; font-size:.85rem;
+              font-variant-numeric:tabular-nums;}
+  table.odtbl thead th{position:sticky; top:0; z-index:2; background:#f8fafc; font-weight:700;
+              color:#334155; padding:8px; border-bottom:1px solid var(--line); white-space:nowrap;
+              text-align:center;}
+  table.odtbl thead th.nm{text-align:right;}
+  table.odtbl td{padding:6px 8px; border-bottom:1px solid #f1f5f9; text-align:center; color:#475569;}
+  table.odtbl td.nm{text-align:right; font-weight:700; color:var(--ink);}
+  table.odtbl td.v{font-weight:800; color:var(--blue);}
+  table.odtbl tbody tr:nth-child(odd){background:#fcfcfd;}
+  .odchart{margin-top:14px;}
+  .odsvg{width:100%; height:auto; background:#fff; border:1px solid var(--line); border-radius:12px;}
+  .odleg{display:flex; flex-wrap:wrap; gap:12px; margin:6px 0;}
+  .odlg{font-size:.82rem; color:#475569; display:inline-flex; align-items:center; gap:5px;}
+  .odsw{width:12px; height:12px; border-radius:3px; display:inline-block;}
+"""
+
+TABS_JS = """
+(function(){
+  const tabs = Array.from(document.querySelectorAll('nav.tabs button[data-tab]'));
+  const panels = Array.from(document.querySelectorAll('.tabpanel[data-tab]'));
+  if(!tabs.length) return;
+  function show(name){
+    tabs.forEach(b=> b.classList.toggle('active', b.dataset.tab===name));
+    panels.forEach(p=> p.hidden = (p.dataset.tab!==name));
+    window.scrollTo({top:0, behavior:'instant' in window? 'instant':'auto'});
+  }
+  tabs.forEach(b=> b.addEventListener('click', ()=> show(b.dataset.tab)));
+  show('main');
+})();
+"""
+
+
+# =========================================================================== #
+# Shared data loaders for the new tabs
+# =========================================================================== #
+def _teams_meta() -> dict:
+    """team -> {tier, group, elo, elo_eloratings, elo_market, market_prob}."""
+    out = {}
+    f = DATA_PROCESSED / "teams.csv"
+    if not f.exists():
+        return out
+    with f.open(encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            def _f(k):
+                try:
+                    return float(r[k])
+                except (TypeError, ValueError):
+                    return None
+            out[r["team"]] = {
+                "tier": r.get("tier", ""), "group": r.get("group", ""),
+                "elo": _f("elo"), "elo_eloratings": _f("elo_eloratings"),
+                "elo_market": _f("elo_market"), "market_prob": _f("market_prob"),
+            }
+    return out
+
+
+def _load_state() -> dict:
+    f = DATA_LIVE / "state_latest.json"
+    return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+
+
+def _read_csv(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    with path.open(encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+
+# =========================================================================== #
+# Tab "What If" - inject the data the in-browser scoring engine needs
+# =========================================================================== #
+def whatif_payload(data: dict, state: dict) -> dict:
+    meta = _teams_meta()
+    team_he, pl_he = _team_he_map(), _player_he_map()
+    teams = sorted(meta)
+    team_tier = {t: meta[t]["tier"] for t in teams}
+    team_group = {t: meta[t]["group"] for t in teams}
+    groups: dict[str, list[str]] = {}
+    for t in teams:
+        groups.setdefault(meta[t]["group"], []).append(t)
+    # order each group by the official groups.csv position when available
+    pos = {(r["group"], r["team"]): int(r["pos"]) for r in _read_csv(DATA_PROCESSED / "groups.csv")}
+    for g in groups:
+        groups[g].sort(key=lambda t: pos.get((g, t), 99))
+
+    sched = _read_csv(DATA_PROCESSED / "schedule_groups.csv")
+    group_matches = [{"no": int(r["match"]), "group": r["group"],
+                      "home": r["home"], "away": r["away"]} for r in sched]
+
+    bracket_raw = json.loads((DATA_PROCESSED / "bracket.json").read_text())
+    bracket = [{"m": b["match"], "rc": b["round_code"], "stage": b["stage"],
+                "hr": b["home_ref"], "ar": b["away_ref"]} for b in bracket_raw]
+    third_slots = []
+    for b in bracket_raw:
+        if b["round_code"] != 1:
+            continue
+        for side in ("home_ref", "away_ref"):
+            if b[side]["type"] == "third":
+                third_slots.append({"m": b["match"], "side": side,
+                                    "eligible": list(b[side]["eligible"])})
+
+    rules = {
+        "win": 3.0, "draw": 1.0, "loss": 0.0, "pen_win": 3.0, "pen_loss": 1.0,
+        "b_r32_top2_D": 3.0, "b_r32_top2_C": 1.0, "b_r32_third_D": 1.0,
+        "b_final": 2.0, "b_win": 1.0,
+        "per_gf": 0.5, "per_ga": 0.5, "per_gk": 0.5, "gb_bonus": 1.0,
+    }
+
+    ents = data.get("entries") or []
+    entries = [{"name": e["name"], "picks": e["picks"],
+                "base": float(e.get("current_points", 0)),
+                "bd": e.get("pts_breakdown") or {}} for e in ents]
+
+    # Goal-scorer attribution is only offered for players that someone picked as
+    # "top scorer" (others can't change any entry's score). Resolve each pick's
+    # national team so we can later restrict suggestions to the relevant match.
+    player_team: dict[str, str] = {}
+    for pf in (DATA_PROCESSED / "players.csv", WC_ROOT / "data" / "live" / "extra_players.csv"):
+        try:
+            for r in _read_csv(pf):
+                if r.get("scorer") and r.get("team"):
+                    player_team.setdefault(r["scorer"], r["team"])
+        except Exception:
+            pass
+    for s in (state.get("all_scorers") or data.get("scorers") or []):
+        if s.get("scorer") and s.get("team"):
+            player_team.setdefault(s["scorer"], s["team"])
+    picked = sorted({e["picks"]["top_scorer"] for e in ents if e["picks"].get("top_scorer")})
+    tracked_players = [{"name": n, "team": player_team.get(n, "")} for n in picked]
+
+    # Hebrew labels limited to the teams/players actually referenced
+    he_teams = {t: team_he.get(t, t) for t in teams}
+    he_players = {p["name"]: pl_he.get(p["name"], p["name"]) for p in tracked_players}
+
+    return {
+        "rules": rules,
+        "teamTier": team_tier, "teamGroup": team_group, "groups": groups,
+        "groupMatches": group_matches, "bracket": bracket, "thirdSlots": third_slots,
+        "realGroupScores": {k: list(v) for k, v in (state.get("group_scores") or {}).items()},
+        "realKo": state.get("ko_results") or [],
+        "realTeamPlayed": state.get("team_played") or data.get("team_played") or {},
+        "realPlayerGoals": state.get("player_goals") or {},
+        "groupStageComplete": bool(state.get("group_stage_complete")),
+        "entries": entries, "trackedPlayers": tracked_players,
+        "teamHe": he_teams, "playerHe": he_players,
+    }
+
+
+def whatif_html() -> str:
+    return """
+  <h2 class="bigsec">What If..?</h2>
+  <section>
+    <p class="sub" style="margin-top:4px">בחרו תוצאות למשחקים שטרם נגמרו וראו איך <b>טבלת הניקוד בפועל</b>
+      של ההתערבות משתנה. אפשר למלא משחקי בתים, וגם <b>משחקי נוק‑אאוט</b> — כל משחק נפתח למילוי ברגע ששתי
+      הקבוצות בו ידועות, והתוצאות שמזינים מתגלגלות הלאה בעץ המשחקים עד הגמר. מי שירצה — יכול גם לשייך מבקיעי
+      שערים כדי להשפיע על בחירת "מלך השערים".</p>
+    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;">
+      <b>זו לא תחזית.</b> הטבלה כאן מציגה <b>רק את הניקוד</b> שהיה מתקבל לפי התוצאות שאתם ממציאים —
+      בלי סיכויי זכייה ובלי סימולציה. הניקוד מחושב בדפדפן לפי חוקי ההגרלה. עמודת <b>שינוי</b> = תזוזת המיקום
+      לעומת הדירוג הנוכחי, ובכל בחירה מוצג בסוגריים הניקוד שלה בתרחיש.
+    </div>
+    <div class="wibar">
+      <button type="button" id="wiReset" class="wibtn">איפוס כל התרחישים</button>
+      <span id="wiCount" class="wihint"></span>
+    </div>
+    <div class="wigrid">
+      <div class="wicol">
+        <div class="wicolhd">משחקים למילוי</div>
+        <div id="wiMatches"></div>
+      </div>
+      <div class="wicol">
+        <div class="wicolhd">טבלת הדירוג — בתרחיש שלכם</div>
+        <div class="standwrap"><table class="standtbl"><thead><tr>
+          <th>מקום</th><th>שינוי</th><th class="nm">שם</th><th>נק׳</th>
+          <th>דרג א׳</th><th>דרג ב׳</th><th>דרג ג׳</th><th>דרג ד׳</th>
+          <th>כובשת</th><th>סופגת</th><th>מלך שערים</th></tr></thead>
+          <tbody id="wiBoard"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+"""
+
+
+# =========================================================================== #
+# Tab "Odds & ELO" - current run values + history-over-time
+# =========================================================================== #
+def odds_payload(data: dict) -> dict:
+    meta = _teams_meta()
+    team_he = _team_he_map()
+    pl_he = _player_he_map()
+
+    elo = [{"team": t, "he": team_he.get(t, t),
+            "blended": m["elo"], "eloratings": m["elo_eloratings"],
+            "market": m["elo_market"], "marketProb": m["market_prob"]}
+           for t, m in meta.items() if m["elo"] is not None]
+    elo.sort(key=lambda r: -(r["blended"] or 0))
+
+    advance = [{"team": r["team"], "he": team_he.get(r["team"], r["team"]),
+                "p": float(r["p_advance"])}
+               for r in _read_csv(DATA_PROCESSED / "market_advance.csv") if r.get("p_advance")]
+    advance.sort(key=lambda r: -r["p"])
+
+    gb = [{"player": r["player"], "he": pl_he.get(r["player"], r["player"]),
+           "p": float(r["p_gb"])}
+          for r in _read_csv(DATA_PROCESSED / "market_golden_boot.csv") if r.get("p_gb")]
+    gb.sort(key=lambda r: -r["p"])
+
+    cm = data.get("champion_matrix") or {}
+    sim_title = cm.get("p_title") or {}
+    cal = data.get("calibration") or {}
+
+    # history (committed jsonl, one record per pipeline run); downsample to <=60 pts
+    hist = []
+    hf = DATA_HISTORY / "metrics_history.jsonl"
+    if hf.exists():
+        for line in hf.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    hist.append(json.loads(line))
+                except json.JSONDecodeError:
+                    pass
+    if len(hist) > 60:
+        step = len(hist) // 60 + 1
+        hist = hist[::step] + [hist[-1]]
+
+    return {
+        "generatedAt": data.get("timestamp", ""),
+        "elo": elo, "advance": advance[:24], "advanceTail": advance[-8:],
+        "goldenBoot": gb[:15],
+        "simTitle": {t: round(float(p), 4) for t, p in sim_title.items()},
+        "titleHe": {t: team_he.get(t, t) for t in sim_title},
+        "calibration": {"strength_spread": cal.get("strength_spread"),
+                        "golden_boot_scale": cal.get("golden_boot_scale")},
+        "history": hist,
+    }
+
+
+def odds_html() -> str:
+    return """
+  <h2 class="bigsec">הימורי השוק ודירוגי הכוח (ELO)</h2>
+  <section>
+    <p class="sub" style="margin-top:4px">בכל הרצה הצינור מרענן את נתוני השוק ומחשב דירוג כוח (ELO) משוקלל.
+      כאן רואים את הערכים <b>של ההרצה האחרונה</b>, ולמטה מעקב <b>לאורך זמן</b>.</p>
+    <div class="callout">
+      <b>שימו לב.</b> יחסי ההימורים ודירוגי ה‑ELO הם כיום קלט יציב (נקבעו לפני הטורניר), ולכן הם כמעט קבועים בין הרצות.
+      מה שבאמת זז עם תוצאות אמת הוא ה<b>הסתברויות מהסימולציה</b> ופרמטרי ה<b>כיול</b> — ואותם מציגים גם לאורך זמן.
+    </div>
+    <div id="odCal" class="odcal"></div>
+  </section>
+  <div class="grid2">
+    <section><div class="panel-title">דירוג כוח (ELO) — ההרצה האחרונה</div>
+      <p class="panel-cap">משוקלל = שילוב דירוג בסיס והימורי השוק</p>
+      <div class="scrollbox"><table class="odtbl"><thead><tr>
+        <th class="nm">נבחרת</th><th>משוקלל</th><th>בסיס</th><th>שוק</th><th>P(זכייה)</th>
+      </tr></thead><tbody id="odElo"></tbody></table></div>
+    </section>
+    <section><div class="panel-title">סיכויי תואר — שוק מול סימולציה</div>
+      <p class="panel-cap">P(זכייה בגביע): השוק (הסתברות גלומה) מול הסימולציה שלנו</p>
+      <div class="scrollbox"><table class="odtbl"><thead><tr>
+        <th class="nm">נבחרת</th><th>שוק</th><th>סימולציה</th></tr></thead>
+        <tbody id="odTitle"></tbody></table></div>
+    </section>
+  </div>
+  <div class="grid2">
+    <section><div class="panel-title">סיכויי העפלה (שוק)</div>
+      <p class="panel-cap">P(העפלה לשלב הנוק‑אאוט) לפי השוק — 24 המובילות</p>
+      <div class="scrollbox"><table class="odtbl"><thead><tr>
+        <th class="nm">נבחרת</th><th>העפלה</th></tr></thead><tbody id="odAdv"></tbody></table></div>
+    </section>
+    <section><div class="panel-title">נעל הזהב (שוק)</div>
+      <p class="panel-cap">P(זכייה בנעל הזהב) לפי השוק — 15 המובילים</p>
+      <div class="scrollbox"><table class="odtbl"><thead><tr>
+        <th class="nm">שחקן</th><th>סיכוי</th></tr></thead><tbody id="odGb"></tbody></table></div>
+    </section>
+  </div>
+  <section>
+    <h2 style="margin-top:6px">לאורך זמן</h2>
+    <p class="sub">מעקב אחר ההסתברויות מהסימולציה ופרמטרי הכיול לאורך ההרצות. ייאסף ויתעבה ככל שיצטברו עדכונים.</p>
+    <div id="odHist"></div>
+  </section>
+"""
+
+
+def whatif_js(payload: dict) -> str:
+    return _WHATIF_JS.replace("__WHATIF__", json.dumps(payload, ensure_ascii=False))
+
+
+def odds_js(payload: dict) -> str:
+    return _ODDS_JS.replace("__ODDS__", json.dumps(payload, ensure_ascii=False))
+
+
+_WHATIF_JS = r"""
+const WHATIF = __WHATIF__;
+(function(){
+  const W = WHATIF;
+  const board = document.getElementById('wiBoard');
+  const matchesEl = document.getElementById('wiMatches');
+  if(!W || !W.entries || !board || !matchesEl) return;
+  const R = W.rules;
+  const heT = t => (W.teamHe[t]||t);
+  const heP = p => (W.playerHe[p]||p);
+  const g2 = x => (Math.round(x*10)/10).toString();
+
+  const gmByNo = {};            // match no -> {no,group,home,away}
+  const gmByGroup = {};         // group -> [match,...]
+  W.groupMatches.forEach(m=>{ gmByNo[m.no]=m; (gmByGroup[m.group]=gmByGroup[m.group]||[]).push(m); });
+  const pairKey = (a,b)=> [a,b].sort().join(' || ');
+
+  // ---- hypothetical state (what the user invented) ---------------------- //
+  let hypoGroup = {};    // match no -> [hg,ag]
+  let hypoKo = {};       // match no -> {hg,ag,so}  (so = shootout winner team)
+  let hypoScorers = {};  // matchKey -> { player: goals }
+  let lastSig = null;
+
+  function mergedGroupScores(){
+    const o = {};
+    for(const k in W.realGroupScores) o[k] = W.realGroupScores[k];
+    for(const k in hypoGroup) o[k] = hypoGroup[k];
+    return o;
+  }
+  function mergedPlayerGoals(){
+    const o = {};
+    for(const k in (W.realPlayerGoals||{})) o[k] = W.realPlayerGoals[k];
+    for(const mk in hypoScorers) for(const p in hypoScorers[mk]) o[p] = (o[p]||0) + hypoScorers[mk][p];
+    return o;
+  }
+
+  function groupStandings(gs){
+    const out = {complete:{}, finish:{}, adv:{}, winner:{}, runner:{}, third:{}, tstats:{}, allComplete:true};
+    for(const g of Object.keys(W.groups)){
+      const ms = gmByGroup[g]||[];
+      const done = ms.every(m=> gs[m.no]!==undefined);
+      out.complete[g] = done;
+      if(!done){ out.allComplete = false; continue; }
+      const tab = {}; W.groups[g].forEach(t=> tab[t]={pts:0,gd:0,gf:0});
+      ms.forEach(m=>{ const [hg,ag]=gs[m.no];
+        tab[m.home].gf+=hg; tab[m.away].gf+=ag; tab[m.home].gd+=hg-ag; tab[m.away].gd+=ag-hg;
+        if(hg>ag) tab[m.home].pts+=3; else if(ag>hg) tab[m.away].pts+=3; else { tab[m.home].pts++; tab[m.away].pts++; }
+      });
+      const ord = W.groups[g].slice().sort((a,b)=> tab[b].pts-tab[a].pts || tab[b].gd-tab[a].gd || tab[b].gf-tab[a].gf || a.localeCompare(b));
+      ord.forEach((t,i)=> out.finish[t]=i+1);
+      out.winner[g]=ord[0]; out.runner[g]=ord[1]; out.third[g]=ord[2];
+      out.adv[ord[0]]=true; out.adv[ord[1]]=true;
+      out.tstats[g]=tab[ord[2]];
+    }
+    if(out.allComplete){
+      const thirds = Object.keys(W.groups).map(g=>({g, t:out.third[g], s:out.tstats[g]}));
+      thirds.sort((a,b)=> b.s.pts-a.s.pts || b.s.gd-a.s.gd || b.s.gf-a.s.gf || a.g.localeCompare(b.g));
+      out.top8 = thirds.slice(0,8).map(x=>x.g).sort();
+      thirds.slice(0,8).forEach(x=> out.adv[x.t]=true);
+    }
+    return out;
+  }
+
+  function matchThirds(groups8, slots){
+    const inEl = (s,g)=> s.eligible.indexOf(g)>=0;
+    const order = slots.map((s,i)=>i).sort((a,b)=>
+      groups8.filter(g=>inEl(slots[a],g)).length - groups8.filter(g=>inEl(slots[b],g)).length);
+    const assign={}, used={};
+    function bt(k){
+      if(k===order.length) return true;
+      const si=order[k];
+      for(const g of groups8){ if(used[g]) continue; if(inEl(slots[si],g)){ assign[si]=g; used[g]=1;
+        if(bt(k+1)) return true; used[g]=0; delete assign[si]; } }
+      return false;
+    }
+    if(!bt(0)){ const rem=groups8.slice(); slots.forEach((s,si)=>{ for(let j=0;j<rem.length;j++){ if(inEl(s,rem[j])){ assign[si]=rem[j]; rem.splice(j,1); break; } } });
+      slots.forEach((s,si)=>{ if(assign[si]===undefined && rem.length) assign[si]=rem.shift(); }); }
+    return assign;
+  }
+
+  // evaluate one full world (real merged with hypotheticals when useHypo)
+  function evaluate(useHypo){
+    const gs = useHypo ? mergedGroupScores() : Object.assign({}, W.realGroupScores);
+    const stand = groupStandings(gs);
+    const koPlayed = [];        // {home,away,hg,ag,winner,so}
+    const fillable = [];        // KO matches awaiting a result
+    const teamsByMatch = {}, winByMatch = {};
+    let wonCup = null; const madeFinal = {};
+
+    // Resolve the bracket whenever feeders are known - a KO match opens for
+    // input as soon as BOTH its teams are determined (its feeder groups are
+    // complete, or its feeder matches decided). 'third' slots additionally need
+    // all 12 groups complete (the best-thirds ranking is global).
+    const slotTeam = {};
+    if(stand.allComplete){
+      const assign = matchThirds(stand.top8, W.thirdSlots);   // slotIndex -> group
+      W.thirdSlots.forEach((s,i)=> slotTeam[s.m+'|'+s.side] = stand.third[assign[i]]);
+    }
+    const resolve = (ref,m,side)=>{
+      if(ref.type==='group_winner') return stand.winner[ref.group]||null;
+      if(ref.type==='group_runner') return stand.runner[ref.group]||null;
+      if(ref.type==='third') return slotTeam[m+'|'+side]||null;
+      if(ref.type==='match_winner') return winByMatch[ref.match]||null;
+      if(ref.type==='match_loser'){ const w=winByMatch[ref.match]; const tt=teamsByMatch[ref.match];
+        if(!w||!tt) return null; return tt[0]===w?tt[1]:tt[0]; }
+      return null;
+    };
+    const realByPair = {};
+    (W.realKo||[]).forEach(k=> realByPair[pairKey(k.home,k.away)] = k);
+    const matchedReal = {};
+    for(const bm of W.bracket){
+      const home = resolve(bm.hr, bm.m, 'home_ref');
+      const away = resolve(bm.ar, bm.m, 'away_ref');
+      teamsByMatch[bm.m] = [home, away];
+      if(!home || !away) continue;
+      let winner=null, hg=null, ag=null, so=false;
+      const rk = realByPair[pairKey(home,away)];
+      if(rk && rk.winner){ matchedReal[pairKey(home,away)]=1; winner=rk.winner; hg=rk.home_goals; ag=rk.away_goals; so=!!rk.shootout;
+        if(home!==rk.home){ const t=hg; hg=ag; ag=t; } }
+      else if(useHypo && hypoKo[bm.m]!==undefined){ const h=hypoKo[bm.m]; hg=h.hg; ag=h.ag;
+        if(hg>ag) winner=home; else if(ag>hg) winner=away; else { so=true; winner=h.so||null; } }
+      if(winner){ winByMatch[bm.m]=winner; koPlayed.push({home,away,hg,ag,winner,so}); }
+      else fillable.push({m:bm.m, stage:bm.stage, rc:bm.rc, home, away});
+    }
+    // safety: count any real KO result not matched into a bracket slot
+    (W.realKo||[]).forEach(k=>{ if(!matchedReal[pairKey(k.home,k.away)] && k.winner)
+      koPlayed.push({home:k.home,away:k.away,hg:k.home_goals,ag:k.away_goals,winner:k.winner,so:!!k.shootout}); });
+    const ft = teamsByMatch[104]||[null,null];
+    ft.forEach(t=>{ if(t) madeFinal[t]=true; });
+    wonCup = winByMatch[104]||null;
+
+    // per-team stats + goals for/against
+    const st={}, gf={}, ga={};
+    for(const t in W.teamTier){ st[t]={rw:0,dr:0,rl:0,pw:0,pl:0,finish:0,adv:false,fin:false,won:false}; gf[t]=0; ga[t]=0; }
+    for(const no in gs){ const m=gmByNo[no]; if(!m) continue; const [hg,ag]=gs[no];
+      gf[m.home]+=hg; ga[m.home]+=ag; gf[m.away]+=ag; ga[m.away]+=hg;
+      if(hg>ag){ st[m.home].rw++; st[m.away].rl++; } else if(ag>hg){ st[m.away].rw++; st[m.home].rl++; }
+      else { st[m.home].dr++; st[m.away].dr++; } }
+    koPlayed.forEach(k=>{ gf[k.home]+=k.hg; ga[k.home]+=k.ag; gf[k.away]+=k.ag; ga[k.away]+=k.hg;
+      if(!k.winner) return; const l = k.winner===k.home?k.away:k.home;
+      if(k.so){ st[k.winner].pw++; st[l].pl++; } else { st[k.winner].rw++; st[l].rl++; } });
+    for(const t in stand.finish){ st[t].finish=stand.finish[t]; st[t].adv=!!stand.adv[t]; }
+    for(const t in madeFinal) st[t].fin=true;
+    if(wonCup) st[wonCup].won=true;
+
+    const pg = useHypo ? mergedPlayerGoals() : Object.assign({}, W.realPlayerGoals||{});
+    const tournComplete = Object.keys(gs).length>=72 && stand.allComplete && fillable.length===0 && !!winByMatch[104];
+    let gb = null;
+    if(tournComplete){ let mx=-1, who=null, tie=false;
+      for(const p in pg){ if(pg[p]>mx){ mx=pg[p]; who=p; tie=false; } else if(pg[p]===mx){ tie=true; } }
+      gb = tie?null:who; }
+
+    function teamPts(t){ const s=st[t]; const tier=W.teamTier[t];
+      let p = R.win*s.rw + R.draw*s.dr + R.loss*s.rl + R.pen_win*s.pw + R.pen_loss*s.pl;
+      if(tier==='D'){ if(s.adv && s.finish>0 && s.finish<=2) p+=R.b_r32_top2_D; else if(s.adv && s.finish===3) p+=R.b_r32_third_D; }
+      else if(tier==='C'){ if(s.adv && s.finish>0 && s.finish<=2) p+=R.b_r32_top2_C; }
+      p += R.b_final*(s.fin?1:0) + R.b_win*(s.won?1:0);
+      return p; }
+
+    const bd={};
+    for(const e of W.entries){ const k=e.picks;
+      const o = {tierA:teamPts(k.tierA), tierB:teamPts(k.tierB), tierC:teamPts(k.tierC),
+                 tierD:teamPts(k.tierD), scoring:R.per_gf*(gf[k.scoring]||0),
+                 conceding:R.per_ga*(ga[k.conceding]||0),
+                 top_scorer:R.per_gk*(pg[k.top_scorer]||0) + R.gb_bonus*((gb && gb===k.top_scorer)?1:0)};
+      o.total = o.tierA+o.tierB+o.tierC+o.tierD+o.scoring+o.conceding+o.top_scorer;
+      bd[e.name] = o; }
+    return {bd, fillable, allComplete:stand.allComplete};
+  }
+
+  const realEval = evaluate(false);                 // cached baseline engine score
+  const SLOTS = ['tierA','tierB','tierC','tierD','scoring','conceding','top_scorer'];
+  const baseTotal = {}, baseBd = {};
+  W.entries.forEach(e=>{ baseTotal[e.name]=e.base; baseBd[e.name]=e.bd||{}; });
+  // baseline ranking (current standings) for the "change" column
+  const baseRank = {};
+  W.entries.map(e=>e.name).sort((a,b)=> baseTotal[b]-baseTotal[a] || a.localeCompare(b))
+    .forEach((n,i)=> baseRank[n]=i+1);
+
+  function fmtStage(s){ const m={'Round of 32':'1/16 גמר','Round of 16':'1/8 גמר',
+    'Quarter-final':'רבע גמר','Semi-final':'חצי גמר','Third place':'מקום שלישי','Final':'גמר'}; return m[s]||s; }
+
+  // scenario points = site baseline + (engine(real+hypo) - engine(real)), per slot,
+  // so with no hypotheticals it reproduces the displayed standings exactly.
+  function dispBd(name, full){
+    const o = {};
+    SLOTS.forEach(s=>{ o[s] = Math.round(((baseBd[name][s]||0)
+      + ((full.bd[name][s]||0) - (realEval.bd[name][s]||0)))*10)/10; });
+    o.total = Math.round((baseTotal[name] + (full.bd[name].total - realEval.bd[name].total))*10)/10;
+    return o;
+  }
+
+  function renderBoard(full){
+    const rows = W.entries.map(e=>({name:e.name, picks:e.picks, d:dispBd(e.name, full)}));
+    rows.sort((a,b)=> b.d.total-a.d.total || baseTotal[b.name]-baseTotal[a.name] || a.name.localeCompare(b.name));
+    board.innerHTML = rows.map((r,i)=>{
+      const rk=i+1, dr = baseRank[r.name]-rk;
+      const chg = dr>0?`<span class="chg-up">▲${dr}</span>` : dr<0?`<span class="chg-dn">▼${-dr}</span>` : '<span class="chg-eq">–</span>';
+      const cell = (nm,player,slot)=>`<td class="pick">${player?heP(nm):heT(nm)} <small>(${g2(r.d[slot])})</small></td>`;
+      return `<tr><td class="rk">${rk}</td><td>${chg}</td>`+
+             `<td class="nm" title="${r.name}">${r.name}</td><td class="pts">${g2(r.d.total)}</td>`+
+             cell(r.picks.tierA,false,'tierA')+cell(r.picks.tierB,false,'tierB')+
+             cell(r.picks.tierC,false,'tierC')+cell(r.picks.tierD,false,'tierD')+
+             cell(r.picks.scoring,false,'scoring')+cell(r.picks.conceding,false,'conceding')+
+             cell(r.picks.top_scorer,true,'top_scorer')+`</tr>`;
+    }).join('');
+  }
+
+  function scorerEditor(mk, goals, home, away){
+    // only picked "top scorer" candidates who actually play in this match
+    const elig = W.trackedPlayers.filter(p=> p.team===home || p.team===away);
+    if(!elig.length) return '';
+    const cur = hypoScorers[mk]||{};
+    const used = Object.values(cur).reduce((s,n)=>s+n,0);
+    const over = used>goals;
+    const rows = elig.map(p=>{
+      const v = cur[p.name]||0;
+      return `<div class="wisc-row">
+        <span class="wisc-nm">${heP(p.name)} <small>· ${heT(p.team)}</small></span>
+        <span class="wistep">
+          <button type="button" class="wistepbtn wisc-dec" data-mk="${mk}" data-p="${p.name}" ${v<=0?'disabled':''}>−</button>
+          <span class="wisc-v">${v}</span>
+          <button type="button" class="wistepbtn wisc-inc" data-mk="${mk}" data-p="${p.name}" ${used>=goals?'disabled':''}>+</button>
+        </span></div>`;
+    }).join('');
+    return `<div class="wiscorers">
+      <div class="wisc-hd">מבקיעים מההתערבות <small>(${used}/${goals})</small></div>
+      ${rows}
+      ${over?'<div class="wihint" style="color:var(--red)">שויכו יותר שערים מהתוצאה — צמצמו</div>':''}
+    </div>`;
+  }
+
+  function matchRow(kind, m, home, away, score, stage){
+    const mk = kind+m;
+    const hv = score? score[0] : '';
+    const av = score? score[1] : '';
+    const tie = score && score[0]===score[1];
+    const goals = score? (score[0]+score[1]) : 0;
+    let so = '';
+    if(kind==='k' && tie){
+      const w = (hypoKo[m]||{}).so || '';
+      so = `<div class="wiso">עלתה בפנדלים:
+        <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${home}" ${w===home?'checked':''}> ${heT(home)}</label>
+        <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${away}" ${w===away?'checked':''}> ${heT(away)}</label></div>`;
+    }
+    const scr = (score && goals>0) ? scorerEditor(mk, goals, home, away) : '';
+    return `<div class="wimatch" data-mk="${mk}">
+      <div class="wimrow">
+        <span class="witeam h">${heT(home)}</span>
+        <input class="wiscore" type="number" min="0" inputmode="numeric" data-kind="${kind}" data-m="${m}" data-side="h" value="${hv}">
+        <span class="widash">:</span>
+        <input class="wiscore" type="number" min="0" inputmode="numeric" data-kind="${kind}" data-m="${m}" data-side="a" value="${av}">
+        <span class="witeam a">${heT(away)}</span>
+      </div>${so}${scr}</div>`;
+  }
+
+  function renderMatches(full){
+    // group matches still open (no real result yet)
+    const openGroup = W.groupMatches.filter(m=> W.realGroupScores[m.no]===undefined)
+      .sort((a,b)=> a.no-b.no);
+    let html = '';
+    html += '<div class="wistage">שלב הבתים</div>';
+    if(!openGroup.length) html += '<div class="wihint">כל משחקי הבתים כבר שוחקו.</div>';
+    openGroup.forEach(m=> html += matchRow('g', m.no, m.home, m.away, hypoGroup[m.no]||null, 'group'));
+    // knockout matches that are now resolvable (both teams determined)
+    html += '<div class="wistage">נוק‑אאוט</div>';
+    if(!full.fillable.length){
+      html += '<div class="wihint">משחקי נוק‑אאוט נפתחים אוטומטית ברגע ששתי הקבוצות בהם נקבעות — מלאו תוצאות בתים (או משחקי נוק‑אאוט מוקדמים יותר) כדי לפתוח אותם. שיבוץ מקומות השלישי דורש סיום כל הבתים.</div>';
+    } else {
+      let curStage = '';
+      full.fillable.sort((a,b)=> a.m-b.m).forEach(km=>{
+        if(km.stage!==curStage){ curStage=km.stage; html += `<div class="wisub">${fmtStage(km.stage)}</div>`; }
+        html += matchRow('k', km.m, km.home, km.away, hypoKo[km.m]? [hypoKo[km.m].hg,hypoKo[km.m].ag]:null, km.stage);
+      });
+    }
+    const top = matchesEl.scrollTop;     // keep the scroll position across re-renders
+    matchesEl.innerHTML = html;
+    matchesEl.scrollTop = top;
+  }
+
+  function sigOf(full){
+    return (full.allComplete?'C':'-') + '|' + full.fillable.map(f=>f.m).join(',') +
+           '|' + W.groupMatches.filter(m=>W.realGroupScores[m.no]===undefined && hypoGroup[m.no]).length;
+  }
+
+  function recompute(forceMatches){
+    const full = evaluate(true);
+    renderBoard(full);
+    const sig = sigOf(full);
+    if(forceMatches || sig!==lastSig){
+      // remember which score input is being edited so we can restore it after
+      // the matches list is rebuilt (otherwise typing loses focus / scroll jumps)
+      const a = document.activeElement;
+      const desc = (a && a.classList && a.classList.contains('wiscore'))
+        ? {m:a.dataset.m, kind:a.dataset.kind, side:a.dataset.side} : null;
+      renderMatches(full); lastSig = sig;
+      if(desc){
+        const el = matchesEl.querySelector('.wiscore[data-m="'+desc.m+'"][data-kind="'+desc.kind+'"][data-side="'+desc.side+'"]');
+        if(el){ el.focus(); const v=el.value; try{ el.value=''; el.value=v; }catch(e){} }
+      }
+    }
+    const nHypo = Object.keys(hypoGroup).length + Object.keys(hypoKo).length;
+    document.getElementById('wiCount').textContent = nHypo? `${nHypo} תוצאות בתרחיש` : 'לא הוזנו תוצאות עדיין';
+  }
+
+  // ---- events (delegated) ------------------------------------------------ //
+  matchesEl.addEventListener('input', function(ev){
+    const t = ev.target;
+    if(t.classList.contains('wiscore')){
+      const m = +t.dataset.m, kind = t.dataset.kind;
+      const box = t.closest('.wimatch');
+      const ins = box.querySelectorAll('.wiscore');
+      const hv = ins[0].value==='' ? null : Math.max(0, parseInt(ins[0].value,10)||0);
+      const av = ins[1].value==='' ? null : Math.max(0, parseInt(ins[1].value,10)||0);
+      if(hv===null && av===null){ if(kind==='g') delete hypoGroup[m]; else delete hypoKo[m]; }
+      else {
+        const h=hv||0, a=av||0;
+        if(kind==='g') hypoGroup[m]=[h,a];
+        else { const prev=hypoKo[m]||{}; hypoKo[m]={hg:h,ag:a,so:(h===a?prev.so:undefined)}; }
+      }
+      recompute(true);   // refresh the scorer editor (eligibility + goal caps)
+    }
+  });
+  function matchGoals(mk){ const kind=mk[0], m=mk.slice(1);
+    if(kind==='g'){ const s=hypoGroup[m]; return s? s[0]+s[1] : 0; }
+    const s=hypoKo[m]; return s? s.hg+s.ag : 0; }
+  matchesEl.addEventListener('change', function(ev){
+    const t = ev.target;
+    if(t.classList.contains('wisoR')){ const m=+t.dataset.m; if(hypoKo[m]) hypoKo[m].so=t.value; recompute(false); }
+  });
+  matchesEl.addEventListener('click', function(ev){
+    const t = ev.target;
+    if(t.classList.contains('wisc-inc')){ const mk=t.dataset.mk, p=t.dataset.p;
+      const cur=hypoScorers[mk]||{}; const used=Object.values(cur).reduce((s,n)=>s+n,0);
+      if(used < matchGoals(mk)){ hypoScorers[mk]=cur; cur[p]=(cur[p]||0)+1; recompute(true); }
+    } else if(t.classList.contains('wisc-dec')){ const mk=t.dataset.mk, p=t.dataset.p;
+      const cur=hypoScorers[mk]; if(cur && cur[p]){ cur[p]--; if(cur[p]<=0) delete cur[p];
+        if(!Object.keys(cur).length) delete hypoScorers[mk]; recompute(true); }
+    }
+  });
+  document.getElementById('wiReset').addEventListener('click', function(){
+    hypoGroup={}; hypoKo={}; hypoScorers={}; recompute(true);
+  });
+
+  recompute(true);
+})();
+"""
+
+
+_ODDS_JS = r"""
+const ODDS = __ODDS__;
+(function(){
+  const O = ODDS;
+  if(!O || !document.getElementById('odElo')) return;
+  const pct = x => (x==null? '—' : (x*100).toFixed(1)+'%');
+  const num = x => (x==null? '—' : Math.round(x));
+
+  const cal = O.calibration||{};
+  document.getElementById('odCal').innerHTML =
+    `<div class="odchip"><span class="odk">מקדם פיזור הכוח</span><span class="odv">${cal.strength_spread!=null?cal.strength_spread.toFixed(3):'—'}</span></div>`+
+    `<div class="odchip"><span class="odk">מקדם נעל הזהב</span><span class="odv">${cal.golden_boot_scale!=null?cal.golden_boot_scale.toFixed(3):'—'}</span></div>`+
+    `<div class="odchip"><span class="odk">עודכן</span><span class="odv">${O.generatedAt||'—'}</span></div>`;
+
+  document.getElementById('odElo').innerHTML = (O.elo||[]).map(r=>
+    `<tr><td class="nm">${r.he}</td><td class="v">${num(r.blended)}</td><td>${num(r.eloratings)}</td>`+
+    `<td>${num(r.market)}</td><td>${pct(r.marketProb)}</td></tr>`).join('');
+
+  const titleRows = Object.keys(O.simTitle||{}).map(t=>({t, he:(O.titleHe||{})[t]||t, sim:O.simTitle[t]}));
+  const eloByTeam = {}; (O.elo||[]).forEach(r=> eloByTeam[r.team]=r.marketProb);
+  titleRows.sort((a,b)=> b.sim-a.sim);
+  document.getElementById('odTitle').innerHTML = titleRows.map(r=>
+    `<tr><td class="nm">${r.he}</td><td>${pct(eloByTeam[r.t])}</td><td class="v">${pct(r.sim)}</td></tr>`).join('')
+    || '<tr><td class="nm" colspan="3">—</td></tr>';
+
+  document.getElementById('odAdv').innerHTML = (O.advance||[]).map(r=>
+    `<tr><td class="nm">${r.he}</td><td class="v">${pct(r.p)}</td></tr>`).join('');
+  document.getElementById('odGb').innerHTML = (O.goldenBoot||[]).map(r=>
+    `<tr><td class="nm">${r.he}</td><td class="v">${pct(r.p)}</td></tr>`).join('');
+
+  // ---- over-time mini charts -------------------------------------------- //
+  const hist = O.history||[];
+  const host = document.getElementById('odHist');
+  if(hist.length < 2){
+    host.innerHTML = '<div class="wihint">עדיין אין מספיק נקודות מדידה לאורך זמן — ייאסף עם ההרצות הבאות.</div>';
+    return;
+  }
+  const COLORS = ['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2'];
+  function lineChart(title, series, fmtY){
+    const W=560, H=210, padL=44, padR=12, padT=14, padB=26;
+    const xs = hist.map((_,i)=> padL + (W-padL-padR)*(hist.length>1? i/(hist.length-1):0));
+    let vmax=0; series.forEach(s=> s.vals.forEach(v=>{ if(v!=null && v>vmax) vmax=v; }));
+    vmax = vmax>0? vmax*1.1 : 1;
+    const y = v => padT + (H-padT-padB)*(1 - (v/vmax));
+    let svg = `<svg viewBox="0 0 ${W} ${H}" class="odsvg">`;
+    [0,0.25,0.5,0.75,1].forEach(f=>{ const yy=padT+(H-padT-padB)*f; const val=vmax*(1-f);
+      svg+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e2e8f0"/>`+
+           `<text x="${padL-6}" y="${yy+3}" text-anchor="end" font-size="9" fill="#94a3b8">${fmtY(val)}</text>`; });
+    series.forEach((s,si)=>{ const c=COLORS[si%COLORS.length];
+      let d=''; s.vals.forEach((v,i)=>{ if(v==null) return; d+=(d?'L':'M')+xs[i].toFixed(1)+' '+y(v).toFixed(1)+' '; });
+      svg+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="2"/>`; });
+    svg += '</svg>';
+    const leg = series.map((s,si)=>`<span class="odlg"><span class="odsw" style="background:${COLORS[si%COLORS.length]}"></span>${s.label}</span>`).join('');
+    return `<div class="odchart"><div class="panel-title">${title}</div><div class="odleg">${leg}</div>${svg}</div>`;
+  }
+  // sim-title for the top 6 teams (by latest snapshot)
+  const last = hist[hist.length-1];
+  const titleKeys = Object.keys(last.sim_title||{}).sort((a,b)=> (last.sim_title[b]||0)-(last.sim_title[a]||0)).slice(0,6);
+  const titleHe = O.titleHe||{};
+  const s1 = titleKeys.map(t=>({label:(titleHe[t]||t), vals:hist.map(h=> (h.sim_title||{})[t]!=null? h.sim_title[t]:null)}));
+  const s2 = [{label:'מקדם פיזור', vals:hist.map(h=> h.strength_spread!=null? h.strength_spread:null)},
+              {label:'מקדם נעל זהב', vals:hist.map(h=> h.golden_boot_scale!=null? h.golden_boot_scale:null)}];
+  host.innerHTML =
+    (s1.length? lineChart('סיכויי תואר מהסימולציה (6 המובילות)', s1, v=> (v*100).toFixed(0)+'%') : '') +
+    lineChart('פרמטרי כיול', s2, v=> v.toFixed(2));
+})();
+"""
+
+
 def main() -> None:
     data = json.loads((WC_ROOT / "results" / "live_latest.json").read_text())
+    state = _load_state()
     ents = sorted(data["entries"], key=lambda e: -e["exp_winnings"])
     cm = data["champion_matrix"]
     champs = cm["champions"]
@@ -571,39 +1376,33 @@ def main() -> None:
 
     html = OUT.read_text(encoding="utf-8")
 
-    # strip any previously-injected blocks (idempotent)
-    html = re.sub(re.escape(HTML_START) + r".*?" + re.escape(HTML_END), "",
-                  html, flags=re.S)
-    html = re.sub(re.escape(JS_START) + r".*?" + re.escape(JS_END), "",
-                  html, flags=re.S)
-    html = re.sub(re.escape(CSS_START) + r".*?" + re.escape(CSS_END), "",
-                  html, flags=re.S)
+    # All regions are bounded by persistent markers in the base page and replaced
+    # in place, so the build is idempotent and the static tab scaffold is kept.
+    # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
+    all_css = "\n".join([CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS])
+    html = replace_region(html, CSS_START, CSS_END, all_css)
 
-    # 1) CSS (banner + matrix table), before </style>
-    css = f"{CSS_START}\n{CMTBL_CSS}\n{CSS_END}\n"
-    html = html.replace("</style>", css + "</style>", 1)
+    # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
+    main_body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
+                 + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data))
+    html = replace_region(html, HTML_START, HTML_END, main_body)
 
-    # 2) HTML sections, placed at the very TOP of the content (right after the
-    #    <div class="wrap"> open) so the live standings + simulation + group
-    #    tables lead the page; the choices-analysis intro follows below them.
-    body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
-            + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data))
-    block = f"{HTML_START}\n{body}\n  {HTML_END}\n"
-    wrap_marker = '<div class="wrap">'
-    wi = html.find(wrap_marker)
-    if wi >= 0:
-        cut = wi + len(wrap_marker)
-        html = html[:cut] + "\n" + block + html[cut:]
-    else:                                   # fallback: before the footer
-        html = re.sub(r"(\n\s*<footer)", "\n" + block + r"\1", html, count=1)
+    # 3) What-If + Odds tab bodies.
+    html = replace_region(html, WHATIF_START, WHATIF_END, whatif_html())
+    html = replace_region(html, ODDS_START, ODDS_END, odds_html())
 
-    # 3) JS render code, just before the closing </script>
-    js = (f"\n{JS_START}\n{js_block(champs, CHAMP_HE, cm['p_title'], matrix, order, winprob)}"
-          f"\n{LEADERS_JS}\n{JS_END}\n")
-    html = re.sub(r"(\n</script>)", js + r"\1", html, count=1)
+    # 4) All injected JS in one managed block before </script>.
+    wi_payload = whatif_payload(data, state)
+    od_payload = odds_payload(data)
+    all_js = "\n".join([
+        js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
+        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload),
+    ])
+    html = replace_region(html, JS_START, JS_END, all_js)
 
     OUT.write_text(html, encoding="utf-8")
-    print(f"Updated {OUT}  ({len(html)//1024} KB) — {n_ent} entries, {n_sims:,} sims")
+    print(f"Updated {OUT}  ({len(html)//1024} KB) — {n_ent} entries, {n_sims:,} sims, "
+          f"{len(wi_payload['entries'])} what-if rows")
 
 
 if __name__ == "__main__":
