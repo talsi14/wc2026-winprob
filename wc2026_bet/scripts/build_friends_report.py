@@ -209,6 +209,106 @@ def scorers_table_html(data: dict, top: int = 5) -> str:
         f'<tbody>{rows}</tbody></table></div>\n  </section>\n')
 
 
+# thin white-line icons for the leader widgets (match the dark-card screenshot)
+_IC_CROWN = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+             'stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4 4 5-6 5 6 4-4-2 12H5L3 7z"/></svg>')
+_IC_SHIELD = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+              'stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/>'
+              '<line x1="12" y1="8.5" x2="12" y2="13"/><circle cx="12" cy="15.8" r=".7" fill="currentColor"/></svg>')
+_IC_GAUGE = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+             'stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/>'
+             '<circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>')
+
+
+def leaders_html(data: dict) -> str:
+    """Three live-leader widgets - top scoring team / top conceding team / current
+    top scorer - styled like the lovable dark cards. Clicking a card opens a
+    hovering, scrollable table of that category's full ranking; teams/scorers
+    picked by participants are bolded. Shows 'טרם זמין' until results exist."""
+    team_he, pl_he = _team_he_map(), _player_he_map()
+    tp = data.get("team_played") or {}
+    scorers = data.get("scorers") or []
+    ents = data.get("entries") or []
+    sel_scoring = {e["picks"]["scoring"] for e in ents}
+    sel_conceding = {e["picks"]["conceding"] for e in ents}
+    sel_scorer = {e["picks"]["top_scorer"] for e in ents}
+
+    played = [(t, int(v.get("gf", 0)), int(v.get("ga", 0)))
+              for t, v in tp.items() if int(v.get("games", 0)) > 0]
+    gf_rank = sorted(played, key=lambda x: (-x[1], x[0]))
+    ga_rank = sorted(played, key=lambda x: (-x[2], x[0]))
+
+    def team_rows(rank, val_i, sel):
+        body = ""
+        for row in rank:
+            t = row[0]
+            hit = ' class="hit"' if t in sel else ''
+            body += (f'<tr{hit}><td class="nm">{team_he.get(t, t)}</td>'
+                     f'<td class="v">{row[val_i]}</td></tr>')
+        return body or '<tr><td class="nm" colspan="2">טרם זמין</td></tr>'
+
+    def scorer_rows():
+        body = ""
+        for s in scorers:
+            nm = pl_he.get(s["scorer"], s["scorer"])
+            tm = team_he.get(s.get("team", ""), s.get("team", "") or "")
+            hit = ' class="hit"' if s["scorer"] in sel_scorer else ''
+            body += (f'<tr{hit}><td class="nm">{nm}</td><td class="tm">{tm}</td>'
+                     f'<td class="v">{s["goals"]}</td></tr>')
+        return body or '<tr><td class="nm" colspan="3">טרם זמין</td></tr>'
+
+    def lead_team(rank, val_i):
+        if not rank:
+            return ("טרם זמין", "—")
+        row = rank[0]
+        return (team_he.get(row[0], row[0]), f"({row[val_i]})")
+
+    sc_name, sc_val = lead_team(gf_rank, 1)   # most goals scored
+    cc_name, cc_val = lead_team(ga_rank, 2)   # most goals conceded
+    if scorers:
+        ks_name = pl_he.get(scorers[0]["scorer"], scorers[0]["scorer"])
+        ks_val = f'({scorers[0]["goals"]})'
+    else:
+        ks_name, ks_val = "טרם זמין", "—"
+
+    # RTL grid: first child renders on the right -> matches the screenshot order
+    cards = [
+        ("scorer", _IC_CROWN, "מלך השערים כרגע", ks_name, ks_val,
+         f'<table class="ltbl"><tbody>{scorer_rows()}</tbody></table>'),
+        ("conceding", _IC_SHIELD, "הסופגת המובילה", cc_name, cc_val,
+         f'<table class="ltbl"><tbody>{team_rows(ga_rank, 2, sel_conceding)}</tbody></table>'),
+        ("scoring", _IC_GAUGE, "הכובשת המובילה", sc_name, sc_val,
+         f'<table class="ltbl"><tbody>{team_rows(gf_rank, 1, sel_scoring)}</tbody></table>'),
+    ]
+    out = ""
+    for cls, ic, title, name, val, tbl in cards:
+        out += (f'<div class="lcard {cls}" tabindex="0">'
+                f'<div class="lc-top"><span class="lc-ic">{ic}</span>'
+                f'<span class="lc-title">{title}</span></div>'
+                f'<div class="lc-val" title="{name}">{name}</div>'
+                f'<div class="lc-sub">{val}</div>'
+                f'<div class="lpop">{tbl}</div></div>')
+    return f'\n  <section class="leaders">{out}</section>\n'
+
+
+LEADERS_JS = """
+(function(){
+  const cards = Array.from(document.querySelectorAll('.lcard'));
+  if(!cards.length) return;
+  cards.forEach(card=>{
+    card.addEventListener('click', function(ev){
+      if (ev.target.closest('.lpop')){ ev.stopPropagation(); return; }  // keep open while using the table
+      const isOpen = card.classList.contains('open');
+      cards.forEach(c=>c.classList.remove('open'));
+      if(!isOpen) card.classList.add('open');
+      ev.stopPropagation();
+    });
+  });
+  document.addEventListener('click', ()=> cards.forEach(c=>c.classList.remove('open')));
+})();
+"""
+
+
 HTML_START, HTML_END = "<!-- WINPROB:START -->", "<!-- WINPROB:END -->"
 JS_START, JS_END = "/* WINPROB:JS:START */", "/* WINPROB:JS:END */"
 CSS_START, CSS_END = "/* WINPROB:CSS:START */", "/* WINPROB:CSS:END */"
@@ -415,6 +515,48 @@ CMTBL_CSS = """
   table.scortbl td.team{color:#475569;}
   table.scortbl td.pts{font-weight:800; color:var(--green); width:64px;}
   table.scortbl tbody tr:nth-child(odd){background:#fcfcfd;}
+  /* live-leader widgets (clickable dark cards + hovering category tables) */
+  .leaders{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; direction:rtl;
+            margin:16px 0 6px;}
+  .lcard{position:relative; border-radius:16px; padding:15px 18px 22px; color:#e5e7eb;
+            cursor:pointer; border:1px solid rgba(255,255,255,.09); min-height:92px;
+            user-select:none; transition:border-color .15s, box-shadow .15s;}
+  /* NB: avoid filter/transform on hover/active - they create a stacking context
+     that would trap .lpop's z-index beneath the standings table's sticky cells. */
+  .lcard:hover{border-color:rgba(255,255,255,.28);
+            box-shadow:0 10px 26px -14px rgba(0,0,0,.55);}
+  .lcard.open{border-color:rgba(255,255,255,.35);}
+  .lcard.scorer{background:linear-gradient(135deg,#0f172a,#1f2a44);}
+  .lcard.conceding{background:linear-gradient(135deg,#241141,#3a1c5c);}
+  .lcard.scoring{background:linear-gradient(135deg,#062a24,#0f3d34);}
+  .lc-top{display:flex; align-items:center; justify-content:space-between; gap:8px;
+            color:#9aa7b8; font-size:.92rem;}
+  .lc-ic{display:inline-flex; color:#cbd5e1; opacity:.92;}
+  .lc-ic svg{width:26px; height:26px;}
+  .lc-title{font-weight:600;}
+  .lc-val{font-size:1.7rem; font-weight:800; color:#fff; margin-top:10px; line-height:1.15;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .lc-sub{color:#9aa7b8; font-weight:700; margin-top:2px;}
+  .lcard::after{content:"\\25be"; position:absolute; bottom:7px; left:14px; color:#64748b;
+            font-size:.85rem; transition:transform .15s;}
+  .lcard.open::after{transform:rotate(180deg);}
+  .lpop{display:none; position:absolute; top:calc(100% + 8px); right:0; left:0; z-index:60;
+            background:#fff; color:#0f172a; border:1px solid var(--line); border-radius:12px;
+            box-shadow:0 18px 44px -16px rgba(0,0,0,.5); max-height:320px; overflow:auto;
+            direction:rtl; text-align:right;}
+  .lcard.open .lpop{display:block;}
+  table.ltbl{width:100%; border-collapse:separate; border-spacing:0; font-size:.9rem;
+            font-variant-numeric:tabular-nums;}
+  table.ltbl td{padding:8px 12px; border-bottom:1px solid #f1f5f9; color:#475569;}
+  table.ltbl tr:last-child td{border-bottom:0;}
+  table.ltbl td.nm{text-align:right; color:var(--ink);}
+  table.ltbl td.tm{text-align:right; color:#64748b;}
+  table.ltbl td.v{text-align:center; font-weight:800; color:var(--green); width:54px;}
+  table.ltbl tr.hit td{font-weight:800; color:var(--ink); background:#f0fdf4;}
+  table.ltbl tr.hit td.nm{box-shadow:inset 3px 0 0 var(--green);}
+  table.ltbl tbody tr:hover td{background:#eef2f7;}
+  table.ltbl tbody tr.hit:hover td{background:#e3f7e8;}
+  @media (max-width:760px){ .leaders{grid-template-columns:1fr;} }
   /* champion-conditional matrix */
   table.cmtbl{border-collapse:separate; border-spacing:0; font-size:.8rem;
               font-variant-numeric:tabular-nums;}
@@ -487,7 +629,8 @@ def main() -> None:
     # 2) HTML sections, placed at the very TOP of the content (right after the
     #    <div class="wrap"> open) so the live standings + simulation + group
     #    tables lead the page; the choices-analysis intro follows below them.
-    body = (podium_html(data) + standings_table_html(data) + scorers_table_html(data)
+    body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
+            + scorers_table_html(data)
             + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data))
     block = f"{HTML_START}\n{body}\n  {HTML_END}\n"
     wrap_marker = '<div class="wrap">'
@@ -499,7 +642,8 @@ def main() -> None:
         html = re.sub(r"(\n\s*<footer)", "\n" + block + r"\1", html, count=1)
 
     # 3) JS render code, just before the closing </script>
-    js = f"\n{JS_START}\n{js_block(champs, CHAMP_HE, cm['p_title'], matrix, order, winprob)}\n{JS_END}\n"
+    js = (f"\n{JS_START}\n{js_block(champs, CHAMP_HE, cm['p_title'], matrix, order, winprob)}"
+          f"\n{LEADERS_JS}\n{JS_END}\n")
     html = re.sub(r"(\n</script>)", js + r"\1", html, count=1)
 
     OUT.write_text(html, encoding="utf-8")

@@ -238,7 +238,8 @@ def main() -> None:
                         "golden_boot_scale": round(gb_scale, 3)},
         "champion_matrix": chmat,
         "groups": groups_payload,
-        "scorers": (state.get("all_scorers") or [])[:15],
+        "scorers": state.get("all_scorers") or [],
+        "team_played": state.get("team_played") or {},
         "entries": out_entries,
     }
     jdump(payload, DATA_LIVE / f"win_probabilities_{ts}.json")
