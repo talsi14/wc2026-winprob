@@ -67,6 +67,13 @@ on:
     - cron: "43 23 * 6,7 *"
     # SCHEDULE:END
   workflow_dispatch: {}          # manual "Run workflow" is always forced
+  # Deterministic self-chaining: after a match ends, each run waits ~5 min and
+  # re-fires itself via this event (see the `rearm` job), giving on-time polling
+  # that does NOT depend on GitHub's flaky scheduler. The chain self-terminates
+  # once it catches the new result, and is bootstrapped by the off-peak schedule
+  # above. Requires the DISPATCH_PAT secret (a fine-grained PAT with Contents:RW).
+  repository_dispatch:
+    types: [tick]
 
 permissions:
   contents: write            # commit the snapshot archive + fingerprint back to the repo
@@ -82,6 +89,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       run: ${{ steps.detect.outputs.run }}
+      pursue: ${{ steps.plan.outputs.pursue }}
+      deadline: ${{ steps.plan.outputs.deadline }}
+      attempt: ${{ steps.plan.outputs.attempt }}
+      interval: ${{ steps.plan.outputs.interval }}
     steps:
       - uses: actions/checkout@v6
 
@@ -113,17 +124,59 @@ jobs:
           CUR="$(python3 wc2026_bet/scripts/state_fingerprint.py)"
           PREV="$(cat wc2026_bet/data/live/published.fingerprint 2>/dev/null || true)"
           echo "current=[$CUR] previous=[$PREV] event=$EVENT schedule=$SCHED"
+          CHANGED=false; [ "$CUR" != "$PREV" ] && CHANGED=true
           FORCE=false
           if [ "$EVENT" = "workflow_dispatch" ]; then FORCE=true; fi
-          if [ "$SCHED" = "0 12 * 6,7 *" ]; then FORCE=true; fi
-          if [ "$FORCE" = "true" ] || [ "$CUR" != "$PREV" ]; then
-            echo "Will run heavy pipeline (force=$FORCE, changed=$([ "$CUR" != "$PREV" ] && echo yes || echo no))."
+          if [ "$SCHED" = "17 12 * 6,7 *" ]; then FORCE=true; fi
+          if [ "$FORCE" = "true" ] || [ "$CHANGED" = "true" ]; then
+            echo "Will run heavy pipeline (force=$FORCE, changed=$CHANGED)."
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "No new results since last publish; skipping heavy pipeline + deploy."
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
+          echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
           echo "fp=$CUR" >> "$GITHUB_OUTPUT"
+
+      # --- Plan the self-chain: decide whether to wait ~5 min and re-fire ------ #
+      # We "pursue" a fresh result with short-interval polling that we control
+      # (deterministic), instead of relying on GitHub's scheduler. A pursuit is
+      # opened by any non-forced schedule checkpoint (which sit just after match
+      # ends) and is carried forward via repository_dispatch(tick). It STOPS as
+      # soon as the result is caught (changed=true) or its deadline passes.
+      - name: Plan self-chain
+        id: plan
+        env:
+          EVENT: ${{ github.event_name }}
+          SCHED: ${{ github.event.schedule }}
+          DL_IN: ${{ github.event.client_payload.deadline }}
+          ATT_IN: ${{ github.event.client_payload.attempt }}
+          CHANGED: ${{ steps.detect.outputs.changed }}
+        run: |
+          set -euo pipefail
+          NOW="$(date +%s)"
+          INTERVAL=240          # ~4 min sleep -> ~5 min effective wall cadence
+          MAXMIN=60             # give up a single pursuit after an hour
+          DEADLINE=0; ATT=0
+          if [ "$EVENT" = "repository_dispatch" ] && [ -n "${DL_IN:-}" ]; then
+            DEADLINE="$DL_IN"; ATT="${ATT_IN:-1}"            # carry the chain forward
+          elif [ "$EVENT" = "schedule" ] && [ "$SCHED" != "17 12 * 6,7 *" ]; then
+            # only open a new pursuit when a match is actually live / just ended
+            if [ "$(python3 wc2026_bet/scripts/pursuit_active.py)" = "yes" ]; then
+              DEADLINE="$(( NOW + MAXMIN * 60 ))"; ATT=0
+            else
+              echo "No live/recently-ended match at this checkpoint; not opening a pursuit."
+            fi
+          fi
+          PURSUE=false; ATTEMPT_NEXT=0
+          if [ "$DEADLINE" -gt 0 ] && [ "${CHANGED}" != "true" ] && [ "$(( NOW + INTERVAL ))" -lt "$DEADLINE" ]; then
+            PURSUE=true; ATTEMPT_NEXT="$(( ATT + 1 ))"
+          fi
+          echo "pursue=$PURSUE deadline=$DEADLINE attempt=$ATTEMPT_NEXT (event=$EVENT changed=$CHANGED)"
+          echo "pursue=$PURSUE" >> "$GITHUB_OUTPUT"
+          echo "deadline=$DEADLINE" >> "$GITHUB_OUTPUT"
+          echo "attempt=$ATTEMPT_NEXT" >> "$GITHUB_OUTPUT"
+          echo "interval=$INTERVAL" >> "$GITHUB_OUTPUT"
 
       - name: Refresh win-probabilities + rebuild shareable page
         if: steps.detect.outputs.run == 'true'
@@ -205,3 +258,45 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  # Deterministic baton pass: runs in parallel with `deploy` (so the deploy is
+  # never delayed). It waits one short interval and re-fires the workflow via
+  # repository_dispatch(tick), carrying the pursuit deadline forward. The
+  # top-level `concurrency` group serialises runs, so the next tick only starts
+  # after this run finishes - giving steady ~5-min polling with no overlap and
+  # no dependence on GitHub's scheduler. The chain ends when build.pursue=false
+  # (result caught, or deadline reached).
+  rearm:
+    needs: build
+    if: needs.build.outputs.pursue == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait one interval, then dispatch the next tick
+        env:
+          PAT: ${{ secrets.DISPATCH_PAT }}
+          REPO: ${{ github.repository }}
+          INTERVAL: ${{ needs.build.outputs.interval }}
+          DEADLINE: ${{ needs.build.outputs.deadline }}
+          ATTEMPT: ${{ needs.build.outputs.attempt }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PAT:-}" ]; then
+            echo "::warning::DISPATCH_PAT secret is not set - self-chaining is disabled."
+            echo "Add a fine-grained PAT (Contents: Read and write) as the DISPATCH_PAT secret to enable deterministic polling."
+            exit 0
+          fi
+          echo "Waiting ${INTERVAL}s before firing tick attempt ${ATTEMPT} (pursuit deadline ${DEADLINE})..."
+          sleep "${INTERVAL}"
+          code="$(curl -sS -o /tmp/resp.txt -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer ${PAT}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/dispatches" \
+            -d "{\"event_type\":\"tick\",\"client_payload\":{\"deadline\":${DEADLINE},\"attempt\":${ATTEMPT}}}")"
+          echo "dispatch HTTP ${code}"
+          if [ "${code}" != "204" ]; then
+            cat /tmp/resp.txt || true
+            echo "::error::repository_dispatch failed (HTTP ${code}); the chain will fall back to the schedule."
+            exit 1
+          fi
+          echo "Next tick dispatched."
