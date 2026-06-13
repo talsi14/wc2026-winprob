@@ -66,7 +66,12 @@ on:
     - cron: "19 23 * 6,7 *"
     - cron: "43 23 * 6,7 *"
     # SCHEDULE:END
-  workflow_dispatch: {}          # manual "Run workflow" is always forced
+  workflow_dispatch:             # manual "Run workflow" is always forced
+    inputs:
+      force_pursue:
+        description: "Also open a polling pursuit now (dry-run the self-chain without waiting for a live match)"
+        type: boolean
+        default: false
   # Deterministic self-chaining: after a match ends, each run waits ~5 min and
   # re-fires itself via this event (see the `rearm` job), giving on-time polling
   # that does NOT depend on GitHub's flaky scheduler. The chain self-terminates
@@ -151,6 +156,7 @@ jobs:
           SCHED: ${{ github.event.schedule }}
           DL_IN: ${{ github.event.client_payload.deadline }}
           ATT_IN: ${{ github.event.client_payload.attempt }}
+          FORCE_PURSUE: ${{ github.event.inputs.force_pursue }}
           CHANGED: ${{ steps.detect.outputs.changed }}
         run: |
           set -euo pipefail
@@ -160,6 +166,8 @@ jobs:
           DEADLINE=0; ATT=0
           if [ "$EVENT" = "repository_dispatch" ] && [ -n "${DL_IN:-}" ]; then
             DEADLINE="$DL_IN"; ATT="${ATT_IN:-1}"            # carry the chain forward
+          elif [ "$EVENT" = "workflow_dispatch" ] && [ "${FORCE_PURSUE:-}" = "true" ]; then
+            DEADLINE="$(( NOW + MAXMIN * 60 ))"; ATT=0        # manual dry-run of the chain
           elif [ "$EVENT" = "schedule" ] && [ "$SCHED" != "17 12 * 6,7 *" ]; then
             # only open a new pursuit when a match is actually live / just ended
             if [ "$(python3 wc2026_bet/scripts/pursuit_active.py)" = "yes" ]; then
