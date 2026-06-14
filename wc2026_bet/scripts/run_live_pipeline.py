@@ -37,7 +37,10 @@ def run(script: str, *args: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ts", default=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M"))
-    ap.add_argument("--sims", type=int, default=50000)
+    # 200k keeps the low-probability "who to root for" buckets (e.g. a heavy
+    # favourite's loss/draw) stable; the extra sims cost only a few seconds and
+    # the heavy pipeline only runs when a new result actually lands.
+    ap.add_argument("--sims", type=int, default=200000)
     ap.add_argument("--recalibrate", action="store_true")
     ap.add_argument("--entries", action="store_true",
                     help="re-pull the 53 pool entries from Supabase first")

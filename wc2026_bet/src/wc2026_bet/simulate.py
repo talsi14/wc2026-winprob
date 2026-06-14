@@ -141,9 +141,17 @@ class Simulator:
         return gh, ga, winner, loser, still
 
     # ---- main driver ------------------------------------------------------- #
-    def run(self, n_sims: int, known: "KnownState | None" = None) -> dict:
+    def run(self, n_sims: int, known: "KnownState | None" = None,
+            track_matches: "set[int] | None" = None) -> dict:
         known = known or KnownState.empty()
         S, T = n_sims, self.n_teams
+        track_matches = track_matches or set()
+        # per-sim outcome for the fixtures the caller wants to condition on (the
+        # "who to root for" board). Group matches -> 0=home win, 1=draw, 2=away win.
+        # Knockout matches -> the winning team's index (2-outcome; no draw), plus
+        # the per-sim participants so the caller can map a real fixture to a slot.
+        game_outcomes: dict[int, np.ndarray] = {}
+        ko_participants: dict[int, tuple] = {}
         z_i = lambda: np.zeros((S, T), dtype=np.int32)
         reg_wins, group_draws, reg_losses = z_i(), z_i(), z_i()
         pen_wins, pen_losses = z_i(), z_i()
@@ -170,6 +178,8 @@ class Simulator:
             gf[:, hi] += hg; ga[:, hi] += ag
             gf[:, ai] += ag; ga[:, ai] += hg
             wi = hg > ag; dr = hg == ag; li_ = hg < ag
+            if mno in track_matches:
+                game_outcomes[mno] = np.where(wi, 0, np.where(li_, 2, 1)).astype(np.int8)
             reg_wins[:, hi] += wi; group_draws[:, hi] += dr; reg_losses[:, hi] += li_
             reg_wins[:, ai] += li_; group_draws[:, ai] += dr; reg_losses[:, ai] += wi
             games[:, hi] += 1; games[:, ai] += 1
@@ -300,6 +310,12 @@ class Simulator:
             cur_h = round_reached[rows, hi]; round_reached[rows, hi] = np.maximum(cur_h, lvl)
             cur_a = round_reached[rows, ai]; round_reached[rows, ai] = np.maximum(cur_a, lvl)
             ko_win[mno] = winner; ko_lose[mno] = loser
+            if mno in track_matches:
+                # winner team index per sim + the two participants (constant
+                # across sims once feeders are decided -> lets build_cheer map a
+                # real upcoming fixture's (home, away) to this bracket slot).
+                game_outcomes[mno] = winner.astype(np.int16)
+                ko_participants[mno] = (hi.astype(np.int16), ai.astype(np.int16))
             if rc == 6:  # final
                 made_final[rows, hi] = True; made_final[rows, ai] = True
                 won_cup[rows, winner] = True
@@ -332,4 +348,6 @@ class Simulator:
             made_final=made_final, won_cup=won_cup, round_reached=round_reached,
             player_goals=player_goals, golden_boot=golden_boot,
             player_names=self.player_names,
+            game_outcomes=game_outcomes,
+            ko_participants=ko_participants,
         )

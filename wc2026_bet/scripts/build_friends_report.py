@@ -20,6 +20,7 @@ import csv
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 WC_ROOT = Path(__file__).resolve().parents[1]          # .../wc2026_bet
@@ -290,6 +291,7 @@ JS_START, JS_END = "/* WINPROB:JS:START */", "/* WINPROB:JS:END */"
 CSS_START, CSS_END = "/* WINPROB:CSS:START */", "/* WINPROB:CSS:END */"
 WHATIF_START, WHATIF_END = "<!-- WHATIF:START -->", "<!-- WHATIF:END -->"
 ODDS_START, ODDS_END = "<!-- ODDS:START -->", "<!-- ODDS:END -->"
+CHEER_START, CHEER_END = "<!-- CHEER:START -->", "<!-- CHEER:END -->"
 
 
 def replace_region(html: str, start: str, end: str, content: str) -> str:
@@ -666,6 +668,99 @@ ODDS_CSS = """
   .odsw{width:12px; height:12px; border-radius:3px; display:inline-block;}
 """
 
+CHEER_CSS = """
+  /* "Who to root for?" tab */
+  .rfnote{border-right-color:var(--amber); background:#fffbeb;}
+  .rfsub-il{color:var(--muted); font-weight:600;}
+  .rffilters{margin:14px 0 6px; background:#f8fafc; border:1px solid var(--line);
+             border-radius:12px; padding:12px 14px;}
+  .rffl-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  /* today / tomorrow segmented toggle */
+  .rfdaytoggle{display:inline-flex; gap:0; background:#eef2f7; border:1px solid var(--line);
+               border-radius:10px; padding:3px; margin-bottom:10px;}
+  .rfday{appearance:none; border:0; background:none; font-family:inherit; font-weight:800;
+         font-size:.86rem; color:#64748b; cursor:pointer; padding:6px 16px; border-radius:8px;}
+  .rfday.on{background:#fff; color:var(--ink); box-shadow:0 2px 8px -4px rgba(2,6,23,.4);}
+  .rfday:disabled{color:#cbd5e1; cursor:not-allowed;}
+  .rftoggle{display:inline-flex; align-items:center; gap:7px; font-size:.88rem; color:#475569; cursor:pointer;}
+  /* searchable dropdowns (scale to 53+ participants) */
+  .rfdd{position:relative;}
+  .rfdd-btn{appearance:none; border:1px solid var(--line); background:#fff; color:#334155;
+            font-family:inherit; font-weight:700; font-size:.86rem; cursor:pointer;
+            padding:7px 14px; border-radius:10px; display:inline-flex; align-items:center; gap:6px;}
+  .rfdd-btn:hover{border-color:#cbd5e1;}
+  .rfdd-cnt{color:var(--blue); font-weight:800;}
+  .rfcar{color:var(--muted);}
+  .rfdd-pop{position:absolute; z-index:60; top:calc(100% + 6px); inset-inline-start:0; width:280px;
+            max-width:84vw; background:#fff; border:1px solid var(--line); border-radius:12px;
+            box-shadow:0 16px 40px -16px rgba(2,6,23,.45); padding:10px;}
+  .rfdd-search{width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:9px;
+               padding:7px 10px; font-family:inherit; font-size:.86rem; margin-bottom:6px;}
+  .rfdd-search:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 2px rgba(37,99,235,.15);}
+  .rfdd-actions{display:flex; justify-content:flex-end; margin-bottom:4px;}
+  .rflink{appearance:none; border:0; background:none; color:var(--blue); font-family:inherit;
+          font-weight:700; font-size:.82rem; cursor:pointer; padding:2px 4px;}
+  .rfdd-list{max-height:240px; overflow:auto; display:flex; flex-direction:column; gap:1px;}
+  .rfopt{display:flex; align-items:center; gap:8px; padding:5px 6px; border-radius:8px;
+         font-size:.86rem; color:#334155; cursor:pointer;}
+  .rfopt:hover{background:#f1f5f9;}
+  .rfopt span{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rfopt2{display:block; width:100%; text-align:right; appearance:none; border:0; background:none;
+          font-family:inherit; font-size:.86rem; color:#334155; padding:6px 8px; border-radius:8px; cursor:pointer;}
+  .rfopt2:hover{background:#f1f5f9;}
+  .rfopt2.cur{background:#fef3c7; color:#92400e; font-weight:800;}
+  .rfgame{border:1px solid var(--line); border-radius:14px; padding:14px 16px 16px; margin:14px 0;
+          background:#fff; box-shadow:0 6px 18px -14px rgba(2,6,23,.4);}
+  .rftime-row{display:flex; margin-bottom:6px;}
+  .rftime{color:var(--muted); font-size:.85rem; font-weight:700;
+          background:#f1f5f9; padding:3px 10px; border-radius:999px;}
+  .rfbuckets{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:start;}
+  .rfcol{border:1px solid var(--line); border-radius:12px; padding:10px; background:#fcfcfd; min-width:0;}
+  /* big flag (centered) + team name below; middle column shows the large X */
+  .rfcolhd{display:flex; flex-direction:column; align-items:center; gap:5px; text-align:center;
+           padding:8px 4px 12px; margin-bottom:10px; border-bottom:2px solid #eef2f7;}
+  .rffl-big{font-size:3.1rem; line-height:1;}
+  .rfx-big{font-size:2.7rem; line-height:1.05; font-weight:800; color:#cbd5e1;}
+  .rfcname{font-weight:800; font-size:1.12rem; color:var(--ink);}
+  .rfcname.rfcdraw{color:#a16207;}
+  .rfprob{font-size:.78rem; font-weight:700; color:var(--muted);}
+  .rf-win1 .rfcolhd{border-bottom-color:#86efac;}
+  .rf-draw .rfcolhd{border-bottom-color:#fde047;}
+  .rf-win2 .rfcolhd{border-bottom-color:#93c5fd;}
+  .rfchips{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px;}
+  .rfchip{background:#fff; border:1px solid var(--line); border-radius:9px; padding:5px 8px 8px;
+          font-size:.8rem; color:#334155; display:flex; align-items:center; justify-content:space-between;
+          gap:5px; position:relative; overflow:hidden;}
+  /* relative-emphasis bar: width ∝ |Δ| / max|Δ| within the game */
+  .rfbar{position:absolute; inset-inline-start:0; bottom:0; height:3px; border-radius:0 2px 2px 0;
+         opacity:.6; transition:width .2s ease;}
+  .rfbar.pos{background:var(--green,#16a34a);}
+  .rfbar.neg{background:var(--red,#dc2626);}
+  .rfchip .rfnm{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rfchip .rfdelta{font-style:normal; flex:none; font-weight:800; font-size:.78rem;}
+  .rfchip .rfdelta.pos{color:var(--green,#16a34a);}
+  .rfchip .rfdelta.neg{color:var(--red,#dc2626);}
+  .rfchip.hl{border-color:#f59e0b; background:#fffbeb; box-shadow:0 0 0 2px rgba(245,158,11,.4);}
+  .rfempty{color:var(--muted); font-size:.82rem; text-align:center; padding:8px 0; grid-column:1/-1;}
+  .rfneutral{margin-top:12px; border-top:1px dashed var(--line); padding-top:10px;}
+  .rfneutral>summary{cursor:pointer; color:var(--muted); font-size:.84rem; font-weight:700; list-style:none;}
+  .rfneutral>summary::-webkit-details-marker{display:none;}
+  .rfneutral>summary::before{content:'▸ '; color:#94a3b8;}
+  .rfneutral[open]>summary::before{content:'▾ ';}
+  .rfneutral .rfchips{margin-top:8px; grid-template-columns:repeat(3,minmax(0,1fr));}
+  /* knockout layout: two team columns with a big centred ✕ (no draw bucket) */
+  .rfbuckets.ko{grid-template-columns:1fr auto 1fr;}
+  .rfvs{align-self:center; display:flex; justify-content:center; padding:0 6px;}
+  .rfvs .rfx-big{font-size:3rem; color:#cbd5e1;}
+  .rfko-badge{margin-inline-start:8px; background:#ede9fe; color:#6d28d9; font-size:.72rem;
+              font-weight:800; padding:3px 9px; border-radius:999px;}
+  .rfpending .rfvs-line{font-weight:800; color:var(--ink); margin:8px 0; font-size:1.02rem;}
+  .rffl-mini{font-size:1.3rem; vertical-align:middle;}
+  .rfx-mini{color:#94a3b8; font-weight:800; margin:0 5px;}
+  @media (max-width:760px){ .rfbuckets{grid-template-columns:1fr;} .rfbuckets.ko{grid-template-columns:1fr;}
+    .rfvs{display:none;} .rfneutral .rfchips{grid-template-columns:repeat(2,minmax(0,1fr));} }
+"""
+
 TABS_JS = """
 (function(){
   const tabs = Array.from(document.querySelectorAll('nav.tabs button[data-tab]'));
@@ -940,6 +1035,304 @@ def whatif_js(payload: dict) -> str:
 
 def odds_js(payload: dict) -> str:
     return _ODDS_JS.replace("__ODDS__", json.dumps(payload, ensure_ascii=False))
+
+
+# --- "Who to root for?" tab -------------------------------------------------- #
+# Fixtures + per-outcome expected-prize deltas are computed in the pipeline
+# (run_live_update.py -> live_latest.json["cheer"]); here we only add flags +
+# Hebrew names and render. _flag maps a canonical team name to its emoji flag.
+_TEAM_ISO = {
+    "United States": "US", "Canada": "CA", "Mexico": "MX", "Panama": "PA",
+    "Curaçao": "CW", "Haiti": "HT", "Argentina": "AR", "Brazil": "BR", "Uruguay": "UY",
+    "Colombia": "CO", "Paraguay": "PY", "Ecuador": "EC", "France": "FR", "Spain": "ES",
+    "Germany": "DE", "Portugal": "PT", "Netherlands": "NL", "Belgium": "BE",
+    "Croatia": "HR", "Switzerland": "CH", "Austria": "AT", "Norway": "NO",
+    "Sweden": "SE", "Turkey": "TR", "Czech Republic": "CZ", "Bosnia and Herzegovina": "BA",
+    "Morocco": "MA", "Senegal": "SN", "Egypt": "EG", "Algeria": "DZ", "Tunisia": "TN",
+    "Ghana": "GH", "Ivory Coast": "CI", "Cape Verde": "CV", "South Africa": "ZA",
+    "DR Congo": "CD", "Japan": "JP", "South Korea": "KR", "Iran": "IR", "Australia": "AU",
+    "Saudi Arabia": "SA", "Qatar": "QA", "Jordan": "JO", "Uzbekistan": "UZ",
+    "Iraq": "IQ", "New Zealand": "NZ",
+}
+_FLAG_OVERRIDE = {"England": "🏴\U000e0067\U000e0062\U000e0065\U000e006e\U000e0067\U000e007f",
+                  "Scotland": "🏴\U000e0067\U000e0062\U000e0073\U000e0063\U000e0074\U000e007f"}
+
+
+def _flag(team: str) -> str:
+    if team in _FLAG_OVERRIDE:
+        return _FLAG_OVERRIDE[team]
+    iso = _TEAM_ISO.get(team)
+    if not iso or len(iso) != 2:
+        return "🏳️"
+    return chr(0x1F1E6 + ord(iso[0]) - 65) + chr(0x1F1E6 + ord(iso[1]) - 65)
+
+
+def cheer_html(data: dict) -> str:
+    ents = data.get("entries") or []
+    names = [e["name"] for e in ents]
+    he = _team_he_map()
+    cheer = data.get("cheer") or {}
+    pmap = {e["name"]: {"t3": float(e.get("P_top3", 0) or 0),
+                        "last": float(e.get("P_last", 0) or 0)} for e in ents}
+
+    # enrich the per-day games with Hebrew names + flags for display
+    days = []
+    for day in cheer.get("days", []):
+        gs = []
+        for g in day.get("games", []):
+            gs.append({"mno": g["mno"], "ko": g.get("ko", ""), "p": g.get("p", [0, 0, 0]),
+                       "type": g.get("type", "group"), "pending": bool(g.get("pending")),
+                       "t1": he.get(g["home"], g["home"]), "f1": _flag(g["home"]),
+                       "t2": he.get(g["away"], g["away"]), "f2": _flag(g["away"])})
+        days.append({"key": day["key"], "date": day.get("date", ""), "games": gs})
+    cdata = {"days": days, "deltas": cheer.get("deltas", {}),
+             "thr": cheer.get("neutral_threshold", 1.0), "pmap": pmap}
+
+    filt_opts = "".join(
+        f'<label class="rfopt" data-name="{n}"><input type="checkbox" value="{n}">'
+        f'<span>{n}</span></label>' for n in names)
+    hi_opts = "".join(
+        f'<button type="button" class="rfopt2" data-name="{n}">{n}</button>' for n in names)
+
+    blob = json.dumps(cdata, ensure_ascii=False)
+    return f"""
+  <h2 class="bigsec">את מי לעודד?</h2>
+  <section>
+    <p class="sub" style="margin-top:4px">לכל משחק — באיזו תוצאה כדאי <b>לכם</b> לתמוך?
+      תחת כל תוצאה מופיעים המשתתפים שאותה תוצאה <b>משפרת להם את תוחלת הפרס</b>, והסכום שלצד השם הוא
+      <b>השינוי הצפוי בתוחלת הזכייה</b> (₪) אם זו התוצאה. הדגישו את עצמכם ועודדו בהתאם.
+      <span class="rfsub-il">השעות בשעון ישראל.</span></p>
+    <div class="callout rfnote">
+      ברירת המחדל: כל משתתף מופיע <b>בתוצאה הטובה לו ביותר</b>. סננו לטופס שלכם כדי לראות אותו
+      בכל התוצאות עם השינוי הצפוי בכל אחת. מי שהמשחק כמעט לא משפיע עליו מופיע תחת
+      <b>״לא מהותי״</b>. עוצמת הפס שלצד כל שם משקפת כמה המשחק <b>מהותי</b> עבורו ביחס לאחרים.
+      במשחקי נוקאאוט יש שתי תוצאות (אין תיקו). ההשפעה מחושבת בכל משחק בנפרד (מתוך אותה סימולציה),
+      ומתעדכנת לאחר כל משחק שמסתיים.
+    </div>
+    <div class="rffilters">
+      <div class="rfdaytoggle" id="rfDayToggle">
+        <button type="button" class="rfday" data-day="today">היום</button>
+        <button type="button" class="rfday" data-day="tomorrow">מחר</button>
+      </div>
+      <div class="rffl-row">
+        <div class="rfdd">
+          <button type="button" class="rfdd-btn" id="rfFilterBtn">סינון משתתפים
+            <span class="rfdd-cnt" id="rfFilterCnt"></span> <span class="rfcar">▾</span></button>
+          <div class="rfdd-pop" id="rfFilterPop" hidden>
+            <input type="search" class="rfdd-search" id="rfFilterSearch" placeholder="חיפוש שם…">
+            <div class="rfdd-actions"><button type="button" class="rflink" id="rfClear">נקה הכל</button></div>
+            <div class="rfdd-list" id="rfFilterList">{filt_opts}</div>
+          </div>
+        </div>
+        <div class="rfdd">
+          <button type="button" class="rfdd-btn" id="rfHiBtn">הדגשת משתתפים<span id="rfHiCur"></span>
+            <span class="rfcar">▾</span></button>
+          <div class="rfdd-pop" id="rfHiPop" hidden>
+            <input type="search" class="rfdd-search" id="rfHiSearch" placeholder="חיפוש שם…">
+            <div class="rfdd-actions"><button type="button" class="rflink" id="rfHiClear">בטל הכל</button></div>
+            <div class="rfdd-list" id="rfHiList">{hi_opts}</div>
+          </div>
+        </div>
+        <label class="rftoggle"><input type="checkbox" id="rfTop3"> רק עם סיכוי לפודיום</label>
+        <label class="rftoggle"><input type="checkbox" id="rfLast"> רק עם סיכוי למקום אחרון</label>
+      </div>
+    </div>
+    <div id="rfGames" class="rfgames"></div>
+    <script id="rfData" type="application/json">{blob}</script>
+  </section>
+"""
+
+
+CHEER_JS = r"""
+(function(){
+  const panel = document.getElementById('tab-cheer');
+  if(!panel) return;
+  const dataEl = document.getElementById('rfData');
+  let C; try { C = JSON.parse(dataEl.textContent); } catch(e){ return; }
+  const gamesEl = document.getElementById('rfGames');
+  const top3=document.getElementById('rfTop3'), last=document.getElementById('rfLast');
+  const fBtn=document.getElementById('rfFilterBtn'), fPop=document.getElementById('rfFilterPop');
+  const fSearch=document.getElementById('rfFilterSearch'), fList=document.getElementById('rfFilterList');
+  const fClear=document.getElementById('rfClear'), fCnt=document.getElementById('rfFilterCnt');
+  const hBtn=document.getElementById('rfHiBtn'), hPop=document.getElementById('rfHiPop');
+  const hSearch=document.getElementById('rfHiSearch'), hList=document.getElementById('rfHiList');
+  const hClear=document.getElementById('rfHiClear'), hCur=document.getElementById('rfHiCur');
+  const dayToggle=document.getElementById('rfDayToggle');
+
+  const THR = C.thr || 1.0;
+  const pmap = C.pmap || {};
+  const deltas = C.deltas || {};
+  const names = Object.keys(deltas).length ? Object.keys(deltas) : Object.keys(pmap);
+  const dayByKey = {}; (C.days||[]).forEach(d=> dayByKey[d.key]=d);
+  const esc = s => (s+'').replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+  // ---- state ----
+  const filt = new Set();   // selected participants (empty = everyone)
+  const hi   = new Set();   // highlighted participants
+  let day = (dayByKey.today && dayByKey.today.games.length) ? 'today'
+          : (dayByKey.tomorrow && dayByKey.tomorrow.games.length) ? 'tomorrow' : 'today';
+
+  function fmtMoney(v){
+    const a = Math.abs(v);
+    const s = a < 10 ? (Math.round(a*10)/10).toString() : Math.round(a).toString();
+    return (v>=0 ? '+' : '−') + '₪' + s;
+  }
+  function eligible(n){
+    if(filt.size && !filt.has(n)) return false;
+    const p = pmap[n] || {};
+    if(top3 && top3.checked && !(p.t3 > 0)) return false;
+    if(last && last.checked && !(p.last > 0)) return false;
+    return true;
+  }
+  function chip(n, v, showDelta, imp){
+    const cls = 'rfchip' + (hi.has(n)?' hl':'');
+    let d = '';
+    if(showDelta) d = ' <i class="rfdelta '+(v>=0?'pos':'neg')+'">'+fmtMoney(v)+'</i>';
+    // within-game relative emphasis: bar width = |Δ| / max|Δ| in this game.
+    let bar = '';
+    if(showDelta && imp > 0){
+      bar = '<span class="rfbar '+(v>=0?'pos':'neg')+'" style="width:'
+          + Math.round(imp*100) + '%"></span>';
+    }
+    return '<span class="'+cls+'" data-name="'+esc(n)+'"><span class="rfnm">'+esc(n)+'</span>'+d+bar+'</span>';
+  }
+  function colHead(flag, name, pct){
+    return '<div class="rfcolhd"><span class="rffl-big">'+flag+'</span>'
+         + '<span class="rfcname">'+esc(name)+'</span>'
+         + '<span class="rfprob">סיכוי '+pct+'%</span></div>';
+  }
+  function bucketCol(kind, headHtml, items, focus){
+    items.sort((a,b)=> b.v - a.v);
+    const chips = items.map(it=> chip(it.n, it.v, true, it.imp||0)).join('') ||
+                  '<div class="rfempty">— אין —</div>';
+    return '<div class="rfcol rf-'+kind+'">'+headHtml+'<div class="rfchips">'+chips+'</div></div>';
+  }
+
+  function render(){
+    // day toggle buttons (label + disabled state)
+    if(dayToggle) dayToggle.querySelectorAll('.rfday').forEach(b=>{
+      const d = dayByKey[b.dataset.day];
+      const n = d ? d.games.length : 0;
+      b.disabled = !n;
+      b.classList.toggle('on', b.dataset.day===day);
+      b.textContent = (b.dataset.day==='today'?'היום':'מחר') + (d ? ' · '+(d.date||'').slice(5).split('-').reverse().join('.') : '');
+    });
+    if(fCnt) fCnt.textContent = filt.size ? '('+filt.size+')' : '';
+    if(hCur) hCur.textContent = hi.size ? ' ('+hi.size+')' : '';
+
+    const D = dayByKey[day];
+    if(!D || !D.games.length){
+      gamesEl.innerHTML = '<div class="callout">אין משחקים '+(day==='today'?'היום':'מחר')+'.</div>';
+      return;
+    }
+    const focus = filt.size > 0;
+    let html = '';
+    D.games.forEach(g=>{
+      const mno = String(g.mno);
+      const isKo = g.type === 'ko';
+      const nOut = isKo ? 2 : 3;
+
+      // knockout game whose two teams aren't settled yet -> show placeholder
+      if(isKo && g.pending){
+        html += '<div class="rfgame rfpending"><div class="rftime-row">'
+              + '<span class="rftime">'+esc(g.ko)+'</span><span class="rfko-badge">נוקאאוט</span></div>'
+              + '<div class="rfvs-line"><span class="rffl-mini">'+g.f1+'</span> '+esc(g.t1)
+              + ' <span class="rfx-mini">✕</span> '+g.f2+' '+esc(g.t2)+'</div>'
+              + '<div class="rfempty">המשחק ייפתח כשייקבעו המעפילים מהשלב הקודם.</div></div>';
+        return;
+      }
+
+      const pr = (g.p||new Array(nOut).fill(0)).map(x=> Math.round(x*100));
+      const cols = []; for(let k=0;k<nOut;k++) cols.push([]);
+      const neutral = [];
+
+      // first pass: max |Δ| in this game (across eligible entries & outcomes)
+      // = the within-game scale for the relative-emphasis bars.
+      const elig = [];
+      let gMax = 0;
+      names.forEach(n=>{
+        if(!eligible(n)) return;
+        const dd = (deltas[n] && deltas[n][mno]) || new Array(nOut).fill(0);
+        let mx = 0; for(let k=0;k<nOut;k++) mx = Math.max(mx, Math.abs(dd[k]));
+        gMax = Math.max(gMax, mx);
+        elig.push({n, dd, mx});
+      });
+      const impOf = v => gMax > 0 ? Math.abs(v)/gMax : 0;
+      elig.forEach(({n, dd, mx})=>{
+        if(focus){
+          for(let k=0;k<nOut;k++) cols[k].push({n, v:dd[k], imp:impOf(dd[k])});
+        } else if(mx < THR){
+          neutral.push(n);
+        } else {
+          let best=0; for(let k=1;k<nOut;k++) if(dd[k]>dd[best]) best=k;
+          cols[best].push({n, v:dd[best], imp:impOf(dd[best])});
+        }
+      });
+
+      const badge = isKo ? '<span class="rfko-badge">נוקאאוט</span>' : '';
+      let buckets;
+      if(isKo){
+        const h1 = colHead(g.f1, g.t1, pr[0]);
+        const h2 = colHead(g.f2, g.t2, pr[1]);
+        buckets = '<div class="rfbuckets ko">'
+                + bucketCol('win1', h1, cols[0], focus)
+                + '<div class="rfvs"><span class="rfx-big">✕</span></div>'
+                + bucketCol('win2', h2, cols[1], focus)
+                + '</div>';
+      } else {
+        const h1 = colHead(g.f1, g.t1, pr[0]);
+        const hd = '<div class="rfcolhd"><span class="rfx-big">✕</span>'
+                 + '<span class="rfcname rfcdraw">תיקו</span>'
+                 + '<span class="rfprob">סיכוי '+pr[1]+'%</span></div>';
+        const h2 = colHead(g.f2, g.t2, pr[2]);
+        buckets = '<div class="rfbuckets">'
+                + bucketCol('win1', h1, cols[0], focus)
+                + bucketCol('draw', hd, cols[1], focus)
+                + bucketCol('win2', h2, cols[2], focus)
+                + '</div>';
+      }
+      let card = '<div class="rfgame"><div class="rftime-row"><span class="rftime">'+esc(g.ko)+'</span>'+badge+'</div>'
+               + buckets;
+      if(!focus && neutral.length){
+        const nb = neutral.map(n=> chip(n, 0, false, 0)).join('');
+        card += '<details class="rfneutral"><summary>לא מהותי ('+neutral.length+') — המשחק כמעט לא משפיע</summary>'
+              + '<div class="rfchips">'+nb+'</div></details>';
+      }
+      card += '</div>';
+      html += card;
+    });
+    gamesEl.innerHTML = html;
+  }
+
+  // ---- dropdowns (search + multi-select), shared with the old UX ----
+  function toggle(pop){ const open = pop.hidden; [fPop,hPop].forEach(p=>{ if(p) p.hidden=true; }); pop.hidden=!open; }
+  if(fBtn) fBtn.addEventListener('click', e=>{ e.stopPropagation(); toggle(fPop); });
+  if(hBtn) hBtn.addEventListener('click', e=>{ e.stopPropagation(); toggle(hPop); });
+  document.addEventListener('click', e=>{ if(!e.target.closest('.rfdd')){ if(fPop)fPop.hidden=true; if(hPop)hPop.hidden=true; } });
+  function search(list,q){ q=(q||'').trim().toLowerCase();
+    list.querySelectorAll('[data-name]').forEach(o=>{ o.style.display=(!q||o.dataset.name.toLowerCase().indexOf(q)>=0)?'':'none'; }); }
+  if(fSearch) fSearch.addEventListener('input', ()=> search(fList,fSearch.value));
+  if(hSearch) hSearch.addEventListener('input', ()=> search(hList,hSearch.value));
+
+  if(fList) fList.addEventListener('change', e=>{ const b=e.target.closest('input[type=checkbox]'); if(!b) return;
+    if(b.checked) filt.add(b.value); else filt.delete(b.value); render(); });
+  if(fClear) fClear.addEventListener('click', ()=>{ filt.clear();
+    fList.querySelectorAll('input[type=checkbox]').forEach(b=>b.checked=false); render(); });
+
+  if(hList) hList.addEventListener('click', e=>{ const o=e.target.closest('.rfopt2'); if(!o) return;
+    const n=o.dataset.name;
+    if(hi.has(n)){ hi.delete(n); o.classList.remove('cur'); } else { hi.add(n); o.classList.add('cur'); }
+    render(); });
+  if(hClear) hClear.addEventListener('click', ()=>{ hi.clear();
+    hList.querySelectorAll('.rfopt2').forEach(b=>b.classList.remove('cur')); render(); });
+
+  if(dayToggle) dayToggle.addEventListener('click', e=>{ const b=e.target.closest('.rfday'); if(!b||b.disabled) return;
+    day=b.dataset.day; render(); });
+  if(top3) top3.addEventListener('change', render);
+  if(last) last.addEventListener('change', render);
+  render();
+})();
+"""
 
 
 _WHATIF_JS = r"""
@@ -1379,7 +1772,7 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS])
+    all_css = "\n".join([CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, CHEER_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
@@ -1390,13 +1783,14 @@ def main() -> None:
     # 3) What-If + Odds tab bodies.
     html = replace_region(html, WHATIF_START, WHATIF_END, whatif_html())
     html = replace_region(html, ODDS_START, ODDS_END, odds_html())
+    html = replace_region(html, CHEER_START, CHEER_END, cheer_html(data))
 
     # 4) All injected JS in one managed block before </script>.
     wi_payload = whatif_payload(data, state)
     od_payload = odds_payload(data)
     all_js = "\n".join([
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
-        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload),
+        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload), CHEER_JS,
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
 
