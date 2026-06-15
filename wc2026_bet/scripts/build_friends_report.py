@@ -1801,15 +1801,16 @@ STAGES_CSS = """
   .stpath{margin-top:8px; display:flex; flex-direction:column; gap:12px;}
   .stpteam{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;}
   .stpname{font-weight:800; color:var(--ink); font-size:1.02rem; margin-bottom:8px;}
-  .stprounds{display:flex; flex-wrap:wrap; gap:8px;}
-  .stpcard{flex:1 1 180px; min-width:170px; border:1px solid var(--line); border-radius:10px;
-            padding:8px 10px; background:#f8fafc;}
+  .stprounds{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:8px;}
+  .stpcard{border:1px solid var(--line); border-radius:10px; padding:8px 10px; background:#f8fafc;}
   .stpr{display:flex; justify-content:space-between; align-items:center; font-weight:800;
             color:#334155; border-bottom:1px solid var(--line); padding-bottom:5px; margin-bottom:6px;}
   .stppass{font-weight:800; color:var(--blue); font-size:.82rem;}
-  .stpopps{display:flex; flex-direction:column; gap:5px;}
-  .stpopp{display:grid; grid-template-columns:1fr auto auto; gap:6px; align-items:center; font-size:.8rem;}
+  .stpopps{display:flex; flex-direction:column; gap:7px;}
+  .stpopp{display:flex; flex-direction:column; gap:2px; font-size:.8rem;}
+  .stpopp.other{opacity:.75;}
   .stpo-nm{font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stpo-stats{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
   .stpo-meet{color:var(--muted); font-weight:700; font-variant-numeric:tabular-nums;}
   .stpo-beat{font-weight:800; font-variant-numeric:tabular-nums; border-radius:6px; padding:1px 6px;}
   .stpo-beat.good{color:#166534; background:#dcfce7;}
@@ -1994,11 +1995,19 @@ STAGES_JS = r"""
     }
     pathEl.innerHTML = ts.map(t=>{
       const rounds = (t.ko||[]).map(rd=>{
-        const opps = (rd.opp||[]).map(o=>
-          '<div class="stpopp"><span class="stpo-nm">'+o.flag+' '+esc(o.t)+'</span>'
-          + '<span class="stpo-meet">נפגשים '+Math.round(o.meet*100)+'%</span>'
-          + '<span class="stpo-beat '+beatClass(o.beat)+'">מנצחים '+Math.round(o.beat*100)+'%</span></div>'
-        ).join('') || '<div class="rfempty">—</div>';
+        const shown = rd.opp||[];
+      const meetSum = shown.reduce((a,o)=> a + (o.meet||0), 0);
+      let opps = shown.map(o=>
+          '<div class="stpopp"><div class="stpo-nm">'+o.flag+' '+esc(o.t)+'</div>'
+          + '<div class="stpo-stats"><span class="stpo-meet">נפגשים '+Math.round(o.meet*100)+'%</span>'
+          + '<span class="stpo-beat '+beatClass(o.beat)+'">מנצחים '+Math.round(o.beat*100)+'%</span></div></div>'
+        ).join('');
+      const other = 1 - meetSum;
+      if(other > 0.005){
+        opps += '<div class="stpopp other"><div class="stpo-nm">יריבות נוספות</div>'
+          + '<div class="stpo-stats"><span class="stpo-meet">נפגשים '+Math.round(other*100)+'%</span></div></div>';
+      }
+      if(!opps) opps = '<div class="rfempty">—</div>';
         return '<div class="stpcard"><div class="stpr">'+esc(rd.rhe)
           + '<span class="stppass">מעבר '+Math.round(rd.pass*100)+'%</span></div>'
           + '<div class="stpopps">'+opps+'</div></div>';
