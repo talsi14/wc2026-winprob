@@ -976,6 +976,11 @@
       "goals": 2
     },
     {
+      "scorer": "Alexander Isak",
+      "team": "Sweden",
+      "goals": 1
+    },
+    {
       "scorer": "Amad Diallo",
       "team": "Ivory Coast",
       "goals": 1
@@ -1091,8 +1096,18 @@
       "goals": 1
     },
     {
+      "scorer": "Omar Rekik",
+      "team": "Tunisia",
+      "goals": 1
+    },
+    {
       "scorer": "Raúl Jiménez",
       "team": "Mexico",
+      "goals": 1
+    },
+    {
+      "scorer": "Viktor Gyökeres",
+      "team": "Sweden",
       "goals": 1
     },
     {
@@ -1103,6 +1118,11 @@
     {
       "scorer": "Virgil van Dijk",
       "team": "Netherlands",
+      "goals": 1
+    },
+    {
+      "scorer": "Yasin Ayari",
+      "team": "Sweden",
       "goals": 1
     }
   ],
@@ -1215,6 +1235,16 @@
     "Ecuador": {
       "gf": 0,
       "ga": 1,
+      "games": 1
+    },
+    "Sweden": {
+      "gf": 2,
+      "ga": 1,
+      "games": 1
+    },
+    "Tunisia": {
+      "gf": 1,
+      "ga": 2,
       "games": 1
     }
   },
@@ -7776,5 +7806,6 @@
         146
       ]
     }
-  ]
+  ],
+  "live_widgets": true
 }
