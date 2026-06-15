@@ -10001,6 +10001,16 @@
       "gf": 1,
       "ga": 1,
       "games": 1
+    },
+    "Saudi Arabia": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "Uruguay": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -17115,5 +17125,6 @@
         2343
       ]
     }
-  ]
+  ],
+  "live_widgets": true
 }
