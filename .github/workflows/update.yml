@@ -88,6 +88,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       run: ${{ steps.detect.outputs.run }}
+      slim: ${{ steps.detect.outputs.slim }}
+      deploy: ${{ steps.detect.outputs.deploy }}
     steps:
       - uses: actions/checkout@v6
 
@@ -108,7 +110,8 @@ jobs:
       - name: Collect live state
         run: python3 wc2026_bet/scripts/collect_live.py
 
-      # --- Change-gate: run the heavy work only on a new result (or a forced run) ---
+      # --- Change-gate: heavy work on a new RESULT (or forced); slim refresh on a
+      # new LIVE goal (ongoing match) so the leader widgets stay current without a sim ---
       - name: Detect new results
         id: detect
         env:
@@ -117,27 +120,48 @@ jobs:
         run: |
           set -euo pipefail
           CUR="$(python3 wc2026_bet/scripts/state_fingerprint.py)"
+          LIVE_CUR="$(python3 wc2026_bet/scripts/state_fingerprint.py --live)"
           PREV="$(cat wc2026_bet/data/live/published.fingerprint 2>/dev/null || true)"
-          echo "current=[$CUR] previous=[$PREV] event=$EVENT schedule=$SCHED"
+          PREV_LIVE="$(cat wc2026_bet/data/live/published.live.fingerprint 2>/dev/null || true)"
+          echo "result=[$CUR vs $PREV] live=[$LIVE_CUR vs $PREV_LIVE] event=$EVENT schedule=$SCHED"
           CHANGED=false; [ "$CUR" != "$PREV" ] && CHANGED=true
+          LIVE_CHANGED=false; [ "$LIVE_CUR" != "$PREV_LIVE" ] && LIVE_CHANGED=true
           FORCE=false
           if [ "$EVENT" = "workflow_dispatch" ]; then FORCE=true; fi
           if [ "$SCHED" = "17 12 * 6,7 *" ]; then FORCE=true; fi
+          RUN=false; SLIM=false
           if [ "$FORCE" = "true" ] || [ "$CHANGED" = "true" ]; then
-            echo "Will run heavy pipeline (force=$FORCE, changed=$CHANGED)."
-            echo "run=true" >> "$GITHUB_OUTPUT"
+            RUN=true
+            echo "Heavy pipeline (force=$FORCE, changed=$CHANGED)."
+          elif [ "$LIVE_CHANGED" = "true" ] && [ -f wc2026_bet/results/live_latest.json ] \
+               && [ -f wc2026_bet/report/live.html ]; then
+            SLIM=true
+            echo "Slim live-widget refresh (a goal was scored in an ongoing match)."
           else
-            echo "No new results since last publish; skipping heavy pipeline + deploy."
-            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "No new result and no new live goal; nothing to do."
           fi
+          DEPLOY=false; { [ "$RUN" = "true" ] || [ "$SLIM" = "true" ]; } && DEPLOY=true
+          echo "run=$RUN"     >> "$GITHUB_OUTPUT"
+          echo "slim=$SLIM"   >> "$GITHUB_OUTPUT"
+          echo "deploy=$DEPLOY" >> "$GITHUB_OUTPUT"
           echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
           echo "fp=$CUR" >> "$GITHUB_OUTPUT"
+          echo "live_fp=$LIVE_CUR" >> "$GITHUB_OUTPUT"
 
       - name: Refresh win-probabilities + rebuild shareable page
         if: steps.detect.outputs.run == 'true'
         run: bash run_update.sh --skip-collect
 
-      - name: Assemble published site + timestamped archive
+      # Slim path (no sim): overlay live goal tallies onto the last snapshot and
+      # rebuild just the page, so the leader widgets reflect ongoing matches.
+      - name: Slim live-widget refresh (no sim)
+        if: steps.detect.outputs.run != 'true' && steps.detect.outputs.slim == 'true'
+        run: |
+          set -euo pipefail
+          python3 wc2026_bet/scripts/apply_live_widgets.py
+          python3 wc2026_bet/scripts/build_friends_report.py
+
+      - name: Archive timestamped snapshot
         if: steps.detect.outputs.run == 'true'
         run: |
           set -euo pipefail
@@ -147,6 +171,11 @@ jobs:
           # the detailed English analyst page (probability table + all charts)
           cp wc2026_bet/report/live.html "published/live_${TS}.html"
 
+      - name: Assemble published site
+        if: steps.detect.outputs.deploy == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p published
           rm -rf public
           mkdir -p public/history
           cp friends_bet/report/index.html public/index.html
@@ -171,13 +200,19 @@ jobs:
           } > public/history/index.html
 
       - name: Commit snapshot archive + fingerprint back to repo
-        if: steps.detect.outputs.run == 'true'
+        if: steps.detect.outputs.deploy == 'true'
         run: |
           set -euo pipefail
+          # result fingerprint (unchanged on a slim run) + live-goals fingerprint
           printf '%s' "${{ steps.detect.outputs.fp }}" > wc2026_bet/data/live/published.fingerprint
+          printf '%s' "${{ steps.detect.outputs.live_fp }}" > wc2026_bet/data/live/published.live.fingerprint
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add friends_bet/report/index.html published/ wc2026_bet/data/live/published.fingerprint wc2026_bet/data/history/metrics_history.jsonl
+          git add friends_bet/report/index.html published/ \
+                  wc2026_bet/data/live/published.fingerprint \
+                  wc2026_bet/data/live/published.live.fingerprint \
+                  wc2026_bet/data/history/metrics_history.jsonl \
+                  wc2026_bet/results/live_latest.json wc2026_bet/report/live.html
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
@@ -198,14 +233,14 @@ jobs:
           fi
 
       - name: Upload Pages artifact
-        if: steps.detect.outputs.run == 'true'
+        if: steps.detect.outputs.deploy == 'true'
         uses: actions/upload-pages-artifact@v5
         with:
           path: public
 
   deploy:
     needs: build
-    if: needs.build.outputs.run == 'true'
+    if: needs.build.outputs.deploy == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

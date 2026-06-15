@@ -35,15 +35,32 @@ def fingerprint(state: dict) -> str:
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16]
 
 
+def live_fingerprint(state: dict) -> str:
+    """Digest over the live widget tallies (completed + in-progress goals).
+
+    Drives the slim 5-min refresh: when a goal is scored in an ongoing match this
+    changes even though the result fingerprint (completed only) does not, so the
+    three display widgets can be redeployed without re-running the simulation."""
+    relevant = {
+        "live_team_played": state.get("live_team_played", {}),
+        "live_scorers": state.get("live_scorers", []),
+    }
+    blob = json.dumps(relevant, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--state", default=str(DATA_LIVE / "state_latest.json"))
+    ap.add_argument("--live", action="store_true",
+                    help="fingerprint the live widget tallies instead of results")
     args = ap.parse_args()
     p = Path(args.state)
     if not p.exists():
         print("")
         return
-    print(fingerprint(json.loads(p.read_text(encoding="utf-8"))))
+    state = json.loads(p.read_text(encoding="utf-8"))
+    print(live_fingerprint(state) if args.live else fingerprint(state))
 
 
 if __name__ == "__main__":

@@ -9,8 +9,12 @@ venv/
 .DS_Store
 
 # Generated per-run outputs (recreated by the pipeline every run)
-wc2026_bet/report/
-wc2026_bet/results/
+wc2026_bet/report/*
+wc2026_bet/results/*
+# ...but track the latest published snapshot + the analyst page so the slim
+# (no-sim) live-widget refresh can rebuild a complete public/ without the pipeline.
+!wc2026_bet/results/live_latest.json
+!wc2026_bet/report/live.html
 wc2026_bet/data/live/state_*.json
 wc2026_bet/data/live/win_probabilities_*.json
 wc2026_bet/data/live/odds_status_*.json

@@ -15,6 +15,9 @@ state_<TS>.json schema (all team / player names canonical):
   player_goals         : { "<canonical scorer>": goals }               # candidates only, open-play+penalty, no own/shootout
   all_scorers          : [ {scorer, team, goals} ]                     # every scorer (Golden-Boot board), sorted desc
   team_played          : { team: {gf,ga,games} }                       # from completed matches
+  n_live               : int                                           # matches currently in progress
+  live_team_played     : { team: {gf,ga,games} }                       # completed + in-progress (widgets only)
+  live_scorers         : [ {scorer, team, goals} ]                     # completed + in-progress (widgets only)
 
 Usage:  python3 scripts/collect_live.py [--ts 2026-06-20T1200]
 """
@@ -88,28 +91,60 @@ def main() -> None:
     #   key -> {"scorer": display name, "team": canonical team, "goals": n}
     all_scorers: dict[str, dict] = {}
 
+    # LIVE tallies = completed matches PLUS goals already scored in *ongoing*
+    # matches. These feed only the three display widgets (top scoring/conceding
+    # team, top scorer) via the slim 5-min refresh; the simulator still conditions
+    # exclusively on the completed-only fields below, so partial scores never leak
+    # into the win-probability model.
+    live_team_played: dict[str, dict] = {}
+    live_all_scorers: dict[str, dict] = {}
+    n_live = 0
+
     def bump_played(team, gf, ga):
         d = team_played.setdefault(team, {"gf": 0, "ga": 0, "games": 0})
         d["gf"] += gf; d["ga"] += ga; d["games"] += 1
 
+    def bump_live(team, gf, ga):
+        d = live_team_played.setdefault(team, {"gf": 0, "ga": 0, "games": 0})
+        d["gf"] += gf; d["ga"] += ga; d["games"] += 1
+
     played_group, played_ko = 0, 0
     for fx in fixtures:
-        if not _is_played(fx) or fx["home"] is None or fx["away"] is None:
+        if fx["home"] is None or fx["away"] is None:
             continue
         if fx["home_score"] is None or fx["away_score"] is None:
             continue
+        played = _is_played(fx)
+        live = fx.get("state") == "in"
+        if not (played or live):
+            continue
         hg, ag = fx["home_score"], fx["away_score"]
         key = frozenset((fx["home"], fx["away"]))
-        # accumulate team gf/ga
-        bump_played(fx["home"], hg, ag)
-        bump_played(fx["away"], ag, hg)
         # team-id -> canonical team for this fixture (to attribute each scorer)
         id2team = {str(fx.get("home_id")): fx["home"], str(fx.get("away_id")): fx["away"]}
-        # goal scorers -> candidate goals (for scoring) + full board (for display)
+        # goal scorers (works for in-progress matches too)
         try:
             scorers = espn.fetch_goal_scorers(fx["espn_id"])
         except RuntimeError:
             scorers = []
+
+        # --- live board (includes this match whether ongoing or finished) ---
+        bump_live(fx["home"], hg, ag)
+        bump_live(fx["away"], ag, hg)
+        for s in scorers:
+            disp = cand_lookup.get(_norm(s["scorer"])) or s["scorer"]
+            team = id2team.get(str(s.get("team_id"))) or ""
+            lr = live_all_scorers.setdefault(disp, {"scorer": disp, "team": team, "goals": 0})
+            lr["goals"] += 1
+            if not lr["team"] and team:
+                lr["team"] = team
+        if live and not played:
+            n_live += 1
+            continue                                  # ongoing -> no completed-only updates
+
+        # --- completed-only fields (condition the simulator) ---
+        bump_played(fx["home"], hg, ag)
+        bump_played(fx["away"], ag, hg)
         for s in scorers:
             canon = cand_lookup.get(_norm(s["scorer"]))
             if canon:
@@ -165,6 +200,11 @@ def main() -> None:
         "all_scorers": sorted(all_scorers.values(),
                               key=lambda r: (-r["goals"], r["scorer"])),
         "team_played": team_played,
+        # live widget tallies (completed + in-progress) for the slim refresh
+        "n_live": n_live,
+        "live_team_played": live_team_played,
+        "live_scorers": sorted(live_all_scorers.values(),
+                               key=lambda r: (-r["goals"], r["scorer"])),
     }
 
     out = DATA_LIVE / f"state_{ts}.json"

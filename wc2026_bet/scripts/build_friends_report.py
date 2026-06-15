@@ -257,11 +257,16 @@ def leaders_html(data: dict) -> str:
         ("scoring", _IC_GAUGE, "הכובשת המובילה", sc_name, sc_val,
          f'<table class="ltbl"><tbody>{team_rows(gf_rank, 1, sel_scoring)}</tbody></table>'),
     ]
+    # when the tallies include goals from matches still in progress, flag it so
+    # users know these three numbers are live (the win-probs/standings are not).
+    live = bool(data.get("live_widgets"))
+    live_dot = ('<span class="lc-live" title="כולל משחקים שמתנהלים כעת">'
+                '<span class="lc-pulse"></span>חי</span>') if live else ''
     out = ""
     for cls, ic, title, name, val, tbl in cards:
         out += (f'<div class="lcard {cls}" tabindex="0">'
                 f'<div class="lc-top"><span class="lc-ic">{ic}</span>'
-                f'<span class="lc-title">{title}</span></div>'
+                f'<span class="lc-title">{title}</span>{live_dot}</div>'
                 f'<div class="lc-val" title="{name}">{name}</div>'
                 f'<div class="lc-sub">{val}</div>'
                 f'<div class="lpop">{tbl}</div></div>')
@@ -515,6 +520,14 @@ CMTBL_CSS = """
   .lc-val{font-size:1.7rem; font-weight:800; color:#fff; margin-top:10px; line-height:1.15;
             white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .lc-sub{color:#9aa7b8; font-weight:700; margin-top:2px;}
+  /* live indicator: shown only when the tallies include in-progress matches */
+  .lc-top{justify-content:flex-start;}
+  .lc-live{margin-inline-start:auto; display:inline-flex; align-items:center; gap:5px;
+           color:#fecaca; font-weight:800; font-size:.72rem; letter-spacing:.02em;}
+  .lc-pulse{width:8px; height:8px; border-radius:50%; background:#ef4444;
+            animation:lcpulse 1.6s infinite;}
+  @keyframes lcpulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6);}
+    70%{box-shadow:0 0 0 7px rgba(239,68,68,0);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
   .lcard::after{content:"\\25be"; position:absolute; bottom:7px; left:14px; color:#64748b;
             font-size:.85rem; transition:transform .15s;}
   .lcard.open::after{transform:rotate(180deg);}
