@@ -976,6 +976,11 @@
       "goals": 2
     },
     {
+      "scorer": "Yasin Ayari",
+      "team": "Sweden",
+      "goals": 2
+    },
+    {
       "scorer": "Alexander Isak",
       "team": "Sweden",
       "goals": 1
@@ -1124,11 +1129,6 @@
       "scorer": "Virgil van Dijk",
       "team": "Netherlands",
       "goals": 1
-    },
-    {
-      "scorer": "Yasin Ayari",
-      "team": "Sweden",
-      "goals": 1
     }
   ],
   "team_played": {
@@ -1243,13 +1243,13 @@
       "games": 1
     },
     "Sweden": {
-      "gf": 4,
+      "gf": 5,
       "ga": 1,
       "games": 1
     },
     "Tunisia": {
       "gf": 1,
-      "ga": 4,
+      "ga": 5,
       "games": 1
     }
   },
