@@ -9821,6 +9821,11 @@
       "goals": 1
     },
     {
+      "scorer": "Maxi Araújo",
+      "team": "Uruguay",
+      "goals": 1
+    },
+    {
       "scorer": "Nathaniel Brown",
       "team": "Germany",
       "goals": 1
@@ -10009,11 +10014,11 @@
     },
     "Saudi Arabia": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     },
     "Uruguay": {
-      "gf": 0,
+      "gf": 1,
       "ga": 1,
       "games": 1
     }
