@@ -9706,6 +9706,11 @@
       "goals": 2
     },
     {
+      "scorer": "Abdulelah Al-Amri",
+      "team": "Saudi Arabia",
+      "goals": 1
+    },
+    {
       "scorer": "Alexander Isak",
       "team": "Sweden",
       "goals": 1
@@ -10003,13 +10008,13 @@
       "games": 1
     },
     "Saudi Arabia": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     },
     "Uruguay": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
