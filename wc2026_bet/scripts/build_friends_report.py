@@ -297,6 +297,7 @@ CSS_START, CSS_END = "/* WINPROB:CSS:START */", "/* WINPROB:CSS:END */"
 WHATIF_START, WHATIF_END = "<!-- WHATIF:START -->", "<!-- WHATIF:END -->"
 ODDS_START, ODDS_END = "<!-- ODDS:START -->", "<!-- ODDS:END -->"
 CHEER_START, CHEER_END = "<!-- CHEER:START -->", "<!-- CHEER:END -->"
+STAGES_START, STAGES_END = "<!-- STAGES:START -->", "<!-- STAGES:END -->"
 
 
 def replace_region(html: str, start: str, end: str, content: str) -> str:
@@ -1766,6 +1767,214 @@ const ODDS = __ODDS__;
 """
 
 
+STAGES_CSS = """
+  /* ---- "עד לאן יגיעו?" — stage-reaching heatmap + distribution chart ---- */
+  .stwrap{margin-top:6px;}
+  .stctrls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0 4px;}
+  .stmode{display:inline-flex; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+  .stmode button{appearance:none; border:0; background:#fff; color:#475569; font-weight:700;
+            padding:7px 12px; cursor:pointer; font-size:.86rem;}
+  .stmode button.on{background:linear-gradient(135deg,#0b1220,#1e3a8a); color:#fff;}
+  .stmode button+button{border-inline-start:1px solid var(--line);}
+  .sthint{color:var(--muted); font-size:.82rem; margin:2px 0 0;}
+  /* heatmap */
+  .stheatwrap{overflow:auto; border:1px solid var(--line); border-radius:12px; margin-top:8px;}
+  table.sttbl{border-collapse:separate; border-spacing:0; width:100%; font-size:.82rem;
+            font-variant-numeric:tabular-nums;}
+  table.sttbl thead th{position:sticky; top:0; z-index:2; background:#f8fafc; color:#475569;
+            font-weight:700; padding:8px 9px; border-bottom:1px solid var(--line); white-space:nowrap;}
+  table.sttbl thead th.nm{z-index:3; inset-inline-start:0; text-align:right;}
+  table.sttbl td{padding:0; border-bottom:1px solid #f1f5f9; text-align:center;}
+  table.sttbl td.nm{text-align:right; font-weight:700; color:var(--ink); padding:6px 9px;
+            position:sticky; inset-inline-start:0; background:#fff; white-space:nowrap;}
+  table.sttbl td.nm small{color:var(--muted); font-weight:700;}
+  table.sttbl tbody tr:hover td.nm{background:#f1f5f9;}
+  .stcell{display:block; padding:7px 6px; font-weight:700;}
+  .stflag{margin-inline-end:5px;}
+  /* distribution chart */
+  .stchart{margin-top:10px; border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;}
+  .stsvg{width:100%; height:auto; display:block;}
+  .stleg{display:flex; flex-wrap:wrap; gap:10px 14px; margin-bottom:6px;}
+  .stlg{display:inline-flex; align-items:center; gap:6px; font-size:.82rem; color:#334155; font-weight:700;}
+  .stsw{width:12px; height:12px; border-radius:3px; display:inline-block;}
+"""
+
+
+def stages_payload(data: dict) -> dict:
+    """Per-team stage profile (Hebrew names + flags baked in) for the client.
+
+    teams[] carry exact[7] (a true distribution over where the run ends) and
+    reach[6] (cumulative P(reach at least stage)); ordered strongest-first."""
+    he = _team_he_map()
+    teams = []
+    for r in (data.get("stages") or []):
+        en = r["team"]
+        teams.append({"t": he.get(en, en), "en": en, "flag": _flag(en),
+                      "exact": r.get("exact", []), "reach": r.get("reach", []),
+                      "exp": r.get("exp", 0)})
+    return {
+        "teams": teams,
+        "reachLabels": ["שלב 32", "שמינית", "רבע", "חצי", "גמר", "אלופה"],
+        "exactLabels": ["בתים", "שלב 32", "שמינית", "רבע", "חצי", "סגנית", "אלופה"],
+    }
+
+
+def stages_html(data: dict) -> str:
+    payload = stages_payload(data)
+    opts = "".join(
+        f'<label class="rfopt" data-name="{t["t"]}"><input type="checkbox" value="{t["en"]}">'
+        f'<span>{t["flag"]} {t["t"]}</span></label>' for t in payload["teams"])
+    blob = json.dumps(payload, ensure_ascii=False)
+    return f"""
+  <h2 class="bigsec">עד לאן יגיעו?</h2>
+  <section class="stwrap">
+    <p class="sub" style="margin-top:4px">לכל נבחרת — ההסתברות (מתוך הסימולציה) <b>להגיע לכל שלב</b> בטורניר.
+      המפה צבועה לפי ההסתברות <b>להגיע לפחות</b> לשלב. סננו לנבחרות מסוימות, ובחרו אותן גם לגרף ההשוואה למטה.</p>
+    <div class="stctrls">
+      <div class="rfdd">
+        <button type="button" class="rfdd-btn" id="stTeamBtn">בחירת נבחרות
+          <span class="rfdd-cnt" id="stTeamCnt"></span> <span class="rfcar">▾</span></button>
+        <div class="rfdd-pop" id="stTeamPop" hidden>
+          <input type="search" class="rfdd-search" id="stTeamSearch" placeholder="חיפוש נבחרת…">
+          <div class="rfdd-actions"><button type="button" class="rflink" id="stTeamClear">נקה הכל</button></div>
+          <div class="rfdd-list" id="stTeamList">{opts}</div>
+        </div>
+      </div>
+    </div>
+    <div class="stheatwrap"><div id="stHeat"></div></div>
+
+    <h3 style="margin:18px 0 0">גרף התפלגות</h3>
+    <div class="stctrls">
+      <div class="stmode" id="stMode">
+        <button type="button" data-mode="exact" class="on">התפלגות (איפה ייעצרו)</button>
+        <button type="button" data-mode="cum">מצטבר (להגיע לפחות ל…)</button>
+      </div>
+    </div>
+    <p class="sthint" id="stChartHint"></p>
+    <div class="stchart"><div class="stleg" id="stLeg"></div><div id="stChart"></div></div>
+    <script id="stData" type="application/json">{blob}</script>
+  </section>
+"""
+
+
+STAGES_JS = r"""
+(function(){
+  const panel = document.getElementById('tab-stages');
+  if(!panel) return;
+  const el = document.getElementById('stData');
+  let S; try { S = JSON.parse(el.textContent); } catch(e){ return; }
+  const teams = S.teams || [];
+  if(!teams.length) return;
+  const byEn = {}; teams.forEach(t=> byEn[t.en]=t);
+  const heatEl = document.getElementById('stHeat');
+  const chartEl = document.getElementById('stChart');
+  const legEl = document.getElementById('stLeg');
+  const hintEl = document.getElementById('stChartHint');
+  const COLORS = ['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2','#db2777','#65a30d'];
+  const CHART_CAP = 8;
+  const esc = s => (s+'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const sel = new Set();       // selected team english keys (empty = all in heatmap)
+  let mode = 'exact';
+
+  function pct(p){ if(p<=0) return '·'; if(p<0.10) return (p*100).toFixed(1)+'%'; return Math.round(p*100)+'%'; }
+  function heat(p){
+    const a = p<=0 ? 0 : (0.10 + 0.90*p);
+    return {bg:'rgba(37,99,235,'+a.toFixed(3)+')', fg:(p>=0.55?'#fff':'#0f172a')};
+  }
+
+  function renderHeat(){
+    const rows = sel.size ? teams.filter(t=> sel.has(t.en)) : teams;
+    const L = S.reachLabels;
+    let h = '<table class="sttbl"><thead><tr><th class="nm">נבחרת</th>';
+    L.forEach(lb=> h += '<th>'+lb+'</th>');
+    h += '</tr></thead><tbody>';
+    rows.forEach(t=>{
+      h += '<tr><td class="nm"><span class="stflag">'+t.flag+'</span>'+esc(t.t)+'</td>';
+      (t.reach||[]).forEach(p=>{ const c=heat(p);
+        h += '<td><span class="stcell" style="background:'+c.bg+';color:'+c.fg+'">'+pct(p)+'</span></td>'; });
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+    heatEl.innerHTML = h;
+  }
+
+  function chartTeams(){
+    if(sel.size) return teams.filter(t=> sel.has(t.en)).slice(0, CHART_CAP);
+    return teams.slice(0, 6);   // default: 6 strongest
+  }
+  function barChart(labels, series){
+    const W=760,H=340,padL=38,padR=12,padT=14,padB=44;
+    const n=labels.length, m=series.length;
+    const plotW=W-padL-padR, plotH=H-padT-padB;
+    let vmax=0; series.forEach(s=> s.vals.forEach(v=>{ if(v>vmax) vmax=v; }));
+    vmax = Math.min(1, vmax*1.15); if(vmax<=0) vmax=1;
+    const y = v => padT + plotH*(1 - v/vmax);
+    const groupW = plotW/n;
+    const barW = Math.min(30, (groupW*0.78)/Math.max(1,m));
+    let svg = '<svg viewBox="0 0 '+W+' '+H+'" class="stsvg" preserveAspectRatio="xMidYMid meet">';
+    [0,.25,.5,.75,1].forEach(f=>{ const val=vmax*f, yy=y(val);
+      svg += '<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yy.toFixed(1)+'" stroke="#e2e8f0"/>'
+           + '<text x="'+(padL-5)+'" y="'+(yy+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="#94a3b8">'+Math.round(val*100)+'%</text>'; });
+    for(let i=0;i<n;i++){
+      const gx = padL + groupW*i;
+      const span = m*barW, start = gx + (groupW-span)/2;
+      for(let j=0;j<m;j++){
+        const v = series[j].vals[i]||0, bx=start+j*barW, by=y(v), bh=padT+plotH-by;
+        svg += '<rect x="'+bx.toFixed(1)+'" y="'+by.toFixed(1)+'" width="'+Math.max(1,barW-2).toFixed(1)
+             + '" height="'+Math.max(0,bh).toFixed(1)+'" fill="'+series[j].color+'" rx="2">'
+             + '<title>'+esc(series[j].label)+' · '+esc(labels[i])+': '+(v*100).toFixed(1)+'%</title></rect>';
+      }
+      svg += '<text x="'+(gx+groupW/2).toFixed(1)+'" y="'+(H-padB+15)+'" text-anchor="middle" font-size="10" fill="#475569">'+esc(labels[i])+'</text>';
+    }
+    svg += '</svg>';
+    return svg;
+  }
+  function renderChart(){
+    const ts = chartTeams();
+    const labels = mode==='exact' ? S.exactLabels : S.reachLabels;
+    const series = ts.map((t,i)=>({
+      label: t.t, color: COLORS[i%COLORS.length],
+      vals: (mode==='exact' ? t.exact : t.reach) || []
+    }));
+    legEl.innerHTML = series.map(s=> '<span class="stlg"><span class="stsw" style="background:'+s.color+'"></span>'+esc(s.label)+'</span>').join('');
+    chartEl.innerHTML = barChart(labels, series);
+    let hint = mode==='exact'
+      ? 'כל נבחרת: באיזה שלב צפויה להיעצר (סכום הטורים = 100%).'
+      : 'כל נבחרת: הסיכוי להגיע <b>לפחות</b> לשלב.';
+    if(!sel.size) hint += ' מוצגות 6 הנבחרות החזקות — בחרו נבחרות להשוואה.';
+    else if(sel.size>CHART_CAP) hint += ' מוצגות '+CHART_CAP+' הראשונות מבין '+sel.size+' שנבחרו.';
+    hintEl.innerHTML = hint;
+  }
+  function renderAll(){ renderHeat(); renderChart(); }
+
+  // ---- team dropdown (search + multi-select) ----
+  const tBtn=document.getElementById('stTeamBtn'), tPop=document.getElementById('stTeamPop');
+  const tSearch=document.getElementById('stTeamSearch'), tList=document.getElementById('stTeamList');
+  const tClear=document.getElementById('stTeamClear'), tCnt=document.getElementById('stTeamCnt');
+  if(tBtn) tBtn.addEventListener('click', e=>{ e.stopPropagation(); tPop.hidden=!tPop.hidden; });
+  document.addEventListener('click', e=>{ if(tPop && !tPop.hidden && !tPop.contains(e.target) && e.target!==tBtn) tPop.hidden=true; });
+  if(tSearch) tSearch.addEventListener('input', ()=>{ const q=tSearch.value.trim().toLowerCase();
+    tList.querySelectorAll('.rfopt').forEach(o=>{ o.style.display = (o.dataset.name||'').toLowerCase().includes(q)?'':'none'; }); });
+  if(tList) tList.addEventListener('change', e=>{ const cb=e.target.closest('input[type=checkbox]'); if(!cb) return;
+    if(cb.checked) sel.add(cb.value); else sel.delete(cb.value);
+    if(tCnt) tCnt.textContent = sel.size? '('+sel.size+')':''; renderAll(); });
+  if(tClear) tClear.addEventListener('click', ()=>{ sel.clear();
+    tList.querySelectorAll('input[type=checkbox]').forEach(c=> c.checked=false);
+    if(tCnt) tCnt.textContent=''; renderAll(); });
+
+  // ---- distribution mode toggle ----
+  const modeWrap = document.getElementById('stMode');
+  if(modeWrap) modeWrap.addEventListener('click', e=>{ const b=e.target.closest('button[data-mode]'); if(!b) return;
+    mode = b.dataset.mode;
+    modeWrap.querySelectorAll('button').forEach(x=> x.classList.toggle('on', x===b));
+    renderChart(); });
+
+  renderAll();
+})();
+"""
+
+
 def main() -> None:
     data = json.loads((WC_ROOT / "results" / "live_latest.json").read_text())
     state = _load_state()
@@ -1785,7 +1994,7 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, CHEER_CSS])
+    all_css = "\n".join([CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, CHEER_CSS, STAGES_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
@@ -1797,13 +2006,14 @@ def main() -> None:
     html = replace_region(html, WHATIF_START, WHATIF_END, whatif_html())
     html = replace_region(html, ODDS_START, ODDS_END, odds_html())
     html = replace_region(html, CHEER_START, CHEER_END, cheer_html(data))
+    html = replace_region(html, STAGES_START, STAGES_END, stages_html(data))
 
     # 4) All injected JS in one managed block before </script>.
     wi_payload = whatif_payload(data, state)
     od_payload = odds_payload(data)
     all_js = "\n".join([
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
-        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload), CHEER_JS,
+        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload), CHEER_JS, STAGES_JS,
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
 

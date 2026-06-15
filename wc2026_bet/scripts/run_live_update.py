@@ -331,6 +331,21 @@ def main() -> None:
         lst.sort(key=lambda x: (-x["points"], -x["gd"], -x["p_advance"]))
         groups_payload[g] = lst
 
+    # per-team stage-reaching profile from the same simulation:
+    #   exact[k] = P(deepest round == k) for k in 0..6  -> a true distribution (sums to 1)
+    #             [group exit, R32, R16, QF, SF, final(runner-up), champion]
+    #   reach[l] = P(round_reached >= l) for l in 1..6  -> cumulative "reach at least"
+    #             [R32, R16, QF, SF, final, champion]
+    rr = O["round_reached"]                           # [S, T] ints 0..6
+    stages_payload = []
+    for t, i in ds.team_index.items():
+        col = rr[:, i]
+        exact = [round(float((col == k).mean()), 5) for k in range(7)]
+        reach = [round(float((col >= lvl).mean()), 5) for lvl in range(1, 7)]
+        stages_payload.append({"team": t, "exact": exact, "reach": reach,
+                               "exp": round(float(col.mean()), 4)})
+    stages_payload.sort(key=lambda r: -r["exp"])     # strongest first (default order)
+
     prev = previous_metrics(ts)
     N = len(entries)
     out_entries = []
@@ -394,6 +409,7 @@ def main() -> None:
                         "golden_boot_scale": round(gb_scale, 3)},
         "champion_matrix": chmat,
         "groups": groups_payload,
+        "stages": stages_payload,
         "scorers": state.get("all_scorers") or [],
         "team_played": state.get("team_played") or {},
         "cheer": cheer,
