@@ -2262,6 +2262,16 @@
       "gf": 1,
       "ga": 5,
       "games": 1
+    },
+    "Spain": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "Cape Verde": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -8545,5 +8555,6 @@
         1016
       ]
     }
-  ]
+  ],
+  "live_widgets": true
 }
