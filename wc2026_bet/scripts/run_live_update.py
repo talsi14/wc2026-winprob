@@ -275,7 +275,8 @@ def main() -> None:
 
     print(f"Running {args.sims:,} conditioned simulations ...")
     O = Simulator(ds, model, seed=2026).run(args.sims, known=known,
-                                            track_matches=cheer_track)
+                                            track_matches=cheer_track,
+                                            track_opponents=True)
     gb_scale = compute_golden_boot_scale(ds, O)
     contrib = build_contributions(ds, O, golden_boot_scale=gb_scale)
 
@@ -337,13 +338,45 @@ def main() -> None:
     #   reach[l] = P(round_reached >= l) for l in 1..6  -> cumulative "reach at least"
     #             [R32, R16, QF, SF, final, champion]
     rr = O["round_reached"]                           # [S, T] ints 0..6
+    # knockout-opponent decomposition (who each team is likely to face per round,
+    # and how often they beat them) -> explains the advance odds as a mixture of
+    # opponents rather than a single average match.
+    idx2team = {i: t for t, i in ds.team_index.items()}
+    opp_meet, opp_beat = O.get("opp_meet") or {}, O.get("opp_beat") or {}
+    KO_LABELS = [(1, "R32"), (2, "R16"), (3, "QF"), (4, "SF"), (6, "Final")]
+    TOP_OPP = 5
+    S_sims = rr.shape[0]
+
+    def ko_breakdown(i: int) -> list:
+        out = []
+        for rc, label in KO_LABELS:
+            M = opp_meet.get(rc)
+            if M is None:
+                continue
+            row = M[i]
+            total = int(row.sum())
+            if total <= 0:
+                continue
+            beat_row = opp_beat[rc][i]
+            order = sorted((j for j in range(len(row)) if row[j] > 0),
+                           key=lambda j: -int(row[j]))[:TOP_OPP]
+            opps = [{"t": idx2team[j],
+                     "meet": round(int(row[j]) / total, 4),
+                     "beat": round(int(beat_row[j]) / int(row[j]), 4)} for j in order]
+            out.append({"r": label,
+                        "p_play": round(total / S_sims, 4),
+                        "pass": round(int(beat_row.sum()) / total, 4),
+                        "opp": opps})
+        return out
+
     stages_payload = []
     for t, i in ds.team_index.items():
         col = rr[:, i]
         exact = [round(float((col == k).mean()), 5) for k in range(7)]
         reach = [round(float((col >= lvl).mean()), 5) for lvl in range(1, 7)]
         stages_payload.append({"team": t, "exact": exact, "reach": reach,
-                               "exp": round(float(col.mean()), 4)})
+                               "exp": round(float(col.mean()), 4),
+                               "ko": ko_breakdown(i)})
     stages_payload.sort(key=lambda r: -r["exp"])     # strongest first (default order)
 
     prev = previous_metrics(ts)

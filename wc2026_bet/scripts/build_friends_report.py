@@ -1797,6 +1797,24 @@ STAGES_CSS = """
   .stleg{display:flex; flex-wrap:wrap; gap:10px 14px; margin-bottom:6px;}
   .stlg{display:inline-flex; align-items:center; gap:6px; font-size:.82rem; color:#334155; font-weight:700;}
   .stsw{width:12px; height:12px; border-radius:3px; display:inline-block;}
+  /* knockout-path panel */
+  .stpath{margin-top:8px; display:flex; flex-direction:column; gap:12px;}
+  .stpteam{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;}
+  .stpname{font-weight:800; color:var(--ink); font-size:1.02rem; margin-bottom:8px;}
+  .stprounds{display:flex; flex-wrap:wrap; gap:8px;}
+  .stpcard{flex:1 1 180px; min-width:170px; border:1px solid var(--line); border-radius:10px;
+            padding:8px 10px; background:#f8fafc;}
+  .stpr{display:flex; justify-content:space-between; align-items:center; font-weight:800;
+            color:#334155; border-bottom:1px solid var(--line); padding-bottom:5px; margin-bottom:6px;}
+  .stppass{font-weight:800; color:var(--blue); font-size:.82rem;}
+  .stpopps{display:flex; flex-direction:column; gap:5px;}
+  .stpopp{display:grid; grid-template-columns:1fr auto auto; gap:6px; align-items:center; font-size:.8rem;}
+  .stpo-nm{font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stpo-meet{color:var(--muted); font-weight:700; font-variant-numeric:tabular-nums;}
+  .stpo-beat{font-weight:800; font-variant-numeric:tabular-nums; border-radius:6px; padding:1px 6px;}
+  .stpo-beat.good{color:#166534; background:#dcfce7;}
+  .stpo-beat.even{color:#92400e; background:#fef3c7;}
+  .stpo-beat.bad{color:#991b1b; background:#fee2e2;}
 """
 
 
@@ -1806,12 +1824,24 @@ def stages_payload(data: dict) -> dict:
     teams[] carry exact[7] (a true distribution over where the run ends) and
     reach[6] (cumulative P(reach at least stage)); ordered strongest-first."""
     he = _team_he_map()
+    ko_he = {"R32": "שלב 32", "R16": "שמינית", "QF": "רבע", "SF": "חצי", "Final": "גמר"}
+
+    def conv_ko(ko):
+        out = []
+        for rd in ko or []:
+            opp = [{"t": he.get(o["t"], o["t"]), "flag": _flag(o["t"]),
+                    "meet": o.get("meet", 0), "beat": o.get("beat", 0)}
+                   for o in rd.get("opp", [])]
+            out.append({"r": rd["r"], "rhe": ko_he.get(rd["r"], rd["r"]),
+                        "pass": rd.get("pass", 0), "opp": opp})
+        return out
+
     teams = []
     for r in (data.get("stages") or []):
         en = r["team"]
         teams.append({"t": he.get(en, en), "en": en, "flag": _flag(en),
                       "exact": r.get("exact", []), "reach": r.get("reach", []),
-                      "exp": r.get("exp", 0)})
+                      "exp": r.get("exp", 0), "ko": conv_ko(r.get("ko"))})
     return {
         "teams": teams,
         "reachLabels": ["שלב 32", "שמינית", "רבע", "חצי", "גמר", "אלופה"],
@@ -1852,6 +1882,13 @@ def stages_html(data: dict) -> str:
     </div>
     <p class="sthint" id="stChartHint"></p>
     <div class="stchart"><div class="stleg" id="stLeg"></div><div id="stChart"></div></div>
+
+    <h3 style="margin:18px 0 0">מסלול הנוקאאוט הצפוי</h3>
+    <p class="sub" style="margin-top:4px">לנבחרת שתבחרו — בכל שלב נוקאאוט: סיכוי <b>המעבר</b> הכולל,
+      ומי היריבות הסבירות. לצד כל יריבה: <b>נפגשים</b> (כמה פעמים זו היריבה בשלב הזה) ו<b>מנצחים</b>
+      (הסיכוי לנצח אותה אם נפגשים). כך רואים אם המעבר הוא משחק־מטבע מול יריבה שקולה,
+      או תערובת של יריבות חלשות וחזקות.</p>
+    <div id="stPath" class="stpath"></div>
     <script id="stData" type="application/json">{blob}</script>
   </section>
 """
@@ -1946,7 +1983,34 @@ STAGES_JS = r"""
     else if(sel.size>CHART_CAP) hint += ' מוצגות '+CHART_CAP+' הראשונות מבין '+sel.size+' שנבחרו.';
     hintEl.innerHTML = hint;
   }
-  function renderAll(){ renderHeat(); renderChart(); }
+  const pathEl = document.getElementById('stPath');
+  const PATH_CAP = 4;
+  function beatClass(p){ return p>=0.55 ? 'good' : (p<=0.45 ? 'bad' : 'even'); }
+  function renderPath(){
+    const ts = sel.size ? teams.filter(t=> sel.has(t.en)).slice(0, PATH_CAP) : [];
+    if(!ts.length){
+      pathEl.innerHTML = '<div class="callout">בחרו נבחרת (למעלה) כדי לראות את מסלול הנוקאאוט הצפוי שלה ואת היריבות הסבירות בכל שלב.</div>';
+      return;
+    }
+    pathEl.innerHTML = ts.map(t=>{
+      const rounds = (t.ko||[]).map(rd=>{
+        const opps = (rd.opp||[]).map(o=>
+          '<div class="stpopp"><span class="stpo-nm">'+o.flag+' '+esc(o.t)+'</span>'
+          + '<span class="stpo-meet">נפגשים '+Math.round(o.meet*100)+'%</span>'
+          + '<span class="stpo-beat '+beatClass(o.beat)+'">מנצחים '+Math.round(o.beat*100)+'%</span></div>'
+        ).join('') || '<div class="rfempty">—</div>';
+        return '<div class="stpcard"><div class="stpr">'+esc(rd.rhe)
+          + '<span class="stppass">מעבר '+Math.round(rd.pass*100)+'%</span></div>'
+          + '<div class="stpopps">'+opps+'</div></div>';
+      }).join('') || '<div class="rfempty">לא צפויה להגיע לשלב הנוקאאוט.</div>';
+      return '<div class="stpteam"><div class="stpname">'+t.flag+' '+esc(t.t)+'</div>'
+        + '<div class="stprounds">'+rounds+'</div></div>';
+    }).join('');
+    if(sel.size>PATH_CAP){
+      pathEl.innerHTML += '<p class="sthint">מוצגות '+PATH_CAP+' הנבחרות הראשונות מבין '+sel.size+' שנבחרו.</p>';
+    }
+  }
+  function renderAll(){ renderHeat(); renderChart(); renderPath(); }
 
   // ---- team dropdown (search + multi-select) ----
   const tBtn=document.getElementById('stTeamBtn'), tPop=document.getElementById('stTeamPop');

@@ -142,10 +142,18 @@ class Simulator:
 
     # ---- main driver ------------------------------------------------------- #
     def run(self, n_sims: int, known: "KnownState | None" = None,
-            track_matches: "set[int] | None" = None) -> dict:
+            track_matches: "set[int] | None" = None,
+            track_opponents: bool = False) -> dict:
         known = known or KnownState.empty()
         S, T = n_sims, self.n_teams
         track_matches = track_matches or set()
+        # optional per-team knockout-opponent tracking: for each main KO round,
+        # symmetric [T,T] count matrices of who met whom (meet) and who won (beat).
+        # Lets the report decompose a team's advance odds into "who they face +
+        # how likely they are to beat each opponent" instead of a single average.
+        KO_ROUNDS = (1, 2, 3, 4, 6)   # R32, R16, QF, SF, Final (skip 3rd-place)
+        opp_meet = {rc: np.zeros((T, T), np.int64) for rc in KO_ROUNDS} if track_opponents else {}
+        opp_beat = {rc: np.zeros((T, T), np.int64) for rc in KO_ROUNDS} if track_opponents else {}
         # per-sim outcome for the fixtures the caller wants to condition on (the
         # "who to root for" board). Group matches -> 0=home win, 1=draw, 2=away win.
         # Knockout matches -> the winning team's index (2-outcome; no draw), plus
@@ -310,6 +318,14 @@ class Simulator:
             cur_h = round_reached[rows, hi]; round_reached[rows, hi] = np.maximum(cur_h, lvl)
             cur_a = round_reached[rows, ai]; round_reached[rows, ai] = np.maximum(cur_a, lvl)
             ko_win[mno] = winner; ko_lose[mno] = loser
+            if track_opponents and rc in opp_meet:
+                M, B = opp_meet[rc], opp_beat[rc]
+                np.add.at(M, (hi, ai), 1)           # symmetric: count both perspectives
+                np.add.at(M, (ai, hi), 1)
+                wh = winner == hi                    # home advanced
+                wa = ~wh                             # away advanced (winner is hi or ai)
+                np.add.at(B, (hi[wh], ai[wh]), 1)
+                np.add.at(B, (ai[wa], hi[wa]), 1)
             if mno in track_matches:
                 # winner team index per sim + the two participants (constant
                 # across sims once feeders are decided -> lets build_cheer map a
@@ -350,4 +366,5 @@ class Simulator:
             player_names=self.player_names,
             game_outcomes=game_outcomes,
             ko_participants=ko_participants,
+            opp_meet=opp_meet, opp_beat=opp_beat,
         )
