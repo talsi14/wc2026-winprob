@@ -295,15 +295,28 @@ def main() -> None:
                                                 -float(M["P_first"][name_idx[n]]), n))
     cur_rank = {n: i + 1 for i, n in enumerate(cur_order)}
 
-    # per-group standings: current played/points/GD (from the frozen state) plus
-    # simulated qualify% (P reach the Round of 32).
+    # per-group standings: played/points/GD computed directly from the RECORDED
+    # results (group_scores) - the same facts that condition the simulation -
+    # rather than ESPN's standings endpoint, which can lag several minutes behind
+    # the final whistle and would otherwise show stale 0/0/0 rows (with an already
+    # updated qualify%) in the minutes right after a game ends.
     adv = O["advanced"].mean(0)                       # [T] P(advance to R32)
-    cur_stats: dict[str, dict] = {}
-    for _g, rows in (state.get("standings") or {}).items():
-        for r in rows:
-            cur_stats[r["team"]] = {"played": r.get("played", 0),
-                                    "points": r.get("points", 0),
-                                    "gd": r.get("gd", 0)}
+    cur_stats: dict[str, dict] = {t: {"played": 0, "points": 0, "gd": 0}
+                                  for gteams in ds.groups.values() for t in gteams}
+    match_ha = {int(r.match): (r.home, r.away) for r in ds.group_matches.itertuples()}
+    for mno_s, sc in (state.get("group_scores") or {}).items():
+        try:
+            mno = int(mno_s); hg, ag = int(sc[0]), int(sc[1])
+        except (TypeError, ValueError, IndexError):
+            continue
+        if mno not in match_ha:
+            continue
+        home, away = match_ha[mno]
+        for team, gf, ga in ((home, hg, ag), (away, ag, hg)):
+            d = cur_stats.setdefault(team, {"played": 0, "points": 0, "gd": 0})
+            d["played"] += 1
+            d["gd"] += gf - ga
+            d["points"] += 3 if gf > ga else (1 if gf == ga else 0)
     groups_payload: dict[str, list] = {}
     for g in sorted(ds.groups):
         lst = []
