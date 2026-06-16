@@ -9856,6 +9856,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ramin Rezaeian",
+      "team": "Iran",
+      "goals": 1
+    },
+    {
       "scorer": "Raúl Jiménez",
       "team": "Mexico",
       "goals": 1
@@ -10028,13 +10033,13 @@
       "games": 1
     },
     "Iran": {
-      "gf": 0,
+      "gf": 1,
       "ga": 1,
       "games": 1
     },
     "New Zealand": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
