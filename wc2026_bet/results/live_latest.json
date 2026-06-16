@@ -10021,6 +10021,11 @@
       "goals": 1
     },
     {
+      "scorer": "Bradley Barcola",
+      "team": "France",
+      "goals": 1
+    },
+    {
       "scorer": "Breel Embolo",
       "team": "Switzerland",
       "goals": 1
@@ -10348,13 +10353,13 @@
       "games": 1
     },
     "France": {
-      "gf": 1,
+      "gf": 2,
       "ga": 0,
       "games": 1
     },
     "Senegal": {
       "gf": 0,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     }
   },
