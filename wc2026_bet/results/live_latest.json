@@ -9691,6 +9691,11 @@
   ],
   "scorers": [
     {
+      "scorer": "Elijah Just",
+      "team": "New Zealand",
+      "goals": 2
+    },
+    {
       "scorer": "Folarin Balogun",
       "team": "United States",
       "goals": 2
@@ -9748,11 +9753,6 @@
     {
       "scorer": "Deniz Undav",
       "team": "Germany",
-      "goals": 1
-    },
-    {
-      "scorer": "Elijah Just",
-      "team": "New Zealand",
       "goals": 1
     },
     {
@@ -10034,11 +10034,11 @@
     },
     "Iran": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     },
     "New Zealand": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 1
     }
