@@ -9751,6 +9751,11 @@
       "goals": 1
     },
     {
+      "scorer": "Elijah Just",
+      "team": "New Zealand",
+      "goals": 1
+    },
+    {
       "scorer": "Emam Ashour",
       "team": "Egypt",
       "goals": 1
@@ -10024,11 +10029,11 @@
     },
     "Iran": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     },
     "New Zealand": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     }
