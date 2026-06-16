@@ -10341,6 +10341,16 @@
       "gf": 2,
       "ga": 2,
       "games": 1
+    },
+    "France": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "Senegal": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -16902,6 +16912,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "France",
+    "Senegal"
+  ]
 }
