@@ -34,6 +34,7 @@ def main() -> None:
     n_live = int(state.get("n_live", 0) or 0)
     live_tp = state.get("live_team_played") or {}
     live_sc = state.get("live_scorers") or []
+    live_teams = state.get("live_teams") or []
     if not live_tp and not live_sc:
         print("apply_live_widgets: no live tallies; leaving snapshot untouched.")
         return
@@ -41,6 +42,7 @@ def main() -> None:
     data["team_played"] = live_tp
     data["scorers"] = live_sc
     data["live_widgets"] = n_live > 0          # drives the 'live' indicator in the UI
+    data["live_teams"] = live_teams            # teams playing right now -> red dot in tables
 
     live_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"apply_live_widgets: overlaid live widgets (n_live={n_live}, "

@@ -69,6 +69,22 @@ class MatchModel:
         win_j = np.triu(P, 1).sum()       # gj > gi
         return win_i, draw, win_j
 
+    def top_scoreline(self, i: int, j: int, home_adv: float = 0.0, kmax: int = 8):
+        """Most-probable exact scoreline (gi, gj) under the DC-corrected grid."""
+        li, lj = self.lambdas(i, j, home_adv)
+        gi = np.arange(kmax + 1)
+        pi = np.exp(-li) * li ** gi / _factorial(gi)
+        pj = np.exp(-lj) * lj ** gi / _factorial(gi)
+        P = np.outer(pi, pj)
+        tau = np.ones((kmax + 1, kmax + 1))
+        tau[0, 0] = 1 - li * lj * self.rho
+        tau[0, 1] = 1 + li * self.rho
+        tau[1, 0] = 1 + lj * self.rho
+        tau[1, 1] = 1 - self.rho
+        P = P * tau
+        a, b = np.unravel_index(int(np.argmax(P)), P.shape)
+        return int(a), int(b)
+
 
 def _factorial(n: np.ndarray) -> np.ndarray:
     from scipy.special import factorial

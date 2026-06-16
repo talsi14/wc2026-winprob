@@ -34,8 +34,8 @@ from wc2026_bet.calibration import (apply_strength_offsets,
                                     calibrate_team_strengths,
                                     compute_golden_boot_scale,
                                     golden_boot_target)
-from wc2026_bet.config import (DATA_LIVE, DATA_PROCESSED, N_SIMULATIONS,
-                               RESULTS_DIR, prize_vector)
+from wc2026_bet.config import (DATA_LIVE, DATA_PROCESSED, HOST_NATIONS,
+                               N_SIMULATIONS, RESULTS_DIR, prize_vector)
 from wc2026_bet.contributions import build_contributions
 from wc2026_bet.data_io import apply_share_factors, load_calibration
 from wc2026_bet.live import (current_points_breakdown, load_entries,
@@ -379,6 +379,18 @@ def main() -> None:
                                "ko": ko_breakdown(i)})
     stages_payload.sort(key=lambda r: -r["exp"])     # strongest first (default order)
 
+    # most-probable exact scoreline per group fixture (mode of the DC-corrected
+    # grid), so the What-If tab can offer a one-click "fill with likely results".
+    # Uses the same home-advantage rule as the simulator (hosts at home only).
+    pred_group_scores: dict[str, list] = {}
+    for r in ds.group_matches.itertuples():
+        hi, ai = model.index.get(r.home), model.index.get(r.away)
+        if hi is None or ai is None:
+            continue
+        hf = 1.0 if (r.home in HOST_NATIONS and r.venue_country == r.home) else 0.0
+        hg, ag = model.top_scoreline(hi, ai, home_adv=hf)
+        pred_group_scores[str(int(r.match))] = [hg, ag]
+
     prev = previous_metrics(ts)
     N = len(entries)
     out_entries = []
@@ -443,6 +455,7 @@ def main() -> None:
         "champion_matrix": chmat,
         "groups": groups_payload,
         "stages": stages_payload,
+        "pred_group_scores": pred_group_scores,
         "scorers": state.get("all_scorers") or [],
         "team_played": state.get("team_played") or {},
         "cheer": cheer,

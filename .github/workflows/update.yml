@@ -152,6 +152,17 @@ jobs:
         if: steps.detect.outputs.run == 'true'
         run: bash run_update.sh --skip-collect
 
+      # After a full run, if a *different* match is still in progress, re-overlay the
+      # live goal tallies + 'live' badge onto the freshly-built page. Without this the
+      # full rebuild would drop the badge until the live match's next goal (its live
+      # fingerprint is already == published.live), leaving the widgets looking stale.
+      - name: Re-apply live widgets after full run (ongoing match)
+        if: steps.detect.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          python3 wc2026_bet/scripts/apply_live_widgets.py
+          python3 wc2026_bet/scripts/build_friends_report.py
+
       # Slim path (no sim): overlay live goal tallies onto the last snapshot and
       # rebuild just the page, so the leader widgets reflect ongoing matches.
       - name: Slim live-widget refresh (no sim)

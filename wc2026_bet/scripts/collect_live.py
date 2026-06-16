@@ -98,6 +98,7 @@ def main() -> None:
     # into the win-probability model.
     live_team_played: dict[str, dict] = {}
     live_all_scorers: dict[str, dict] = {}
+    live_teams: set[str] = set()                    # teams in a match ongoing right now
     n_live = 0
 
     def bump_played(team, gf, ga):
@@ -140,6 +141,7 @@ def main() -> None:
                 lr["team"] = team
         if live and not played:
             n_live += 1
+            live_teams.update((fx["home"], fx["away"]))
             continue                                  # ongoing -> no completed-only updates
 
         # --- completed-only fields (condition the simulator) ---
@@ -203,6 +205,7 @@ def main() -> None:
         # live widget tallies (completed + in-progress) for the slim refresh
         "n_live": n_live,
         "live_team_played": live_team_played,
+        "live_teams": sorted(live_teams),           # teams currently playing (for the red dot)
         "live_scorers": sorted(live_all_scorers.values(),
                                key=lambda r: (-r["goals"], r["scorer"])),
     }

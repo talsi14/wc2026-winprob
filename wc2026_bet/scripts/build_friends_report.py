@@ -209,6 +209,11 @@ def leaders_html(data: dict) -> str:
     sel_scoring = {e["picks"]["scoring"] for e in ents}
     sel_conceding = {e["picks"]["conceding"] for e in ents}
     sel_scorer = {e["picks"]["top_scorer"] for e in ents}
+    live_teams = set(data.get("live_teams") or [])     # teams playing right now
+    _dot = ('<span class="lt-dot" title="משחק מתנהל כעת"></span>')
+
+    def live_mark(team):
+        return _dot if team in live_teams else ''
 
     played = [(t, int(v.get("gf", 0)), int(v.get("ga", 0)))
               for t, v in tp.items() if int(v.get("games", 0)) > 0]
@@ -220,7 +225,7 @@ def leaders_html(data: dict) -> str:
         for row in rank:
             t = row[0]
             hit = ' class="hit"' if t in sel else ''
-            body += (f'<tr{hit}><td class="nm">{team_he.get(t, t)}</td>'
+            body += (f'<tr{hit}><td class="nm">{team_he.get(t, t)}{live_mark(t)}</td>'
                      f'<td class="v">{row[val_i]}</td></tr>')
         return body or '<tr><td class="nm" colspan="2">טרם זמין</td></tr>'
 
@@ -228,9 +233,11 @@ def leaders_html(data: dict) -> str:
         body = ""
         for s in scorers:
             nm = pl_he.get(s["scorer"], s["scorer"])
-            tm = team_he.get(s.get("team", ""), s.get("team", "") or "")
+            raw_tm = s.get("team", "") or ""
+            tm = team_he.get(raw_tm, raw_tm)
             hit = ' class="hit"' if s["scorer"] in sel_scorer else ''
-            body += (f'<tr{hit}><td class="nm">{nm}</td><td class="tm">{tm}</td>'
+            body += (f'<tr{hit}><td class="nm">{nm}{live_mark(raw_tm)}</td>'
+                     f'<td class="tm">{tm}</td>'
                      f'<td class="v">{s["goals"]}</td></tr>')
         return body or '<tr><td class="nm" colspan="3">טרם זמין</td></tr>'
 
@@ -543,6 +550,10 @@ CMTBL_CSS = """
   table.ltbl tr:last-child td{border-bottom:0;}
   table.ltbl td.nm{text-align:right; color:var(--ink);}
   table.ltbl td.tm{text-align:right; color:#64748b;}
+  /* red dot next to a team/player whose match is in progress right now */
+  .lt-dot{display:inline-block; width:8px; height:8px; border-radius:50%;
+            background:#ef4444; margin-inline-start:7px; vertical-align:middle;
+            animation:lcpulse 1.6s infinite;}
   table.ltbl td.v{text-align:center; font-weight:800; color:var(--green); width:54px;}
   table.ltbl tr.hit td{font-weight:800; color:var(--ink); background:#f0fdf4;}
   table.ltbl tr.hit td.nm{box-shadow:inset 3px 0 0 var(--green);}
@@ -621,6 +632,9 @@ WHATIF_CSS = """
            border-bottom:2px solid #e2e8f0; padding-bottom:4px;}
   .wisub{font-weight:700; color:#64748b; margin:8px 4px 4px; font-size:.82rem;}
   .wimatch{padding:7px 6px; border-bottom:1px solid #f1f5f9;}
+  .wimatch.decided{background:#f0fdf4;}
+  .wiadv{margin-top:5px; font-size:.8rem; color:#15803d;}
+  .wiadv b{color:#166534;}
   .wimrow{display:flex; align-items:center; gap:8px;}
   .witeam{flex:1; font-size:.9rem; color:#334155; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .witeam.h{text-align:left;} .witeam.a{text-align:right;}
@@ -898,6 +912,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
         "teamTier": team_tier, "teamGroup": team_group, "groups": groups,
         "groupMatches": group_matches, "bracket": bracket, "thirdSlots": third_slots,
         "realGroupScores": {k: list(v) for k, v in (state.get("group_scores") or {}).items()},
+        "predGroupScores": {k: list(v) for k, v in (data.get("pred_group_scores") or {}).items()},
         "realKo": state.get("ko_results") or [],
         "realTeamPlayed": state.get("team_played") or data.get("team_played") or {},
         "realPlayerGoals": state.get("player_goals") or {},
@@ -921,6 +936,7 @@ def whatif_html() -> str:
       לעומת הדירוג הנוכחי, ובכל בחירה מוצג בסוגריים הניקוד שלה בתרחיש.
     </div>
     <div class="wibar">
+      <button type="button" id="wiFillGroups" class="wibtn">מלא משחקי בתים בתוצאה הסבירה ביותר</button>
       <button type="button" id="wiReset" class="wibtn">איפוס כל התרחישים</button>
       <span id="wiCount" class="wihint"></span>
     </div>
@@ -1459,19 +1475,30 @@ const WHATIF = __WHATIF__;
     const realByPair = {};
     (W.realKo||[]).forEach(k=> realByPair[pairKey(k.home,k.away)] = k);
     const matchedReal = {};
+    let nUnresolved = 0;        // displayed KO matches that still lack a decided winner
     for(const bm of W.bracket){
       const home = resolve(bm.hr, bm.m, 'home_ref');
       const away = resolve(bm.ar, bm.m, 'away_ref');
       teamsByMatch[bm.m] = [home, away];
       if(!home || !away) continue;
-      let winner=null, hg=null, ag=null, so=false;
       const rk = realByPair[pairKey(home,away)];
-      if(rk && rk.winner){ matchedReal[pairKey(home,away)]=1; winner=rk.winner; hg=rk.home_goals; ag=rk.away_goals; so=!!rk.shootout;
-        if(home!==rk.home){ const t=hg; hg=ag; ag=t; } }
-      else if(useHypo && hypoKo[bm.m]!==undefined){ const h=hypoKo[bm.m]; hg=h.hg; ag=h.ag;
+      if(rk && rk.winner){                       // real result: fixed, not shown for editing
+        matchedReal[pairKey(home,away)]=1;
+        let hg=rk.home_goals, ag=rk.away_goals; const so=!!rk.shootout;
+        if(home!==rk.home){ const t=hg; hg=ag; ag=t; }
+        winByMatch[bm.m]=rk.winner; koPlayed.push({home,away,hg,ag,winner:rk.winner,so});
+        continue;
+      }
+      // hypothetical entry: resolve a winner ONLY once BOTH scores are filled, so a
+      // half-typed score never auto-progresses a team. The match stays in the editable
+      // list either way (just like the group matches), so it never "disappears".
+      let winner=null, hg=null, ag=null, so=false;
+      const h = (useHypo && hypoKo[bm.m]!==undefined) ? hypoKo[bm.m] : null;
+      if(h && h.hg!=null && h.ag!=null){ hg=h.hg; ag=h.ag;
         if(hg>ag) winner=home; else if(ag>hg) winner=away; else { so=true; winner=h.so||null; } }
       if(winner){ winByMatch[bm.m]=winner; koPlayed.push({home,away,hg,ag,winner,so}); }
-      else fillable.push({m:bm.m, stage:bm.stage, rc:bm.rc, home, away});
+      else nUnresolved++;
+      fillable.push({m:bm.m, stage:bm.stage, rc:bm.rc, home, away, winner});
     }
     // safety: count any real KO result not matched into a bracket slot
     (W.realKo||[]).forEach(k=>{ if(!matchedReal[pairKey(k.home,k.away)] && k.winner)
@@ -1495,7 +1522,7 @@ const WHATIF = __WHATIF__;
     if(wonCup) st[wonCup].won=true;
 
     const pg = useHypo ? mergedPlayerGoals() : Object.assign({}, W.realPlayerGoals||{});
-    const tournComplete = Object.keys(gs).length>=72 && stand.allComplete && fillable.length===0 && !!winByMatch[104];
+    const tournComplete = Object.keys(gs).length>=72 && stand.allComplete && nUnresolved===0 && !!winByMatch[104];
     let gb = null;
     if(tournComplete){ let mx=-1, who=null, tie=false;
       for(const p in pg){ if(pg[p]>mx){ mx=pg[p]; who=p; tie=false; } else if(pg[p]===mx){ tie=true; } }
@@ -1581,12 +1608,14 @@ const WHATIF = __WHATIF__;
     </div>`;
   }
 
-  function matchRow(kind, m, home, away, score, stage){
+  function matchRow(kind, m, home, away, score, stage, winner){
     const mk = kind+m;
-    const hv = score? score[0] : '';
-    const av = score? score[1] : '';
-    const tie = score && score[0]===score[1];
-    const goals = score? (score[0]+score[1]) : 0;
+    const h0 = score? score[0] : null, a0 = score? score[1] : null;
+    const hv = (h0!=null) ? h0 : '';
+    const av = (a0!=null) ? a0 : '';
+    const both = (h0!=null && a0!=null);     // a KO match is "played" only when both filled
+    const tie = both && h0===a0;
+    const goals = both ? (h0+a0) : 0;
     let so = '';
     if(kind==='k' && tie){
       const w = (hypoKo[m]||{}).so || '';
@@ -1594,15 +1623,16 @@ const WHATIF = __WHATIF__;
         <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${home}" ${w===home?'checked':''}> ${heT(home)}</label>
         <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${away}" ${w===away?'checked':''}> ${heT(away)}</label></div>`;
     }
-    const scr = (score && goals>0) ? scorerEditor(mk, goals, home, away) : '';
-    return `<div class="wimatch" data-mk="${mk}">
+    const scr = (both && goals>0) ? scorerEditor(mk, goals, home, away) : '';
+    const adv = (kind==='k' && winner) ? `<div class="wiadv">עולה לשלב הבא: <b>${heT(winner)}</b></div>` : '';
+    return `<div class="wimatch${winner?' decided':''}" data-mk="${mk}">
       <div class="wimrow">
         <span class="witeam h">${heT(home)}</span>
         <input class="wiscore" type="number" min="0" inputmode="numeric" data-kind="${kind}" data-m="${m}" data-side="h" value="${hv}">
         <span class="widash">:</span>
         <input class="wiscore" type="number" min="0" inputmode="numeric" data-kind="${kind}" data-m="${m}" data-side="a" value="${av}">
         <span class="witeam a">${heT(away)}</span>
-      </div>${so}${scr}</div>`;
+      </div>${so}${scr}${adv}</div>`;
   }
 
   function renderMatches(full){
@@ -1621,7 +1651,7 @@ const WHATIF = __WHATIF__;
       let curStage = '';
       full.fillable.sort((a,b)=> a.m-b.m).forEach(km=>{
         if(km.stage!==curStage){ curStage=km.stage; html += `<div class="wisub">${fmtStage(km.stage)}</div>`; }
-        html += matchRow('k', km.m, km.home, km.away, hypoKo[km.m]? [hypoKo[km.m].hg,hypoKo[km.m].ag]:null, km.stage);
+        html += matchRow('k', km.m, km.home, km.away, hypoKo[km.m]? [hypoKo[km.m].hg,hypoKo[km.m].ag]:null, km.stage, km.winner);
       });
     }
     const top = matchesEl.scrollTop;     // keep the scroll position across re-renders
@@ -1630,7 +1660,7 @@ const WHATIF = __WHATIF__;
   }
 
   function sigOf(full){
-    return (full.allComplete?'C':'-') + '|' + full.fillable.map(f=>f.m).join(',') +
+    return (full.allComplete?'C':'-') + '|' + full.fillable.map(f=>f.m+(f.winner?'>'+f.winner:'')).join(',') +
            '|' + W.groupMatches.filter(m=>W.realGroupScores[m.no]===undefined && hypoGroup[m.no]).length;
   }
 
@@ -1663,11 +1693,18 @@ const WHATIF = __WHATIF__;
       const ins = box.querySelectorAll('.wiscore');
       const hv = ins[0].value==='' ? null : Math.max(0, parseInt(ins[0].value,10)||0);
       const av = ins[1].value==='' ? null : Math.max(0, parseInt(ins[1].value,10)||0);
-      if(hv===null && av===null){ if(kind==='g') delete hypoGroup[m]; else delete hypoKo[m]; }
+      if(hv===null && av===null){
+        if(kind==='g'){ delete hypoGroup[m]; }
+        else { delete hypoKo[m]; delete hypoScorers['k'+m]; }
+      }
+      else if(kind==='g'){ hypoGroup[m]=[hv||0, av||0]; }    // group rows stay visible, so 0-fill is fine
       else {
-        const h=hv||0, a=av||0;
-        if(kind==='g') hypoGroup[m]=[h,a];
-        else { const prev=hypoKo[m]||{}; hypoKo[m]={hg:h,ag:a,so:(h===a?prev.so:undefined)}; }
+        // KO: keep a half-typed score as a *partial* (null side) entry. The bracket
+        // resolves a winner only when both sides are filled, so a single goal no
+        // longer auto-advances a team / makes the match vanish.
+        const prev=hypoKo[m]||{};
+        hypoKo[m]={hg:hv, ag:av, so:((hv!=null && av!=null && hv===av)?prev.so:undefined)};
+        if(hv==null || av==null) delete hypoScorers['k'+m];   // partial -> drop scorers
       }
       recompute(true);   // refresh the scorer editor (eligibility + goal caps)
     }
@@ -1692,6 +1729,21 @@ const WHATIF = __WHATIF__;
   document.getElementById('wiReset').addEventListener('click', function(){
     hypoGroup={}; hypoKo={}; hypoScorers={}; recompute(true);
   });
+  // one-click: fill every still-open group match with the model's most-probable
+  // scoreline (KO matches are left alone - they then open as their feeders resolve).
+  const fillBtn = document.getElementById('wiFillGroups');
+  if(fillBtn){
+    const pred = W.predGroupScores||{};
+    if(!Object.keys(pred).length){ fillBtn.disabled = true; }
+    fillBtn.addEventListener('click', function(){
+      W.groupMatches.forEach(m=>{
+        if(W.realGroupScores[m.no]!==undefined) return;   // already played for real
+        const p = pred[m.no];
+        if(p) hypoGroup[m.no] = [p[0], p[1]];
+      });
+      recompute(true);
+    });
+  }
 
   recompute(true);
 })();
