@@ -9831,6 +9831,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mohammad Mohebbi",
+      "team": "Iran",
+      "goals": 1
+    },
+    {
       "scorer": "Nathaniel Brown",
       "team": "Germany",
       "goals": 1
@@ -10033,13 +10038,13 @@
       "games": 1
     },
     "Iran": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 1
     },
     "New Zealand": {
       "gf": 2,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     }
   },
