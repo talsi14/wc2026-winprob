@@ -10001,6 +10001,11 @@
       "goals": 2
     },
     {
+      "scorer": "Kylian Mbappé",
+      "team": "France",
+      "goals": 2
+    },
+    {
       "scorer": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
@@ -10076,6 +10081,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ibrahim Mbaye",
+      "team": "Senegal",
+      "goals": 1
+    },
+    {
       "scorer": "Ismael Saibari",
       "team": "Morocco",
       "goals": 1
@@ -10103,11 +10113,6 @@
     {
       "scorer": "Keito Nakamura",
       "team": "Japan",
-      "goals": 1
-    },
-    {
-      "scorer": "Kylian Mbappé",
-      "team": "France",
       "goals": 1
     },
     {
@@ -10354,11 +10359,11 @@
     },
     "France": {
       "gf": 2,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     },
     "Senegal": {
-      "gf": 0,
+      "gf": 1,
       "ga": 2,
       "games": 1
     }
