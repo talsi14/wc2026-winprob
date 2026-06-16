@@ -9997,6 +9997,11 @@
       "goals": 2
     },
     {
+      "scorer": "Erling Haaland",
+      "team": "Norway",
+      "goals": 2
+    },
+    {
       "scorer": "Folarin Balogun",
       "team": "United States",
       "goals": 2
@@ -10074,11 +10079,6 @@
     {
       "scorer": "Emam Ashour",
       "team": "Egypt",
-      "goals": 1
-    },
-    {
-      "scorer": "Erling Haaland",
-      "team": "Norway",
       "goals": 1
     },
     {
@@ -10385,11 +10385,11 @@
     },
     "Iraq": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     },
     "Norway": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 1
     }
