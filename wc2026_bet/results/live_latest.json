@@ -10348,13 +10348,13 @@
       "games": 1
     },
     "France": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     },
     "Senegal": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
