@@ -10138,6 +10138,11 @@
       "goals": 1
     },
     {
+      "scorer": "Martin Baturina",
+      "team": "Croatia",
+      "goals": 1
+    },
+    {
       "scorer": "Mattias Svanberg",
       "team": "Sweden",
       "goals": 1
@@ -10431,11 +10436,11 @@
     },
     "England": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     },
     "Croatia": {
-      "gf": 0,
+      "gf": 1,
       "ga": 1,
       "games": 1
     }
