@@ -9988,6 +9988,11 @@
   },
   "scorers": [
     {
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 3
+    },
+    {
       "scorer": "Elijah Just",
       "team": "New Zealand",
       "goals": 2
@@ -10010,11 +10015,6 @@
     {
       "scorer": "Kylian Mbappé",
       "team": "France",
-      "goals": 2
-    },
-    {
-      "scorer": "Lionel Messi",
-      "team": "Argentina",
       "goals": 2
     },
     {
@@ -10400,13 +10400,13 @@
       "games": 1
     },
     "Argentina": {
-      "gf": 2,
+      "gf": 3,
       "ga": 0,
       "games": 1
     },
     "Algeria": {
       "gf": 0,
-      "ga": 2,
+      "ga": 3,
       "games": 1
     }
   },
