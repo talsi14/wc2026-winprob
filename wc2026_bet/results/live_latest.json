@@ -10231,6 +10231,11 @@
       "scorer": "Virgil van Dijk",
       "team": "Netherlands",
       "goals": 1
+    },
+    {
+      "scorer": "Yoane Wissa",
+      "team": "DR Congo",
+      "goals": 1
     }
   ],
   "team_played": {
@@ -10436,11 +10441,11 @@
     },
     "Portugal": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     },
     "DR Congo": {
-      "gf": 0,
+      "gf": 1,
       "ga": 1,
       "games": 1
     }
