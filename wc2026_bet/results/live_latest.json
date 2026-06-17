@@ -10426,6 +10426,16 @@
       "gf": 0,
       "ga": 3,
       "games": 1
+    },
+    "Austria": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "Jordan": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -17264,6 +17274,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Austria",
+    "Jordan"
+  ]
 }
