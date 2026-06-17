@@ -10138,6 +10138,11 @@
       "goals": 1
     },
     {
+      "scorer": "Marcus Rashford",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Marko Arnautović",
       "team": "Austria",
       "goals": 1
@@ -10445,13 +10450,13 @@
       "games": 1
     },
     "England": {
-      "gf": 3,
+      "gf": 4,
       "ga": 2,
       "games": 1
     },
     "Croatia": {
       "gf": 2,
-      "ga": 3,
+      "ga": 4,
       "games": 1
     }
   },
