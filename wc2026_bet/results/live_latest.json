@@ -10108,6 +10108,11 @@
       "goals": 1
     },
     {
+      "scorer": "Jude Bellingham",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Julián Quiñones",
       "team": "Mexico",
       "goals": 1
@@ -10440,13 +10445,13 @@
       "games": 1
     },
     "England": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 1
     },
     "Croatia": {
       "gf": 2,
-      "ga": 2,
+      "ga": 3,
       "games": 1
     }
   },
