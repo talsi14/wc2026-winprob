@@ -10068,6 +10068,11 @@
       "goals": 1
     },
     {
+      "scorer": "Harry Kane",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Hwang In-Beom",
       "team": "South Korea",
       "goals": 1
@@ -10425,13 +10430,13 @@
       "games": 1
     },
     "England": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     },
     "Croatia": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
