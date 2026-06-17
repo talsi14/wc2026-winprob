@@ -10188,6 +10188,11 @@
       "goals": 1
     },
     {
+      "scorer": "Petar Musa",
+      "team": "Croatia",
+      "goals": 1
+    },
+    {
       "scorer": "Ramin Rezaeian",
       "team": "Iran",
       "goals": 1
@@ -10436,11 +10441,11 @@
     },
     "England": {
       "gf": 2,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     },
     "Croatia": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 1
     }
