@@ -9978,6 +9978,11 @@
       "goals": 2
     },
     {
+      "scorer": "Harry Kane",
+      "team": "England",
+      "goals": 2
+    },
+    {
       "scorer": "Kai Havertz",
       "team": "Germany",
       "goals": 2
@@ -10065,11 +10070,6 @@
     {
       "scorer": "Giovanni Reyna",
       "team": "United States",
-      "goals": 1
-    },
-    {
-      "scorer": "Harry Kane",
-      "team": "England",
       "goals": 1
     },
     {
@@ -10435,13 +10435,13 @@
       "games": 1
     },
     "England": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 1
     },
     "Croatia": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     }
   },
