@@ -10428,6 +10428,16 @@
       "gf": 1,
       "ga": 3,
       "games": 1
+    },
+    "Portugal": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "DR Congo": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -16989,6 +16999,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "DR Congo",
+    "Portugal"
+  ]
 }
