@@ -10221,6 +10221,11 @@
       "goals": 1
     },
     {
+      "scorer": "Romano Schmid",
+      "team": "Austria",
+      "goals": 1
+    },
+    {
       "scorer": "Viktor Gyökeres",
       "team": "Sweden",
       "goals": 1
@@ -10428,13 +10433,13 @@
       "games": 1
     },
     "Austria": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     },
     "Jordan": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
