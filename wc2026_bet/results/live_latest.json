@@ -10051,6 +10051,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ali Olwan",
+      "team": "Jordan",
+      "goals": 1
+    },
+    {
       "scorer": "Amad Diallo",
       "team": "Ivory Coast",
       "goals": 1
@@ -10434,11 +10439,11 @@
     },
     "Austria": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     },
     "Jordan": {
-      "gf": 0,
+      "gf": 1,
       "ga": 1,
       "games": 1
     }
