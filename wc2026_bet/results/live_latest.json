@@ -10138,6 +10138,11 @@
       "goals": 1
     },
     {
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Livano Comenencia",
       "team": "Curaçao",
       "goals": 1
@@ -10395,13 +10400,13 @@
       "games": 1
     },
     "Argentina": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     },
     "Algeria": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
