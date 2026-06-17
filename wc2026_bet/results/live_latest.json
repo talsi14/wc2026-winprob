@@ -10013,6 +10013,11 @@
       "goals": 2
     },
     {
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 2
+    },
+    {
       "scorer": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
@@ -10135,11 +10140,6 @@
     {
       "scorer": "Leo Østigard",
       "team": "Norway",
-      "goals": 1
-    },
-    {
-      "scorer": "Lionel Messi",
-      "team": "Argentina",
       "goals": 1
     },
     {
@@ -10400,13 +10400,13 @@
       "games": 1
     },
     "Argentina": {
-      "gf": 1,
+      "gf": 2,
       "ga": 0,
       "games": 1
     },
     "Algeria": {
       "gf": 0,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     }
   },
