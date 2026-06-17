@@ -10459,6 +10459,16 @@
       "gf": 2,
       "ga": 4,
       "games": 1
+    },
+    "Ghana": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "Panama": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -17297,6 +17307,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Ghana",
+    "Panama"
+  ]
 }
