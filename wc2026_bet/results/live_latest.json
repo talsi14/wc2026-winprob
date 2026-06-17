@@ -10171,6 +10171,11 @@
       "goals": 1
     },
     {
+      "scorer": "Marko Arnautović",
+      "team": "Austria",
+      "goals": 1
+    },
+    {
       "scorer": "Mattias Svanberg",
       "team": "Sweden",
       "goals": 1
@@ -10438,13 +10443,13 @@
       "games": 1
     },
     "Austria": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 1
     },
     "Jordan": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     }
   },
