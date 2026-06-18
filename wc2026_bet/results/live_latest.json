@@ -10085,6 +10085,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ermin Mahmic",
+      "team": "Bosnia and Herzegovina",
+      "goals": 1
+    },
+    {
       "scorer": "Felix Nmecha",
       "team": "Germany",
       "goals": 1
@@ -10312,7 +10317,7 @@
       "games": 1
     },
     "Bosnia and Herzegovina": {
-      "gf": 1,
+      "gf": 2,
       "ga": 4,
       "games": 2
     },
@@ -10333,7 +10338,7 @@
     },
     "Switzerland": {
       "gf": 4,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Brazil": {
