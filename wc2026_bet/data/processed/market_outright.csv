@@ -1,34 +1,49 @@
-team,american_odds,implied_prob,elo_market_implied
-Spain,420,0.1923,2076.5
-France,460,0.1786,2070.3
-England,650,0.1333,2046.0
-Brazil,850,0.1053,2026.2
-Portugal,1000,0.0909,2014.0
-Argentina,1000,0.0909,2014.0
-Germany,1300,0.0714,1993.9
-Netherlands,1600,0.0588,1977.7
-Belgium,2200,0.0435,1952.5
-Norway,3500,0.0278,1915.1
-Colombia,4000,0.0244,1904.2
-Japan,4500,0.0217,1894.6
-Morocco,6000,0.0164,1871.1
-United States,6000,0.0164,1871.1
-Uruguay,6000,0.0164,1871.1
-Switzerland,6500,0.0152,1864.5
-Mexico,6500,0.0152,1864.5
-Croatia,7000,0.0141,1858.4
-Turkey,8000,0.0123,1847.4
-Ecuador,10000,0.0099,1829.0
-Senegal,12500,0.0079,1810.6
-Austria,12500,0.0079,1810.6
-Sweden,17500,0.0057,1782.7
-Ivory Coast,17500,0.0057,1782.7
-Canada,17500,0.0057,1782.7
-Paraguay,20000,0.005,1771.6
-Egypt,25000,0.004,1753.1
-Scotland,30000,0.0033,1737.9
-Bosnia and Herzegovina,40000,0.0025,1714.0
-Ghana,60000,0.0017,1680.3
-Czech Republic,60000,0.0017,1680.3
-South Korea,70000,0.0014,1667.4
-Iran,100000,0.001,1637.7
+team,american_odds,implied_prob,elo_market_implied,source
+France,478,0.1729,2078.2,kalshi
+Spain,699,0.1251,2049.7,kalshi
+England,724,0.1214,2047.0,kalshi
+Argentina,874,0.1026,2032.3,kalshi
+Portugal,1178,0.0783,2008.4,kalshi
+Brazil,1481,0.0633,1989.7,kalshi
+Germany,1724,0.0548,1977.1,kalshi
+Netherlands,2411,0.0398,1948.9,kalshi
+United States,3183,0.0305,1925.3,kalshi
+Norway,4084,0.0239,1903.9,kalshi
+Morocco,5372,0.0183,1880.3,kalshi
+Belgium,5997,0.0164,1870.8,kalshi
+Colombia,5997,0.0164,1870.8,kalshi
+Mexico,6569,0.015,1862.9,kalshi
+Japan,6784,0.0145,1860.1,kalshi
+DR Congo,10570,0.0094,1821.5,kalshi
+Bosnia and Herzegovina,10570,0.0094,1821.5,kalshi
+Iraq,10570,0.0094,1821.5,kalshi
+Czech Republic,10570,0.0094,1821.5,kalshi
+Switzerland,14127,0.007,1796.1,kalshi
+Croatia,16315,0.0061,1783.5,kalshi
+Uruguay,19300,0.0052,1768.8,kalshi
+Ecuador,23611,0.0042,1751.1,kalshi
+Sweden,23611,0.0042,1751.1,kalshi
+Ivory Coast,23611,0.0042,1751.1,kalshi
+Turkey,23611,0.0042,1751.1,kalshi
+Senegal,23611,0.0042,1751.1,kalshi
+Austria,30386,0.0033,1729.0,kalshi
+South Korea,30386,0.0033,1729.0,kalshi
+Egypt,42580,0.0023,1699.4,kalshi
+Canada,42580,0.0023,1699.4,kalshi
+Australia,42580,0.0023,1699.4,kalshi
+Ghana,71033,0.0014,1654.4,kalshi
+Scotland,71033,0.0014,1654.4,kalshi
+Algeria,71033,0.0014,1654.4,kalshi
+Jordan,106600,0.0009,1618.7,kalshi
+New Zealand,106600,0.0009,1618.7,kalshi
+Curaçao,106600,0.0009,1618.7,kalshi
+Uzbekistan,106600,0.0009,1618.7,kalshi
+Cape Verde,106600,0.0009,1618.7,kalshi
+Tunisia,106600,0.0009,1618.7,kalshi
+Paraguay,106600,0.0009,1618.7,kalshi
+Panama,106600,0.0009,1618.7,kalshi
+South Africa,106600,0.0009,1618.7,kalshi
+Iran,106600,0.0009,1618.7,kalshi
+Haiti,106600,0.0009,1618.7,kalshi
+Qatar,106600,0.0009,1618.7,kalshi
+Saudi Arabia,106600,0.0009,1618.7,kalshi

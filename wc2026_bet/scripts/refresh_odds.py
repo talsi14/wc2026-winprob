@@ -27,6 +27,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from wc2026_bet.config import DATA_LIVE, DATA_PROCESSED
 
 import collect_data as cd  # noqa: E402  (same scripts dir)
+import eloratings_live as el  # noqa: E402
+import kalshi_odds as ko  # noqa: E402
 
 # Documented odds sources (same URLs recorded in collect_data.manifest).
 SOURCES = {
@@ -66,6 +68,21 @@ def main() -> None:
         print(f"  {s['source']:14s} {s['status']}"
               + (f" ({s['bytes']}B)" if s.get("bytes") else f"  [{s.get('error','')}]"))
 
+    # Per-run EMA-weighted live eloratings -> the strength prior for the blend.
+    weighted_elo = el.update_weighted_eloratings()
+
+    kalshi_status = {"source": "kalshi_title", "status": "fallback"}
+    try:
+        ko.refresh_kalshi_title_odds(eloratings=weighted_elo)
+        kalshi_status = {"source": "kalshi_title", "status": "fetched",
+                         "url": f"https://kalshi.com/markets/kxmenworldcup/mens-world-cup-winner/{ko.EVENT_TICKER.lower()}"}
+        print(f"  kalshi_title   fetched")
+    except Exception as e:  # noqa: BLE001
+        kalshi_status = {"source": "kalshi_title", "status": "fallback",
+                         "error": str(e)[:160]}
+        print(f"  kalshi_title   fallback  [{kalshi_status['error']}]")
+    statuses.append(kalshi_status)
+
     # Rebuild the de-vigged advance + Golden-Boot boards from the (possibly
     # refreshed) raw markdown; these reproduce data/processed if the markdown is
     # unchanged. Outright / Opta title boards come from collect_data's curated
@@ -90,8 +107,9 @@ def main() -> None:
               "collected_at": datetime.now(timezone.utc).isoformat(),
               "refreshed": refreshed, "fell_back": fellback,
               "sources": statuses,
-              "note": ("Boards rebuilt from data/raw markdown snapshots; drop an "
-                       "updated markdown table to genuinely move the line.")}
+              "note": ("Title winner odds refreshed from Kalshi before each run; "
+                       "advance / Golden Boot from data/raw markdown (drop an "
+                       "updated table there to move those lines).")}
     (DATA_LIVE / f"odds_status_{ts}.json").write_text(
         json.dumps(status, indent=2, ensure_ascii=False))
     print(f"  refreshed: {refreshed or 'none'}; fell back: {fellback or 'none'}")

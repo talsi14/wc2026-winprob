@@ -1,10 +1,49 @@
-team,opta_title_prob
-Spain,0.161
-France,0.13
-England,0.112
-Argentina,0.104
-Portugal,0.07
-Brazil,0.066
-United States,0.0121
-Mexico,0.0099
-Canada,0.0052
+team,opta_title_prob,kalshi_title_prob,title_prob
+France,0.13,0.1729,0.1515
+Spain,0.161,0.1251,0.1431
+England,0.112,0.1214,0.1167
+Argentina,0.104,0.1026,0.1033
+Portugal,0.07,0.0783,0.0741
+Brazil,0.066,0.0633,0.0646
+Germany,,0.0548,0.0548
+Netherlands,,0.0398,0.0398
+United States,0.0121,0.0305,0.0213
+Norway,,0.0239,0.0239
+Morocco,,0.0183,0.0183
+Colombia,,0.0164,0.0164
+Belgium,,0.0164,0.0164
+Mexico,0.0099,0.015,0.0124
+Japan,,0.0145,0.0145
+Czech Republic,,0.0094,0.0094
+Iraq,,0.0094,0.0094
+DR Congo,,0.0094,0.0094
+Bosnia and Herzegovina,,0.0094,0.0094
+Switzerland,,0.007,0.007
+Croatia,,0.0061,0.0061
+Uruguay,,0.0052,0.0052
+Ecuador,,0.0042,0.0042
+Ivory Coast,,0.0042,0.0042
+Sweden,,0.0042,0.0042
+Senegal,,0.0042,0.0042
+Turkey,,0.0042,0.0042
+South Korea,,0.0033,0.0033
+Austria,,0.0033,0.0033
+Canada,0.0052,0.0023,0.0038
+Egypt,,0.0023,0.0023
+Australia,,0.0023,0.0023
+Algeria,,0.0014,0.0014
+Ghana,,0.0014,0.0014
+Scotland,,0.0014,0.0014
+Saudi Arabia,,0.0009,0.0009
+Paraguay,,0.0009,0.0009
+Curaçao,,0.0009,0.0009
+Uzbekistan,,0.0009,0.0009
+Tunisia,,0.0009,0.0009
+New Zealand,,0.0009,0.0009
+Jordan,,0.0009,0.0009
+Qatar,,0.0009,0.0009
+South Africa,,0.0009,0.0009
+Panama,,0.0009,0.0009
+Cape Verde,,0.0009,0.0009
+Iran,,0.0009,0.0009
+Haiti,,0.0009,0.0009

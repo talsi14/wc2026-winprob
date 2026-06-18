@@ -1,49 +1,49 @@
 team,slug,elo_blended,elo_eloratings,elo_market_implied,market_prob,elo_raw_computed
-Spain,spain,2116.3,2165,2076.5,0.1923,1725.5
-France,france,2075.1,2081,2070.3,0.1786,1630.5
-Argentina,argentina,2058.6,2113,2014.0,0.0909,1652.8
-England,england,2034.3,2020,2046.0,0.1333,1678.5
-Brazil,brazil,2007.2,1984,2026.2,0.1053,1585.0
-Portugal,portugal,2000.5,1984,2014.0,0.0909,1610.3
-Netherlands,netherlands,1970.2,1961,1977.7,0.0588,1644.9
-Germany,germany,1962.0,1923,1993.9,0.0714,1650.5
-Colombia,colombia,1936.1,1975,1904.2,0.0244,1600.9
-Belgium,belgium,1914.0,1867,1952.5,0.0435,1583.9
-Norway,norway,1913.7,1912,1915.1,0.0278,1657.1
-Japan,japan,1898.9,1904,1894.6,0.0217,1683.0
-Croatia,croatia,1890.6,1930,1858.4,0.0141,1618.9
-Uruguay,uruguay,1880.5,1892,1871.1,0.0164,1547.5
-Ecuador,ecuador,1876.7,1935,1829.0,0.0099,1580.3
-Switzerland,switzerland,1875.5,1889,1864.5,0.0152,1592.1
-Turkey,turkey,1872.0,1902,1847.4,0.0123,1615.4
-Mexico,mexico,1866.1,1868,1864.5,0.0152,1607.1
-Morocco,morocco,1849.0,1822,1871.1,0.0164,1678.0
-Senegal,senegal,1840.9,1878,1810.6,0.0079,1665.8
-Austria,austria,1818.0,1827,1810.6,0.0079,1613.9
-United States,united-states,1803.6,1721,1871.1,0.0164,1552.4
-Paraguay,paraguay,1799.2,1833,1771.6,0.005,1523.8
-Canada,canada,1783.3,1784,1782.7,0.0057,1569.9
-Australia,australia,1775.0,1775,,,1650.2
-Sweden,sweden,1754.0,1719,1782.7,0.0057,1525.2
-Scotland,scotland,1752.4,1770,1737.9,0.0033,1505.2
-Algeria,algeria,1743.0,1743,,,1628.4
-Panama,panama,1737.0,1737,,,1579.1
-Ivory Coast,ivory-coast,1734.7,1676,1782.7,0.0057,1640.3
-Egypt,egypt,1728.8,1699,1753.1,0.004,1606.2
-Uzbekistan,uzbekistan,1727.0,1727,,,1612.0
-South Korea,south-korea,1707.3,1756,1667.4,0.0014,1625.5
-Czech Republic,czech-republic,1700.8,1726,1680.3,0.0017,1560.5
-Iran,iran,1694.5,1764,1637.7,0.001,1629.3
-Jordan,jordan,1690.0,1690,,,1561.8
-Bosnia and Herzegovina,bosnia-and-herzegovina,1658.7,1591,1714.0,0.0025,1493.4
-DR Congo,dr-congo,1655.0,1655,,,1618.5
-Tunisia,tunisia,1636.0,1636,,,1580.1
-Iraq,iraq,1608.0,1608,,,1544.2
-Ghana,ghana,1600.5,1503,1680.3,0.0017,1535.1
-New Zealand,new-zealand,1585.0,1585,,,1595.4
-Saudi Arabia,saudi-arabia,1566.0,1566,,,1512.9
-Cape Verde,cape-verde,1549.0,1549,,,1549.3
-Haiti,haiti,1532.0,1532,,,1569.6
-South Africa,south-africa,1517.0,1517,,,1560.7
-Curaçao,curacao,1433.0,1433,,,1586.1
-Qatar,qatar,1423.0,1423,,,1443.4
+Spain,spain,2095.9,2152.4,2049.7,0.1251,1725.5
+France,france,2080.0,2082.1,2078.2,0.1729,1630.5
+Argentina,argentina,2070.9,2118.2,2032.3,0.1026,1652.8
+England,england,2040.4,2032.2,2047.0,0.1214,1678.5
+Brazil,brazil,1986.2,1981.9,1989.7,0.0633,1585.0
+Portugal,portugal,1994.8,1978.1,2008.4,0.0783,1610.3
+Netherlands,netherlands,1951.7,1955.1,1948.9,0.0398,1644.9
+Germany,germany,1955.3,1928.6,1977.1,0.0548,1650.5
+Colombia,colombia,1921.3,1983.0,1870.8,0.0164,1600.9
+Belgium,belgium,1871.0,1871.2,1870.8,0.0164,1583.9
+Norway,norway,1910.2,1917.9,1903.9,0.0239,1657.1
+Japan,japan,1880.8,1906.1,1860.1,0.0145,1683.0
+Croatia,croatia,1841.7,1912.8,1783.5,0.0061,1618.9
+Uruguay,uruguay,1820.8,1884.3,1768.8,0.0052,1547.5
+Ecuador,ecuador,1826.8,1919.2,1751.1,0.0042,1580.3
+Switzerland,switzerland,1834.1,1880.6,1796.1,0.007,1592.1
+Turkey,turkey,1810.7,1883.4,1751.1,0.0042,1615.4
+Mexico,mexico,1867.2,1872.5,1862.9,0.015,1607.1
+Morocco,morocco,1856.9,1828.3,1880.3,0.0183,1678.0
+Senegal,senegal,1802.1,1864.3,1751.1,0.0042,1665.8
+Austria,austria,1777.8,1837.5,1729.0,0.0033,1613.9
+United States,united-states,1842.7,1741.7,1925.3,0.0305,1552.4
+Paraguay,paraguay,1706.8,1814.5,1618.7,0.0009,1523.8
+Canada,canada,1734.8,1778.1,1699.4,0.0023,1569.9
+Australia,australia,1743.5,1797.4,1699.4,0.0023,1650.2
+Sweden,sweden,1742.3,1731.6,1751.1,0.0042,1525.2
+Scotland,scotland,1562.0,1449.0,1654.4,0.0014,1505.2
+Algeria,algeria,1696.8,1748.6,1654.4,0.0014,1628.4
+Panama,panama,1663.4,1718.1,1618.7,0.0009,1579.1
+Ivory Coast,ivory-coast,1727.9,1699.5,1751.1,0.0042,1640.3
+Egypt,egypt,1701.1,1703.2,1699.4,0.0023,1606.2
+Uzbekistan,uzbekistan,1662.8,1716.8,1618.7,0.0009,1612.0
+South Korea,south-korea,1745.9,1766.5,1729.0,0.0033,1625.5
+Czech Republic,czech-republic,1776.3,1721.1,1821.5,0.0094,1560.5
+Iran,iran,1682.8,1761.2,1618.7,0.0009,1629.3
+Jordan,jordan,1644.9,1677.0,1618.7,0.0009,1561.8
+Bosnia and Herzegovina,bosnia-and-herzegovina,1721.7,1599.8,1821.5,0.0094,1493.4
+DR Congo,dr-congo,1749.6,1661.7,1821.5,0.0094,1618.5
+Tunisia,tunisia,1618.5,1618.2,1618.7,0.0009,1580.1
+Iraq,iraq,1722.9,1602.4,1821.5,0.0094,1544.2
+Ghana,ghana,1594.8,1521.9,1654.4,0.0014,1535.1
+New Zealand,new-zealand,1602.4,1582.5,1618.7,0.0009,1595.4
+Saudi Arabia,saudi-arabia,1600.0,1577.2,1618.7,0.0009,1512.9
+Cape Verde,cape-verde,1596.3,1568.9,1618.7,0.0009,1549.3
+Haiti,haiti,1580.3,1533.4,1618.7,0.0009,1569.6
+South Africa,south-africa,1572.0,1514.9,1618.7,0.0009,1560.7
+Curaçao,curacao,1534.2,1430.9,1618.7,0.0009,1586.1
+Qatar,qatar,1534.4,1431.4,1618.7,0.0009,1443.4

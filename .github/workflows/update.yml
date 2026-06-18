@@ -223,6 +223,8 @@ jobs:
                   wc2026_bet/data/live/published.fingerprint \
                   wc2026_bet/data/live/published.live.fingerprint \
                   wc2026_bet/data/history/metrics_history.jsonl \
+                  wc2026_bet/data/history/eloratings_weighted.json \
+                  wc2026_bet/data/history/kalshi_title_history.json \
                   wc2026_bet/results/live_latest.json wc2026_bet/report/live.html
           if git diff --cached --quiet; then
             echo "No changes to commit."

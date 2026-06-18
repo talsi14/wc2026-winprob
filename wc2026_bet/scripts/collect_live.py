@@ -239,6 +239,19 @@ def reconcile(ds, state) -> None:
     ga = {t: state["team_played"].get(t, {}).get("ga", 0) for t in ds.team_list}
     pg = state["player_goals"]
 
+    # Guard against a stale reference snapshot: entry_points_site.csv is only
+    # refreshed by ingest_pool_entries_2026.py (--entries / Supabase). If it is
+    # all-zero while real results have already been played, the diff below is
+    # meaningless - flag the staleness instead of crying "mismatch" 53 times.
+    site_total = float(site["total"].fillna(0).abs().sum()) if "total" in site else 0.0
+    matches_played = int(state.get("n_group_played", 0)) + int(state.get("n_ko_played", 0))
+    site_when = str(site["updated_at"].iloc[0]) if "updated_at" in site and len(site) else "?"
+    if site_total == 0.0 and matches_played > 0:
+        print(f"  reconciliation: SKIPPED - site snapshot is stale/all-zero "
+              f"(updated_at={site_when}) but {matches_played} matches are already "
+              "played. Re-pull with --entries to refresh entry_points_site.csv.")
+        return
+
     mism = 0
     for r in entries.itertuples():
         e = Entry(r.tierA, r.tierB, r.tierC, r.tierD, r.scoring, r.conceding, r.top_scorer)

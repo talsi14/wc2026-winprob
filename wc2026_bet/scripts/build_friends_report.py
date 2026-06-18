@@ -17,11 +17,14 @@ Usage: python3 scripts/build_friends_report.py
 from __future__ import annotations
 
 import csv
+import html as html_mod
 import json
 import os
 import re
 import sys
 from pathlib import Path
+
+from i18n_strings import i18n_css, i18n_js
 
 WC_ROOT = Path(__file__).resolve().parents[1]          # .../wc2026_bet
 DATA_PROCESSED = WC_ROOT / "data" / "processed"
@@ -72,7 +75,7 @@ def groups_html(data: dict) -> str:
     for g in sorted(groups):
         rows = []
         for i, t in enumerate(groups[g]):
-            nm = he.get(t["team"], t["team"])
+            nm = _te(t["team"], he)
             cls = " class=\"qual\"" if i < 2 else ""
             rows.append(
                 f'<tr{cls}><td class="gt">{nm}</td>'
@@ -80,16 +83,20 @@ def groups_html(data: dict) -> str:
                 f'<td dir="ltr">{t["gd"]:+d}</td>'
                 f'<td class="gq">{t["p_advance"]*100:.0f}%</td></tr>')
         cards.append(
-            f'<div class="gcard"><div class="gh">בית {g}</div>'
-            f'<table class="gtbl"><thead><tr><th>נבחרת</th><th>מ׳</th>'
-            f'<th>נק׳</th><th>הפרש</th><th>העפלה</th></tr></thead>'
+            f'<div class="gcard"><div class="gh"><span data-i18n="groups.group">בית</span> {g}</div>'
+            f'<table class="gtbl"><thead><tr>'
+            f'<th data-i18n="groups.team">נבחרת</th>'
+            f'<th data-i18n="groups.played">מ׳</th>'
+            f'<th data-i18n="groups.pts">נק׳</th>'
+            f'<th data-i18n="groups.gd">הפרש</th>'
+            f'<th data-i18n="groups.advance">העפלה</th></tr></thead>'
             f'<tbody>{"".join(rows)}</tbody></table></div>')
     return (
         '\n  <section>\n'
-        '    <h2 style="margin-top:6px">טבלאות הבתים — סיכויי העפלה</h2>\n'
-        '    <p class="sub">לכל בית: מספר משחקים ששוחקו (מ׳), נקודות (נק׳), הפרש שערים, '
-        'וההסתברות להעפיל לשלב הנוק‑אאוט לפי הסימולציה (העפלה). שתי הנבחרות המודגשות הן '
-        'המועמדות המובילות להעפלה מכל בית.</p>\n'
+        '    <h2 style="margin-top:6px" data-i18n="groups.title">טבלאות הבתים — סיכויי העפלה</h2>\n'
+        '    <p class="sub" data-i18n="groups.sub" data-i18n-html>לכל בית: מספר משחקים ששוחקו (מ׳), '
+        'נקודות (נק׳), הפרש שערים, וההסתברות להעפיל לשלב הנוק‑אאוט לפי הסימולציה (העפלה). '
+        'שתי הנבחרות המודגשות הן המועמדות המובילות להעפלה מכל בית.</p>\n'
         f'    <div class="ggrid">{"".join(cards)}</div>\n'
         '  </section>\n')
 
@@ -101,6 +108,20 @@ def _player_he_map() -> dict:
         for he, en in (json.loads(f.read_text()).get("players", {})).items():
             en2he.setdefault(en, he)          # first (canonical) spelling wins
     return en2he
+
+
+def _te(en: str, he_map: dict | None = None) -> str:
+    """Team name span — switches Hebrew/English with the lang toggle."""
+    he = (he_map or _team_he_map()).get(en, en)
+    return (f'<span class="i18nte" data-en="{html_mod.escape(en, quote=True)}">'
+            f'{html_mod.escape(he)}</span>')
+
+
+def _tp(en: str, pl_map: dict | None = None) -> str:
+    """Player name span — switches Hebrew/English with the lang toggle."""
+    he = (pl_map or _player_he_map()).get(en, en)
+    return (f'<span class="i18npl" data-en="{html_mod.escape(en, quote=True)}">'
+            f'{html_mod.escape(he)}</span>')
 
 
 def _g(x) -> str:
@@ -127,11 +148,11 @@ def podium_html(data: dict) -> str:
         cards.append(
             f'<div class="pcard {cls}"><div class="medal">{medal}</div>'
             f'<div class="pname" title="{e["name"]}">{e["name"]}</div>'
-            f'<div class="ppts">{_g(e["current_points"])} <small>נק׳</small></div>'
+            f'<div class="ppts">{_g(e["current_points"])} <small data-i18n="pts.abbr">נק׳</small></div>'
             f'<div class="pprize">₪{prize.get(rk, 0):,}</div></div>')
     return (
         '\n  <section class="podwrap">\n'
-        '    <h2 class="bigsec real">טבלת הדירוג</h2>\n'
+        '    <h2 class="bigsec real" data-i18n="podium.title">טבלת הדירוג</h2>\n'
         f'    <div class="podium">{"".join(cards)}</div>\n  </section>\n')
 
 
@@ -152,7 +173,7 @@ def standings_table_html(data: dict) -> str:
                 else f'<span class="chg-dn">▼{d}</span>')
 
     def pick(name_en, pts, player=False) -> str:
-        he = (pl_he if player else team_he).get(name_en, name_en)
+        he = _tp(name_en, pl_he) if player else _te(name_en, team_he)
         return f'<td class="pick">{he} <small>({_g(pts)})</small></td>'
 
     trs = []
@@ -173,13 +194,18 @@ def standings_table_html(data: dict) -> str:
             + f'<td class="p1">{e["P_first"]*100:.1f}%</td>'
             + f'<td class="pm">{e["P_top2"]*100:.1f}%</td>'
             + '</tr>')
-    head = ('<tr><th>מקום</th><th>שינוי</th><th class="nm">שם</th><th>נק׳</th>'
-            '<th>דרג א׳</th><th>דרג ב׳</th><th>דרג ג׳</th><th>דרג ד׳</th>'
-            '<th>כובשת</th><th>סופגת</th><th>מלך שערים</th>'
-            '<th>זכייה</th><th>תוך הכסף</th></tr>')
+    head = ('<tr>'
+            '<th data-i18n="th.rank">מקום</th><th data-i18n="th.change">שינוי</th>'
+            '<th class="nm" data-i18n="th.name">שם</th><th data-i18n="th.pts">נק׳</th>'
+            '<th data-i18n="th.tierA">דרג א׳</th><th data-i18n="th.tierB">דרג ב׳</th>'
+            '<th data-i18n="th.tierC">דרג ג׳</th><th data-i18n="th.tierD">דרג ד׳</th>'
+            '<th data-i18n="th.scoring">כובשת</th><th data-i18n="th.conceding">סופגת</th>'
+            '<th data-i18n="th.top_scorer">מלך שערים</th>'
+            '<th data-i18n="th.win">זכייה</th><th data-i18n="th.in_money">תוך הכסף</th></tr>')
     return (
         '\n  <section>\n'
-        '    <p class="sub" style="margin-top:4px">כל הטפסים מדורגים לפי הניקוד בפועל. '
+        '    <p class="sub" style="margin-top:4px" data-i18n="standings.sub" data-i18n-html>'
+        'כל הטפסים מדורגים לפי הניקוד בפועל. '
         'העמודות <b>זכייה</b> ו<b>תוך הכסף</b> הן הסתברויות מהסימולציה (מקום 1, ומקום 1–2). '
         'בכל בחירה מוצג בסוגריים מספר הנקודות שצברה עד כה.</p>\n'
         f'    <div class="standwrap"><table class="standtbl"><thead>{head}</thead>'
@@ -210,7 +236,7 @@ def leaders_html(data: dict) -> str:
     sel_conceding = {e["picks"]["conceding"] for e in ents}
     sel_scorer = {e["picks"]["top_scorer"] for e in ents}
     live_teams = set(data.get("live_teams") or [])     # teams playing right now
-    _dot = ('<span class="lt-dot" title="משחק מתנהל כעת"></span>')
+    _dot = ('<span class="lt-dot" data-i18n-title="live.match"></span>')
 
     def live_mark(team):
         return _dot if team in live_teams else ''
@@ -225,56 +251,53 @@ def leaders_html(data: dict) -> str:
         for row in rank:
             t = row[0]
             hit = ' class="hit"' if t in sel else ''
-            body += (f'<tr{hit}><td class="nm">{team_he.get(t, t)}{live_mark(t)}</td>'
+            body += (f'<tr{hit}><td class="nm">{_te(t, team_he)}{live_mark(t)}</td>'
                      f'<td class="v">{row[val_i]}</td></tr>')
-        return body or '<tr><td class="nm" colspan="2">טרם זמין</td></tr>'
+        return body or '<tr><td class="nm" colspan="2" data-i18n="na">טרם זמין</td></tr>'
 
     def scorer_rows():
         body = ""
         for s in scorers:
-            nm = pl_he.get(s["scorer"], s["scorer"])
             raw_tm = s.get("team", "") or ""
-            tm = team_he.get(raw_tm, raw_tm)
             hit = ' class="hit"' if s["scorer"] in sel_scorer else ''
-            body += (f'<tr{hit}><td class="nm">{nm}{live_mark(raw_tm)}</td>'
-                     f'<td class="tm">{tm}</td>'
+            body += (f'<tr{hit}><td class="nm">{_tp(s["scorer"], pl_he)}{live_mark(raw_tm)}</td>'
+                     f'<td class="tm">{_te(raw_tm, team_he)}</td>'
                      f'<td class="v">{s["goals"]}</td></tr>')
-        return body or '<tr><td class="nm" colspan="3">טרם זמין</td></tr>'
+        return body or '<tr><td class="nm" colspan="3" data-i18n="na">טרם זמין</td></tr>'
 
-    def lead_team(rank, val_i):
+    def lead_team(rank, val_i, player=False):
         if not rank:
-            return ("טרם זמין", "—")
+            return ('<span data-i18n="na">טרם זמין</span>', "—")
         row = rank[0]
-        return (team_he.get(row[0], row[0]), f"({row[val_i]})")
+        if player:
+            return (_tp(row[0], pl_he), f"({row[val_i]})")
+        return (_te(row[0], team_he), f"({row[val_i]})")
 
-    sc_name, sc_val = lead_team(gf_rank, 1)   # most goals scored
-    cc_name, cc_val = lead_team(ga_rank, 2)   # most goals conceded
+    sc_name, sc_val = lead_team(gf_rank, 1)
+    cc_name, cc_val = lead_team(ga_rank, 2)
     if scorers:
-        ks_name = pl_he.get(scorers[0]["scorer"], scorers[0]["scorer"])
+        ks_name = _tp(scorers[0]["scorer"], pl_he)
         ks_val = f'({scorers[0]["goals"]})'
     else:
-        ks_name, ks_val = "טרם זמין", "—"
+        ks_name, ks_val = '<span data-i18n="na">טרם זמין</span>', "—"
 
-    # RTL grid: first child renders on the right -> matches the screenshot order
     cards = [
-        ("scorer", _IC_CROWN, "מלך השערים כרגע", ks_name, ks_val,
+        ("scorer", _IC_CROWN, "leader.top_scorer", ks_name, ks_val,
          f'<table class="ltbl"><tbody>{scorer_rows()}</tbody></table>'),
-        ("conceding", _IC_SHIELD, "הסופגת המובילה", cc_name, cc_val,
+        ("conceding", _IC_SHIELD, "leader.conceding", cc_name, cc_val,
          f'<table class="ltbl"><tbody>{team_rows(ga_rank, 2, sel_conceding)}</tbody></table>'),
-        ("scoring", _IC_GAUGE, "הכובשת המובילה", sc_name, sc_val,
+        ("scoring", _IC_GAUGE, "leader.scoring", sc_name, sc_val,
          f'<table class="ltbl"><tbody>{team_rows(gf_rank, 1, sel_scoring)}</tbody></table>'),
     ]
-    # when the tallies include goals from matches still in progress, flag it so
-    # users know these three numbers are live (the win-probs/standings are not).
     live = bool(data.get("live_widgets"))
-    live_dot = ('<span class="lc-live" title="כולל משחקים שמתנהלים כעת">'
-                '<span class="lc-pulse"></span>חי</span>') if live else ''
+    live_dot = ('<span class="lc-live" data-i18n-title="live.tooltip">'
+                '<span class="lc-pulse"></span><span data-i18n="live.badge">חי</span></span>') if live else ''
     out = ""
-    for cls, ic, title, name, val, tbl in cards:
+    for cls, ic, title_key, name, val, tbl in cards:
         out += (f'<div class="lcard {cls}" tabindex="0">'
                 f'<div class="lc-top"><span class="lc-ic">{ic}</span>'
-                f'<span class="lc-title">{title}</span>{live_dot}</div>'
-                f'<div class="lc-val" title="{name}">{name}</div>'
+                f'<span class="lc-title" data-i18n="{title_key}"></span>{live_dot}</div>'
+                f'<div class="lc-val">{name}</div>'
                 f'<div class="lc-sub">{val}</div>'
                 f'<div class="lpop">{tbl}</div></div>')
     return f'\n  <section class="leaders">{out}</section>\n'
@@ -347,61 +370,43 @@ def coverage_html(data: dict) -> str:
     when = _fmt_ts(data.get("timestamp"))
 
     if gp == 0 and kp == 0:
-        body = ('<b>מצב הנתונים:</b> טרם שוחקו משחקים — זוהי תחזית הבסיס לפני פתיחת '
-                'הטורניר. כל המשחקים מדומים.')
+        body_key = "coverage.pre"
+        body_vars = "{}"
     else:
-        stage = "שלב הבתים הושלם" if complete else "שלב הבתים בעיצומו"
-        body = (f'<b>מצב הנתונים:</b> נכללו <b>{gp}/{N_GROUP_MATCHES}</b> משחקי בתים'
-                f' ו‑<b>{kp}/{N_KO_MATCHES}</b> משחקי נוק‑אאוט שכבר שוחקו'
-                f' (ו‑{goals} שערים שנרשמו למועמדי נעל הזהב). {stage};'
-                f' רק מה שטרם נקבע מדומה.')
-    return (f'<div class="freshness"><span class="fresh-when">עודכן: {when}</span>'
-            f'<span class="fresh-body">{body}</span></div>')
+        body_key = "coverage.live"
+        stage_key = "coverage.stage_done" if complete else "coverage.stage_live"
+        body_vars = json.dumps({
+            "gp": gp, "total_gp": N_GROUP_MATCHES, "kp": kp, "total_ko": N_KO_MATCHES,
+            "goals": goals, "stage": "",
+        }, ensure_ascii=False)
+        # stage label is itself i18n — inject placeholder replaced client-side
+    return (f'<div class="freshness">'
+            f'<span class="fresh-when"><span data-i18n="coverage.when">עודכן:</span> {when}</span>'
+            f'<span class="fresh-body" data-i18n-fmt="{body_key}" data-i18n-html '
+            f'data-i18n-vars=\'{body_vars}\' data-stage-key="{stage_key if gp or kp else ""}"></span></div>')
 
 
 def explanation_html(n_ent: int, n_sims: int, coverage: str = "") -> str:
+    sim_vars = json.dumps({"n_ent": n_ent, "n_sims": f"{n_sims:,}"}, ensure_ascii=False)
     return f"""
-  <h2 class="bigsec">סימולציית סיכויי זכיה מתעדכנת</h2>
+  <h2 class="bigsec" data-i18n="sim.title">סימולציית סיכויי זכיה מתעדכנת</h2>
   {coverage}
 
   <section>
-    <h2 style="margin-top:6px">איך נבנה הניתוח</h2>
-    <p class="sub">נתונים + סימולציה — בשפה פשוטה.</p>
-    <p><b>הנתונים.</b> לכל אחת מ‑48 הנבחרות חושב דירוג כוח (Elo) ששוקלל עם <b>הימורי השוק</b>:
-      יחסי זכייה בגביע, יחסי "העפלה מהבית" ויחסי מלך השערים מאתרי ההימורים המובילים. כך הדירוג
-      "מיושר" לחוכמת ההמונים ולא מסתמך רק על נוסחה. במקביל נמשכו <b>כל {n_ent} הטפסים</b> ישירות
-      מהאתר, כדי לדעת מי בחר במה.</p>
-    <p><b>הסימולציה.</b> הטורניר כולו הורץ <b>{n_sims:,} פעמים</b> (מונטה‑קרלו). בכל הרצה מוגרלת
-      תוצאה לכל משחק לפי הסתברות שנגזרת מהפרשי הכוח בין הנבחרות (מודל Dixon‑Coles להבקעת שערים),
-      מתקדמים שלב‑שלב מהבתים ועד הגמר, ומגרילים גם מבקיעי שערים. בכל הרצה מחושבות נקודות לכל טופס
-      לפי חוקי ההגרלה, {n_ent} הטפסים מדורגים, והקופה מתחלקת לפי המיקום (כולל חלוקת פרס בין שווים).
-      מתוך {n_sims:,} ההרצות מתקבלים המספרים: הסתברות לזכייה, הסתברות ל"תוך הכסף" (מקום 1–2),
-      הסתברות למקום אחרון, ותוחלת הנקודות והדירוג.</p>
-    <div class="callout">
-      <b>איך זה יתעדכן במהלך הטורניר.</b> ברגע שמשחקים מתחילים, ההרצה הבאה "מקבעת" את מה שכבר קרה —
-      תוצאות, מבקיעים ודירוג הבתים ננעלים כעובדה, ומוגרל רק מה שעדיין לא ידוע. במקביל נמשכים יחסי
-      הימורים מעודכנים לרענון דירוגי הכוח. כל עדכון יוצר חותמת זמן חדשה, וכך אפשר לעקוב מי עולה ומי
-      יורד ככל שהמציאות מתבהרת. התהליך אוטומטי — מספיק להריץ אותו מחדש.
-    </div>
-    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;">
-      <b>למה לבוחרי ספרד סיכוי זכייה נמוך.</b> ספרד היא המועמדת מספר 1 בשוק, ולכן חלק ניכר מהמשתתפים
-      עיגנו עליה את הטופס (ורבים בחרו במבאפה כמלך שערים) — כך שגם אם ספרד תזכה, הפרס יתחלק בין המון
-      מתחרים כמעט זהים, ואיש מהם לא ייבדל. כדי לנצח את הקופה לא מספיק לצדוק — צריך <b>לצדוק במקום
-      שבו אחרים טעו</b>. הטפסים שמובילים בתוחלת הם דווקא ה"קונטראריאניים" שזנחו את ספרד לטובת בחירות
-      פחות פופולריות (אנגליה, נורווגיה, ארגנטינה), כי הם זוכים בקופה כמעט לבדם כשהבחירות האלה מצליחות.
-      כלומר: ספרד מקטינה את הסיכון להפסד גדול, אבל גם <b>כמעט מבטלת את הסיכוי לזכייה בולטת</b> —
-      בדיוק מפני שכל כך הרבה עשו אותו דבר.
-    </div>
+    <h2 style="margin-top:6px" data-i18n="sim.how">איך נבנה הניתוח</h2>
+    <p class="sub" data-i18n="sim.how.sub">נתונים + סימולציה — בשפה פשוטה.</p>
+    <p data-i18n-fmt="sim.data" data-i18n-html data-i18n-vars='{sim_vars}'></p>
+    <p data-i18n-fmt="sim.mc" data-i18n-html data-i18n-vars='{sim_vars}'></p>
+    <div class="callout" data-i18n="sim.update" data-i18n-html></div>
+    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;"
+         data-i18n="sim.spain" data-i18n-html></div>
   </section>
 
   <section>
-    <h2 style="margin-top:6px">סיכויי ניצחון בהתערבות - מותנה בזהות האלופה</h2>
-    <p class="sub">לכל שילוב של טופס (שורה) ואלופה אפשרית (עמודה): ההסתברות שאותו טופס יזכה
-      בקופה בהינתן שאותה נבחרת זוכה במונדיאל. האחוז מתחת לשם הנבחרת = ההסתברות שלה לתואר. שלוש
-      העמודות השמאליות הן הנתונים הכלליים של כל טופס: סיכוי לזכייה, סיכוי לכסף (מקום 1–2), וסיכוי
-      למקום אחרון. מוצגים מדורגים לפי תוחלת הרווח — גללו בתוך החלון לשאר.</p>
+    <h2 style="margin-top:6px" data-i18n="matrix.title">סיכויי ניצחון בהתערבות - מותנה בזהות האלופה</h2>
+    <p class="sub" data-i18n="matrix.sub" data-i18n-html></p>
     <div class="scrollbox"><div id="cmMatrix"></div></div>
-    <p class="sub" style="margin-top:8px">תאים זהובים = סיכוי גבוה יותר לזכות בקופה בהינתן האלוף.</p>
+    <p class="sub" style="margin-top:8px" data-i18n="matrix.gold" data-i18n-html></p>
   </section>
 """
 
@@ -418,18 +423,21 @@ def js_block(champs, champs_he, p_title, matrix, order, winprob) -> str:
     data = json.dumps(payload, ensure_ascii=False)
     return """
 const CMDATA = __DATA__;
-(function renderMatrix(){
+function renderMatrix(){
+  const I = window.I18N;
+  const t = k => I.t(k);
+  const T = en => I.team(en);
   const d = CMDATA, host = document.getElementById('cmMatrix');
-  if(!host) return;
+  if(!host || !d) return;
   const C = d.champs, getp = (c,e)=> (d.matrix[c]&&d.matrix[c][e])||0;
   let mx = 0; for(const c of C) for(const e of d.order) mx = Math.max(mx, getp(c,e));
-  const cols = [['P(1st)',0,'37,99,235'],['In money',1,'22,163,74'],['P(last)',2,'220,38,38']];
+  const cols = [[t('matrix.p1'),0,'37,99,235'],[t('matrix.in_money'),1,'22,163,74'],[t('matrix.p_last'),2,'220,38,38']];
   const smax = cols.map(([_l,i])=> Math.max(...d.order.map(e=> (d.winprob[e]||[0,0,0])[i]), 1e-9));
   const gold = t => `rgba(217,119,6,${(0.06+0.78*Math.pow(t,0.6)).toFixed(3)})`;
   const tint = (rgb,t) => `rgba(${rgb},${(0.08+0.72*Math.pow(t,0.6)).toFixed(3)})`;
-  let h = '<table class="cmtbl"><thead><tr><th class="nm">טופס</th>';
+  let h = '<table class="cmtbl"><thead><tr><th class="nm">'+t('matrix.entry')+'</th>';
   for(const c of C){
-    h += `<th class="ch"><div>${d.champsHe[c]||c}</div>`+
+    h += `<th class="ch"><div>${T(c)}</div>`+
          `<div class="t">${Math.round((d.pTitle[c]||0)*100)}%</div></th>`;
   }
   for(const [lbl,_i,rgb] of cols) h += `<th class="sum" style="color:rgb(${rgb})">${lbl}</th>`;
@@ -449,7 +457,9 @@ const CMDATA = __DATA__;
   }
   h += '</tbody></table>';
   host.innerHTML = h;
-})();
+}
+renderMatrix();
+document.addEventListener('langchange', renderMatrix);
 """.replace("__DATA__", data)
 
 
@@ -690,10 +700,14 @@ ODDS_CSS = """
   table.odtbl td.v{font-weight:800; color:var(--blue);}
   table.odtbl tbody tr:nth-child(odd){background:#fcfcfd;}
   .odchart{margin-top:14px;}
+  a.odlink{color:#2563eb;font-weight:600;font-size:.86rem;text-decoration:none;}
+  a.odlink:hover{text-decoration:underline;}
   .odsvg{width:100%; height:auto; background:#fff; border:1px solid var(--line); border-radius:12px;}
   .odleg{display:flex; flex-wrap:wrap; gap:12px; margin:6px 0;}
   .odlg{font-size:.82rem; color:#475569; display:inline-flex; align-items:center; gap:5px;}
   .odsw{width:12px; height:12px; border-radius:3px; display:inline-block;}
+  .odhistctrls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:8px 0 4px;}
+  .odhistctrls .stmode button{font-size:.84rem;}
 """
 
 CHEER_CSS = """
@@ -913,6 +927,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
         "groupMatches": group_matches, "bracket": bracket, "thirdSlots": third_slots,
         "realGroupScores": {k: list(v) for k, v in (state.get("group_scores") or {}).items()},
         "predGroupScores": {k: list(v) for k, v in (data.get("pred_group_scores") or {}).items()},
+        "predGroupScorers": {k: dict(v) for k, v in (data.get("pred_group_scorers") or {}).items()},
         "realKo": state.get("ko_results") or [],
         "realTeamPlayed": state.get("team_played") or data.get("team_played") or {},
         "realPlayerGoals": state.get("player_goals") or {},
@@ -924,33 +939,30 @@ def whatif_payload(data: dict, state: dict) -> dict:
 
 def whatif_html() -> str:
     return """
-  <h2 class="bigsec">What If..?</h2>
+  <h2 class="bigsec" data-i18n="tab.whatif">What If..?</h2>
   <section>
-    <p class="sub" style="margin-top:4px">בחרו תוצאות למשחקים שטרם נגמרו וראו איך <b>טבלת הניקוד בפועל</b>
-      של ההתערבות משתנה. אפשר למלא משחקי בתים, וגם <b>משחקי נוק‑אאוט</b> — כל משחק נפתח למילוי ברגע ששתי
-      הקבוצות בו ידועות, והתוצאות שמזינים מתגלגלות הלאה בעץ המשחקים עד הגמר. מי שירצה — יכול גם לשייך מבקיעי
-      שערים כדי להשפיע על בחירת "מלך השערים".</p>
-    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;">
-      <b>זו לא תחזית.</b> הטבלה כאן מציגה <b>רק את הניקוד</b> שהיה מתקבל לפי התוצאות שאתם ממציאים —
-      בלי סיכויי זכייה ובלי סימולציה. הניקוד מחושב בדפדפן לפי חוקי ההגרלה. עמודת <b>שינוי</b> = תזוזת המיקום
-      לעומת הדירוג הנוכחי, ובכל בחירה מוצג בסוגריים הניקוד שלה בתרחיש.
-    </div>
+    <p class="sub" style="margin-top:4px" data-i18n="wi.intro" data-i18n-html></p>
+    <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;"
+         data-i18n="wi.callout" data-i18n-html></div>
     <div class="wibar">
-      <button type="button" id="wiFillGroups" class="wibtn">מלא משחקי בתים בתוצאה הסבירה ביותר</button>
-      <button type="button" id="wiReset" class="wibtn">איפוס כל התרחישים</button>
+      <button type="button" id="wiFillGroups" class="wibtn" data-i18n="wi.fill">מלא משחקי בתים בתוצאה הסבירה ביותר</button>
+      <button type="button" id="wiReset" class="wibtn" data-i18n="wi.reset">איפוס כל התרחישים</button>
       <span id="wiCount" class="wihint"></span>
     </div>
     <div class="wigrid">
       <div class="wicol">
-        <div class="wicolhd">משחקים למילוי</div>
+        <div class="wicolhd" data-i18n="wi.matches">משחקים למילוי</div>
         <div id="wiMatches"></div>
       </div>
       <div class="wicol">
-        <div class="wicolhd">טבלת הדירוג — בתרחיש שלכם</div>
+        <div class="wicolhd" data-i18n="wi.board">טבלת הדירוג — בתרחיש שלכם</div>
         <div class="standwrap"><table class="standtbl"><thead><tr>
-          <th>מקום</th><th>שינוי</th><th class="nm">שם</th><th>נק׳</th>
-          <th>דרג א׳</th><th>דרג ב׳</th><th>דרג ג׳</th><th>דרג ד׳</th>
-          <th>כובשת</th><th>סופגת</th><th>מלך שערים</th></tr></thead>
+          <th data-i18n="th.rank">מקום</th><th data-i18n="th.change">שינוי</th>
+          <th class="nm" data-i18n="th.name">שם</th><th data-i18n="th.pts">נק׳</th>
+          <th data-i18n="th.tierA">דרג א׳</th><th data-i18n="th.tierB">דרג ב׳</th>
+          <th data-i18n="th.tierC">דרג ג׳</th><th data-i18n="th.tierD">דרג ד׳</th>
+          <th data-i18n="th.scoring">כובשת</th><th data-i18n="th.conceding">סופגת</th>
+          <th data-i18n="th.top_scorer">מלך שערים</th></tr></thead>
           <tbody id="wiBoard"></tbody></table></div>
       </div>
     </div>
@@ -986,7 +998,8 @@ def odds_payload(data: dict) -> dict:
     sim_title = cm.get("p_title") or {}
     cal = data.get("calibration") or {}
 
-    # history (committed jsonl, one record per pipeline run); downsample to <=60 pts
+    # history (committed jsonl, one record per pipeline run); full series sent to
+    # the page — run-mode downsamples client-side; daily mode averages by date.
     hist = []
     hf = DATA_HISTORY / "metrics_history.jsonl"
     if hf.exists():
@@ -997,9 +1010,40 @@ def odds_payload(data: dict) -> dict:
                     hist.append(json.loads(line))
                 except json.JSONDecodeError:
                     pass
-    if len(hist) > 60:
-        step = len(hist) // 60 + 1
-        hist = hist[::step] + [hist[-1]]
+
+    kalshi = {}
+    kf = DATA_HISTORY / "kalshi_title_history.json"
+    if kf.exists():
+        try:
+            kalshi = json.loads(kf.read_text(encoding="utf-8"))
+            for s in kalshi.get("series") or []:
+                s["he"] = team_he.get(s.get("team", ""), s.get("team", ""))
+        except json.JSONDecodeError:
+            kalshi = {}
+
+    elo_prior = {}
+    ef = DATA_HISTORY / "eloratings_weighted.json"
+    if ef.exists():
+        try:
+            ew = json.loads(ef.read_text(encoding="utf-8"))
+            base = ew.get("baseline", {})
+            wt = ew.get("weighted", {})
+            live = ew.get("last_live", {})
+            rows = []
+            for t in sorted(wt, key=lambda x: -float(wt[x])):
+                if t in base:
+                    rows.append({"team": t, "he": team_he.get(t, t),
+                                 "baseline": float(base[t]),
+                                 "weighted": float(wt[t]),
+                                 "live": float(live[t]) if t in live else None})
+            elo_prior = {"round": ew.get("round"),
+                         "updatedAt": ew.get("updated_at"),
+                         "alpha": ew.get("alpha"),
+                         "appliedRounds": ew.get("applied_rounds"),
+                         "rows": rows[:14],
+                         "history": ew.get("history", [])}
+        except json.JSONDecodeError:
+            elo_prior = {}
 
     return {
         "generatedAt": data.get("timestamp", ""),
@@ -1010,50 +1054,77 @@ def odds_payload(data: dict) -> dict:
         "calibration": {"strength_spread": cal.get("strength_spread"),
                         "golden_boot_scale": cal.get("golden_boot_scale")},
         "history": hist,
+        "kalshi": kalshi,
+        "eloPrior": elo_prior,
     }
 
 
 def odds_html() -> str:
     return """
-  <h2 class="bigsec">הימורי השוק ודירוגי הכוח (ELO)</h2>
+  <h2 class="bigsec" data-i18n="od.title">הימורי השוק ודירוגי הכוח (ELO)</h2>
   <section>
-    <p class="sub" style="margin-top:4px">בכל הרצה הצינור מרענן את נתוני השוק ומחשב דירוג כוח (ELO) משוקלל.
-      כאן רואים את הערכים <b>של ההרצה האחרונה</b>, ולמטה מעקב <b>לאורך זמן</b>.</p>
-    <div class="callout">
-      <b>שימו לב.</b> יחסי ההימורים ודירוגי ה‑ELO הם כיום קלט יציב (נקבעו לפני הטורניר), ולכן הם כמעט קבועים בין הרצות.
-      מה שבאמת זז עם תוצאות אמת הוא ה<b>הסתברויות מהסימולציה</b> ופרמטרי ה<b>כיול</b> — ואותם מציגים גם לאורך זמן.
-    </div>
+    <p class="sub" style="margin-top:4px" data-i18n="od.intro" data-i18n-html></p>
+    <div class="callout" data-i18n="od.note" data-i18n-html></div>
     <div id="odCal" class="odcal"></div>
   </section>
   <div class="grid2">
-    <section><div class="panel-title">דירוג כוח (ELO) — ההרצה האחרונה</div>
-      <p class="panel-cap">משוקלל = שילוב דירוג בסיס והימורי השוק</p>
+    <section><div class="panel-title" data-i18n="od.elo_title">דירוג כוח (ELO) — ההרצה האחרונה</div>
+      <p class="panel-cap" data-i18n="od.elo_cap">משוקלל = שילוב דירוג בסיס והימורי השוק</p>
       <div class="scrollbox"><table class="odtbl"><thead><tr>
-        <th class="nm">נבחרת</th><th>משוקלל</th><th>בסיס</th><th>שוק</th><th>P(זכייה)</th>
+        <th class="nm" data-i18n="od.th.team">נבחרת</th><th data-i18n="od.th.blended">משוקלל</th>
+        <th data-i18n="od.th.base">בסיס</th><th data-i18n="od.th.market">שוק</th>
+        <th data-i18n="od.th.p_win">P(זכייה)</th>
       </tr></thead><tbody id="odElo"></tbody></table></div>
     </section>
-    <section><div class="panel-title">סיכויי תואר — שוק מול סימולציה</div>
-      <p class="panel-cap">P(זכייה בגביע): השוק (הסתברות גלומה) מול הסימולציה שלנו</p>
+    <section><div class="panel-title" data-i18n="od.title_title">סיכויי תואר — שוק מול סימולציה</div>
+      <p class="panel-cap" data-i18n="od.title_cap">P(זכייה בגביע): השוק (הסתברות גלומה) מול הסימולציה שלנו</p>
       <div class="scrollbox"><table class="odtbl"><thead><tr>
-        <th class="nm">נבחרת</th><th>שוק</th><th>סימולציה</th></tr></thead>
+        <th class="nm" data-i18n="od.th.team">נבחרת</th><th data-i18n="od.th.market">שוק</th>
+        <th data-i18n="od.th.sim">סימולציה</th></tr></thead>
         <tbody id="odTitle"></tbody></table></div>
     </section>
   </div>
   <div class="grid2">
-    <section><div class="panel-title">סיכויי העפלה (שוק)</div>
-      <p class="panel-cap">P(העפלה לשלב הנוק‑אאוט) לפי השוק — 24 המובילות</p>
+    <section><div class="panel-title" data-i18n="od.adv_title">סיכויי העפלה (שוק)</div>
+      <p class="panel-cap" data-i18n="od.adv_cap">P(העפלה לשלב הנוק‑אאוט) לפי השוק — 24 המובילות</p>
       <div class="scrollbox"><table class="odtbl"><thead><tr>
-        <th class="nm">נבחרת</th><th>העפלה</th></tr></thead><tbody id="odAdv"></tbody></table></div>
+        <th class="nm" data-i18n="od.th.team">נבחרת</th><th data-i18n="od.th.advance">העפלה</th></tr></thead>
+        <tbody id="odAdv"></tbody></table></div>
     </section>
-    <section><div class="panel-title">נעל הזהב (שוק)</div>
-      <p class="panel-cap">P(זכייה בנעל הזהב) לפי השוק — 15 המובילים</p>
+    <section><div class="panel-title" data-i18n="od.gb_title">נעל הזהב (שוק)</div>
+      <p class="panel-cap" data-i18n="od.gb_cap">P(זכייה בנעל הזהב) לפי השוק — 15 המובילים</p>
       <div class="scrollbox"><table class="odtbl"><thead><tr>
-        <th class="nm">שחקן</th><th>סיכוי</th></tr></thead><tbody id="odGb"></tbody></table></div>
+        <th class="nm" data-i18n="od.th.player">שחקן</th><th data-i18n="od.th.odds">סיכוי</th></tr></thead>
+        <tbody id="odGb"></tbody></table></div>
     </section>
   </div>
   <section>
-    <h2 style="margin-top:6px">לאורך זמן</h2>
-    <p class="sub">מעקב אחר ההסתברויות מהסימולציה ופרמטרי הכיול לאורך ההרצות. ייאסף ויתעבה ככל שיצטברו עדכונים.</p>
+    <div class="panel-title" data-i18n="od.kalshi_title">Kalshi — סיכויי זכייה לאורך זמן</div>
+    <p class="panel-cap" data-i18n="od.kalshi_cap">מחיר YES יומי בשוק Kalshi (8 המובילות). מקור: Kalshi API.</p>
+    <div id="odKalshi"></div>
+  </section>
+  <section>
+    <div class="panel-title" data-i18n="od.elop_title">דירוג הכוח (ELO) — בסיס → משוקלל → חי</div>
+    <p class="panel-cap" data-i18n="od.elop_cap" data-i18n-html></p>
+    <div id="odEloPriorNote" class="callout"></div>
+    <div class="scrollbox"><table class="odtbl"><thead><tr>
+      <th class="nm" data-i18n="od.th.team">נבחרת</th>
+      <th data-i18n="od.elop.base">בסיס (30.5)</th>
+      <th data-i18n="od.elop.weighted">משוקלל</th>
+      <th data-i18n="od.elop.live">חי</th>
+      <th data-i18n="od.elop.delta">Δ מהבסיס</th>
+    </tr></thead><tbody id="odEloPrior"></tbody></table></div>
+    <div id="odEloPriorChart"></div>
+  </section>
+  <section>
+    <h2 style="margin-top:6px" data-i18n="od.hist_title">לאורך זמן</h2>
+    <p class="sub" data-i18n="od.hist_sub">מעקב אחר ההסתברויות מהסימולציה ופרמטרי הכיול לאורך ההרצות. ייאסף ויתעבה ככל שיצטברו עדכונים.</p>
+    <div class="odhistctrls">
+      <div class="stmode" id="odHistAxis">
+        <button type="button" data-axis="run" class="on" data-i18n="od.hist.by_run">לפי הרצה</button>
+        <button type="button" data-axis="day" data-i18n="od.hist.by_day">ממוצע יומי</button>
+      </div>
+    </div>
     <div id="odHist"></div>
   </section>
 """
@@ -1112,6 +1183,7 @@ def cheer_html(data: dict) -> str:
         for g in day.get("games", []):
             gs.append({"mno": g["mno"], "ko": g.get("ko", ""), "p": g.get("p", [0, 0, 0]),
                        "type": g.get("type", "group"), "pending": bool(g.get("pending")),
+                       "homeEn": g["home"], "awayEn": g["away"],
                        "t1": he.get(g["home"], g["home"]), "f1": _flag(g["home"]),
                        "t2": he.get(g["away"], g["away"]), "f2": _flag(g["away"])})
         days.append({"key": day["key"], "date": day.get("date", ""), "games": gs})
@@ -1126,45 +1198,37 @@ def cheer_html(data: dict) -> str:
 
     blob = json.dumps(cdata, ensure_ascii=False)
     return f"""
-  <h2 class="bigsec">את מי לעודד?</h2>
+  <h2 class="bigsec" data-i18n="cheer.title">את מי לעודד?</h2>
   <section>
-    <p class="sub" style="margin-top:4px">לכל משחק — באיזו תוצאה כדאי <b>לכם</b> לתמוך?
-      תחת כל תוצאה מופיעים המשתתפים שאותה תוצאה <b>משפרת להם את תוחלת הפרס</b>, והסכום שלצד השם הוא
-      <b>השינוי הצפוי בתוחלת הזכייה</b> (₪) אם זו התוצאה. הדגישו את עצמכם ועודדו בהתאם.
-      <span class="rfsub-il">השעות בשעון ישראל.</span></p>
-    <div class="callout rfnote">
-      ברירת המחדל: כל משתתף מופיע <b>בתוצאה הטובה לו ביותר</b>. סננו לטופס שלכם כדי לראות אותו
-      בכל התוצאות עם השינוי הצפוי בכל אחת. מי שהמשחק כמעט לא משפיע עליו מופיע תחת
-      <b>״לא מהותי״</b>. עוצמת הפס שלצד כל שם משקפת כמה המשחק <b>מהותי</b> עבורו ביחס לאחרים.
-      במשחקי נוקאאוט יש שתי תוצאות (אין תיקו). ההשפעה מחושבת בכל משחק בנפרד (מתוך אותה סימולציה),
-      ומתעדכנת לאחר כל משחק שמסתיים.
-    </div>
+    <p class="sub" style="margin-top:4px"><span data-i18n="cheer.intro" data-i18n-html></span>
+      <span class="rfsub-il" data-i18n="cheer.il_time">השעות בשעון ישראל.</span></p>
+    <div class="callout rfnote" data-i18n="cheer.note" data-i18n-html></div>
     <div class="rffilters">
       <div class="rfdaytoggle" id="rfDayToggle">
-        <button type="button" class="rfday" data-day="today">היום</button>
-        <button type="button" class="rfday" data-day="tomorrow">מחר</button>
+        <button type="button" class="rfday" data-day="today" data-i18n="cheer.today">היום</button>
+        <button type="button" class="rfday" data-day="tomorrow" data-i18n="cheer.tomorrow">מחר</button>
       </div>
       <div class="rffl-row">
         <div class="rfdd">
-          <button type="button" class="rfdd-btn" id="rfFilterBtn">סינון משתתפים
+          <button type="button" class="rfdd-btn" id="rfFilterBtn"><span data-i18n="cheer.filter">סינון משתתפים</span>
             <span class="rfdd-cnt" id="rfFilterCnt"></span> <span class="rfcar">▾</span></button>
           <div class="rfdd-pop" id="rfFilterPop" hidden>
-            <input type="search" class="rfdd-search" id="rfFilterSearch" placeholder="חיפוש שם…">
-            <div class="rfdd-actions"><button type="button" class="rflink" id="rfClear">נקה הכל</button></div>
+            <input type="search" class="rfdd-search" id="rfFilterSearch" data-i18n-placeholder="cheer.search">
+            <div class="rfdd-actions"><button type="button" class="rflink" id="rfClear" data-i18n="cheer.clear">נקה הכל</button></div>
             <div class="rfdd-list" id="rfFilterList">{filt_opts}</div>
           </div>
         </div>
         <div class="rfdd">
-          <button type="button" class="rfdd-btn" id="rfHiBtn">הדגשת משתתפים<span id="rfHiCur"></span>
+          <button type="button" class="rfdd-btn" id="rfHiBtn"><span data-i18n="cheer.highlight">הדגשת משתתפים</span><span id="rfHiCur"></span>
             <span class="rfcar">▾</span></button>
           <div class="rfdd-pop" id="rfHiPop" hidden>
-            <input type="search" class="rfdd-search" id="rfHiSearch" placeholder="חיפוש שם…">
-            <div class="rfdd-actions"><button type="button" class="rflink" id="rfHiClear">בטל הכל</button></div>
+            <input type="search" class="rfdd-search" id="rfHiSearch" data-i18n-placeholder="cheer.search">
+            <div class="rfdd-actions"><button type="button" class="rflink" id="rfHiClear" data-i18n="cheer.unhighlight">בטל הכל</button></div>
             <div class="rfdd-list" id="rfHiList">{hi_opts}</div>
           </div>
         </div>
-        <label class="rftoggle"><input type="checkbox" id="rfTop3"> רק עם סיכוי לפודיום</label>
-        <label class="rftoggle"><input type="checkbox" id="rfLast"> רק עם סיכוי למקום אחרון</label>
+        <label class="rftoggle"><input type="checkbox" id="rfTop3"> <span data-i18n="cheer.top3">רק עם סיכוי לפודיום</span></label>
+        <label class="rftoggle"><input type="checkbox" id="rfLast"> <span data-i18n="cheer.last">רק עם סיכוי למקום אחרון</span></label>
       </div>
     </div>
     <div id="rfGames" class="rfgames"></div>
@@ -1177,6 +1241,9 @@ CHEER_JS = r"""
 (function(){
   const panel = document.getElementById('tab-cheer');
   if(!panel) return;
+  const I = window.I18N;
+  const t = k => I.t(k);
+  const T = en => I.team(en);
   const dataEl = document.getElementById('rfData');
   let C; try { C = JSON.parse(dataEl.textContent); } catch(e){ return; }
   const gamesEl = document.getElementById('rfGames');
@@ -1229,12 +1296,12 @@ CHEER_JS = r"""
   function colHead(flag, name, pct){
     return '<div class="rfcolhd"><span class="rffl-big">'+flag+'</span>'
          + '<span class="rfcname">'+esc(name)+'</span>'
-         + '<span class="rfprob">סיכוי '+pct+'%</span></div>';
+         + '<span class="rfprob">'+t('cheer.prob')+' '+pct+'%</span></div>';
   }
   function bucketCol(kind, headHtml, items, focus){
     items.sort((a,b)=> b.v - a.v);
     const chips = items.map(it=> chip(it.n, it.v, true, it.imp||0)).join('') ||
-                  '<div class="rfempty">— אין —</div>';
+                  '<div class="rfempty">'+t('cheer.empty')+'</div>';
     return '<div class="rfcol rf-'+kind+'">'+headHtml+'<div class="rfchips">'+chips+'</div></div>';
   }
 
@@ -1245,14 +1312,16 @@ CHEER_JS = r"""
       const n = d ? d.games.length : 0;
       b.disabled = !n;
       b.classList.toggle('on', b.dataset.day===day);
-      b.textContent = (b.dataset.day==='today'?'היום':'מחר') + (d ? ' · '+(d.date||'').slice(5).split('-').reverse().join('.') : '');
+      const dayLbl = b.dataset.day==='today' ? t('cheer.today') : t('cheer.tomorrow');
+      b.textContent = dayLbl + (d ? ' · '+(d.date||'').slice(5).split('-').reverse().join('.') : '');
     });
     if(fCnt) fCnt.textContent = filt.size ? '('+filt.size+')' : '';
     if(hCur) hCur.textContent = hi.size ? ' ('+hi.size+')' : '';
 
     const D = dayByKey[day];
     if(!D || !D.games.length){
-      gamesEl.innerHTML = '<div class="callout">אין משחקים '+(day==='today'?'היום':'מחר')+'.</div>';
+      const dayLbl = day==='today' ? t('cheer.today').toLowerCase() : t('cheer.tomorrow').toLowerCase();
+      gamesEl.innerHTML = '<div class="callout">'+I.fmt('cheer.no_games', {day: dayLbl})+'</div>';
       return;
     }
     const focus = filt.size > 0;
@@ -1265,10 +1334,10 @@ CHEER_JS = r"""
       // knockout game whose two teams aren't settled yet -> show placeholder
       if(isKo && g.pending){
         html += '<div class="rfgame rfpending"><div class="rftime-row">'
-              + '<span class="rftime">'+esc(g.ko)+'</span><span class="rfko-badge">נוקאאוט</span></div>'
-              + '<div class="rfvs-line"><span class="rffl-mini">'+g.f1+'</span> '+esc(g.t1)
-              + ' <span class="rfx-mini">✕</span> '+g.f2+' '+esc(g.t2)+'</div>'
-              + '<div class="rfempty">המשחק ייפתח כשייקבעו המעפילים מהשלב הקודם.</div></div>';
+              + '<span class="rftime">'+esc(g.ko)+'</span><span class="rfko-badge">'+t('cheer.ko')+'</span></div>'
+              + '<div class="rfvs-line"><span class="rffl-mini">'+g.f1+'</span> '+esc(T(g.homeEn))
+              + ' <span class="rfx-mini">✕</span> '+g.f2+' '+esc(T(g.awayEn))+'</div>'
+              + '<div class="rfempty">'+t('cheer.pending')+'</div></div>';
         return;
       }
 
@@ -1299,22 +1368,22 @@ CHEER_JS = r"""
         }
       });
 
-      const badge = isKo ? '<span class="rfko-badge">נוקאאוט</span>' : '';
+      const badge = isKo ? '<span class="rfko-badge">'+t('cheer.ko')+'</span>' : '';
       let buckets;
       if(isKo){
-        const h1 = colHead(g.f1, g.t1, pr[0]);
-        const h2 = colHead(g.f2, g.t2, pr[1]);
+        const h1 = colHead(g.f1, T(g.homeEn), pr[0]);
+        const h2 = colHead(g.f2, T(g.awayEn), pr[1]);
         buckets = '<div class="rfbuckets ko">'
                 + bucketCol('win1', h1, cols[0], focus)
                 + '<div class="rfvs"><span class="rfx-big">✕</span></div>'
                 + bucketCol('win2', h2, cols[1], focus)
                 + '</div>';
       } else {
-        const h1 = colHead(g.f1, g.t1, pr[0]);
+        const h1 = colHead(g.f1, T(g.homeEn), pr[0]);
         const hd = '<div class="rfcolhd"><span class="rfx-big">✕</span>'
-                 + '<span class="rfcname rfcdraw">תיקו</span>'
-                 + '<span class="rfprob">סיכוי '+pr[1]+'%</span></div>';
-        const h2 = colHead(g.f2, g.t2, pr[2]);
+                 + '<span class="rfcname rfcdraw">'+t('cheer.draw')+'</span>'
+                 + '<span class="rfprob">'+t('cheer.prob')+' '+pr[1]+'%</span></div>';
+        const h2 = colHead(g.f2, T(g.awayEn), pr[2]);
         buckets = '<div class="rfbuckets">'
                 + bucketCol('win1', h1, cols[0], focus)
                 + bucketCol('draw', hd, cols[1], focus)
@@ -1325,7 +1394,7 @@ CHEER_JS = r"""
                + buckets;
       if(!focus && neutral.length){
         const nb = neutral.map(n=> chip(n, 0, false, 0)).join('');
-        card += '<details class="rfneutral"><summary>לא מהותי ('+neutral.length+') — המשחק כמעט לא משפיע</summary>'
+        card += '<details class="rfneutral"><summary>'+I.fmt('cheer.neutral_sum', {n: neutral.length})+'</summary>'
               + '<div class="rfchips">'+nb+'</div></details>';
       }
       card += '</div>';
@@ -1361,6 +1430,7 @@ CHEER_JS = r"""
   if(top3) top3.addEventListener('change', render);
   if(last) last.addEventListener('change', render);
   render();
+  document.addEventListener('langchange', render);
 })();
 """
 
@@ -1373,8 +1443,10 @@ const WHATIF = __WHATIF__;
   const matchesEl = document.getElementById('wiMatches');
   if(!W || !W.entries || !board || !matchesEl) return;
   const R = W.rules;
-  const heT = t => (W.teamHe[t]||t);
-  const heP = p => (W.playerHe[p]||p);
+  const I = window.I18N;
+  const t = k => I.t(k);
+  const heT = en => I.team(en);
+  const heP = en => I.player(en);
   const g2 = x => (Math.round(x*10)/10).toString();
 
   const gmByNo = {};            // match no -> {no,group,home,away}
@@ -1619,12 +1691,12 @@ const WHATIF = __WHATIF__;
     let so = '';
     if(kind==='k' && tie){
       const w = (hypoKo[m]||{}).so || '';
-      so = `<div class="wiso">עלתה בפנדלים:
+      so = `<div class="wiso">${t('wi.so')}
         <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${home}" ${w===home?'checked':''}> ${heT(home)}</label>
         <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${away}" ${w===away?'checked':''}> ${heT(away)}</label></div>`;
     }
     const scr = (both && goals>0) ? scorerEditor(mk, goals, home, away) : '';
-    const adv = (kind==='k' && winner) ? `<div class="wiadv">עולה לשלב הבא: <b>${heT(winner)}</b></div>` : '';
+    const adv = (kind==='k' && winner) ? `<div class="wiadv">${t('wi.advance')} <b>${heT(winner)}</b></div>` : '';
     return `<div class="wimatch${winner?' decided':''}" data-mk="${mk}">
       <div class="wimrow">
         <span class="witeam h">${heT(home)}</span>
@@ -1640,13 +1712,12 @@ const WHATIF = __WHATIF__;
     const openGroup = W.groupMatches.filter(m=> W.realGroupScores[m.no]===undefined)
       .sort((a,b)=> a.no-b.no);
     let html = '';
-    html += '<div class="wistage">שלב הבתים</div>';
-    if(!openGroup.length) html += '<div class="wihint">כל משחקי הבתים כבר שוחקו.</div>';
+    html += '<div class="wistage">'+t('wi.group_stage')+'</div>';
+    if(!openGroup.length) html += '<div class="wihint">'+t('wi.no_group')+'</div>';
     openGroup.forEach(m=> html += matchRow('g', m.no, m.home, m.away, hypoGroup[m.no]||null, 'group'));
-    // knockout matches that are now resolvable (both teams determined)
-    html += '<div class="wistage">נוק‑אאוט</div>';
+    html += '<div class="wistage">'+t('wi.ko')+'</div>';
     if(!full.fillable.length){
-      html += '<div class="wihint">משחקי נוק‑אאוט נפתחים אוטומטית ברגע ששתי הקבוצות בהם נקבעות — מלאו תוצאות בתים (או משחקי נוק‑אאוט מוקדמים יותר) כדי לפתוח אותם. שיבוץ מקומות השלישי דורש סיום כל הבתים.</div>';
+      html += '<div class="wihint">'+t('wi.ko_hint')+'</div>';
     } else {
       let curStage = '';
       full.fillable.sort((a,b)=> a.m-b.m).forEach(km=>{
@@ -1681,7 +1752,7 @@ const WHATIF = __WHATIF__;
       }
     }
     const nHypo = Object.keys(hypoGroup).length + Object.keys(hypoKo).length;
-    document.getElementById('wiCount').textContent = nHypo? `${nHypo} תוצאות בתרחיש` : 'לא הוזנו תוצאות עדיין';
+    document.getElementById('wiCount').textContent = nHypo? I.fmt('wi.count.n', {n: nHypo}) : t('wi.count.none');
   }
 
   // ---- events (delegated) ------------------------------------------------ //
@@ -1736,16 +1807,22 @@ const WHATIF = __WHATIF__;
     const pred = W.predGroupScores||{};
     if(!Object.keys(pred).length){ fillBtn.disabled = true; }
     fillBtn.addEventListener('click', function(){
+      const predSc = W.predGroupScorers||{};
       W.groupMatches.forEach(m=>{
         if(W.realGroupScores[m.no]!==undefined) return;   // already played for real
+        const mk = 'g'+m.no;
         const p = pred[m.no];
         if(p) hypoGroup[m.no] = [p[0], p[1]];
+        const sc = predSc[m.no];
+        if(sc && Object.keys(sc).length) hypoScorers[mk] = Object.assign({}, sc);
+        else delete hypoScorers[mk];
       });
       recompute(true);
     });
   }
 
   recompute(true);
+  document.addEventListener('langchange', ()=> recompute(true));
 })();
 """
 
@@ -1755,66 +1832,263 @@ const ODDS = __ODDS__;
 (function(){
   const O = ODDS;
   if(!O || !document.getElementById('odElo')) return;
+  const I = window.I18N;
+  const t = k => I.t(k);
+  const T = en => I.team(en);
+  const P = en => I.player(en);
   const pct = x => (x==null? '—' : (x*100).toFixed(1)+'%');
   const num = x => (x==null? '—' : Math.round(x));
+  const HIST_LS = 'wc2026-odhist-axis';
+  let histAxis = localStorage.getItem(HIST_LS) || 'run';
+  if (histAxis !== 'run' && histAxis !== 'day') histAxis = 'run';
 
-  const cal = O.calibration||{};
-  document.getElementById('odCal').innerHTML =
-    `<div class="odchip"><span class="odk">מקדם פיזור הכוח</span><span class="odv">${cal.strength_spread!=null?cal.strength_spread.toFixed(3):'—'}</span></div>`+
-    `<div class="odchip"><span class="odk">מקדם נעל הזהב</span><span class="odv">${cal.golden_boot_scale!=null?cal.golden_boot_scale.toFixed(3):'—'}</span></div>`+
-    `<div class="odchip"><span class="odk">עודכן</span><span class="odv">${O.generatedAt||'—'}</span></div>`;
-
-  document.getElementById('odElo').innerHTML = (O.elo||[]).map(r=>
-    `<tr><td class="nm">${r.he}</td><td class="v">${num(r.blended)}</td><td>${num(r.eloratings)}</td>`+
-    `<td>${num(r.market)}</td><td>${pct(r.marketProb)}</td></tr>`).join('');
-
-  const titleRows = Object.keys(O.simTitle||{}).map(t=>({t, he:(O.titleHe||{})[t]||t, sim:O.simTitle[t]}));
-  const eloByTeam = {}; (O.elo||[]).forEach(r=> eloByTeam[r.team]=r.marketProb);
-  titleRows.sort((a,b)=> b.sim-a.sim);
-  document.getElementById('odTitle').innerHTML = titleRows.map(r=>
-    `<tr><td class="nm">${r.he}</td><td>${pct(eloByTeam[r.t])}</td><td class="v">${pct(r.sim)}</td></tr>`).join('')
-    || '<tr><td class="nm" colspan="3">—</td></tr>';
-
-  document.getElementById('odAdv').innerHTML = (O.advance||[]).map(r=>
-    `<tr><td class="nm">${r.he}</td><td class="v">${pct(r.p)}</td></tr>`).join('');
-  document.getElementById('odGb').innerHTML = (O.goldenBoot||[]).map(r=>
-    `<tr><td class="nm">${r.he}</td><td class="v">${pct(r.p)}</td></tr>`).join('');
-
-  // ---- over-time mini charts -------------------------------------------- //
-  const hist = O.history||[];
-  const host = document.getElementById('odHist');
-  if(hist.length < 2){
-    host.innerHTML = '<div class="wihint">עדיין אין מספיק נקודות מדידה לאורך זמן — ייאסף עם ההרצות הבאות.</div>';
-    return;
+  function dayKey(ts){
+    const m = (ts||'').match(/^(\d{4}-\d{2}-\d{2})/);
+    return m ? m[1] : null;
   }
-  const COLORS = ['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2'];
-  function lineChart(title, series, fmtY){
-    const W=560, H=210, padL=44, padR=12, padT=14, padB=26;
-    const xs = hist.map((_,i)=> padL + (W-padL-padR)*(hist.length>1? i/(hist.length-1):0));
-    let vmax=0; series.forEach(s=> s.vals.forEach(v=>{ if(v!=null && v>vmax) vmax=v; }));
-    vmax = vmax>0? vmax*1.1 : 1;
+  function fmtDayLabel(day){
+    const p = day.split('-');
+    return p.length===3 ? (p[2]+'/'+p[1]) : day;
+  }
+  function aggregateByDay(hist){
+    const buckets = new Map();
+    hist.forEach(h=>{
+      const d = dayKey(h.ts);
+      if(!d) return;
+      let b = buckets.get(d);
+      if(!b) b = {n:0, spread:0, gb:0, titles:{}};
+      b.n++;
+      if(h.strength_spread!=null) b.spread += h.strength_spread;
+      if(h.golden_boot_scale!=null) b.gb += h.golden_boot_scale;
+      Object.entries(h.sim_title||{}).forEach(([team,v])=>{
+        b.titles[team] = (b.titles[team]||0) + v;
+      });
+      buckets.set(d, b);
+    });
+    return [...buckets.entries()].sort((a,b)=> a[0].localeCompare(b[0])).map(([day,b])=>({
+      ts: day,
+      strength_spread: b.n ? b.spread/b.n : null,
+      golden_boot_scale: b.n ? b.gb/b.n : null,
+      sim_title: Object.fromEntries(Object.entries(b.titles).map(([team,s])=>[team, s/b.n]))
+    }));
+  }
+  function downsampleRuns(hist, max){
+    if(hist.length <= max) return hist;
+    const step = Math.floor(hist.length / max) + 1;
+    const out = hist.filter((_,i)=> i % step === 0);
+    const last = hist[hist.length-1];
+    if(out[out.length-1] !== last) out.push(last);
+    return out;
+  }
+  function chartPoints(raw){
+    if(histAxis === 'day') return aggregateByDay(raw);
+    return downsampleRuns(raw, 60);
+  }
+
+  function renderKalshiChart(){
+    const host = document.getElementById('odKalshi');
+    if(!host) return;
+    const k = O.kalshi||{};
+    const series = k.series||[];
+    if(series.length < 1 || !(series[0].points||[]).length){
+      host.innerHTML = '<div class="wihint">'+t('od.kalshi_empty')+'</div>';
+      return;
+    }
+    const COLORS = ['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2','#db2777','#65a30d'];
+    const allTs = new Set();
+    series.forEach(s=> (s.points||[]).forEach(pt=> allTs.add(pt.ts)));
+    const tsList = Array.from(allTs).sort((a,b)=> a-b);
+    const idx = {}; tsList.forEach((t,i)=> idx[t]=i);
+    const W=560, H=240, padL=44, padR=12, padT=14, padB=36;
+    const n = tsList.length;
+    const xs = tsList.map((_,i)=> padL + (W-padL-padR)*(n>1? i/(n-1):0));
+    let vmax=0;
+    series.forEach(s=> (s.points||[]).forEach(pt=>{ if(pt.p>vmax) vmax=pt.p; }));
+    vmax = vmax>0? vmax*1.12 : 0.25;
     const y = v => padT + (H-padT-padB)*(1 - (v/vmax));
     let svg = `<svg viewBox="0 0 ${W} ${H}" class="odsvg">`;
     [0,0.25,0.5,0.75,1].forEach(f=>{ const yy=padT+(H-padT-padB)*f; const val=vmax*(1-f);
       svg+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e2e8f0"/>`+
-           `<text x="${padL-6}" y="${yy+3}" text-anchor="end" font-size="9" fill="#94a3b8">${fmtY(val)}</text>`; });
-    series.forEach((s,si)=>{ const c=COLORS[si%COLORS.length];
-      let d=''; s.vals.forEach((v,i)=>{ if(v==null) return; d+=(d?'L':'M')+xs[i].toFixed(1)+' '+y(v).toFixed(1)+' '; });
-      svg+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="2"/>`; });
+           `<text x="${padL-6}" y="${yy+3}" text-anchor="end" font-size="9" fill="#94a3b8">${(val*100).toFixed(0)}%</text>`; });
+    const step = n > 14 ? Math.ceil(n/14) : 1;
+    for(let i=0; i<n; i+=step){
+      const d = new Date(tsList[i]*1000);
+      const lbl = d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+      svg+=`<text x="${xs[i].toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="#94a3b8">${lbl}</text>`;
+    }
+    series.forEach((s,si)=>{
+      const c=COLORS[si%COLORS.length];
+      let d='';
+      (s.points||[]).forEach(pt=>{
+        const i=idx[pt.ts]; if(i==null) return;
+        d+=(d?'L':'M')+xs[i].toFixed(1)+' '+y(pt.p).toFixed(1)+' ';
+      });
+      svg+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="2"/>`;
+    });
     svg += '</svg>';
-    const leg = series.map((s,si)=>`<span class="odlg"><span class="odsw" style="background:${COLORS[si%COLORS.length]}"></span>${s.label}</span>`).join('');
-    return `<div class="odchart"><div class="panel-title">${title}</div><div class="odleg">${leg}</div>${svg}</div>`;
+    const leg = series.map((s,si)=>`<span class="odlg"><span class="odsw" style="background:${COLORS[si%COLORS.length]}"></span>${T(s.team)}</span>`).join('');
+    const link = k.source_url ? `<a class="odlink" href="${k.source_url}" target="_blank" rel="noopener">${t('od.kalshi_link')}</a>` : '';
+    host.innerHTML = `<div class="odchart"><div class="odleg">${leg}</div>${svg}${link?`<div style="margin-top:6px">${link}</div>`:''}</div>`;
   }
-  // sim-title for the top 6 teams (by latest snapshot)
-  const last = hist[hist.length-1];
-  const titleKeys = Object.keys(last.sim_title||{}).sort((a,b)=> (last.sim_title[b]||0)-(last.sim_title[a]||0)).slice(0,6);
-  const titleHe = O.titleHe||{};
-  const s1 = titleKeys.map(t=>({label:(titleHe[t]||t), vals:hist.map(h=> (h.sim_title||{})[t]!=null? h.sim_title[t]:null)}));
-  const s2 = [{label:'מקדם פיזור', vals:hist.map(h=> h.strength_spread!=null? h.strength_spread:null)},
-              {label:'מקדם נעל זהב', vals:hist.map(h=> h.golden_boot_scale!=null? h.golden_boot_scale:null)}];
-  host.innerHTML =
-    (s1.length? lineChart('סיכויי תואר מהסימולציה (6 המובילות)', s1, v=> (v*100).toFixed(0)+'%') : '') +
-    lineChart('פרמטרי כיול', s2, v=> v.toFixed(2));
+
+  function renderEloPrior(){
+    const tb = document.getElementById('odEloPrior');
+    const note = document.getElementById('odEloPriorNote');
+    const chartHost = document.getElementById('odEloPriorChart');
+    if(!tb) return;
+    const ep = O.eloPrior||{};
+    const rows = ep.rows||[];
+    if(!rows.length){
+      tb.innerHTML = '<tr><td class="nm" colspan="4">—</td></tr>';
+      if(note) note.textContent = t('od.elop.empty');
+      if(chartHost) chartHost.innerHTML = '';
+      return;
+    }
+    if(note){
+      const rd = ep.round||'—';
+      note.innerHTML = `${t('od.elop.round')}: <b>${rd}</b> · α=${ep.alpha!=null?ep.alpha:'—'}`;
+    }
+    const num1 = v => v==null? '—' : v.toFixed(1);
+    tb.innerHTML = rows.map(r=>{
+      const d = (r.weighted!=null && r.baseline!=null)? (r.weighted-r.baseline):null;
+      const ds = d==null? '—' : (d>=0? '+':'')+d.toFixed(1);
+      const dc = d==null? '' : (d>0? 'style="color:#16a34a"' : (d<0? 'style="color:#dc2626"':''));
+      return `<tr><td class="nm">${T(r.team)}</td><td>${num1(r.baseline)}</td>`+
+             `<td class="v">${num1(r.weighted)}</td><td>${num1(r.live)}</td>`+
+             `<td ${dc}>${ds}</td></tr>`;
+    }).join('');
+
+    // Convergence chart: weighted ELO per round for the top teams. Round 0 =
+    // baseline; each subsequent point is a scheduled per-round update.
+    const hist = ep.history||[];
+    if(chartHost){
+      if(hist.length < 1){ chartHost.innerHTML=''; return; }
+      const teams = rows.slice(0,5).map(r=> r.team);
+      const labels = ['base'].concat(hist.map(h=> h.round||''));
+      const baseByTeam = {}; rows.forEach(r=> baseByTeam[r.team]=r.baseline);
+      const series = teams.map(tm=>{
+        const vals = [baseByTeam[tm]];
+        hist.forEach(h=> vals.push((h.weighted_top||{})[tm] ?? null));
+        return {label:T(tm), vals};
+      });
+      const W=560,H=220,padL=46,padR=12,padT=14,padB=30;
+      const n=labels.length;
+      const xs=labels.map((_,i)=> padL+(W-padL-padR)*(n>1? i/(n-1):0));
+      let vmin=Infinity,vmax=-Infinity;
+      series.forEach(s=> s.vals.forEach(v=>{ if(v!=null){ if(v<vmin)vmin=v; if(v>vmax)vmax=v; }}));
+      if(!isFinite(vmin)){ chartHost.innerHTML=''; return; }
+      const pad=(vmax-vmin)*0.15||20; vmin-=pad; vmax+=pad;
+      const y=v=> padT+(H-padT-padB)*(1-(v-vmin)/(vmax-vmin));
+      const COLORS=['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626'];
+      let svg=`<svg viewBox="0 0 ${W} ${H}" class="odsvg">`;
+      [0,0.25,0.5,0.75,1].forEach(f=>{ const yy=padT+(H-padT-padB)*f; const val=vmax-(vmax-vmin)*f;
+        svg+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e2e8f0"/>`+
+             `<text x="${padL-6}" y="${yy+3}" text-anchor="end" font-size="9" fill="#94a3b8">${val.toFixed(0)}</text>`;});
+      labels.forEach((lb,i)=>{ svg+=`<text x="${xs[i].toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="#94a3b8">${lb}</text>`; });
+      series.forEach((s,si)=>{ const c=COLORS[si%COLORS.length]; let d='';
+        s.vals.forEach((v,i)=>{ if(v==null) return; d+=(d?'L':'M')+xs[i].toFixed(1)+' '+y(v).toFixed(1)+' '; });
+        svg+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="2"/>`;
+        s.vals.forEach((v,i)=>{ if(v!=null) svg+=`<circle cx="${xs[i].toFixed(1)}" cy="${y(v).toFixed(1)}" r="2.2" fill="${c}"/>`; });
+      });
+      svg+='</svg>';
+      const leg=series.map((s,si)=>`<span class="odlg"><span class="odsw" style="background:${COLORS[si%COLORS.length]}"></span>${s.label}</span>`).join('');
+      chartHost.innerHTML = `<div class="odchart"><div class="odleg">${leg}</div>${svg}</div>`;
+    }
+  }
+
+  function renderOdds(){
+    const cal = O.calibration||{};
+    document.getElementById('odCal').innerHTML =
+      `<div class="odchip"><span class="odk">${t('od.spread')}</span><span class="odv">${cal.strength_spread!=null?cal.strength_spread.toFixed(3):'—'}</span></div>`+
+      `<div class="odchip"><span class="odk">${t('od.gb_scale')}</span><span class="odv">${cal.golden_boot_scale!=null?cal.golden_boot_scale.toFixed(3):'—'}</span></div>`+
+      `<div class="odchip"><span class="odk">${t('od.updated')}</span><span class="odv">${O.generatedAt||'—'}</span></div>`;
+
+    document.getElementById('odElo').innerHTML = (O.elo||[]).map(r=>
+      `<tr><td class="nm">${T(r.team)}</td><td class="v">${num(r.blended)}</td><td>${num(r.eloratings)}</td>`+
+      `<td>${num(r.market)}</td><td>${pct(r.marketProb)}</td></tr>`).join('');
+
+    const titleRows = Object.keys(O.simTitle||{}).map(team=>({t:team, sim:O.simTitle[team]}));
+    const eloByTeam = {}; (O.elo||[]).forEach(r=> eloByTeam[r.team]=r.marketProb);
+    titleRows.sort((a,b)=> b.sim-a.sim);
+    document.getElementById('odTitle').innerHTML = titleRows.map(r=>
+      `<tr><td class="nm">${T(r.t)}</td><td>${pct(eloByTeam[r.t])}</td><td class="v">${pct(r.sim)}</td></tr>`).join('')
+      || '<tr><td class="nm" colspan="3">—</td></tr>';
+
+    document.getElementById('odAdv').innerHTML = (O.advance||[]).map(r=>
+      `<tr><td class="nm">${T(r.team)}</td><td class="v">${pct(r.p)}</td></tr>`).join('');
+    document.getElementById('odGb').innerHTML = (O.goldenBoot||[]).map(r=>
+      `<tr><td class="nm">${P(r.player)}</td><td class="v">${pct(r.p)}</td></tr>`).join('');
+
+    renderKalshiChart();
+    renderEloPrior();
+
+    const raw = O.history||[];
+    const host = document.getElementById('odHist');
+    const axisWrap = document.getElementById('odHistAxis');
+    if(axisWrap){
+      axisWrap.querySelectorAll('button[data-axis]').forEach(b=>{
+        b.classList.toggle('on', b.dataset.axis===histAxis);
+      });
+    }
+    if(raw.length < 2){
+      host.innerHTML = '<div class="wihint">'+t('od.hist.empty')+'</div>';
+      return;
+    }
+    const hist = chartPoints(raw);
+    if(hist.length < 2){
+      host.innerHTML = '<div class="wihint">'+t('od.hist.empty')+'</div>';
+      return;
+    }
+    const xLabels = histAxis==='day'
+      ? hist.map(h=> fmtDayLabel(dayKey(h.ts)||''))
+      : null;
+    const COLORS = ['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2'];
+    function lineChart(title, series, fmtY){
+      const W=560, H=xLabels?230:210, padL=44, padR=12, padT=14, padB=xLabels?36:26;
+      const n = hist.length;
+      const xs = hist.map((_,i)=> padL + (W-padL-padR)*(n>1? i/(n-1):0));
+      let vmax=0; series.forEach(s=> s.vals.forEach(v=>{ if(v!=null && v>vmax) vmax=v; }));
+      vmax = vmax>0? vmax*1.1 : 1;
+      const y = v => padT + (H-padT-padB)*(1 - (v/vmax));
+      let svg = `<svg viewBox="0 0 ${W} ${H}" class="odsvg">`;
+      [0,0.25,0.5,0.75,1].forEach(f=>{ const yy=padT+(H-padT-padB)*f; const val=vmax*(1-f);
+        svg+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e2e8f0"/>`+
+             `<text x="${padL-6}" y="${yy+3}" text-anchor="end" font-size="9" fill="#94a3b8">${fmtY(val)}</text>`; });
+      if(xLabels){
+        const step = n > 14 ? Math.ceil(n/14) : 1;
+        for(let i=0; i<n; i+=step){
+          svg+=`<text x="${xs[i].toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="#94a3b8">${xLabels[i]}</text>`;
+        }
+      }
+      series.forEach((s,si)=>{ const c=COLORS[si%COLORS.length];
+        let d=''; s.vals.forEach((v,i)=>{ if(v==null) return; d+=(d?'L':'M')+xs[i].toFixed(1)+' '+y(v).toFixed(1)+' '; });
+        svg+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="2"/>`; });
+      svg += '</svg>';
+      const leg = series.map((s,si)=>`<span class="odlg"><span class="odsw" style="background:${COLORS[si%COLORS.length]}"></span>${s.label}</span>`).join('');
+      return `<div class="odchart"><div class="panel-title">${title}</div><div class="odleg">${leg}</div>${svg}</div>`;
+    }
+    const last = hist[hist.length-1];
+    const titleKeys = Object.keys(last.sim_title||{}).sort((a,b)=> (last.sim_title[b]||0)-(last.sim_title[a]||0)).slice(0,6);
+    const s1 = titleKeys.map(team=>({label:T(team), vals:hist.map(h=> (h.sim_title||{})[team]!=null? h.sim_title[team]:null)}));
+    const s2 = [{label:t('od.chart.spread_short'), vals:hist.map(h=> h.strength_spread!=null? h.strength_spread:null)},
+                {label:t('od.chart.gb_short'), vals:hist.map(h=> h.golden_boot_scale!=null? h.golden_boot_scale:null)}];
+    host.innerHTML =
+      (s1.length? lineChart(t('od.chart.title_sim'), s1, v=> (v*100).toFixed(0)+'%') : '') +
+      lineChart(t('od.chart.title_cal'), s2, v=> v.toFixed(2));
+  }
+
+  const axisWrap = document.getElementById('odHistAxis');
+  if(axisWrap){
+    axisWrap.addEventListener('click', e=>{
+      const b = e.target.closest('button[data-axis]');
+      if(!b) return;
+      histAxis = b.dataset.axis;
+      localStorage.setItem(HIST_LS, histAxis);
+      renderOdds();
+    });
+  }
+  renderOdds();
+  document.addEventListener('langchange', renderOdds);
 })();
 """
 
@@ -1878,14 +2152,17 @@ def stages_payload(data: dict) -> dict:
     reach[6] (cumulative P(reach at least stage)); ordered strongest-first."""
     he = _team_he_map()
     ko_he = {"R32": "שלב 32", "R16": "שמינית", "QF": "רבע", "SF": "חצי", "Final": "גמר"}
+    ko_en = {"R32": "Round of 32", "R16": "Round of 16", "QF": "Quarter-finals",
+             "SF": "Semi-finals", "Final": "Final"}
 
     def conv_ko(ko):
         out = []
         for rd in ko or []:
-            opp = [{"t": he.get(o["t"], o["t"]), "flag": _flag(o["t"]),
+            opp = [{"t": he.get(o["t"], o["t"]), "te": o["t"], "flag": _flag(o["t"]),
                     "meet": o.get("meet", 0), "beat": o.get("beat", 0)}
                    for o in rd.get("opp", [])]
             out.append({"r": rd["r"], "rhe": ko_he.get(rd["r"], rd["r"]),
+                        "ren": ko_en.get(rd["r"], rd["r"]),
                         "pass": rd.get("pass", 0), "opp": opp})
         return out
 
@@ -1906,41 +2183,37 @@ def stages_html(data: dict) -> str:
     payload = stages_payload(data)
     opts = "".join(
         f'<label class="rfopt" data-name="{t["t"]}"><input type="checkbox" value="{t["en"]}">'
-        f'<span>{t["flag"]} {t["t"]}</span></label>' for t in payload["teams"])
+        f'<span>{t["flag"]} {_te(t["en"])}</span></label>' for t in payload["teams"])
     blob = json.dumps(payload, ensure_ascii=False)
     return f"""
-  <h2 class="bigsec">עד לאן יגיעו?</h2>
+  <h2 class="bigsec" data-i18n="st.title">עד לאן יגיעו?</h2>
   <section class="stwrap">
-    <p class="sub" style="margin-top:4px">לכל נבחרת — ההסתברות (מתוך הסימולציה) <b>להגיע לכל שלב</b> בטורניר.
-      המפה צבועה לפי ההסתברות <b>להגיע לפחות</b> לשלב. סננו לנבחרות מסוימות, ובחרו אותן גם לגרף ההשוואה למטה.</p>
+    <p class="sub" style="margin-top:4px" data-i18n="st.intro" data-i18n-html></p>
     <div class="stctrls">
       <div class="rfdd">
-        <button type="button" class="rfdd-btn" id="stTeamBtn">בחירת נבחרות
+        <button type="button" class="rfdd-btn" id="stTeamBtn"><span data-i18n="st.pick_teams">בחירת נבחרות</span>
           <span class="rfdd-cnt" id="stTeamCnt"></span> <span class="rfcar">▾</span></button>
         <div class="rfdd-pop" id="stTeamPop" hidden>
-          <input type="search" class="rfdd-search" id="stTeamSearch" placeholder="חיפוש נבחרת…">
-          <div class="rfdd-actions"><button type="button" class="rflink" id="stTeamClear">נקה הכל</button></div>
+          <input type="search" class="rfdd-search" id="stTeamSearch" data-i18n-placeholder="st.search_team">
+          <div class="rfdd-actions"><button type="button" class="rflink" id="stTeamClear" data-i18n="cheer.clear">נקה הכל</button></div>
           <div class="rfdd-list" id="stTeamList">{opts}</div>
         </div>
       </div>
     </div>
     <div class="stheatwrap"><div id="stHeat"></div></div>
 
-    <h3 style="margin:18px 0 0">גרף התפלגות</h3>
+    <h3 style="margin:18px 0 0" data-i18n="st.dist_chart">גרף התפלגות</h3>
     <div class="stctrls">
       <div class="stmode" id="stMode">
-        <button type="button" data-mode="exact" class="on">התפלגות (איפה ייעצרו)</button>
-        <button type="button" data-mode="cum">מצטבר (להגיע לפחות ל…)</button>
+        <button type="button" data-mode="exact" class="on" data-i18n="st.mode.exact">התפלגות (איפה ייעצרו)</button>
+        <button type="button" data-mode="cum" data-i18n="st.mode.cum">מצטבר (להגיע לפחות ל…)</button>
       </div>
     </div>
     <p class="sthint" id="stChartHint"></p>
     <div class="stchart"><div class="stleg" id="stLeg"></div><div id="stChart"></div></div>
 
-    <h3 style="margin:18px 0 0">מסלול הנוקאאוט הצפוי</h3>
-    <p class="sub" style="margin-top:4px">לנבחרת שתבחרו — בכל שלב נוקאאוט: סיכוי <b>המעבר</b> הכולל,
-      ומי היריבות הסבירות. לצד כל יריבה: <b>נפגשים</b> (כמה פעמים זו היריבה בשלב הזה) ו<b>מנצחים</b>
-      (הסיכוי לנצח אותה אם נפגשים). כך רואים אם המעבר הוא משחק־מטבע מול יריבה שקולה,
-      או תערובת של יריבות חלשות וחזקות.</p>
+    <h3 style="margin:18px 0 0" data-i18n="st.ko_path">מסלול הנוקאאוט הצפוי</h3>
+    <p class="sub" style="margin-top:4px" data-i18n="st.path.intro" data-i18n-html></p>
     <div id="stPath" class="stpath"></div>
     <script id="stData" type="application/json">{blob}</script>
   </section>
@@ -1951,6 +2224,9 @@ STAGES_JS = r"""
 (function(){
   const panel = document.getElementById('tab-stages');
   if(!panel) return;
+  const I = window.I18N;
+  const t = k => I.t(k);
+  const T = en => I.team(en);
   const el = document.getElementById('stData');
   let S; try { S = JSON.parse(el.textContent); } catch(e){ return; }
   const teams = S.teams || [];
@@ -1963,6 +2239,12 @@ STAGES_JS = r"""
   const COLORS = ['#2563eb','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2','#db2777','#65a30d'];
   const CHART_CAP = 8;
   const esc = s => (s+'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const REACH_KEYS = ['st.reach.r32','st.reach.r16','st.reach.qf','st.reach.sf','st.reach.final','st.reach.champ'];
+  const EXACT_KEYS = ['st.exact.groups','st.reach.r32','st.reach.r16','st.reach.qf','st.reach.sf','st.exact.runner','st.reach.champ'];
+  function reachLabels(){ return REACH_KEYS.map(k=> t(k)); }
+  function exactLabels(){ return EXACT_KEYS.map(k=> t(k)); }
+  function teamLabel(tm){ return T(tm.en); }
+  function koRound(rd){ return I.lang==='en' ? (rd.ren||rd.r) : (rd.rhe||rd.r); }
 
   const sel = new Set();       // selected team english keys (empty = all in heatmap)
   let mode = 'exact';
@@ -1975,13 +2257,13 @@ STAGES_JS = r"""
 
   function renderHeat(){
     const rows = sel.size ? teams.filter(t=> sel.has(t.en)) : teams;
-    const L = S.reachLabels;
-    let h = '<table class="sttbl"><thead><tr><th class="nm">נבחרת</th>';
+    const L = reachLabels();
+    let h = '<table class="sttbl"><thead><tr><th class="nm">'+t('st.team')+'</th>';
     L.forEach(lb=> h += '<th>'+lb+'</th>');
     h += '</tr></thead><tbody>';
-    rows.forEach(t=>{
-      h += '<tr><td class="nm"><span class="stflag">'+t.flag+'</span>'+esc(t.t)+'</td>';
-      (t.reach||[]).forEach(p=>{ const c=heat(p);
+    rows.forEach(tm=>{
+      h += '<tr><td class="nm"><span class="stflag">'+tm.flag+'</span>'+esc(teamLabel(tm))+'</td>';
+      (tm.reach||[]).forEach(p=>{ const c=heat(p);
         h += '<td><span class="stcell" style="background:'+c.bg+';color:'+c.fg+'">'+pct(p)+'</span></td>'; });
       h += '</tr>';
     });
@@ -1990,7 +2272,7 @@ STAGES_JS = r"""
   }
 
   function chartTeams(){
-    if(sel.size) return teams.filter(t=> sel.has(t.en)).slice(0, CHART_CAP);
+    if(sel.size) return teams.filter(tm=> sel.has(tm.en)).slice(0, CHART_CAP);
     return teams.slice(0, 6);   // default: 6 strongest
   }
   function barChart(labels, series){
@@ -2022,53 +2304,51 @@ STAGES_JS = r"""
   }
   function renderChart(){
     const ts = chartTeams();
-    const labels = mode==='exact' ? S.exactLabels : S.reachLabels;
-    const series = ts.map((t,i)=>({
-      label: t.t, color: COLORS[i%COLORS.length],
-      vals: (mode==='exact' ? t.exact : t.reach) || []
+    const labels = mode==='exact' ? exactLabels() : reachLabels();
+    const series = ts.map((tm,i)=>({
+      label: teamLabel(tm), color: COLORS[i%COLORS.length],
+      vals: (mode==='exact' ? tm.exact : tm.reach) || []
     }));
     legEl.innerHTML = series.map(s=> '<span class="stlg"><span class="stsw" style="background:'+s.color+'"></span>'+esc(s.label)+'</span>').join('');
     chartEl.innerHTML = barChart(labels, series);
-    let hint = mode==='exact'
-      ? 'כל נבחרת: באיזה שלב צפויה להיעצר (סכום הטורים = 100%).'
-      : 'כל נבחרת: הסיכוי להגיע <b>לפחות</b> לשלב.';
-    if(!sel.size) hint += ' מוצגות 6 הנבחרות החזקות — בחרו נבחרות להשוואה.';
-    else if(sel.size>CHART_CAP) hint += ' מוצגות '+CHART_CAP+' הראשונות מבין '+sel.size+' שנבחרו.';
+    let hint = mode==='exact' ? t('st.hint.exact') : t('st.hint.cum');
+    if(!sel.size) hint += t('st.hint.default6');
+    else if(sel.size>CHART_CAP) hint += I.fmt('st.hint.cap', {n: CHART_CAP, total: sel.size});
     hintEl.innerHTML = hint;
   }
   const pathEl = document.getElementById('stPath');
   const PATH_CAP = 4;
   function beatClass(p){ return p>=0.55 ? 'good' : (p<=0.45 ? 'bad' : 'even'); }
   function renderPath(){
-    const ts = sel.size ? teams.filter(t=> sel.has(t.en)).slice(0, PATH_CAP) : [];
+    const ts = sel.size ? teams.filter(tm=> sel.has(tm.en)).slice(0, PATH_CAP) : [];
     if(!ts.length){
-      pathEl.innerHTML = '<div class="callout">בחרו נבחרת (למעלה) כדי לראות את מסלול הנוקאאוט הצפוי שלה ואת היריבות הסבירות בכל שלב.</div>';
+      pathEl.innerHTML = '<div class="callout">'+t('st.path.pick')+'</div>';
       return;
     }
-    pathEl.innerHTML = ts.map(t=>{
-      const rounds = (t.ko||[]).map(rd=>{
+    pathEl.innerHTML = ts.map(tm=>{
+      const rounds = (tm.ko||[]).map(rd=>{
         const shown = rd.opp||[];
       const meetSum = shown.reduce((a,o)=> a + (o.meet||0), 0);
       let opps = shown.map(o=>
-          '<div class="stpopp"><div class="stpo-nm">'+o.flag+' '+esc(o.t)+'</div>'
-          + '<div class="stpo-stats"><span class="stpo-meet">נפגשים '+Math.round(o.meet*100)+'%</span>'
-          + '<span class="stpo-beat '+beatClass(o.beat)+'">מנצחים '+Math.round(o.beat*100)+'%</span></div></div>'
+          '<div class="stpopp"><div class="stpo-nm">'+o.flag+' '+esc(T(o.te||o.t))+'</div>'
+          + '<div class="stpo-stats"><span class="stpo-meet">'+t('st.meet')+' '+Math.round(o.meet*100)+'%</span>'
+          + '<span class="stpo-beat '+beatClass(o.beat)+'">'+t('st.beat')+' '+Math.round(o.beat*100)+'%</span></div></div>'
         ).join('');
       const other = 1 - meetSum;
       if(other > 0.005){
-        opps += '<div class="stpopp other"><div class="stpo-nm">יריבות נוספות</div>'
-          + '<div class="stpo-stats"><span class="stpo-meet">נפגשים '+Math.round(other*100)+'%</span></div></div>';
+        opps += '<div class="stpopp other"><div class="stpo-nm">'+t('st.other_opp')+'</div>'
+          + '<div class="stpo-stats"><span class="stpo-meet">'+t('st.meet')+' '+Math.round(other*100)+'%</span></div></div>';
       }
-      if(!opps) opps = '<div class="rfempty">—</div>';
-        return '<div class="stpcard"><div class="stpr">'+esc(rd.rhe)
-          + '<span class="stppass">מעבר '+Math.round(rd.pass*100)+'%</span></div>'
+      if(!opps) opps = '<div class="rfempty">'+t('cheer.empty')+'</div>';
+        return '<div class="stpcard"><div class="stpr">'+esc(koRound(rd))
+          + '<span class="stppass">'+t('st.pass')+' '+Math.round(rd.pass*100)+'%</span></div>'
           + '<div class="stpopps">'+opps+'</div></div>';
-      }).join('') || '<div class="rfempty">לא צפויה להגיע לשלב הנוקאאוט.</div>';
-      return '<div class="stpteam"><div class="stpname">'+t.flag+' '+esc(t.t)+'</div>'
+      }).join('') || '<div class="rfempty">'+t('st.no_ko')+'</div>';
+      return '<div class="stpteam"><div class="stpname">'+tm.flag+' '+esc(teamLabel(tm))+'</div>'
         + '<div class="stprounds">'+rounds+'</div></div>';
     }).join('');
     if(sel.size>PATH_CAP){
-      pathEl.innerHTML += '<p class="sthint">מוצגות '+PATH_CAP+' הנבחרות הראשונות מבין '+sel.size+' שנבחרו.</p>';
+      pathEl.innerHTML += '<p class="sthint">'+I.fmt('st.hint.cap', {n: PATH_CAP, total: sel.size})+'</p>';
     }
   }
   function renderAll(){ renderHeat(); renderChart(); renderPath(); }
@@ -2096,6 +2376,7 @@ STAGES_JS = r"""
     renderChart(); });
 
   renderAll();
+  document.addEventListener('langchange', renderAll);
 })();
 """
 
@@ -2119,7 +2400,7 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, CHEER_CSS, STAGES_CSS])
+    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, CHEER_CSS, STAGES_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
@@ -2136,7 +2417,9 @@ def main() -> None:
     # 4) All injected JS in one managed block before </script>.
     wi_payload = whatif_payload(data, state)
     od_payload = odds_payload(data)
+    team_he, pl_he = _team_he_map(), _player_he_map()
     all_js = "\n".join([
+        i18n_js(team_he, pl_he),
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
         LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload), CHEER_JS, STAGES_JS,
     ])

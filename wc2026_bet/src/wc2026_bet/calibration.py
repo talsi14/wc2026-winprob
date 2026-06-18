@@ -32,7 +32,13 @@ def calibrate_spread(
     ds: Dataset, model: MatchModel,
     spreads=np.linspace(0.80, 1.25, 10), n_sims: int = 30_000, seed: int = 7,
 ) -> dict:
-    anchors = {r.team: r.opta_title_prob for r in ds.market.itertuples()}
+    # Prefer the live Kalshi+Opta blended title anchor (column ``title_prob``,
+    # written by kalshi_odds.write_blended_title_anchors); fall back to the
+    # static Opta prior when only the cold-start collect_data file is present.
+    col = "title_prob" if "title_prob" in ds.market.columns else "opta_title_prob"
+    anchors = {r.team: getattr(r, col) for r in ds.market.itertuples()}
+    anchors = {t: float(p) for t, p in anchors.items()
+               if p is not None and p == p}        # drop blanks / NaN
     # Use the clearly title-relevant anchors (top teams) for the spread fit.
     fit_teams = [t for t in anchors if anchors[t] >= 0.03]
 

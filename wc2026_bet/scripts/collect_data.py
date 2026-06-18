@@ -149,18 +149,18 @@ def american_to_implied(odds: int) -> float:
     return 100.0 / (odds + 100.0) if odds > 0 else (-odds) / (-odds + 100.0)
 
 
-def blend_elo_with_market(elo: dict[str, float], market_weight: float = 0.55):
-    """Blend eloratings with a market-implied Elo (Opta-style).
+def blend_elo_with_implied(elo: dict[str, float], implied: dict[str, float],
+                          market_weight: float = 0.55):
+    """Blend eloratings with market-implied win probs (Opta-style).
 
-    A team's market implied probability is mapped onto the Elo scale by
-    regressing eloratings on log(implied prob) over the teams that have odds;
-    the blended prior is ``(1-w)*elo + w*market_elo`` for those teams and plain
-    eloratings for the rest. Returns (blended, market_implied_elo, implied_prob).
+    ``implied`` maps team name -> de-vigged P(title). Returns
+    (blended_elo, market_implied_elo, implied) keyed by team name.
     """
     import numpy as np
 
-    implied = {t: american_to_implied(o) for t, o in MARKET_ODDS_AMERICAN.items()}
-    teams = list(implied)
+    teams = [t for t in implied if t in elo and implied[t] > 0]
+    if len(teams) < 8:
+        return dict(elo), {}, implied
     x = np.log(np.array([implied[t] for t in teams]))
     y = np.array([elo[t] for t in teams])
     a, b = np.polyfit(x, y, 1)              # elo ~ a*log(p) + b
@@ -172,6 +172,18 @@ def blend_elo_with_market(elo: dict[str, float], market_weight: float = 0.55):
         else:
             blended[t] = e
     return blended, market_elo, implied
+
+
+def blend_elo_with_market(elo: dict[str, float], market_weight: float = 0.55):
+    """Blend eloratings with a market-implied Elo (Opta-style).
+
+    A team's market implied probability is mapped onto the Elo scale by
+    regressing eloratings on log(implied prob) over the teams that have odds;
+    the blended prior is ``(1-w)*elo + w*market_elo`` for those teams and plain
+    eloratings for the rest. Returns (blended, market_implied_elo, implied_prob).
+    """
+    implied = {t: american_to_implied(o) for t, o in MARKET_ODDS_AMERICAN.items()}
+    return blend_elo_with_implied(elo, implied, market_weight)
 
 
 # --------------------------------------------------------------------------- #
