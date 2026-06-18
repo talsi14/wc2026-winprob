@@ -10255,6 +10255,11 @@
       "goals": 1
     },
     {
+      "scorer": "Rubén Vargas",
+      "team": "Switzerland",
+      "goals": 1
+    },
+    {
       "scorer": "Teboho Mokoena",
       "team": "South Africa",
       "goals": 1
@@ -10308,7 +10313,7 @@
     },
     "Bosnia and Herzegovina": {
       "gf": 1,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "United States": {
@@ -10327,7 +10332,7 @@
       "games": 1
     },
     "Switzerland": {
-      "gf": 2,
+      "gf": 3,
       "ga": 1,
       "games": 2
     },
