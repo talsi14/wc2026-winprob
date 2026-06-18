@@ -10329,7 +10329,7 @@
     "Bosnia and Herzegovina": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "United States": {
       "gf": 4,
@@ -10349,7 +10349,7 @@
     "Switzerland": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Brazil": {
       "gf": 1,
@@ -16547,6 +16547,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Bosnia and Herzegovina",
+    "Switzerland"
+  ]
 }
