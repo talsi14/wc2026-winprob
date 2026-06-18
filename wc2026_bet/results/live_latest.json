@@ -10220,6 +10220,11 @@
       "goals": 1
     },
     {
+      "scorer": "Michal Sadílek",
+      "team": "Czech Republic",
+      "goals": 1
+    },
+    {
       "scorer": "Mohammad Mohebbi",
       "team": "Iran",
       "goals": 1
@@ -10298,7 +10303,7 @@
     },
     "South Africa": {
       "gf": 0,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "South Korea": {
@@ -10307,7 +10312,7 @@
       "games": 1
     },
     "Czech Republic": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 2
     },
