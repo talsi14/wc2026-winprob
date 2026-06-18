@@ -9985,6 +9985,11 @@
       "goals": 2
     },
     {
+      "scorer": "Johan Manzambi",
+      "team": "Switzerland",
+      "goals": 2
+    },
+    {
       "scorer": "Kai Havertz",
       "team": "Germany",
       "goals": 2
@@ -10107,11 +10112,6 @@
     {
       "scorer": "Jamal Musiala",
       "team": "Germany",
-      "goals": 1
-    },
-    {
-      "scorer": "Johan Manzambi",
-      "team": "Switzerland",
       "goals": 1
     },
     {
@@ -10313,7 +10313,7 @@
     },
     "Bosnia and Herzegovina": {
       "gf": 1,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "United States": {
@@ -10332,7 +10332,7 @@
       "games": 1
     },
     "Switzerland": {
-      "gf": 3,
+      "gf": 4,
       "ga": 1,
       "games": 2
     },
