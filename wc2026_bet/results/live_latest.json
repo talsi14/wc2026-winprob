@@ -10110,6 +10110,11 @@
       "goals": 1
     },
     {
+      "scorer": "Johan Manzambi",
+      "team": "Switzerland",
+      "goals": 1
+    },
+    {
       "scorer": "John McGinn",
       "team": "Scotland",
       "goals": 1
@@ -10303,7 +10308,7 @@
     },
     "Bosnia and Herzegovina": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "United States": {
@@ -10322,7 +10327,7 @@
       "games": 1
     },
     "Switzerland": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 2
     },
