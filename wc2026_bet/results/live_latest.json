@@ -10169,6 +10169,11 @@
       "goals": 1
     },
     {
+      "scorer": "Luis Díaz",
+      "team": "Colombia",
+      "goals": 1
+    },
+    {
       "scorer": "Marcus Rashford",
       "team": "England",
       "goals": 1
@@ -10502,11 +10507,11 @@
     },
     "Uzbekistan": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 1
     },
     "Colombia": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 1
     }
