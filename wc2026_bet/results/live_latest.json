@@ -10149,6 +10149,11 @@
       "goals": 1
     },
     {
+      "scorer": "Jáminton Campaz",
+      "team": "Colombia",
+      "goals": 1
+    },
+    {
       "scorer": "Keito Nakamura",
       "team": "Japan",
       "goals": 1
@@ -10507,11 +10512,11 @@
     },
     "Uzbekistan": {
       "gf": 1,
-      "ga": 2,
+      "ga": 3,
       "games": 1
     },
     "Colombia": {
-      "gf": 2,
+      "gf": 3,
       "ga": 1,
       "games": 1
     }
