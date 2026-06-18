@@ -10002,6 +10002,11 @@
       "goals": 2
     },
     {
+      "scorer": "Jonathan David",
+      "team": "Canada",
+      "goals": 2
+    },
+    {
       "scorer": "Kai Havertz",
       "team": "Germany",
       "goals": 2
@@ -10134,11 +10139,6 @@
     {
       "scorer": "John McGinn",
       "team": "Scotland",
-      "goals": 1
-    },
-    {
-      "scorer": "Jonathan David",
-      "team": "Canada",
       "goals": 1
     },
     {
@@ -10329,7 +10329,7 @@
       "games": 2
     },
     "Canada": {
-      "gf": 3,
+      "gf": 4,
       "ga": 1,
       "games": 2
     },
@@ -10350,7 +10350,7 @@
     },
     "Qatar": {
       "gf": 1,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "Switzerland": {
