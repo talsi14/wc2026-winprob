@@ -9967,6 +9967,11 @@
   },
   "scorers": [
     {
+      "scorer": "Jonathan David",
+      "team": "Canada",
+      "goals": 3
+    },
+    {
       "scorer": "Lionel Messi",
       "team": "Argentina",
       "goals": 3
@@ -9999,11 +10004,6 @@
     {
       "scorer": "Johan Manzambi",
       "team": "Switzerland",
-      "goals": 2
-    },
-    {
-      "scorer": "Jonathan David",
-      "team": "Canada",
       "goals": 2
     },
     {
@@ -10334,7 +10334,7 @@
       "games": 2
     },
     "Canada": {
-      "gf": 6,
+      "gf": 7,
       "ga": 1,
       "games": 2
     },
@@ -10355,7 +10355,7 @@
     },
     "Qatar": {
       "gf": 1,
-      "ga": 6,
+      "ga": 7,
       "games": 2
     },
     "Switzerland": {
