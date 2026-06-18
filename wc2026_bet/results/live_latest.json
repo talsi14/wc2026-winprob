@@ -10034,6 +10034,11 @@
       "goals": 1
     },
     {
+      "scorer": "Caleb Yirenkyi",
+      "team": "Ghana",
+      "goals": 1
+    },
+    {
       "scorer": "Connor Metcalfe",
       "team": "Australia",
       "goals": 1
@@ -10461,13 +10466,13 @@
       "games": 1
     },
     "Ghana": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 1
     },
     "Panama": {
       "gf": 0,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
