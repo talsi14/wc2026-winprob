@@ -10489,6 +10489,16 @@
       "gf": 0,
       "ga": 1,
       "games": 1
+    },
+    "Uzbekistan": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
+    },
+    "Colombia": {
+      "gf": 0,
+      "ga": 0,
+      "games": 1
     }
   },
   "cheer": {
@@ -17050,6 +17060,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Colombia",
+    "Uzbekistan"
+  ]
 }
