@@ -10137,6 +10137,11 @@
       "goals": 1
     },
     {
+      "scorer": "Jonathan David",
+      "team": "Canada",
+      "goals": 1
+    },
+    {
       "scorer": "Jovo Lukic",
       "team": "Bosnia and Herzegovina",
       "goals": 1
@@ -10324,7 +10329,7 @@
       "games": 2
     },
     "Canada": {
-      "gf": 2,
+      "gf": 3,
       "ga": 1,
       "games": 2
     },
@@ -10345,7 +10350,7 @@
     },
     "Qatar": {
       "gf": 1,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Switzerland": {
