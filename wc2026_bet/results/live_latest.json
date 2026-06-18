@@ -10014,6 +10014,11 @@
       "goals": 2
     },
     {
+      "scorer": "Abbosbek Fayzullaev",
+      "team": "Uzbekistan",
+      "goals": 1
+    },
+    {
       "scorer": "Abdulelah Al-Amri",
       "team": "Saudi Arabia",
       "goals": 1
@@ -10496,13 +10501,13 @@
       "games": 1
     },
     "Uzbekistan": {
-      "gf": 0,
+      "gf": 1,
       "ga": 1,
       "games": 1
     },
     "Colombia": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 1
     }
   },
