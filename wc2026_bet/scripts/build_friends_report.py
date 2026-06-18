@@ -679,7 +679,80 @@ WHATIF_CSS = """
               overflow:hidden; text-overflow:ellipsis;}
   table.witbl td.pts{font-weight:800; color:var(--ink);}
   table.witbl tbody tr:nth-child(odd){background:#fcfcfd;}
-  @media (max-width:760px){ .wigrid{grid-template-columns:1fr;} }
+
+  /* What-If: section blocks + group-stage split */
+  .wisec{margin-top:18px;}
+  .wisub2{font-weight:700; color:#1e3a8a; margin:4px 4px 8px; font-size:.92rem;}
+  .wigs{display:grid; grid-template-columns:320px minmax(0,1fr); gap:18px; align-items:start;}
+  .wigs #wiMatches{max-height:620px;}
+
+  /* What-If: live group-standings cards */
+  .wggrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .wgcard{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;}
+  .wgcard.live{border-color:#bfdbfe; box-shadow:0 0 0 2px rgba(37,99,235,.08);}
+  .wgh{font-weight:800; color:var(--ink); margin-bottom:5px; font-size:.92rem; display:flex;
+       justify-content:space-between; align-items:center;}
+  .wgh .wgdone{font-size:.66rem; font-weight:700; color:#16a34a; background:#dcfce7;
+       padding:1px 7px; border-radius:999px;}
+  table.wgtbl{width:100%; border-collapse:collapse; font-size:.82rem;}
+  table.wgtbl th{font-size:.62rem; color:var(--muted); text-transform:uppercase;
+       letter-spacing:.02em; text-align:center; padding:2px 3px; font-weight:600;}
+  table.wgtbl th.nm{text-align:right;}
+  table.wgtbl td{padding:3px 3px; text-align:center; border-top:1px solid #f1f5f9;
+       font-variant-numeric:tabular-nums; color:#475569;}
+  table.wgtbl td.pos{font-weight:800; color:#94a3b8; width:14px;}
+  table.wgtbl td.nm{text-align:right; font-weight:600; color:#334155; white-space:nowrap;
+       overflow:hidden; text-overflow:ellipsis; max-width:118px;
+       border-right:3px solid transparent; padding-right:6px;}
+  table.wgtbl td.pts{font-weight:800; color:var(--ink);}
+  table.wgtbl td.chg{width:18px; font-weight:800;}
+  table.wgtbl tr.q1 td, table.wgtbl tr.q2 td{background:rgba(22,163,74,.09);}
+  table.wgtbl tr.q1 td.nm, table.wgtbl tr.q2 td.nm{border-right-color:var(--green); color:var(--ink);}
+  table.wgtbl tr.q3 td{background:rgba(37,99,235,.09);}
+  table.wgtbl tr.q3 td.nm{border-right-color:var(--blue); color:var(--ink);}
+  .wgfl{font-size:.92rem; margin-inline-end:3px;}
+  .chg-up{color:#16a34a;} .chg-dn{color:#dc2626;} .chg-eq{color:#cbd5e1;}
+
+  /* What-If: knockout bracket (NBA-style, two-sided, LTR) */
+  .wibracket-wrap{overflow-x:auto; padding:6px 2px 12px; -webkit-overflow-scrolling:touch;}
+  .wibracket{display:flex; gap:6px; align-items:stretch; min-width:max-content; direction:ltr;}
+  .wibr-round{display:flex; flex-direction:column; min-width:140px;}
+  .wibr-round.fin{min-width:170px;}
+  .wibr-rndhd{font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.03em;
+       color:#64748b; text-align:center; padding:2px 0 6px;}
+  .wibr-col{flex:1; display:flex; flex-direction:column; justify-content:space-around; gap:6px;}
+  .wibr-col.cen{justify-content:center; gap:14px;}
+  .wibr-node{position:relative; border:1px solid var(--line); border-radius:9px; background:#fff;
+       padding:3px 4px; box-shadow:0 1px 3px rgba(2,6,23,.05);}
+  .wibr-node.decided{background:#f0fdf4; border-color:#bbf7d0;}
+  .wibr-node.fin{border-color:#fcd34d; box-shadow:0 0 0 2px rgba(245,158,11,.18);}
+  .wibr-node.tp{border-style:dashed;}
+  .wibr-mno{position:absolute; top:-8px; inset-inline-start:6px; font-size:.58rem; font-weight:700;
+       color:#94a3b8; background:#fff; padding:0 4px;}
+  .wibr-trow{display:flex; align-items:center; gap:5px; padding:3px 4px; border-radius:6px;}
+  .wibr-trow.win{background:rgba(22,163,74,.12);}
+  .wibr-trow.win .wibr-nm{font-weight:800; color:#166534;}
+  .wibr-trow.lose{opacity:.5;}
+  .wibr-fl{font-size:.92rem; width:18px; text-align:center; flex:none;}
+  .wibr-nm{flex:1; min-width:0; font-size:.8rem; color:#334155; white-space:nowrap;
+       overflow:hidden; text-overflow:ellipsis;}
+  .wibr-nm.tbd{color:#94a3b8; font-style:italic; font-size:.74rem;}
+  .wibr-sc{width:30px; flex:none; text-align:center; font-variant-numeric:tabular-nums; font-weight:700;
+       border:1px solid var(--line); border-radius:6px; padding:3px 0; font-family:inherit; font-size:.82rem;}
+  .wibr-sc:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 2px rgba(37,99,235,.15);}
+  .wibr-sc:disabled{background:#f8fafc; color:#64748b; -webkit-text-fill-color:#64748b;}
+  .wibr-pen{display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap;
+       margin-top:3px; padding-top:3px; border-top:1px dashed var(--line); font-size:.68rem; color:#64748b;}
+  .wibr-pen button{appearance:none; border:1px solid var(--line); background:#fff; border-radius:6px;
+       font-family:inherit; font-size:.68rem; font-weight:700; color:#475569; padding:2px 7px; cursor:pointer;}
+  .wibr-pen button.on{background:#1e3a8a; color:#fff; border-color:transparent;}
+  .wibr-scorers{margin-top:4px; padding-top:4px; border-top:1px dashed var(--line);}
+
+  @media (max-width:760px){
+    .wigs{grid-template-columns:1fr;}
+    .wggrid{grid-template-columns:repeat(2,1fr);}
+    .wibr-round{min-width:128px;}
+  }
 """
 
 ODDS_CSS = """
@@ -934,6 +1007,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
         "groupStageComplete": bool(state.get("group_stage_complete")),
         "entries": entries, "trackedPlayers": tracked_players,
         "teamHe": he_teams, "playerHe": he_players,
+        "iso": {t: _TEAM_ISO.get(t, "") for t in teams},
     }
 
 
@@ -949,23 +1023,39 @@ def whatif_html() -> str:
       <button type="button" id="wiReset" class="wibtn" data-i18n="wi.reset">איפוס כל התרחישים</button>
       <span id="wiCount" class="wihint"></span>
     </div>
-    <div class="wigrid">
+  </section>
+
+  <section class="wisec">
+    <div class="wicolhd" data-i18n="wi.group_stage">שלב הבתים</div>
+    <div class="wigs">
       <div class="wicol">
-        <div class="wicolhd" data-i18n="wi.matches">משחקים למילוי</div>
+        <div class="wisub2" data-i18n="wi.matches">משחקים למילוי</div>
         <div id="wiMatches"></div>
       </div>
       <div class="wicol">
-        <div class="wicolhd" data-i18n="wi.board">טבלת הדירוג — בתרחיש שלכם</div>
-        <div class="standwrap"><table class="standtbl"><thead><tr>
-          <th data-i18n="th.rank">מקום</th><th data-i18n="th.change">שינוי</th>
-          <th class="nm" data-i18n="th.name">שם</th><th data-i18n="th.pts">נק׳</th>
-          <th data-i18n="th.tierA">דרג א׳</th><th data-i18n="th.tierB">דרג ב׳</th>
-          <th data-i18n="th.tierC">דרג ג׳</th><th data-i18n="th.tierD">דרג ד׳</th>
-          <th data-i18n="th.scoring">כובשת</th><th data-i18n="th.conceding">סופגת</th>
-          <th data-i18n="th.top_scorer">מלך שערים</th></tr></thead>
-          <tbody id="wiBoard"></tbody></table></div>
+        <div class="wisub2" data-i18n="wi.groups_title">טבלאות הבתים — בתרחיש שלכם</div>
+        <p class="panel-cap" data-i18n="wi.groups_cap"></p>
+        <div id="wiGroups" class="wggrid"></div>
       </div>
     </div>
+  </section>
+
+  <section class="wisec">
+    <div class="wicolhd" data-i18n="wi.bracket_title">עץ הנוק‑אאוט — בתרחיש שלכם</div>
+    <p class="panel-cap" data-i18n="wi.bracket_cap"></p>
+    <div id="wiBracket" class="wibracket-wrap"></div>
+  </section>
+
+  <section class="wisec">
+    <div class="wicolhd" data-i18n="wi.board">טבלת הדירוג — בתרחיש שלכם</div>
+    <div class="wiboardwrap"><table class="witbl"><thead><tr>
+      <th data-i18n="th.rank">מקום</th><th data-i18n="th.change">שינוי</th>
+      <th class="nm" data-i18n="th.name">שם</th><th data-i18n="th.pts">נק׳</th>
+      <th data-i18n="th.tierA">דרג א׳</th><th data-i18n="th.tierB">דרג ב׳</th>
+      <th data-i18n="th.tierC">דרג ג׳</th><th data-i18n="th.tierD">דרג ד׳</th>
+      <th data-i18n="th.scoring">כובשת</th><th data-i18n="th.conceding">סופגת</th>
+      <th data-i18n="th.top_scorer">מלך שערים</th></tr></thead>
+      <tbody id="wiBoard"></tbody></table></div>
   </section>
 """
 
@@ -1442,6 +1532,8 @@ const WHATIF = __WHATIF__;
   const board = document.getElementById('wiBoard');
   const matchesEl = document.getElementById('wiMatches');
   if(!W || !W.entries || !board || !matchesEl) return;
+  // common ancestor for delegated events (covers matches list + bracket + board)
+  const root = board.closest('.tabpanel') || document;
   const R = W.rules;
   const I = window.I18N;
   const t = k => I.t(k);
@@ -1459,6 +1551,8 @@ const WHATIF = __WHATIF__;
   let hypoKo = {};       // match no -> {hg,ag,so}  (so = shootout winner team)
   let hypoScorers = {};  // matchKey -> { player: goals }
   let lastSig = null;
+  let lastFull = null;   // most recent evaluate(true) (for per-team goal caps)
+  const playerTeam = {}; W.trackedPlayers.forEach(p=> playerTeam[p.name]=p.team);
 
   function mergedGroupScores(){
     const o = {};
@@ -1500,6 +1594,26 @@ const WHATIF = __WHATIF__;
     return out;
   }
 
+  // Provisional per-group table from whatever results exist (partial-aware), so
+  // the standings can be shown live while a group is still in progress.
+  function groupTable(gs){
+    const out = {};
+    for(const g of Object.keys(W.groups)){
+      const teams = W.groups[g];
+      const tab = {}; teams.forEach(t=> tab[t]={p:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0});
+      (gmByGroup[g]||[]).forEach(m=>{ const s=gs[m.no]; if(s===undefined) return;
+        const [hg,ag]=s; const H=tab[m.home], A=tab[m.away]; if(!H||!A) return;
+        H.p++; A.p++; H.gf+=hg; H.ga+=ag; A.gf+=ag; A.ga+=hg; H.gd=H.gf-H.ga; A.gd=A.gf-A.ga;
+        if(hg>ag){ H.w++; A.l++; H.pts+=3; } else if(ag>hg){ A.w++; H.l++; A.pts+=3; }
+        else { H.d++; A.d++; H.pts++; A.pts++; }
+      });
+      const order = teams.slice().sort((a,b)=>
+        tab[b].pts-tab[a].pts || tab[b].gd-tab[a].gd || tab[b].gf-tab[a].gf || a.localeCompare(b));
+      out[g] = {order, stats:tab};
+    }
+    return out;
+  }
+
   function matchThirds(groups8, slots){
     const inEl = (s,g)=> s.eligible.indexOf(g)>=0;
     const order = slots.map((s,i)=>i).sort((a,b)=>
@@ -1521,6 +1635,8 @@ const WHATIF = __WHATIF__;
   function evaluate(useHypo){
     const gs = useHypo ? mergedGroupScores() : Object.assign({}, W.realGroupScores);
     const stand = groupStandings(gs);
+    const gtab = groupTable(gs);
+    const koByMatch = {};       // match no -> {hg,ag,winner,so,real}
     const koPlayed = [];        // {home,away,hg,ag,winner,so}
     const fillable = [];        // KO matches awaiting a result
     const teamsByMatch = {}, winByMatch = {};
@@ -1559,6 +1675,7 @@ const WHATIF = __WHATIF__;
         let hg=rk.home_goals, ag=rk.away_goals; const so=!!rk.shootout;
         if(home!==rk.home){ const t=hg; hg=ag; ag=t; }
         winByMatch[bm.m]=rk.winner; koPlayed.push({home,away,hg,ag,winner:rk.winner,so});
+        koByMatch[bm.m]={hg,ag,winner:rk.winner,so,real:true};
         continue;
       }
       // hypothetical entry: resolve a winner ONLY once BOTH scores are filled, so a
@@ -1566,10 +1683,12 @@ const WHATIF = __WHATIF__;
       // list either way (just like the group matches), so it never "disappears".
       let winner=null, hg=null, ag=null, so=false;
       const h = (useHypo && hypoKo[bm.m]!==undefined) ? hypoKo[bm.m] : null;
-      if(h && h.hg!=null && h.ag!=null){ hg=h.hg; ag=h.ag;
+      if(h){ hg=(h.hg!=null?h.hg:null); ag=(h.ag!=null?h.ag:null); }
+      if(hg!=null && ag!=null){
         if(hg>ag) winner=home; else if(ag>hg) winner=away; else { so=true; winner=h.so||null; } }
       if(winner){ winByMatch[bm.m]=winner; koPlayed.push({home,away,hg,ag,winner,so}); }
       else nUnresolved++;
+      koByMatch[bm.m]={hg,ag,winner,so,real:false};
       fillable.push({m:bm.m, stage:bm.stage, rc:bm.rc, home, away, winner});
     }
     // safety: count any real KO result not matched into a bracket slot
@@ -1615,7 +1734,8 @@ const WHATIF = __WHATIF__;
                  top_scorer:R.per_gk*(pg[k.top_scorer]||0) + R.gb_bonus*((gb && gb===k.top_scorer)?1:0)};
       o.total = o.tierA+o.tierB+o.tierC+o.tierD+o.scoring+o.conceding+o.top_scorer;
       bd[e.name] = o; }
-    return {bd, fillable, allComplete:stand.allComplete};
+    return {bd, fillable, allComplete:stand.allComplete,
+            stand, gtab, teamsByMatch, winByMatch, koByMatch};
   }
 
   const realEval = evaluate(false);                 // cached baseline engine score
@@ -1629,6 +1749,104 @@ const WHATIF = __WHATIF__;
 
   function fmtStage(s){ const m={'Round of 32':'1/16 גמר','Round of 16':'1/8 גמר',
     'Quarter-final':'רבע גמר','Semi-final':'חצי גמר','Third place':'מקום שלישי','Final':'גמר'}; return m[s]||s; }
+
+  // ---- group standings + bracket helpers --------------------------------- //
+  const bm = {}; W.bracket.forEach(b=> bm[b.m]=b);     // match no -> bracket def
+  function flagChar(en){ const iso=(W.iso||{})[en];
+    if(!iso || iso.length!==2) return '';
+    return String.fromCodePoint(...[...iso.toUpperCase()].map(c=>0x1F1E6+c.charCodeAt(0)-65)); }
+  function refLabel(ref){
+    if(!ref) return t('wi.tbd');
+    if(ref.type==='group_winner') return I.fmt('wi.ref.gw',{g:ref.group});
+    if(ref.type==='group_runner') return I.fmt('wi.ref.gr',{g:ref.group});
+    if(ref.type==='third') return t('wi.ref.third');
+    if(ref.type==='match_winner') return I.fmt('wi.ref.wm',{m:ref.match});
+    if(ref.type==='match_loser') return I.fmt('wi.ref.lm',{m:ref.match});
+    return t('wi.tbd'); }
+
+  // baseline (real-only) group positions -> the standings "change" arrows
+  const basePos = {};
+  (function(){ const gt=realEval.gtab; for(const g in gt) gt[g].order.forEach((tm,i)=> basePos[tm]=i+1); })();
+  function chgSpan(dr){ return dr>0?`<span class="chg-up">▲${dr}</span>`
+    : dr<0?`<span class="chg-dn">▼${-dr}</span>` : '<span class="chg-eq">·</span>'; }
+
+  function renderGroups(full){
+    const el=document.getElementById('wiGroups'); if(!el) return;
+    const gt=full.gtab, stand=full.stand, allDone=stand.allComplete;
+    el.innerHTML = Object.keys(W.groups).sort().map(g=>{
+      const order=gt[g].order, stats=gt[g].stats, done=stand.complete[g];
+      const rows=order.map((tm,i)=>{ const s=stats[tm]; const pos=i+1;
+        let cls=''; if(pos<=2) cls='q'+pos;
+        else if(pos===3 && allDone && stand.top8 && stand.top8.indexOf(g)>=0) cls='q3';
+        const bp=basePos[tm]; const dr=bp?(bp-pos):0; const fl=flagChar(tm);
+        return `<tr class="${cls}"><td class="pos">${pos}</td>`+
+          `<td class="nm" title="${tm}">${fl?`<span class="wgfl">${fl}</span>`:''}${heT(tm)}</td>`+
+          `<td>${s.p}</td><td class="pts">${s.pts}</td>`+
+          `<td dir="ltr">${s.gd>0?'+':''}${s.gd}</td>`+
+          `<td class="chg">${chgSpan(dr)}</td></tr>`;
+      }).join('');
+      return `<div class="wgcard${done?'':' live'}">`+
+        `<div class="wgh"><span>${t('groups.group')} ${g}</span>${done?'<span class="wgdone">✓</span>':''}</div>`+
+        `<table class="wgtbl"><thead><tr>`+
+          `<th>${t('wi.gt.pos')}</th><th class="nm">${t('wi.gt.team')}</th>`+
+          `<th>${t('wi.gt.p')}</th><th>${t('wi.gt.pts')}</th><th>${t('wi.gt.gd')}</th><th></th>`+
+        `</tr></thead><tbody>${rows}</tbody></table></div>`;
+    }).join('');
+  }
+
+  // ---- bracket (two-sided, NBA-style) ------------------------------------ //
+  function childMatches(m){ const b=bm[m]; const r=[];
+    if(b) [b.hr,b.ar].forEach(ref=>{ if(ref && ref.type==='match_winner') r.push(ref.match); });
+    return r; }
+  function sideRounds(root){ const byRc={};
+    (function rec(m){ const b=bm[m]; if(!b) return; childMatches(m).forEach(rec);
+      (byRc[b.rc]=byRc[b.rc]||[]).push(m); })(root);
+    return byRc; }
+  function teamRow(m, side, team, ref, win, score, disabled){
+    const tbd=!team;
+    const nm = tbd ? `<span class="wibr-nm tbd">${refLabel(ref)}</span>`
+      : `<span class="wibr-fl">${flagChar(team)}</span><span class="wibr-nm" title="${team}">${heT(team)}</span>`;
+    const cls = win ? (win===team?'win':'lose') : '';
+    const val = (score!=null)?score:'';
+    return `<div class="wibr-trow ${cls}">${nm}`+
+      `<input class="wiscore wibr-sc" type="number" min="0" inputmode="numeric" data-kind="k" data-m="${m}" data-side="${side}" value="${val}"${(disabled||tbd)?' disabled':''}></div>`;
+  }
+  function nodeHtml(m, full, extraCls){
+    const b=bm[m]; const tm=full.teamsByMatch[m]||[null,null];
+    const ko=full.koByMatch[m]||null; const win=full.winByMatch[m]||null;
+    const real=!!(ko&&ko.real); const hg=ko?ko.hg:null, ag=ko?ko.ag:null;
+    const tied=(hg!=null && ag!=null && hg===ag);
+    let pen='';
+    if(!real && tied){ const so=(hypoKo[m]||{}).so||'';
+      pen=`<div class="wibr-pen">${t('wi.so')}`+
+        `<button type="button" class="wibr-penbtn${so===tm[0]?' on':''}" data-m="${m}" data-team="${tm[0]||''}"${tm[0]?'':' disabled'}>${heT(tm[0]||'')}</button>`+
+        `<button type="button" class="wibr-penbtn${so===tm[1]?' on':''}" data-m="${m}" data-team="${tm[1]||''}"${tm[1]?'':' disabled'}>${heT(tm[1]||'')}</button></div>`; }
+    let scr='';
+    const goals=(hg||0)+(ag||0);
+    if(!real && hg!=null && ag!=null && goals>0){ const s=scorerEditor('k'+m, hg, ag, tm[0], tm[1]);
+      if(s) scr=`<div class="wibr-scorers">${s}</div>`; }
+    return `<div class="wibr-node${win?' decided':''} ${extraCls||''}" data-mbox data-mk="k${m}">`+
+      `<span class="wibr-mno">M${m}</span>`+
+      teamRow(m,'h',tm[0],b.hr,win,hg,real)+
+      teamRow(m,'a',tm[1],b.ar,win,ag,real)+pen+scr+`</div>`;
+  }
+  function colHtml(matches, full, rc){
+    return `<div class="wibr-round"><div class="wibr-rndhd">${t('wi.rc.'+rc)}</div>`+
+      `<div class="wibr-col">${matches.map(m=> nodeHtml(m, full)).join('')}</div></div>`;
+  }
+  function renderBracket(full){
+    const wrap=document.getElementById('wiBracket'); if(!wrap) return;
+    const prevLeft=wrap.scrollLeft;
+    const L=sideRounds(101), Rt=sideRounds(102);
+    let h='';
+    [1,2,3,4].forEach(rc=> h+=colHtml((L[rc]||[]), full, rc));
+    h+=`<div class="wibr-round fin"><div class="wibr-rndhd">${t('wi.rc.6')}</div>`+
+       `<div class="wibr-col cen">${nodeHtml(104, full, 'fin')}`+
+       `<div class="wibr-rndhd" style="margin-top:8px">${t('wi.rc.5')}</div>${nodeHtml(103, full, 'tp')}</div></div>`;
+    [4,3,2,1].forEach(rc=> h+=colHtml((Rt[rc]||[]), full, rc));
+    wrap.innerHTML=`<div class="wibracket">${h}</div>`;
+    wrap.scrollLeft=prevLeft;
+  }
 
   // scenario points = site baseline + (engine(real+hypo) - engine(real)), per slot,
   // so with no hypotheticals it reproduces the displayed standings exactly.
@@ -1656,27 +1874,32 @@ const WHATIF = __WHATIF__;
     }).join('');
   }
 
-  function scorerEditor(mk, goals, home, away){
+  function scorerEditor(mk, hg, ag, home, away){
     // only picked "top scorer" candidates who actually play in this match
     const elig = W.trackedPlayers.filter(p=> p.team===home || p.team===away);
     if(!elig.length) return '';
     const cur = hypoScorers[mk]||{};
-    const used = Object.values(cur).reduce((s,n)=>s+n,0);
-    const over = used>goals;
+    // each candidate is capped by the goals scored by THEIR OWN team, not the
+    // match total (a 1:1 can give at most 1 goal to each side's scorers).
+    const cap = {}; cap[home]=hg||0; cap[away]=ag||0;
+    const usedBy = {}; usedBy[home]=0; usedBy[away]=0;
+    for(const q in cur){ const tm=playerTeam[q]; if(tm in usedBy) usedBy[tm]+=cur[q]; }
+    const over = usedBy[home]>cap[home] || usedBy[away]>cap[away];
     const rows = elig.map(p=>{
       const v = cur[p.name]||0;
+      const teamCap = cap[p.team]||0, teamUsed = usedBy[p.team]||0;
       return `<div class="wisc-row">
-        <span class="wisc-nm">${heP(p.name)} <small>· ${heT(p.team)}</small></span>
+        <span class="wisc-nm">${heP(p.name)} <small>· ${heT(p.team)} (${teamUsed}/${teamCap})</small></span>
         <span class="wistep">
           <button type="button" class="wistepbtn wisc-dec" data-mk="${mk}" data-p="${p.name}" ${v<=0?'disabled':''}>−</button>
           <span class="wisc-v">${v}</span>
-          <button type="button" class="wistepbtn wisc-inc" data-mk="${mk}" data-p="${p.name}" ${used>=goals?'disabled':''}>+</button>
+          <button type="button" class="wistepbtn wisc-inc" data-mk="${mk}" data-p="${p.name}" ${teamUsed>=teamCap?'disabled':''}>+</button>
         </span></div>`;
     }).join('');
     return `<div class="wiscorers">
-      <div class="wisc-hd">מבקיעים מההתערבות <small>(${used}/${goals})</small></div>
+      <div class="wisc-hd">${t('wi.scorers')}</div>
       ${rows}
-      ${over?'<div class="wihint" style="color:var(--red)">שויכו יותר שערים מהתוצאה — צמצמו</div>':''}
+      ${over?`<div class="wihint" style="color:var(--red)">${t('wi.sc.over')}</div>`:''}
     </div>`;
   }
 
@@ -1695,9 +1918,9 @@ const WHATIF = __WHATIF__;
         <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${home}" ${w===home?'checked':''}> ${heT(home)}</label>
         <label><input type="radio" name="so${m}" class="wisoR" data-m="${m}" value="${away}" ${w===away?'checked':''}> ${heT(away)}</label></div>`;
     }
-    const scr = (both && goals>0) ? scorerEditor(mk, goals, home, away) : '';
+    const scr = (both && goals>0) ? scorerEditor(mk, h0, a0, home, away) : '';
     const adv = (kind==='k' && winner) ? `<div class="wiadv">${t('wi.advance')} <b>${heT(winner)}</b></div>` : '';
-    return `<div class="wimatch${winner?' decided':''}" data-mk="${mk}">
+    return `<div class="wimatch${winner?' decided':''}" data-mbox data-mk="${mk}">
       <div class="wimrow">
         <span class="witeam h">${heT(home)}</span>
         <input class="wiscore" type="number" min="0" inputmode="numeric" data-kind="${kind}" data-m="${m}" data-side="h" value="${hv}">
@@ -1708,23 +1931,12 @@ const WHATIF = __WHATIF__;
   }
 
   function renderMatches(full){
-    // group matches still open (no real result yet)
+    // only group matches still open (no real result yet); KO lives in the bracket
     const openGroup = W.groupMatches.filter(m=> W.realGroupScores[m.no]===undefined)
       .sort((a,b)=> a.no-b.no);
     let html = '';
-    html += '<div class="wistage">'+t('wi.group_stage')+'</div>';
-    if(!openGroup.length) html += '<div class="wihint">'+t('wi.no_group')+'</div>';
-    openGroup.forEach(m=> html += matchRow('g', m.no, m.home, m.away, hypoGroup[m.no]||null, 'group'));
-    html += '<div class="wistage">'+t('wi.ko')+'</div>';
-    if(!full.fillable.length){
-      html += '<div class="wihint">'+t('wi.ko_hint')+'</div>';
-    } else {
-      let curStage = '';
-      full.fillable.sort((a,b)=> a.m-b.m).forEach(km=>{
-        if(km.stage!==curStage){ curStage=km.stage; html += `<div class="wisub">${fmtStage(km.stage)}</div>`; }
-        html += matchRow('k', km.m, km.home, km.away, hypoKo[km.m]? [hypoKo[km.m].hg,hypoKo[km.m].ag]:null, km.stage, km.winner);
-      });
-    }
+    if(!openGroup.length) html = '<div class="wihint">'+t('wi.no_group')+'</div>';
+    else openGroup.forEach(m=> html += matchRow('g', m.no, m.home, m.away, hypoGroup[m.no]||null, 'group'));
     const top = matchesEl.scrollTop;     // keep the scroll position across re-renders
     matchesEl.innerHTML = html;
     matchesEl.scrollTop = top;
@@ -1737,30 +1949,32 @@ const WHATIF = __WHATIF__;
 
   function recompute(forceMatches){
     const full = evaluate(true);
+    lastFull = full;
     renderBoard(full);
+    renderGroups(full);
+    // remember which score input is focused so we can restore it after rebuilding
+    // (group list + bracket both rebuild on edits, otherwise typing loses focus)
+    const a = document.activeElement;
+    const desc = (a && a.classList && a.classList.contains('wiscore'))
+      ? {m:a.dataset.m, kind:a.dataset.kind, side:a.dataset.side} : null;
     const sig = sigOf(full);
-    if(forceMatches || sig!==lastSig){
-      // remember which score input is being edited so we can restore it after
-      // the matches list is rebuilt (otherwise typing loses focus / scroll jumps)
-      const a = document.activeElement;
-      const desc = (a && a.classList && a.classList.contains('wiscore'))
-        ? {m:a.dataset.m, kind:a.dataset.kind, side:a.dataset.side} : null;
-      renderMatches(full); lastSig = sig;
-      if(desc){
-        const el = matchesEl.querySelector('.wiscore[data-m="'+desc.m+'"][data-kind="'+desc.kind+'"][data-side="'+desc.side+'"]');
-        if(el){ el.focus(); const v=el.value; try{ el.value=''; el.value=v; }catch(e){} }
-      }
+    if(forceMatches || sig!==lastSig){ renderMatches(full); lastSig = sig; }
+    renderBracket(full);
+    if(desc){
+      const el = root.querySelector('.wiscore[data-m="'+desc.m+'"][data-kind="'+desc.kind+'"][data-side="'+desc.side+'"]');
+      if(el && el!==document.activeElement){ el.focus(); const v=el.value; try{ el.value=''; el.value=v; }catch(e){} }
     }
     const nHypo = Object.keys(hypoGroup).length + Object.keys(hypoKo).length;
     document.getElementById('wiCount').textContent = nHypo? I.fmt('wi.count.n', {n: nHypo}) : t('wi.count.none');
   }
 
   // ---- events (delegated) ------------------------------------------------ //
-  matchesEl.addEventListener('input', function(ev){
+  root.addEventListener('input', function(ev){
     const t = ev.target;
     if(t.classList.contains('wiscore')){
       const m = +t.dataset.m, kind = t.dataset.kind;
-      const box = t.closest('.wimatch');
+      const box = t.closest('[data-mbox]');
+      if(!box) return;
       const ins = box.querySelectorAll('.wiscore');
       const hv = ins[0].value==='' ? null : Math.max(0, parseInt(ins[0].value,10)||0);
       const av = ins[1].value==='' ? null : Math.max(0, parseInt(ins[1].value,10)||0);
@@ -1783,15 +1997,26 @@ const WHATIF = __WHATIF__;
   function matchGoals(mk){ const kind=mk[0], m=mk.slice(1);
     if(kind==='g'){ const s=hypoGroup[m]; return s? s[0]+s[1] : 0; }
     const s=hypoKo[m]; return s? s.hg+s.ag : 0; }
-  matchesEl.addEventListener('change', function(ev){
+  // goals scored by ONE team in a match — caps each scorer to their own side.
+  function teamGoalsForMatch(mk, team){ const kind=mk[0], id=mk.slice(1);
+    if(kind==='g'){ const m=gmByNo[id]; const s=hypoGroup[id]; if(!m||!s) return 0;
+      return team===m.home? (s[0]||0) : (team===m.away? (s[1]||0) : 0); }
+    const k=hypoKo[id]; if(!k) return 0;
+    const tm=(lastFull && lastFull.teamsByMatch[id]) || [null,null];
+    return team===tm[0]? (k.hg||0) : (team===tm[1]? (k.ag||0) : 0); }
+  root.addEventListener('change', function(ev){
     const t = ev.target;
     if(t.classList.contains('wisoR')){ const m=+t.dataset.m; if(hypoKo[m]) hypoKo[m].so=t.value; recompute(false); }
   });
-  matchesEl.addEventListener('click', function(ev){
+  root.addEventListener('click', function(ev){
     const t = ev.target;
+    if(t.classList.contains('wibr-penbtn')){ const m=+t.dataset.m, team=t.dataset.team;
+      if(team && hypoKo[m]){ hypoKo[m].so=team; recompute(false); } return;
+    }
     if(t.classList.contains('wisc-inc')){ const mk=t.dataset.mk, p=t.dataset.p;
-      const cur=hypoScorers[mk]||{}; const used=Object.values(cur).reduce((s,n)=>s+n,0);
-      if(used < matchGoals(mk)){ hypoScorers[mk]=cur; cur[p]=(cur[p]||0)+1; recompute(true); }
+      const team=playerTeam[p]; const cur=hypoScorers[mk]||{};
+      let teamUsed=0; for(const q in cur){ if(playerTeam[q]===team) teamUsed+=cur[q]; }
+      if(teamUsed < teamGoalsForMatch(mk, team)){ hypoScorers[mk]=cur; cur[p]=(cur[p]||0)+1; recompute(true); }
     } else if(t.classList.contains('wisc-dec')){ const mk=t.dataset.mk, p=t.dataset.p;
       const cur=hypoScorers[mk]; if(cur && cur[p]){ cur[p]--; if(cur[p]<=0) delete cur[p];
         if(!Object.keys(cur).length) delete hypoScorers[mk]; recompute(true); }
