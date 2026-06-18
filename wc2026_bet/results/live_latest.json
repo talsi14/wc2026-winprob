@@ -10275,6 +10275,11 @@
       "goals": 1
     },
     {
+      "scorer": "Teboho Mokoena",
+      "team": "South Africa",
+      "goals": 1
+    },
+    {
       "scorer": "Viktor Gyökeres",
       "team": "Sweden",
       "goals": 1
@@ -10302,7 +10307,7 @@
       "games": 1
     },
     "South Africa": {
-      "gf": 0,
+      "gf": 1,
       "ga": 3,
       "games": 2
     },
@@ -10313,7 +10318,7 @@
     },
     "Czech Republic": {
       "gf": 2,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Canada": {
