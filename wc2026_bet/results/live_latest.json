@@ -10326,7 +10326,7 @@
     "Canada": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Bosnia and Herzegovina": {
       "gf": 2,
@@ -10346,7 +10346,7 @@
     "Qatar": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Switzerland": {
       "gf": 5,
@@ -17657,6 +17657,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Canada",
+    "Qatar"
+  ]
 }
