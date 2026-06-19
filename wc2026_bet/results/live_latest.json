@@ -10336,7 +10336,7 @@
     "Mexico": {
       "gf": 2,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "South Africa": {
       "gf": 1,
@@ -10346,7 +10346,7 @@
     "South Korea": {
       "gf": 2,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Czech Republic": {
       "gf": 2,
@@ -17410,6 +17410,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Mexico",
+    "South Korea"
+  ]
 }
