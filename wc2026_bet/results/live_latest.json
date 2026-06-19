@@ -10376,7 +10376,7 @@
     "United States": {
       "gf": 4,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Paraguay": {
       "gf": 1,
@@ -10416,7 +10416,7 @@
     "Australia": {
       "gf": 2,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "Turkey": {
       "gf": 0,
@@ -17143,6 +17143,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Australia",
+    "United States"
+  ]
 }
