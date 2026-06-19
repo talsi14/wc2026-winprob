@@ -10022,6 +10022,11 @@
       "goals": 2
     },
     {
+      "scorer": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 2
+    },
+    {
       "scorer": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 2
@@ -10149,11 +10154,6 @@
     {
       "scorer": "Ibrahim Mbaye",
       "team": "Senegal",
-      "goals": 1
-    },
-    {
-      "scorer": "Ismael Saibari",
-      "team": "Morocco",
       "goals": 1
     },
     {
@@ -10399,9 +10399,9 @@
       "games": 1
     },
     "Morocco": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Haiti": {
       "gf": 0,
@@ -10410,8 +10410,8 @@
     },
     "Scotland": {
       "gf": 1,
-      "ga": 0,
-      "games": 1
+      "ga": 1,
+      "games": 2
     },
     "Australia": {
       "gf": 2,
@@ -17974,6 +17974,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Morocco",
+    "Scotland"
+  ]
 }
