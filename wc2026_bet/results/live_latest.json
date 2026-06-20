@@ -9986,6 +9986,11 @@
       "goals": 2
     },
     {
+      "scorer": "Deniz Undav",
+      "team": "Germany",
+      "goals": 2
+    },
+    {
       "scorer": "Elijah Just",
       "team": "New Zealand",
       "goals": 2
@@ -10108,11 +10113,6 @@
     {
       "scorer": "Daniel Muñoz",
       "team": "Colombia",
-      "goals": 1
-    },
-    {
-      "scorer": "Deniz Undav",
-      "team": "Germany",
       "goals": 1
     },
     {
@@ -10423,7 +10423,7 @@
       "games": 2
     },
     "Germany": {
-      "gf": 7,
+      "gf": 8,
       "ga": 2,
       "games": 2
     },
@@ -10444,7 +10444,7 @@
     },
     "Ivory Coast": {
       "gf": 2,
-      "ga": 0,
+      "ga": 1,
       "games": 2
     },
     "Ecuador": {
