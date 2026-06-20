@@ -9980,6 +9980,11 @@
       "goals": 3
     },
     {
+      "scorer": "Brian Brobbey",
+      "team": "Netherlands",
+      "goals": 2
+    },
+    {
       "scorer": "Cyle Larin",
       "team": "Canada",
       "goals": 2
@@ -10082,11 +10087,6 @@
     {
       "scorer": "Breel Embolo",
       "team": "Switzerland",
-      "goals": 1
-    },
-    {
-      "scorer": "Brian Brobbey",
-      "team": "Netherlands",
       "goals": 1
     },
     {
@@ -10432,7 +10432,7 @@
       "games": 1
     },
     "Netherlands": {
-      "gf": 3,
+      "gf": 4,
       "ga": 2,
       "games": 2
     },
@@ -10453,7 +10453,7 @@
     },
     "Sweden": {
       "gf": 5,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Tunisia": {
