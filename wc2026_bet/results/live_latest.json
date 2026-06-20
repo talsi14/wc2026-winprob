@@ -10414,7 +10414,7 @@
     "Netherlands": {
       "gf": 2,
       "ga": 2,
-      "games": 1
+      "games": 2
     },
     "Japan": {
       "gf": 2,
@@ -10434,7 +10434,7 @@
     "Sweden": {
       "gf": 5,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Tunisia": {
       "gf": 1,
@@ -17121,6 +17121,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Netherlands",
+    "Sweden"
+  ]
 }
