@@ -10070,6 +10070,11 @@
       "goals": 1
     },
     {
+      "scorer": "Brian Brobbey",
+      "team": "Netherlands",
+      "goals": 1
+    },
+    {
       "scorer": "Caleb Yirenkyi",
       "team": "Ghana",
       "goals": 1
@@ -10412,7 +10417,7 @@
       "games": 1
     },
     "Netherlands": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 2
     },
@@ -10433,7 +10438,7 @@
     },
     "Sweden": {
       "gf": 5,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Tunisia": {
