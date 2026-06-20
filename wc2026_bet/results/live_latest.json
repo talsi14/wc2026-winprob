@@ -10025,6 +10025,11 @@
       "goals": 2
     },
     {
+      "scorer": "Vinícius Júnior",
+      "team": "Brazil",
+      "goals": 2
+    },
+    {
       "scorer": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
@@ -10310,11 +10315,6 @@
       "goals": 1
     },
     {
-      "scorer": "Vinícius Júnior",
-      "team": "Brazil",
-      "goals": 1
-    },
-    {
       "scorer": "Virgil van Dijk",
       "team": "Netherlands",
       "goals": 1
@@ -10377,7 +10377,7 @@
       "games": 2
     },
     "Brazil": {
-      "gf": 3,
+      "gf": 4,
       "ga": 1,
       "games": 2
     },
@@ -10388,7 +10388,7 @@
     },
     "Haiti": {
       "gf": 0,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "Scotland": {
