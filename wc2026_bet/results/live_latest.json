@@ -10095,6 +10095,11 @@
       "goals": 1
     },
     {
+      "scorer": "Cody Gakpo",
+      "team": "Netherlands",
+      "goals": 1
+    },
+    {
       "scorer": "Connor Metcalfe",
       "team": "Australia",
       "goals": 1
@@ -10432,7 +10437,7 @@
       "games": 1
     },
     "Netherlands": {
-      "gf": 4,
+      "gf": 5,
       "ga": 2,
       "games": 2
     },
@@ -10453,7 +10458,7 @@
     },
     "Sweden": {
       "gf": 5,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "Tunisia": {
