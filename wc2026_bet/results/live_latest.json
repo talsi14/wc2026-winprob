@@ -10225,6 +10225,11 @@
       "goals": 1
     },
     {
+      "scorer": "Matías Galarza",
+      "team": "Paraguay",
+      "goals": 1
+    },
+    {
       "scorer": "Maurício",
       "team": "Paraguay",
       "goals": 1
@@ -10357,7 +10362,7 @@
       "games": 2
     },
     "Paraguay": {
-      "gf": 1,
+      "gf": 2,
       "ga": 4,
       "games": 2
     },
@@ -10398,7 +10403,7 @@
     },
     "Turkey": {
       "gf": 0,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Germany": {
