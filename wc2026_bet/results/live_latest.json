@@ -10020,6 +10020,11 @@
       "goals": 2
     },
     {
+      "scorer": "Matheus Cunha",
+      "team": "Brazil",
+      "goals": 2
+    },
+    {
       "scorer": "Yasin Ayari",
       "team": "Sweden",
       "goals": 2
@@ -10215,11 +10220,6 @@
       "goals": 1
     },
     {
-      "scorer": "Matheus Cunha",
-      "team": "Brazil",
-      "goals": 1
-    },
-    {
       "scorer": "Mattias Svanberg",
       "team": "Sweden",
       "goals": 1
@@ -10377,7 +10377,7 @@
       "games": 2
     },
     "Brazil": {
-      "gf": 2,
+      "gf": 3,
       "ga": 1,
       "games": 2
     },
@@ -10388,7 +10388,7 @@
     },
     "Haiti": {
       "gf": 0,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Scotland": {
