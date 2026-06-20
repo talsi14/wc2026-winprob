@@ -10420,7 +10420,7 @@
     "Germany": {
       "gf": 7,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Curaçao": {
       "gf": 1,
@@ -10440,7 +10440,7 @@
     "Ivory Coast": {
       "gf": 1,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "Ecuador": {
       "gf": 0,
@@ -16860,6 +16860,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Germany",
+    "Ivory Coast"
+  ]
 }
