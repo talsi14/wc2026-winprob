@@ -10359,7 +10359,7 @@
     "Paraguay": {
       "gf": 1,
       "ga": 4,
-      "games": 1
+      "games": 2
     },
     "Qatar": {
       "gf": 1,
@@ -10399,7 +10399,7 @@
     "Turkey": {
       "gf": 0,
       "ga": 2,
-      "games": 1
+      "games": 2
     },
     "Germany": {
       "gf": 7,
@@ -17398,6 +17398,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Paraguay",
+    "Turkey"
+  ]
 }
