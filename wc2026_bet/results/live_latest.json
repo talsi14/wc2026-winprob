@@ -9956,6 +9956,11 @@
   },
   "scorers": [
     {
+      "scorer": "Deniz Undav",
+      "team": "Germany",
+      "goals": 3
+    },
+    {
       "scorer": "Jonathan David",
       "team": "Canada",
       "goals": 3
@@ -9983,11 +9988,6 @@
     {
       "scorer": "Cyle Larin",
       "team": "Canada",
-      "goals": 2
-    },
-    {
-      "scorer": "Deniz Undav",
-      "team": "Germany",
       "goals": 2
     },
     {
@@ -10423,7 +10423,7 @@
       "games": 2
     },
     "Germany": {
-      "gf": 8,
+      "gf": 9,
       "ga": 2,
       "games": 2
     },
@@ -10444,7 +10444,7 @@
     },
     "Ivory Coast": {
       "gf": 2,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Ecuador": {
