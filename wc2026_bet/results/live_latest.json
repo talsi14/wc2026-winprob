@@ -10374,7 +10374,7 @@
     "Brazil": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Morocco": {
       "gf": 2,
@@ -10384,7 +10384,7 @@
     "Haiti": {
       "gf": 0,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Scotland": {
       "gf": 1,
@@ -17675,6 +17675,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Brazil",
+    "Haiti"
+  ]
 }
