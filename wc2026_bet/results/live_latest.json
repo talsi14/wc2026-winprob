@@ -10208,6 +10208,11 @@
       "goals": 1
     },
     {
+      "scorer": "Junya Ito",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
       "scorer": "Jáminton Campaz",
       "team": "Colombia",
       "goals": 1
@@ -10460,7 +10465,7 @@
       "games": 2
     },
     "Japan": {
-      "gf": 4,
+      "gf": 5,
       "ga": 2,
       "games": 2
     },
@@ -10481,7 +10486,7 @@
     },
     "Tunisia": {
       "gf": 1,
-      "ga": 7,
+      "ga": 8,
       "games": 2
     },
     "Spain": {
