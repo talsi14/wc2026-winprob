@@ -9974,6 +9974,11 @@
       "goals": 1
     },
     {
+      "scorer": "Agustín Cano",
+      "team": "Uruguay",
+      "goals": 1
+    },
+    {
       "scorer": "Alex Freeman",
       "team": "United States",
       "goals": 1
@@ -10392,7 +10397,7 @@
     },
     "Cape Verde": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Belgium": {
@@ -10411,7 +10416,7 @@
       "games": 2
     },
     "Uruguay": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 2
     },
