@@ -10069,6 +10069,11 @@
       "goals": 1
     },
     {
+      "scorer": "Hélio Varela",
+      "team": "Cape Verde",
+      "goals": 1
+    },
+    {
       "scorer": "Ibrahim Mbaye",
       "team": "Senegal",
       "goals": 1
@@ -10396,7 +10401,7 @@
       "games": 2
     },
     "Cape Verde": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 2
     },
@@ -10417,7 +10422,7 @@
     },
     "Uruguay": {
       "gf": 3,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Iran": {
