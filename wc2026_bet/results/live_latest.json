@@ -10435,7 +10435,7 @@
     "Curaçao": {
       "gf": 1,
       "ga": 7,
-      "games": 1
+      "games": 2
     },
     "Netherlands": {
       "gf": 7,
@@ -10455,7 +10455,7 @@
     "Ecuador": {
       "gf": 0,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Sweden": {
       "gf": 6,
@@ -17424,6 +17424,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Curaçao",
+    "Ecuador"
+  ]
 }
