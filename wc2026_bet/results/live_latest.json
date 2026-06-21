@@ -10344,7 +10344,7 @@
     "Spain": {
       "gf": 0,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "Cape Verde": {
       "gf": 0,
@@ -10364,7 +10364,7 @@
     "Saudi Arabia": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Uruguay": {
       "gf": 1,
@@ -16744,6 +16744,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Saudi Arabia",
+    "Spain"
+  ]
 }
