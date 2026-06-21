@@ -9988,6 +9988,11 @@
       "goals": 3
     },
     {
+      "scorer": "Ayase Ueda",
+      "team": "Japan",
+      "goals": 2
+    },
+    {
       "scorer": "Brian Brobbey",
       "team": "Netherlands",
       "goals": 2
@@ -10100,11 +10105,6 @@
     {
       "scorer": "Anthony Elanga",
       "team": "Sweden",
-      "goals": 1
-    },
-    {
-      "scorer": "Ayase Ueda",
-      "team": "Japan",
       "goals": 1
     },
     {
@@ -10465,7 +10465,7 @@
       "games": 2
     },
     "Japan": {
-      "gf": 5,
+      "gf": 6,
       "ga": 2,
       "games": 2
     },
@@ -10486,7 +10486,7 @@
     },
     "Tunisia": {
       "gf": 1,
-      "ga": 8,
+      "ga": 9,
       "games": 2
     },
     "Spain": {
