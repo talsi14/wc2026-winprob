@@ -71,6 +71,15 @@ def build_rows(payload: dict) -> tuple[list[dict], set[str]]:
     now_iso = datetime.now(timezone.utc).isoformat()
     rows: list[dict] = []
 
+    # Standard competition ranking ("1224"): entries tied on total share the same
+    # place and the next distinct total skips ahead (e.g. 22, 22 -> 1, 1; 20 -> 3).
+    # This matches how the friends-bet table displays positions; our internal
+    # current_rank assigns unique 1..N positions, which is not what they want.
+    totals = [e["current_points"] for e in payload["entries"]]
+
+    def display_rank(total: float) -> int:
+        return 1 + sum(1 for t in totals if t > total)
+
     for e in payload["entries"]:
         picks = e["picks"]
         b = e["pts_breakdown"]
@@ -83,7 +92,7 @@ def build_rows(payload: dict) -> tuple[list[dict], set[str]]:
         rows.append(
             {
                 "name": e["name"],
-                "rank": int(e["current_rank"]),
+                "rank": display_rank(e["current_points"]),
                 "movement": movement,
                 "tier_a": _to_he(picks["tierA"], teams_en2he, "team", missing),
                 "tier_a_pts": b["tierA"],
