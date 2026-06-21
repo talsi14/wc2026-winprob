@@ -10145,6 +10145,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mikel Oyarzabal",
+      "team": "Spain",
+      "goals": 1
+    },
+    {
       "scorer": "Mohammad Mohebbi",
       "team": "Iran",
       "goals": 1
@@ -10347,7 +10352,7 @@
       "games": 2
     },
     "Spain": {
-      "gf": 1,
+      "gf": 2,
       "ga": 0,
       "games": 2
     },
@@ -10368,7 +10373,7 @@
     },
     "Saudi Arabia": {
       "gf": 1,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Uruguay": {
