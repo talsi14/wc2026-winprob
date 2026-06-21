@@ -10119,6 +10119,11 @@
       "goals": 1
     },
     {
+      "scorer": "Kevin Pina",
+      "team": "Cape Verde",
+      "goals": 1
+    },
+    {
       "scorer": "Ladislav Krejcí",
       "team": "Czech Republic",
       "goals": 1
@@ -10396,7 +10401,7 @@
       "games": 2
     },
     "Cape Verde": {
-      "gf": 0,
+      "gf": 1,
       "ga": 0,
       "games": 2
     },
@@ -10417,7 +10422,7 @@
     },
     "Uruguay": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Iran": {
