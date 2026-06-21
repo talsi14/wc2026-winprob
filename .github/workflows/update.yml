@@ -172,6 +172,23 @@ jobs:
           python3 wc2026_bet/scripts/apply_live_widgets.py
           python3 wc2026_bet/scripts/build_friends_report.py
 
+      # Mirror the freshly-computed leaderboard into the friends-bet.lovable.app
+      # Supabase table (we are the sole writer now). Placed after BOTH refresh
+      # paths so live_latest.json is current in either case. Runs on every deploy
+      # (full result refresh OR slim live-goal refresh) and never on a no-op run.
+      # Gated on the secret so the run never fails if the key is absent.
+      - name: Push leaderboard to Supabase
+        if: steps.detect.outputs.deploy == 'true'
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
+            echo "::warning::SUPABASE_SERVICE_ROLE_KEY not set; skipping Supabase push"
+          else
+            python3 wc2026_bet/scripts/push_supabase.py
+          fi
+
       - name: Archive timestamped snapshot
         if: steps.detect.outputs.run == 'true'
         run: |
