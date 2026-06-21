@@ -10010,6 +10010,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ferran Torres",
+      "team": "Spain",
+      "goals": 1
+    },
+    {
       "scorer": "Franck Kessié",
       "team": "Ivory Coast",
       "goals": 1
@@ -10352,7 +10357,7 @@
       "games": 2
     },
     "Spain": {
-      "gf": 4,
+      "gf": 5,
       "ga": 0,
       "games": 2
     },
@@ -10373,7 +10378,7 @@
     },
     "Saudi Arabia": {
       "gf": 1,
-      "ga": 5,
+      "ga": 6,
       "games": 2
     },
     "Uruguay": {
