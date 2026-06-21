@@ -9944,6 +9944,11 @@
       "goals": 2
     },
     {
+      "scorer": "Maxi Araújo",
+      "team": "Uruguay",
+      "goals": 2
+    },
+    {
       "scorer": "Mikel Oyarzabal",
       "team": "Spain",
       "goals": 2
@@ -10174,11 +10179,6 @@
       "goals": 1
     },
     {
-      "scorer": "Maxi Araújo",
-      "team": "Uruguay",
-      "goals": 1
-    },
-    {
       "scorer": "Michal Sadílek",
       "team": "Czech Republic",
       "goals": 1
@@ -10392,7 +10392,7 @@
     },
     "Cape Verde": {
       "gf": 1,
-      "ga": 0,
+      "ga": 1,
       "games": 2
     },
     "Belgium": {
@@ -10411,7 +10411,7 @@
       "games": 2
     },
     "Uruguay": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 2
     },
