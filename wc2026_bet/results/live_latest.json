@@ -10008,6 +10008,11 @@
       "goals": 2
     },
     {
+      "scorer": "Daichi Kamada",
+      "team": "Japan",
+      "goals": 2
+    },
+    {
       "scorer": "Elijah Just",
       "team": "New Zealand",
       "goals": 2
@@ -10120,11 +10125,6 @@
     {
       "scorer": "Connor Metcalfe",
       "team": "Australia",
-      "goals": 1
-    },
-    {
-      "scorer": "Daichi Kamada",
-      "team": "Japan",
       "goals": 1
     },
     {
@@ -10455,7 +10455,7 @@
       "games": 2
     },
     "Japan": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 2
     },
@@ -10476,7 +10476,7 @@
     },
     "Tunisia": {
       "gf": 1,
-      "ga": 5,
+      "ga": 6,
       "games": 2
     },
     "Spain": {
