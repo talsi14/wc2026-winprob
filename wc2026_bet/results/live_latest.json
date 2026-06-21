@@ -10325,7 +10325,7 @@
     "Cape Verde": {
       "gf": 0,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "Belgium": {
       "gf": 1,
@@ -10345,7 +10345,7 @@
     "Uruguay": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Iran": {
       "gf": 2,
@@ -17551,6 +17551,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Cape Verde",
+    "Uruguay"
+  ]
 }
