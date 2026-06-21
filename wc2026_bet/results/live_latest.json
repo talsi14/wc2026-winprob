@@ -10103,6 +10103,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ayase Ueda",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
       "scorer": "Aymen Hussein",
       "team": "Iraq",
       "goals": 1
@@ -10455,7 +10460,7 @@
       "games": 2
     },
     "Japan": {
-      "gf": 3,
+      "gf": 4,
       "ga": 2,
       "games": 2
     },
@@ -10476,7 +10481,7 @@
     },
     "Tunisia": {
       "gf": 1,
-      "ga": 6,
+      "ga": 7,
       "games": 2
     },
     "Spain": {
