@@ -10386,7 +10386,7 @@
     "Belgium": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Egypt": {
       "gf": 1,
@@ -10406,7 +10406,7 @@
     "Iran": {
       "gf": 2,
       "ga": 2,
-      "games": 1
+      "games": 2
     },
     "New Zealand": {
       "gf": 2,
@@ -16499,6 +16499,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Belgium",
+    "Iran"
+  ]
 }
