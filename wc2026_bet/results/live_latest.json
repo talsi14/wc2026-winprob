@@ -9892,6 +9892,11 @@
       "goals": 3
     },
     {
+      "scorer": "Kylian Mbappé",
+      "team": "France",
+      "goals": 3
+    },
+    {
       "scorer": "Ayase Ueda",
       "team": "Japan",
       "goals": 2
@@ -9954,11 +9959,6 @@
     {
       "scorer": "Kai Havertz",
       "team": "Germany",
-      "goals": 2
-    },
-    {
-      "scorer": "Kylian Mbappé",
-      "team": "France",
       "goals": 2
     },
     {
@@ -10479,7 +10479,7 @@
       "games": 2
     },
     "France": {
-      "gf": 3,
+      "gf": 4,
       "ga": 1,
       "games": 2
     },
@@ -10490,7 +10490,7 @@
     },
     "Iraq": {
       "gf": 1,
-      "ga": 4,
+      "ga": 5,
       "games": 2
     },
     "Norway": {
