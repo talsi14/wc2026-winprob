@@ -10219,6 +10219,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mostafa Zico",
+      "team": "Egypt",
+      "goals": 1
+    },
+    {
       "scorer": "Nathan Saliba",
       "team": "Canada",
       "goals": 1
@@ -10431,7 +10436,7 @@
       "games": 2
     },
     "Egypt": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 2
     },
@@ -10452,7 +10457,7 @@
     },
     "New Zealand": {
       "gf": 3,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "France": {
