@@ -10428,7 +10428,7 @@
     "Egypt": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Saudi Arabia": {
       "gf": 1,
@@ -10448,7 +10448,7 @@
     "New Zealand": {
       "gf": 2,
       "ga": 2,
-      "games": 1
+      "games": 2
     },
     "France": {
       "gf": 3,
@@ -17367,6 +17367,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Egypt",
+    "New Zealand"
+  ]
 }
