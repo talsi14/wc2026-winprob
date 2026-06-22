@@ -9843,6 +9843,11 @@
   },
   "scorers": [
     {
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 4
+    },
+    {
       "scorer": "Deniz Undav",
       "team": "Germany",
       "goals": 3
@@ -9850,11 +9855,6 @@
     {
       "scorer": "Jonathan David",
       "team": "Canada",
-      "goals": 3
-    },
-    {
-      "scorer": "Lionel Messi",
-      "team": "Argentina",
       "goals": 3
     },
     {
@@ -10465,7 +10465,7 @@
       "games": 1
     },
     "Argentina": {
-      "gf": 3,
+      "gf": 4,
       "ga": 0,
       "games": 2
     },
@@ -10476,7 +10476,7 @@
     },
     "Austria": {
       "gf": 3,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Jordan": {
