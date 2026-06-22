@@ -10289,6 +10289,11 @@
       "goals": 1
     },
     {
+      "scorer": "Trézéguet",
+      "team": "Egypt",
+      "goals": 1
+    },
+    {
       "scorer": "Viktor Gyökeres",
       "team": "Sweden",
       "goals": 1
@@ -10441,7 +10446,7 @@
       "games": 2
     },
     "Egypt": {
-      "gf": 3,
+      "gf": 4,
       "ga": 2,
       "games": 2
     },
@@ -10462,7 +10467,7 @@
     },
     "New Zealand": {
       "gf": 3,
-      "ga": 4,
+      "ga": 5,
       "games": 2
     },
     "France": {
