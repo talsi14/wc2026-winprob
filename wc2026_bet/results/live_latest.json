@@ -10214,6 +10214,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mohamed Salah",
+      "team": "Egypt",
+      "goals": 1
+    },
+    {
       "scorer": "Mohammad Mohebbi",
       "team": "Iran",
       "goals": 1
@@ -10436,7 +10441,7 @@
       "games": 2
     },
     "Egypt": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 2
     },
@@ -10457,7 +10462,7 @@
     },
     "New Zealand": {
       "gf": 3,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "France": {
