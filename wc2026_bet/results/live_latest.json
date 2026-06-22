@@ -10064,6 +10064,11 @@
       "goals": 1
     },
     {
+      "scorer": "Finn Surman",
+      "team": "New Zealand",
+      "goals": 1
+    },
+    {
       "scorer": "Franck Kessié",
       "team": "Ivory Coast",
       "goals": 1
@@ -10427,7 +10432,7 @@
     },
     "Egypt": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Saudi Arabia": {
@@ -10446,7 +10451,7 @@
       "games": 2
     },
     "New Zealand": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 2
     },
