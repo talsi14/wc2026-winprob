@@ -10467,7 +10467,7 @@
     "Argentina": {
       "gf": 3,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "Algeria": {
       "gf": 0,
@@ -10477,7 +10477,7 @@
     "Austria": {
       "gf": 3,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Jordan": {
       "gf": 1,
@@ -17084,6 +17084,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Argentina",
+    "Austria"
+  ]
 }
