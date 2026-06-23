@@ -10065,6 +10065,11 @@
       "goals": 1
     },
     {
+      "scorer": "Cristiano Ronaldo",
+      "team": "Portugal",
+      "goals": 1
+    },
+    {
       "scorer": "Daniel Muñoz",
       "team": "Colombia",
       "goals": 1
@@ -10552,7 +10557,7 @@
       "games": 2
     },
     "Portugal": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 2
     },
@@ -10583,7 +10588,7 @@
     },
     "Uzbekistan": {
       "gf": 1,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "Colombia": {
