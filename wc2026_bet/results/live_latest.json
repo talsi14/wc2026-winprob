@@ -9994,6 +9994,11 @@
       "goals": 1
     },
     {
+      "scorer": "Amine Gouiri",
+      "team": "Algeria",
+      "goals": 1
+    },
+    {
       "scorer": "Anthony Elanga",
       "team": "Sweden",
       "goals": 1
@@ -10496,7 +10501,7 @@
       "games": 2
     },
     "Algeria": {
-      "gf": 1,
+      "gf": 2,
       "ga": 4,
       "games": 2
     },
@@ -10507,7 +10512,7 @@
     },
     "Jordan": {
       "gf": 2,
-      "ga": 4,
+      "ga": 5,
       "games": 2
     },
     "Portugal": {
