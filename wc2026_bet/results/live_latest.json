@@ -9968,6 +9968,11 @@
       "goals": 2
     },
     {
+      "scorer": "Ismaïla Sarr",
+      "team": "Senegal",
+      "goals": 2
+    },
+    {
       "scorer": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 2
@@ -10119,11 +10124,6 @@
     },
     {
       "scorer": "Ibrahim Mbaye",
-      "team": "Senegal",
-      "goals": 1
-    },
-    {
-      "scorer": "Ismaïla Sarr",
       "team": "Senegal",
       "goals": 1
     },
@@ -10515,7 +10515,7 @@
       "games": 2
     },
     "Senegal": {
-      "gf": 2,
+      "gf": 3,
       "ga": 6,
       "games": 2
     },
@@ -10526,7 +10526,7 @@
     },
     "Norway": {
       "gf": 7,
-      "ga": 2,
+      "ga": 3,
       "games": 2
     },
     "Argentina": {
