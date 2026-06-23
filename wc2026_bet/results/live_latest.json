@@ -10214,6 +10214,11 @@
       "goals": 1
     },
     {
+      "scorer": "Nadhir Benbouali",
+      "team": "Algeria",
+      "goals": 1
+    },
+    {
       "scorer": "Nathan Saliba",
       "team": "Canada",
       "goals": 1
@@ -10491,7 +10496,7 @@
       "games": 2
     },
     "Algeria": {
-      "gf": 0,
+      "gf": 1,
       "ga": 4,
       "games": 2
     },
@@ -10502,7 +10507,7 @@
     },
     "Jordan": {
       "gf": 2,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "Portugal": {
