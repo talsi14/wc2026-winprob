@@ -10430,7 +10430,7 @@
     "Senegal": {
       "gf": 1,
       "ga": 3,
-      "games": 1
+      "games": 2
     },
     "Iraq": {
       "gf": 1,
@@ -10440,7 +10440,7 @@
     "Norway": {
       "gf": 4,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Argentina": {
       "gf": 5,
@@ -17896,6 +17896,8 @@
   "live_widgets": true,
   "live_teams": [
     "France",
-    "Iraq"
+    "Iraq",
+    "Norway",
+    "Senegal"
   ]
 }
