@@ -9826,6 +9826,11 @@
       "goals": 5
     },
     {
+      "scorer": "Kylian Mbappé",
+      "team": "France",
+      "goals": 4
+    },
+    {
       "scorer": "Deniz Undav",
       "team": "Germany",
       "goals": 3
@@ -9833,11 +9838,6 @@
     {
       "scorer": "Jonathan David",
       "team": "Canada",
-      "goals": 3
-    },
-    {
-      "scorer": "Kylian Mbappé",
-      "team": "France",
       "goals": 3
     },
     {
