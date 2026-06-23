@@ -10522,7 +10522,7 @@
     "England": {
       "gf": 4,
       "ga": 2,
-      "games": 1
+      "games": 2
     },
     "Croatia": {
       "gf": 2,
@@ -10532,7 +10532,7 @@
     "Ghana": {
       "gf": 1,
       "ga": 0,
-      "games": 1
+      "games": 2
     },
     "Panama": {
       "gf": 0,
@@ -16832,6 +16832,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "England",
+    "Ghana"
+  ]
 }
