@@ -10131,6 +10131,11 @@
       "goals": 1
     },
     {
+      "scorer": "Marcus Holmgren Pedersen",
+      "team": "Norway",
+      "goals": 1
+    },
+    {
       "scorer": "Marcus Rashford",
       "team": "England",
       "goals": 1
@@ -10434,7 +10439,7 @@
     },
     "Senegal": {
       "gf": 1,
-      "ga": 3,
+      "ga": 4,
       "games": 2
     },
     "Iraq": {
@@ -10443,7 +10448,7 @@
       "games": 2
     },
     "Norway": {
-      "gf": 4,
+      "gf": 5,
       "ga": 1,
       "games": 2
     },
