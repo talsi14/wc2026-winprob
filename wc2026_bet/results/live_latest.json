@@ -10045,11 +10045,6 @@
       "goals": 1
     },
     {
-      "scorer": "Azizjon Ganiev",
-      "team": "Uzbekistan",
-      "goals": 1
-    },
-    {
       "scorer": "Bradley Barcola",
       "team": "France",
       "goals": 1
@@ -10568,7 +10563,7 @@
     },
     "Portugal": {
       "gf": 3,
-      "ga": 2,
+      "ga": 1,
       "games": 2
     },
     "DR Congo": {
@@ -10597,7 +10592,7 @@
       "games": 1
     },
     "Uzbekistan": {
-      "gf": 2,
+      "gf": 1,
       "ga": 5,
       "games": 2
     },
