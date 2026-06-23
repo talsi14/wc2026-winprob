@@ -9920,6 +9920,11 @@
       "goals": 2
     },
     {
+      "scorer": "Cristiano Ronaldo",
+      "team": "Portugal",
+      "goals": 2
+    },
+    {
       "scorer": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2
@@ -10062,11 +10067,6 @@
     {
       "scorer": "Connor Metcalfe",
       "team": "Australia",
-      "goals": 1
-    },
-    {
-      "scorer": "Cristiano Ronaldo",
-      "team": "Portugal",
       "goals": 1
     },
     {
@@ -10562,7 +10562,7 @@
       "games": 2
     },
     "Portugal": {
-      "gf": 3,
+      "gf": 4,
       "ga": 1,
       "games": 2
     },
@@ -10593,7 +10593,7 @@
     },
     "Uzbekistan": {
       "gf": 1,
-      "ga": 5,
+      "ga": 6,
       "games": 2
     },
     "Colombia": {
