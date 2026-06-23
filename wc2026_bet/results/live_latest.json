@@ -9898,6 +9898,11 @@
       "goals": 5
     },
     {
+      "scorer": "Erling Haaland",
+      "team": "Norway",
+      "goals": 4
+    },
+    {
       "scorer": "Kylian Mbappé",
       "team": "France",
       "goals": 4
@@ -9905,11 +9910,6 @@
     {
       "scorer": "Deniz Undav",
       "team": "Germany",
-      "goals": 3
-    },
-    {
-      "scorer": "Erling Haaland",
-      "team": "Norway",
       "goals": 3
     },
     {
@@ -10516,7 +10516,7 @@
     },
     "Senegal": {
       "gf": 2,
-      "ga": 5,
+      "ga": 6,
       "games": 2
     },
     "Iraq": {
@@ -10525,7 +10525,7 @@
       "games": 2
     },
     "Norway": {
-      "gf": 6,
+      "gf": 7,
       "ga": 2,
       "games": 2
     },
