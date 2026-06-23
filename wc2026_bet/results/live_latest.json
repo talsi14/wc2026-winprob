@@ -10554,7 +10554,7 @@
     "Portugal": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "DR Congo": {
       "gf": 1,
@@ -10584,7 +10584,7 @@
     "Uzbekistan": {
       "gf": 1,
       "ga": 3,
-      "games": 1
+      "games": 2
     },
     "Colombia": {
       "gf": 3,
@@ -17151,6 +17151,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Portugal",
+    "Uzbekistan"
+  ]
 }
