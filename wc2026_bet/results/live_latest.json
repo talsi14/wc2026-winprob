@@ -10600,7 +10600,7 @@
     "Croatia": {
       "gf": 2,
       "ga": 4,
-      "games": 1
+      "games": 2
     },
     "Ghana": {
       "gf": 1,
@@ -10610,7 +10610,7 @@
     "Panama": {
       "gf": 0,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "Uzbekistan": {
       "gf": 1,
@@ -18290,6 +18290,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Croatia",
+    "Panama"
+  ]
 }
