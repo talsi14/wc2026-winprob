@@ -10290,6 +10290,11 @@
       "goals": 1
     },
     {
+      "scorer": "Nuno Mendes",
+      "team": "Portugal",
+      "goals": 1
+    },
+    {
       "scorer": "Oh Hyeon-Gyu",
       "team": "South Korea",
       "goals": 1
@@ -10557,7 +10562,7 @@
       "games": 2
     },
     "Portugal": {
-      "gf": 2,
+      "gf": 3,
       "ga": 1,
       "games": 2
     },
@@ -10588,7 +10593,7 @@
     },
     "Uzbekistan": {
       "gf": 1,
-      "ga": 4,
+      "ga": 5,
       "games": 2
     },
     "Colombia": {
