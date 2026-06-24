@@ -10326,12 +10326,12 @@
     "Canada": {
       "gf": 7,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Bosnia and Herzegovina": {
       "gf": 2,
       "ga": 5,
-      "games": 2
+      "games": 3
     },
     "United States": {
       "gf": 6,
@@ -10346,12 +10346,12 @@
     "Qatar": {
       "gf": 1,
       "ga": 7,
-      "games": 2
+      "games": 3
     },
     "Switzerland": {
       "gf": 5,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Brazil": {
       "gf": 4,
@@ -17657,6 +17657,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Bosnia and Herzegovina",
+    "Canada",
+    "Qatar",
+    "Switzerland"
+  ]
 }
