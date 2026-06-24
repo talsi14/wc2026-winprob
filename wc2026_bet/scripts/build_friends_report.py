@@ -563,6 +563,22 @@ CMTBL_CSS = """
   .chg-dn{color:#dc2626; font-weight:800;}
   .chg-eq{color:var(--muted);}
   @media (max-width:760px){ .podium{grid-template-columns:repeat(2,1fr);} }
+  /* iOS/WebKit has a compositing bug: position:sticky table cells inside an
+     overflow scroller that sits below the page origin are not added to the
+     overlap map, so the frozen name column paints blank until a scroll forces
+     a recompute. translateZ/will-change layer hacks and programmatic scrolls
+     do not reliably trigger it. On phones (where the bug bites and the screen
+     is too narrow to benefit from a frozen column anyway) we drop the freeze
+     entirely so the name cell is a normal, always-painted column. Desktop
+     keeps the frozen column. */
+  @media (max-width:820px){
+    table.standtbl td.nm, table.standtbl thead th.nm,
+    table.cmtbl td.nm, table.cmtbl thead th.nm{
+      position:static !important; right:auto !important;
+      -webkit-transform:none !important; transform:none !important;
+      box-shadow:none !important;
+    }
+  }
   /* live-leader widgets (clickable dark cards + hovering category tables) */
   .leaders{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; direction:rtl;
             margin:16px 0 6px;}
