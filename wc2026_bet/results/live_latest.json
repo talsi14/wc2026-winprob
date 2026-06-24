@@ -10047,6 +10047,11 @@
       "goals": 1
     },
     {
+      "scorer": "Hassan Al-Haydos",
+      "team": "Qatar",
+      "goals": 1
+    },
+    {
       "scorer": "Hwang In-Beom",
       "team": "South Korea",
       "goals": 1
@@ -10335,7 +10340,7 @@
     },
     "Bosnia and Herzegovina": {
       "gf": 4,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "United States": {
@@ -10349,7 +10354,7 @@
       "games": 2
     },
     "Qatar": {
-      "gf": 1,
+      "gf": 2,
       "ga": 9,
       "games": 3
     },
