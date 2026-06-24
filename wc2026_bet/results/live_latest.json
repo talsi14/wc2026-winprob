@@ -620802,6 +620802,11 @@
       "goals": 1
     },
     {
+      "scorer": "Wilson Isidor",
+      "team": "Haiti",
+      "goals": 1
+    },
+    {
       "scorer": "Yoane Wissa",
       "team": "DR Congo",
       "goals": 1
@@ -620865,11 +620870,11 @@
     },
     "Morocco": {
       "gf": 3,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Haiti": {
-      "gf": 1,
+      "gf": 2,
       "ga": 5,
       "games": 3
     },
