@@ -619100,6 +619100,11 @@
       "goals": 1
     },
     {
+      "scorer": "Lenny Joseph",
+      "team": "Haiti",
+      "goals": 1
+    },
+    {
       "scorer": "Leo Østigard",
       "team": "Norway",
       "goals": 1
@@ -619338,11 +619343,11 @@
     },
     "Morocco": {
       "gf": 2,
-      "ga": 1,
+      "ga": 2,
       "games": 3
     },
     "Haiti": {
-      "gf": 0,
+      "gf": 1,
       "ga": 4,
       "games": 3
     },
