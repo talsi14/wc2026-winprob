@@ -1657,12 +1657,25 @@ const WHATIF = __WHATIF__;
       const done = ms.every(m=> gs[m.no]!==undefined);
       out.complete[g] = done;
       if(!done){ out.allComplete = false; continue; }
-      const tab = {}; W.groups[g].forEach(t=> tab[t]={pts:0,gd:0,gf:0});
+      const tab = {}; const hh = {}; W.groups[g].forEach(t=>{ tab[t]={pts:0,gd:0,gf:0}; hh[t]={}; });
       ms.forEach(m=>{ const [hg,ag]=gs[m.no];
         tab[m.home].gf+=hg; tab[m.away].gf+=ag; tab[m.home].gd+=hg-ag; tab[m.away].gd+=ag-hg;
         if(hg>ag) tab[m.home].pts+=3; else if(ag>hg) tab[m.away].pts+=3; else { tab[m.home].pts++; tab[m.away].pts++; }
+        // head-to-head record (each pair meets once in the group stage)
+        hh[m.home][m.away] = {gf:hg, ga:ag, pts: hg>ag?3:(hg===ag?1:0)};
+        hh[m.away][m.home] = {gf:ag, ga:hg, pts: ag>hg?3:(ag===hg?1:0)};
       });
-      const ord = W.groups[g].slice().sort((a,b)=> tab[b].pts-tab[a].pts || tab[b].gd-tab[a].gd || tab[b].gf-tab[a].gf || a.localeCompare(b));
+      // FIFA 2026 tie-break: among teams level on points, rank by the mini-league
+      // played BETWEEN them (H2H pts -> H2H GD -> H2H GF) before overall GD/GF.
+      const mk = {};
+      W.groups[g].forEach(t=>{ let mp=0,mgd=0,mgf=0;
+        W.groups[g].forEach(o=>{ if(o===t || tab[o].pts!==tab[t].pts) return;
+          const r=hh[t][o]; if(!r) return; mp+=r.pts; mgd+=r.gf-r.ga; mgf+=r.gf; });
+        mk[t]=[mp,mgd,mgf];
+      });
+      const ord = W.groups[g].slice().sort((a,b)=> tab[b].pts-tab[a].pts
+        || mk[b][0]-mk[a][0] || mk[b][1]-mk[a][1] || mk[b][2]-mk[a][2]
+        || tab[b].gd-tab[a].gd || tab[b].gf-tab[a].gf || a.localeCompare(b));
       ord.forEach((t,i)=> out.finish[t]=i+1);
       out.winner[g]=ord[0]; out.runner[g]=ord[1]; out.third[g]=ord[2];
       out.adv[ord[0]]=true; out.adv[ord[1]]=true;

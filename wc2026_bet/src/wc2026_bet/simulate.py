@@ -101,6 +101,14 @@ class Simulator:
 
         # Group -> the 4 team indices.
         self.group_teams = {g: [self.tidx[t] for t in ds.groups[g]] for g in GROUPS}
+        # Reverse maps for head-to-head tie-break bookkeeping: global team idx ->
+        # its group letter and its position 0..3 within that group's 4x4 H2H table.
+        self.team_group: dict[int, str] = {}
+        self.team_locpos: dict[int, int] = {}
+        for g in GROUPS:
+            for p, ti in enumerate(self.group_teams[g]):
+                self.team_group[ti] = g
+                self.team_locpos[ti] = p
 
         # Bracket bookkeeping.
         self.thirds_table = precompute_thirds_table(ds.bracket)
@@ -175,6 +183,14 @@ class Simulator:
         # goals are seeded from known results and only the remainder is sampled.
         gf_known = np.zeros(T, dtype=np.int64)
 
+        # Head-to-head bookkeeping for the FIFA 2026 group tie-break (H2H first).
+        # Per group: [S,4,4] tables where entry [s,a,b] is the result of a's match
+        # vs b in sim s (goals a scored / points a earned). Only needed when the
+        # group stage is still in progress (the completed path uses official_pos).
+        track_h2h = not (known.group_stage_complete and known.official_pos)
+        hh_gf = {g: np.zeros((S, 4, 4), np.int16) for g in GROUPS} if track_h2h else {}
+        hh_pts = {g: np.zeros((S, 4, 4), np.int16) for g in GROUPS} if track_h2h else {}
+
         # --- group stage (fix played fixtures, sample the rest) ---
         for (hi, ai, hf), mno in zip(self.fixtures, self.fixture_match):
             ks = known.group_scores.get(mno)
@@ -194,6 +210,13 @@ class Simulator:
             gp[:, hi] += 3 * wi + dr; gp[:, ai] += 3 * li_ + dr
             ggf[:, hi] += hg; ggf[:, ai] += ag
             ggd[:, hi] += hg - ag; ggd[:, ai] += ag - hg
+            if track_h2h:
+                g = self.team_group[hi]
+                a, b = self.team_locpos[hi], self.team_locpos[ai]
+                hh_gf[g][:, a, b] += hg.astype(np.int16)
+                hh_gf[g][:, b, a] += ag.astype(np.int16)
+                hh_pts[g][:, a, b] += (3 * wi + dr).astype(np.int16)
+                hh_pts[g][:, b, a] += (3 * li_ + dr).astype(np.int16)
 
         group_finish = np.zeros((S, T), dtype=np.int32)
         winner_idx, runner_idx, third_idx = {}, {}, {}
@@ -218,13 +241,34 @@ class Simulator:
                 for slot_i, g in enumerate(assign):
                     third_slot_team[slot_i, :] = known.official_pos[g][2]
         else:
-            # --- sampled standings (composite key: pts, GD, GF, random tiebreak) ---
+            # --- sampled standings: FIFA 2026 group tie-break -------------------
+            # Within a group, teams level on points are separated by head-to-head
+            # first (H2H points -> H2H GD -> H2H GF), then overall GD -> overall GF,
+            # then a random draw. (This is the WC2026 change: H2H now precedes
+            # overall goal difference.) The 12 third-placed teams are compared
+            # across groups by overall pts/GD/GF only -- H2H cannot apply there.
             noise = self.rng.random((S, T)) * 0.1
-            key = gp.astype(float) * 1e6 + (ggd.astype(float) + 200) * 1e3 + ggf + noise
+            overall_key = gp.astype(float) * 1e6 + (ggd.astype(float) + 200) * 1e3 + ggf + noise
             third_key = np.zeros((S, 12))
+            di = np.arange(4)
             for gi, g in enumerate(GROUPS):
                 ts = np.array(self.group_teams[g])           # 4 global idx
-                order = np.argsort(-key[:, ts], axis=1)      # best first
+                P = gp[:, ts].astype(np.float64)             # [S,4] overall points
+                gfh = hh_gf[g].astype(np.float64)            # [S,4,4] goals a-vs-b
+                pth = hh_pts[g].astype(np.float64)           # [S,4,4] pts a-vs-b
+                gdh = gfh - gfh.transpose(0, 2, 1)           # [S,4,4] H2H goal diff
+                same = P[:, :, None] == P[:, None, :]        # tied on overall points
+                same[:, di, di] = False
+                mini_pts = (pth * same).sum(2)               # [S,4] H2H mini-league
+                mini_gd = (gdh * same).sum(2)
+                mini_gf = (gfh * same).sum(2)
+                ogd = ggd[:, ts].astype(np.float64)
+                ogf = ggf[:, ts].astype(np.float64)
+                nz = noise[:, ts]
+                # lexsort: last key = highest priority, ascending -> reverse to
+                # rank best team first. Priority: pts, H2H pts/GD/GF, overall GD/GF.
+                order = np.lexsort(
+                    (nz, ogf, ogd, mini_gf, mini_gd, mini_pts, P))[:, ::-1]
                 pos_team = ts[order]                         # [S,4] global idx
                 winner_idx[g] = pos_team[:, 0]
                 runner_idx[g] = pos_team[:, 1]
@@ -233,7 +277,7 @@ class Simulator:
                     group_finish[rows, pos_team[:, rank]] = rank + 1
                 advanced[rows, pos_team[:, 0]] = True        # top 2 always advance
                 advanced[rows, pos_team[:, 1]] = True
-                third_key[:, gi] = key[rows, pos_team[:, 2]]
+                third_key[:, gi] = overall_key[rows, pos_team[:, 2]]
 
             # --- best 8 of 12 third-placed teams advance ---
             third_order = np.argsort(-third_key, axis=1)     # [S,12] group positions
