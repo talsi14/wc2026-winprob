@@ -1476,6 +1476,7 @@ document.addEventListener('langchange', renderMatrix);
     tabs.forEach(b=> b.classList.toggle('active', b.dataset.tab===name));
     panels.forEach(p=> p.hidden = (p.dataset.tab!==name));
     window.scrollTo({top:0, behavior:'instant' in window? 'instant':'auto'});
+    document.dispatchEvent(new CustomEvent('tabshow', {detail:{name:name}}));
   }
   tabs.forEach(b=> b.addEventListener('click', ()=> show(b.dataset.tab)));
   show('main');

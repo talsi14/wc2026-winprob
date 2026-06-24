@@ -1041,9 +1041,54 @@ TABS_JS = """
     tabs.forEach(b=> b.classList.toggle('active', b.dataset.tab===name));
     panels.forEach(p=> p.hidden = (p.dataset.tab!==name));
     window.scrollTo({top:0, behavior:'instant' in window? 'instant':'auto'});
+    document.dispatchEvent(new CustomEvent('tabshow', {detail:{name:name}}));
   }
   tabs.forEach(b=> b.addEventListener('click', ()=> show(b.dataset.tab)));
   show('main');
+})();
+"""
+
+
+# iOS Safari/WebKit defers the first paint of position:sticky cells inside an
+# overflow:auto scroller, so the frozen name column renders blank until the user
+# scrolls the table. The CSS GPU-promotion (translateZ) is not enough on real
+# devices, so we replicate that scroll programmatically: a 1px nudge (restored on
+# the next frame) forces WebKit to repaint the sticky column. Runs on load, when a
+# tab becomes visible, on language switch, and on orientation/resize.
+STICKY_FIX_JS = """
+(function(){
+  // sticky-name scroll containers: standings tables + the champion-matrix box
+  const SEL = '.standwrap, .scrollbox';
+  function nudge(el){
+    if(!el || el.offsetParent===null) return;          // hidden tab -> skip
+    const st = el.scrollTop, sl = el.scrollLeft;
+    const vy = el.scrollHeight > el.clientHeight;       // scrollable vertically?
+    const vx = el.scrollWidth  > el.clientWidth;        // scrollable horizontally?
+    if(!vy && !vx) return;                              // nothing to scroll
+    if(vy) el.scrollTop  = st + 1;
+    if(vx) el.scrollLeft = sl + 1;
+    requestAnimationFrame(function(){ el.scrollTop = st; el.scrollLeft = sl; });
+  }
+  function repaint(scope){
+    const root = (scope && scope.querySelectorAll) ? scope : document;
+    root.querySelectorAll(SEL).forEach(nudge);
+  }
+  window.repaintSticky = repaint;
+  function kick(scope){
+    // two frames: let layout/i18n settle before measuring scroll extents
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ repaint(scope); }); });
+  }
+  if(document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', function(){ kick(document); });
+  else kick(document);
+  window.addEventListener('load', function(){ kick(document); });
+  document.addEventListener('tabshow', function(e){
+    const name = e.detail && e.detail.name;
+    const panel = name ? document.querySelector('.tabpanel[data-tab=\"'+name+'\"]') : null;
+    kick(panel || document);
+  });
+  document.addEventListener('langchange', function(){ kick(document); });
+  window.addEventListener('orientationchange', function(){ kick(document); });
 })();
 """
 
@@ -3427,7 +3472,7 @@ def main() -> None:
     all_js = "\n".join([
         i18n_js(team_he, pl_he),
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
-        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload),
+        LEADERS_JS, TABS_JS, STICKY_FIX_JS, whatif_js(wi_payload), odds_js(od_payload),
         race_js(rc_payload), CHEER_JS, STAGES_JS, path_js(path_payload(data)),
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
