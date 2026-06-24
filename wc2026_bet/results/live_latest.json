@@ -620782,6 +620782,11 @@
       "goals": 1
     },
     {
+      "scorer": "Soufiane Rahimi",
+      "team": "Morocco",
+      "goals": 1
+    },
+    {
       "scorer": "Teboho Mokoena",
       "team": "South Africa",
       "goals": 1
@@ -620869,13 +620874,13 @@
       "games": 3
     },
     "Morocco": {
-      "gf": 4,
+      "gf": 5,
       "ga": 3,
       "games": 3
     },
     "Haiti": {
       "gf": 2,
-      "ga": 6,
+      "ga": 7,
       "games": 3
     },
     "Scotland": {
