@@ -820,10 +820,40 @@ WHATIF_CSS = """
   .wibr-pen button.on{background:#1e3a8a; color:#fff; border-color:transparent;}
   .wibr-scorers{margin-top:4px; padding-top:4px; border-top:1px dashed var(--line);}
 
+  /* round-pills navigator: hidden on desktop, shown on phones (see media query) */
+  .wibr-pills{display:none;}
+
   @media (max-width:760px){
     .wigs{grid-template-columns:1fr;}
     .wggrid{grid-template-columns:repeat(2,1fr);}
-    .wibr-round{min-width:128px;}
+    /* ---- mobile bracket: tap a round-pill, see that round full-width ---- */
+    .wibracket-wrap{overflow-x:hidden;}
+    .wibr-pills{display:flex; gap:6px; overflow-x:auto; padding:2px 1px 10px;
+         -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+    .wibr-pills::-webkit-scrollbar{display:none;}
+    .wibr-pill{flex:0 0 auto; appearance:none; border:1px solid var(--line); background:#fff;
+         border-radius:999px; font-family:inherit; font-size:.78rem; font-weight:800;
+         color:#475569; padding:7px 14px; cursor:pointer; white-space:nowrap;}
+    .wibr-pill.on{background:#1e3a8a; color:#fff; border-color:transparent;
+         box-shadow:0 2px 6px rgba(30,58,138,.25);}
+    .wibracket{flex-direction:column; gap:0; min-width:0; width:100%;}
+    .wibr-round, .wibr-round.fin{min-width:0; width:100%;}
+    /* show only the active round; merge both halves of the draw under one pill */
+    .wibracket[data-mrc] .wibr-round{display:none;}
+    .wibracket[data-mrc="1"] .wibr-round[data-rc="1"],
+    .wibracket[data-mrc="2"] .wibr-round[data-rc="2"],
+    .wibracket[data-mrc="3"] .wibr-round[data-rc="3"],
+    .wibracket[data-mrc="4"] .wibr-round[data-rc="4"],
+    .wibracket[data-mrc="F"] .wibr-round.fin{display:flex;}
+    .wibr-round[data-rc] > .wibr-rndhd{display:none;}   /* pill already names the round */
+    .wibr-col, .wibr-col.cen{justify-content:flex-start; gap:9px; padding-top:2px;}
+    .wibr-node{padding:6px 8px;}
+    .wibr-mno{font-size:.62rem;}
+    .wibr-trow{padding:5px 5px;}
+    .wibr-nm{font-size:.95rem;}
+    .wibr-nm.tbd{font-size:.86rem;}
+    .wibr-fl{font-size:1.1rem; width:24px;}
+    .wibr-sc{width:36px; font-size:.95rem; padding:5px 0;}
   }
 """
 
@@ -2106,12 +2136,19 @@ const WHATIF = __WHATIF__;
       teamRow(m,'a',tm[1],b.ar,win,ag,real)+pen+scr+`</div>`;
   }
   function colHtml(matches, full, rc){
-    return `<div class="wibr-round"><div class="wibr-rndhd">${t('wi.rc.'+rc)}</div>`+
+    return `<div class="wibr-round" data-rc="${rc}"><div class="wibr-rndhd">${t('wi.rc.'+rc)}</div>`+
       `<div class="wibr-col">${matches.map(m=> nodeHtml(m, full)).join('')}</div></div>`;
+  }
+  function pillBar(cur){
+    const ps=[['1','wi.rc.1'],['2','wi.rc.2'],['3','wi.rc.3'],['4','wi.rc.4'],['F','wi.rc.6']];
+    return `<div class="wibr-pills">`+ps.map(([rc,k])=>
+      `<button type="button" class="wibr-pill${rc===cur?' on':''}" data-mrc="${rc}">${t(k)}</button>`
+    ).join('')+`</div>`;
   }
   function renderBracket(full){
     const wrap=document.getElementById('wiBracket'); if(!wrap) return;
     const prevLeft=wrap.scrollLeft;
+    const cur=wrap.getAttribute('data-mrc')||'F';   // remember pill across re-renders
     const L=sideRounds(101), Rt=sideRounds(102);
     let h='';
     [1,2,3,4].forEach(rc=> h+=colHtml((L[rc]||[]), full, rc));
@@ -2119,8 +2156,17 @@ const WHATIF = __WHATIF__;
        `<div class="wibr-col cen">${nodeHtml(104, full, 'fin')}`+
        `<div class="wibr-rndhd" style="margin-top:8px">${t('wi.rc.5')}</div>${nodeHtml(103, full, 'tp')}</div></div>`;
     [4,3,2,1].forEach(rc=> h+=colHtml((Rt[rc]||[]), full, rc));
-    wrap.innerHTML=`<div class="wibracket">${h}</div>`;
+    wrap.setAttribute('data-mrc', cur);
+    wrap.innerHTML=pillBar(cur)+`<div class="wibracket" data-mrc="${cur}">${h}</div>`;
     wrap.scrollLeft=prevLeft;
+    if(!wrap.__pillsBound){ wrap.__pillsBound=true;
+      wrap.addEventListener('click', e=>{
+        const p=e.target.closest('.wibr-pill'); if(!p) return;
+        const rc=p.dataset.mrc; wrap.setAttribute('data-mrc', rc);
+        wrap.querySelectorAll('.wibr-pill').forEach(b=> b.classList.toggle('on', b.dataset.mrc===rc));
+        const bk=wrap.querySelector('.wibracket'); if(bk) bk.setAttribute('data-mrc', rc);
+      });
+    }
   }
 
   // scenario points = site baseline + (engine(real+hypo) - engine(real)), per slot,
@@ -3307,10 +3353,17 @@ def path_js(payload: dict) -> str:
       teamRow(tm[0],win,hg)+teamRow(tm[1],win,ag)+`</div>`;
   }
   function colHtml(matches, full, rc){
-    return `<div class="wibr-round"><div class="wibr-rndhd">${t('wi.rc.'+rc)}</div>`+
+    return `<div class="wibr-round" data-rc="${rc}"><div class="wibr-rndhd">${t('wi.rc.'+rc)}</div>`+
       `<div class="wibr-col">${matches.map(m=> nodeHtml(m, full)).join('')}</div></div>`;
   }
+  function pillBar(cur){
+    const ps=[['1','wi.rc.1'],['2','wi.rc.2'],['3','wi.rc.3'],['4','wi.rc.4'],['F','wi.rc.6']];
+    return `<div class="wibr-pills">`+ps.map(([rc,k])=>
+      `<button type="button" class="wibr-pill${rc===cur?' on':''}" data-mrc="${rc}">${t(k)}</button>`
+    ).join('')+`</div>`;
+  }
   function renderBracket(full){
+    const cur=brWrap.getAttribute('data-mrc')||'F';
     const L=sideRounds(101), Rt=sideRounds(102);
     let h='';
     [1,2,3,4].forEach(rc=> h+=colHtml((L[rc]||[]), full, rc));
@@ -3318,11 +3371,26 @@ def path_js(payload: dict) -> str:
        `<div class="wibr-col cen">${nodeHtml(104, full, 'fin')}`+
        `<div class="wibr-rndhd" style="margin-top:8px">${t('wi.rc.5')}</div>${nodeHtml(103, full, 'tp')}</div></div>`;
     [4,3,2,1].forEach(rc=> h+=colHtml((Rt[rc]||[]), full, rc));
-    brWrap.innerHTML=`<div class="wibracket">${h}</div>`;
+    brWrap.setAttribute('data-mrc', cur);
+    brWrap.innerHTML=pillBar(cur)+`<div class="wibracket" data-mrc="${cur}">${h}</div>`;
+    if(!brWrap.__pillsBound){ brWrap.__pillsBound=true;
+      brWrap.addEventListener('click', e=>{
+        const p=e.target.closest('.wibr-pill'); if(!p) return;
+        const rc=p.dataset.mrc; brWrap.setAttribute('data-mrc', rc);
+        brWrap.querySelectorAll('.wibr-pill').forEach(b=> b.classList.toggle('on', b.dataset.mrc===rc));
+        const bk=brWrap.querySelector('.wibracket'); if(bk) bk.setAttribute('data-mrc', rc);
+      });
+    }
   }
   function animateBracket(){
     if(animTimer){ clearTimeout(animTimer); animTimer=null; }
     const nodes = Array.from(brWrap.querySelectorAll('.wibr-node'));
+    // On phones only one round is visible at a time (round-pills), so the
+    // staggered round-by-round reveal would leave the default round blank.
+    // Reveal everything immediately instead.
+    if(window.matchMedia && window.matchMedia('(max-width:760px)').matches){
+      nodes.forEach(n=> n.classList.add('show')); return;
+    }
     const byRc={}; nodes.forEach(n=>{ const rc=(bm[+n.dataset.m]||{}).rc||0;
       (byRc[rc]=byRc[rc]||[]).push(n); });
     const order=[1,2,3,4,5,6];
