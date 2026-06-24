@@ -10536,7 +10536,7 @@
     "DR Congo": {
       "gf": 1,
       "ga": 1,
-      "games": 1
+      "games": 2
     },
     "England": {
       "gf": 4,
@@ -10566,7 +10566,7 @@
     "Colombia": {
       "gf": 3,
       "ga": 1,
-      "games": 1
+      "games": 2
     }
   },
   "cheer": {
@@ -17959,6 +17959,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Colombia",
+    "DR Congo"
+  ]
 }
