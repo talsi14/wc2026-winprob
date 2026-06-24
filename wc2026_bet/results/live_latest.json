@@ -9832,6 +9832,11 @@
       "goals": 3
     },
     {
+      "scorer": "Johan Manzambi",
+      "team": "Switzerland",
+      "goals": 3
+    },
+    {
       "scorer": "Jonathan David",
       "team": "Canada",
       "goals": 3
@@ -9899,11 +9904,6 @@
     {
       "scorer": "Ismaïla Sarr",
       "team": "Senegal",
-      "goals": 2
-    },
-    {
-      "scorer": "Johan Manzambi",
-      "team": "Switzerland",
       "goals": 2
     },
     {
@@ -10335,7 +10335,7 @@
     },
     "Canada": {
       "gf": 7,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Bosnia and Herzegovina": {
@@ -10359,7 +10359,7 @@
       "games": 3
     },
     "Switzerland": {
-      "gf": 6,
+      "gf": 7,
       "ga": 2,
       "games": 3
     },
