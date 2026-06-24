@@ -10056,6 +10056,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ante Budimir",
+      "team": "Croatia",
+      "goals": 1
+    },
+    {
       "scorer": "Anthony Elanga",
       "team": "Sweden",
       "goals": 1
@@ -10598,7 +10603,7 @@
       "games": 2
     },
     "Croatia": {
-      "gf": 2,
+      "gf": 3,
       "ga": 4,
       "games": 2
     },
@@ -10609,7 +10614,7 @@
     },
     "Panama": {
       "gf": 0,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "Uzbekistan": {
