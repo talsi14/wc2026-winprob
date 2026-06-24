@@ -14,6 +14,41 @@ STRINGS: dict[str, tuple[str, str]] = {
     "tab.odds": ("הימורים ו‑ELO", "Odds & ELO"),
     "tab.cheer": ("את מי לעודד?", "Who to root for?"),
     "tab.stages": ("עד לאן יגיעו?", "How far will they go?"),
+    "tab.path": ("המסלול שלי לניצחון", "My path to victory"),
+    "path.pick": ("בחרו טופס", "Pick an entry"),
+    "path.btn": ("מצא מסלולים לניצחון", "Find paths to victory"),
+    "path.hint": ("בחרו טופס ולחצו על הכפתור כדי לגלות את המסלול הסביר ביותר לניצחון.",
+                  "Pick an entry and press the button to reveal its most likely path to victory."),
+    "path.summary.many": (
+        "מתוך {{n_sims}} סימולציות אפשריות של הטורניר, {{name}} מסיים במקום הראשון "
+        "ב‑{{y}} תרחישים שונים ({{pct}}%).",
+        "Out of {{n_sims}} possible tournament simulations, {{name}} finishes 1st in "
+        "{{y}} different scenarios ({{pct}}%)."),
+    "path.summary.one": (
+        "מתוך {{n_sims}} סימולציות אפשריות של הטורניר, {{name}} מסיים במקום הראשון "
+        "בתרחיש אחד בלבד!",
+        "Out of {{n_sims}} possible tournament simulations, {{name}} finishes 1st in "
+        "just one scenario!"),
+    "path.champs.title": ("האלופות בתרחישים האלה:", "The champions in those scenarios:"),
+    "path.champs.row": ("{{team}}: {{n}} תרחישים", "{{team}}: {{n}} scenarios"),
+    "path.champs.other": ("אלופות אחרות: {{n}} תרחישים", "Other champions: {{n}} scenarios"),
+    "path.champs.otherShort": ("אחרות", "Other"),
+    "path.champs.hint": ("בחרו אלופה (בגרף או ברשימה) כדי לראות תרחיש ניצחון מתאים:",
+                         "Pick a champion (in the chart or list) to see a matching winning scenario:"),
+    "path.split": ("שימו לב: בתרחיש זה הפרס מתחלק בין כמה זוכים.",
+                   "Note: in this scenario the prize is split between several winners."),
+    "path.lead": ("הנה התרחיש הסביר ביותר שבו {{name}} מנצח:",
+                  "Here's the most likely scenario in which {{name}} wins:"),
+    "path.none": (
+        "וואו, בשלב הזה כבר די ברור של{{name}} אין מושג מהחיים שלו... מתוך {{n_sims}} "
+        "סימולציות, אין אפילו תרחיש אחד שבו {{name}} מנצח. בהצלחה בטורניר הבא!",
+        "Wow — at this point it's pretty clear {{name}} has no idea what they're doing... "
+        "out of {{n_sims}} simulations, there isn't a single one where {{name}} wins. "
+        "Good luck next tournament!"),
+    "path.champ": ("האלופה בתרחיש: {{team}}", "Champion in this scenario: {{team}}"),
+    "path.board.title": ("טבלת הדירוג הסופית בתרחיש זה", "Final standings in this scenario"),
+    "path.bracket.title": ("מסלול הנוק‑אאוט", "The knockout path"),
+    "path.replay": ("הצג שוב", "Replay"),
     "pts.abbr": ("נק׳", "pts"),
     "live.badge": ("חי", "LIVE"),
     "live.tooltip": ("כולל משחקים שמתנהלים כעת", "Includes matches currently in progress"),

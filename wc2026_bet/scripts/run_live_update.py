@@ -98,6 +98,107 @@ def champion_matrix(ranks, O, ds, names, n_champ: int = 10) -> dict:
             "matrix": mat}
 
 
+# how many of the top champions (by winning-scenario count) get a precomputed,
+# user-selectable "path to victory" scenario. Matches the pie chart's slices.
+CHAMP_SCENARIOS = 8
+
+
+def build_victory_paths(O, ranks, scores, ds, entries, contrib) -> dict:
+    """For each entry, selectable "path to victory" scenarios - one per top
+    champion that coincides with the entry finishing 1st in the pool.
+
+    For each of the entry's ``CHAMP_SCENARIOS`` most-frequent champions we pick a
+    representative sim: prefer one where the entry wins *outright* (no prize
+    split), then the least-upset ("chalk") bracket among those. Returns, per
+    entry name: the number of winning sims ``y``, the full champion tally
+    ``champs`` (for the pie), the default ``champion`` (modal), and a
+    ``scenarios`` map ``{champion -> {bracket, leaderboard, sole}}``. Entries
+    that never finish 1st get ``{"y": 0}``."""
+    names = list(entries["name"])
+    won = O["won_cup"]                                   # [S, T] bool
+    rr = O["round_reached"]                              # [S, T] ints
+    title_prob = won.mean(0)                             # [T] strength proxy
+    chalk = (rr * title_prob).sum(1)                     # [S] strong-teams-deep score
+    bt = O.get("bracket_track") or {}
+    idx2team = {i: t for t, i in ds.team_index.items()}
+
+    # per-scenario point breakdown by pick slot, mirroring the main standings
+    # table (tierA-D, scoring, conceding, top-scorer). Picks are fixed per entry,
+    # so only the points change between scenarios.
+    tidx = ds.team_index
+    pcol = {n: i for i, n in enumerate(contrib.player_names)}
+    picks = [(r.tierA, r.tierB, r.tierC, r.tierD, r.scoring, r.conceding, r.top_scorer)
+             for r in entries.itertuples()]
+
+    def breakdown(j: int, sim: int) -> list[float]:
+        a, b, c, d, sc, co, tp = picks[j]
+        return [round(float(contrib.tier[sim, tidx[a]]), 1),
+                round(float(contrib.tier[sim, tidx[b]]), 1),
+                round(float(contrib.tier[sim, tidx[c]]), 1),
+                round(float(contrib.tier[sim, tidx[d]]), 1),
+                round(float(contrib.scoring[sim, tidx[sc]]), 1),
+                round(float(contrib.conceding[sim, tidx[co]]), 1),
+                round(float(contrib.topscorer[sim, pcol[tp]]), 1)]
+
+    # A "sole win" (no prize split) means only ONE entry reaches the top points
+    # total. NB: the rank column is a random-tiebroken 1..N, so it is always
+    # unique at #1 - the real split is on equal *points*. Round to the displayed
+    # precision (0.1) to ignore float noise and match what the table shows.
+    sc_round = np.round(scores, 1)                       # [S,N] de-noised points
+    top_score = sc_round.max(1, keepdims=True)
+    sole_sim = (sc_round == top_score).sum(1) == 1       # [S] unique top -> no split
+
+    def build_scenario(s: int) -> dict:
+        bracket = {}
+        for mno, d in bt.items():
+            bracket[str(mno)] = {
+                "rc": d["rc"],
+                "home": idx2team.get(int(d["home"][s]), ""),
+                "away": idx2team.get(int(d["away"][s]), ""),
+                "winner": idx2team.get(int(d["win"][s]), ""),
+                "hg": int(d["gh"][s]), "ag": int(d["ga"][s]),
+                "pen": bool(d["pen"][s]),
+            }
+        rk = ranks[s]                                    # [N] ranks 1..N this sim
+        order = sorted(range(len(names)), key=lambda j: int(rk[j]))
+        leaderboard = [{"name": names[j], "pts": round(float(scores[s][j]), 1),
+                        "rank": int(rk[j]), "bd": breakdown(j, s)} for j in order]
+        return {"bracket": bracket, "leaderboard": leaderboard,
+                "sole": bool(sole_sim[s])}
+
+    def scen_for(win_mask, champ_idx: int) -> dict | None:
+        """Representative scenario where the entry finishes 1st AND ``champ_idx``
+        wins the cup: prefer a sole (non-split) win, then the least-upset bracket."""
+        subset = np.flatnonzero(win_mask & won[:, champ_idx])
+        if subset.size == 0:
+            return None
+        sole = subset[sole_sim[subset]]
+        pool = sole if sole.size else subset
+        s = int(pool[np.argmax(chalk[pool])])
+        return build_scenario(s)
+
+    out: dict[str, dict] = {}
+    for e, nm in enumerate(names):
+        win = ranks[:, e] == 1                           # [S] bool
+        y = int(win.sum())
+        if y == 0:
+            out[nm] = {"y": 0}
+            continue
+        cc = won[win].sum(0)                             # [T] champion tally among wins
+        champs = sorted(((idx2team.get(int(i), ""), int(cc[i]))
+                         for i in np.flatnonzero(cc > 0)), key=lambda kv: -kv[1])
+        # one selectable scenario per top champion (matches the pie's slices).
+        scenarios = {}
+        for c_team, _n in champs[:CHAMP_SCENARIOS]:
+            sc = scen_for(win, ds.team_index[c_team])
+            if sc is not None:
+                scenarios[c_team] = sc
+        out[nm] = {"y": y, "champion": champs[0][0],     # default = modal champion
+                   "champs": [{"team": t, "n": n} for t, n in champs],
+                   "scenarios": scenarios}
+    return out
+
+
 def previous_metrics(ts: str) -> dict | None:
     """Most recent win_probabilities_*.json strictly before this ts (by name)."""
     files = sorted(DATA_LIVE.glob("win_probabilities_*.json"))
@@ -276,13 +377,15 @@ def main() -> None:
     print(f"Running {args.sims:,} conditioned simulations ...")
     O = Simulator(ds, model, seed=2026).run(args.sims, known=known,
                                             track_matches=cheer_track,
-                                            track_opponents=True)
+                                            track_opponents=True,
+                                            track_bracket=True)
     gb_scale = compute_golden_boot_scale(ds, O)
     contrib = build_contributions(ds, O, golden_boot_scale=gb_scale)
 
     scores = score_entries(ds, contrib, O, entries)
     M = rank_and_metrics(scores)
     chmat = champion_matrix(M["ranks"], O, ds, list(entries["name"]))
+    vpaths = build_victory_paths(O, M["ranks"], scores, ds, entries, contrib)
     cheer = build_cheer(ds, cheer_days, cheer_track, O, M, list(entries["name"]))
 
     # real current (locked) points from the actual results so far, via the
@@ -453,6 +556,7 @@ def main() -> None:
         "calibration": {"strength_spread": cal["strength_spread"],
                         "golden_boot_scale": round(gb_scale, 3)},
         "champion_matrix": chmat,
+        "victory_paths": vpaths,
         "groups": groups_payload,
         "stages": stages_payload,
         "pred_group_scores": pred_group_scores,

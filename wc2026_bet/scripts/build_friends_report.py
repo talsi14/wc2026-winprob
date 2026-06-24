@@ -330,6 +330,7 @@ WHATIF_START, WHATIF_END = "<!-- WHATIF:START -->", "<!-- WHATIF:END -->"
 ODDS_START, ODDS_END = "<!-- ODDS:START -->", "<!-- ODDS:END -->"
 CHEER_START, CHEER_END = "<!-- CHEER:START -->", "<!-- CHEER:END -->"
 STAGES_START, STAGES_END = "<!-- STAGES:START -->", "<!-- STAGES:END -->"
+PATH_START, PATH_END = "<!-- PATH:START -->", "<!-- PATH:END -->"
 
 
 def replace_region(html: str, start: str, end: str, content: str) -> str:
@@ -756,6 +757,71 @@ WHATIF_CSS = """
     .wggrid{grid-template-columns:repeat(2,1fr);}
     .wibr-round{min-width:128px;}
   }
+"""
+
+PATH_CSS = """
+  /* My path to victory */
+  .pathwrap{margin-top:12px;}
+  .pathctrls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0 6px;}
+  .pathsel{appearance:none; border:1px solid var(--line); border-radius:10px; background:#fff;
+       font-family:inherit; font-size:.92rem; font-weight:600; color:#1e293b; padding:9px 14px; min-width:220px;}
+  .pathsel:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 2px rgba(37,99,235,.15);}
+  .pathbtn{appearance:none; border:none; border-radius:10px; cursor:pointer; font-family:inherit;
+       font-size:.92rem; font-weight:800; color:#fff; background:#1e3a8a; padding:10px 18px;
+       box-shadow:0 2px 6px rgba(30,58,138,.25); transition:filter .15s, transform .05s;}
+  .pathbtn:hover{filter:brightness(1.08);}
+  .pathbtn:active{transform:translateY(1px);}
+  .pathbtn:disabled{opacity:.5; cursor:default;}
+  .pathhint{color:#64748b; font-size:.86rem; margin:6px 2px;}
+  .pathsummary{font-size:1.02rem; line-height:1.6; font-weight:600; color:#1e293b; margin:14px 2px 4px;}
+  .pathsummary.none{color:#9a3412;}
+  .pathchamps{margin:10px 2px 4px;}
+  .pathchamps-t{font-size:.86rem; font-weight:800; color:#334155; margin-bottom:2px;}
+  .pathchamps-hint{font-size:.78rem; color:#94a3b8; margin:0 2px 8px;}
+  .pathpie-wrap{display:flex; gap:20px; align-items:center; flex-wrap:wrap;}
+  .pathpie-chart{flex:0 0 auto;}
+  .pathpie-svg{display:block; filter:drop-shadow(0 1px 2px rgba(0,0,0,.08));}
+  .pathpie-svg .clk{cursor:pointer; transition:opacity .12s;}
+  .pathpie-svg .clk:hover{opacity:.82;}
+  .pathpie-svg .sel{stroke:#1e293b; stroke-width:2.5;}
+  .pathpie-leg{display:flex; flex-direction:column; gap:2px; min-width:220px; flex:1 1 200px;}
+  .pathpie-leg-row{display:flex; align-items:center; gap:8px; font-size:.86rem; color:#475569;
+       font-variant-numeric:tabular-nums; padding:2px 6px; border-radius:7px;}
+  .pathpie-leg-row.clk{cursor:pointer; transition:background .12s;}
+  .pathpie-leg-row.clk:hover{background:#f1f5f9;}
+  .pathpie-leg-row.sel{background:rgba(37,99,235,.10);}
+  .pathpie-leg-row.sel .pathpie-nm{color:#1d4ed8;}
+  .pathpie-sw{width:11px; height:11px; border-radius:3px; flex:0 0 auto;}
+  .pathpie-fl{font-size:1rem; line-height:1;}
+  .pathpie-nm{font-weight:700; color:#334155;}
+  .pathpie-val{margin-inline-start:auto; color:#64748b; font-weight:700; white-space:nowrap;}
+  .pathsplit{display:inline-block; margin-inline-start:8px; font-size:.8rem;
+       color:#9a3412; font-weight:700;}
+  .pathlead{font-size:.95rem; font-weight:700; color:#334155; margin:10px 2px 2px;}
+  .pathchamp{display:inline-flex; align-items:center; gap:6px; font-size:.9rem; font-weight:700;
+       color:#92400e; background:#fef3c7; border:1px solid #fcd34d; border-radius:999px; padding:4px 12px; margin:6px 2px;}
+  .pathsec-title{font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em;
+       color:#64748b; margin:16px 2px 6px;}
+  .pathtbl{width:100%; border-collapse:collapse; font-size:.9rem;}
+  .pathtbl th{font-size:.7rem; text-transform:uppercase; letter-spacing:.03em; color:#64748b;
+       text-align:start; padding:5px 8px; border-bottom:1px solid var(--line);}
+  .pathtbl td{padding:6px 8px; border-bottom:1px solid #f1f5f9;}
+  .pathtbl td.rk{width:34px; text-align:center; font-weight:700; color:#475569;}
+  .pathtbl td.pts{text-align:end; font-variant-numeric:tabular-nums; font-weight:700; color:#1e293b;}
+  .pathtbl tr.me td{background:rgba(22,163,74,.12); font-weight:800; color:#166534;}
+  .pathtbl tr.me td.rk{color:#166534;}
+  /* per-scenario standings reuse the main .standtbl format; compact (~10 rows)
+     with a sticky header and scroll, and the selected entry highlighted. */
+  .pathstand{max-height:360px; margin-top:6px;}
+  .pathstand table.standtbl tbody tr.me td{background:rgba(22,163,74,.14);
+       font-weight:800; color:#166534;}
+  .pathstand table.standtbl tbody tr.me td.nm{background:rgba(22,163,74,.14); color:#166534;}
+  .pathstand table.standtbl tbody tr.me td.rk{color:#166534;}
+  /* bracket reuses .wibracket / .wibr-* layout; nodes fade in round-by-round */
+  .pathbr .wibr-node{opacity:0; transform:translateY(8px); transition:opacity .45s ease, transform .45s ease;}
+  .pathbr .wibr-node.show{opacity:1; transform:none;}
+  .pathbr .wibr-node.fin.show{box-shadow:0 0 0 3px rgba(245,158,11,.35);}
+  .pathbr .wibr-sc{pointer-events:none;}
 """
 
 ODDS_CSS = """
@@ -2959,6 +3025,280 @@ def race_js(payload: dict) -> str:
 """.replace("__RACEDATA__", data)
 
 
+# =========================================================================== #
+# Tab "My path to victory" - per-entry pre-computed winning scenario
+# =========================================================================== #
+def _path_names(data: dict) -> list[str]:
+    ents = data.get("entries") or []
+    return [e["name"] for e in
+            sorted(ents, key=lambda e: (e.get("current_rank", 999), e["name"]))]
+
+
+def path_payload(data: dict) -> dict:
+    team_he = _team_he_map()
+    meta = _teams_meta()
+    all_teams = sorted(meta)
+    bracket_raw = json.loads((DATA_PROCESSED / "bracket.json").read_text())
+    bracket = [{"m": b["match"], "rc": b["round_code"],
+                "hr": b["home_ref"], "ar": b["away_ref"]} for b in bracket_raw]
+    return {
+        "vp": data.get("victory_paths") or {},
+        "bracket": bracket,
+        "names": _path_names(data),
+        "nSims": int(data.get("n_sims", 0)),
+        "teamHe": {t: team_he.get(t, t) for t in all_teams},
+        "iso": {t: _TEAM_ISO.get(t, "") for t in all_teams},
+    }
+
+
+def path_html(data: dict) -> str:
+    opts = "".join(
+        f'<option value="{html_mod.escape(n, quote=True)}">{html_mod.escape(n)}</option>'
+        for n in _path_names(data))
+    return (
+        '<div class="pathwrap">'
+        '<h2 class="bigsec" data-i18n="tab.path">המסלול שלי לניצחון</h2>'
+        '<div class="pathctrls">'
+        '<select id="pathSel" class="pathsel">'
+        '<option value="" data-i18n="path.pick">בחרו טופס</option>'
+        f'{opts}</select>'
+        '<button type="button" id="pathBtn" class="pathbtn" data-i18n="path.btn">'
+        'מצא מסלולים לניצחון</button>'
+        '</div>'
+        '<p class="pathhint" id="pathHint" data-i18n="path.hint"></p>'
+        '<div id="pathResult" hidden>'
+        '<p class="pathsummary" id="pathSummary"></p>'
+        '<div class="pathchamps" id="pathChamps"></div>'
+        '<p class="pathlead" id="pathLead"></p>'
+        '<div id="pathChampWrap"></div>'
+        '<div class="pathsec-title" id="pathBoardTitle" data-i18n="path.board.title"></div>'
+        '<div class="standwrap pathstand"><table class="standtbl"><thead><tr>'
+        '<th data-i18n="th.rank">מקום</th><th class="nm" data-i18n="th.name">שם</th>'
+        '<th data-i18n="th.pts">נק׳</th>'
+        '<th data-i18n="th.tierA">דרג א׳</th><th data-i18n="th.tierB">דרג ב׳</th>'
+        '<th data-i18n="th.tierC">דרג ג׳</th><th data-i18n="th.tierD">דרג ד׳</th>'
+        '<th data-i18n="th.scoring">כובשת</th><th data-i18n="th.conceding">סופגת</th>'
+        '<th data-i18n="th.top_scorer">מלך שערים</th>'
+        '</tr></thead><tbody id="pathBoard"></tbody></table></div>'
+        '<div class="pathsec-title" id="pathBracketTitle" data-i18n="path.bracket.title"></div>'
+        '<div class="wibracket-wrap pathbr" id="pathBracket"></div>'
+        '</div>'
+        '</div>'
+    )
+
+
+def path_js(payload: dict) -> str:
+    data = json.dumps(payload, ensure_ascii=False)
+    return r"""
+(function(){
+  const P = __PATHDATA__;
+  const I = window.I18N;
+  const sel = document.getElementById('pathSel');
+  const btn = document.getElementById('pathBtn');
+  if(!P || !I || !sel || !btn) return;
+  const t = k => I.t(k);
+  const heT = en => I.team ? I.team(en) : en;
+  const g2 = x => (Math.round(x*10)/10).toString();
+  const nSimsTxt = (P.nSims||0).toLocaleString('en-US');
+  const EBYN = {}; (typeof ENTRIES!=='undefined'?ENTRIES:[]).forEach(e=> EBYN[e.name]=e);
+
+  const bm = {}; (P.bracket||[]).forEach(b=> bm[b.m]=b);
+  function flagChar(en){ const iso=(P.iso||{})[en];
+    if(!iso || iso.length!==2) return '';
+    return String.fromCodePoint(...[...iso.toUpperCase()].map(c=>0x1F1E6+c.charCodeAt(0)-65)); }
+
+  // ---- champions-of-the-winning-scenarios pie ----------------------------- //
+  const PIE_COLORS = ['#2563eb','#16a34a','#f59e0b','#dc2626','#7c3aed','#0891b2',
+                      '#db2777','#65a30d','#ea580c','#0d9488'];
+  function pieSlice(cx,cy,r,a0,a1){
+    const x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0);
+    const x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+    const large=(a1-a0)>Math.PI?1:0;
+    return `M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} `+
+           `A${r},${r} 0 ${large} 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z`;
+  }
+  const escA = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  function champPie(cl, total, sel){
+    const TOP=8;
+    const slices = cl.slice(0,TOP).map((c,i)=>({team:c.team, label:heT(c.team), flag:flagChar(c.team),
+                                                n:c.n, color:PIE_COLORS[i%PIE_COLORS.length], clk:true}));
+    if(cl.length>TOP){ const rest=cl.slice(TOP).reduce((a,c)=>a+c.n,0);
+      slices.push({team:null, label:t('path.champs.otherShort'), flag:'', n:rest, color:'#94a3b8', clk:false}); }
+    const sum = slices.reduce((a,s)=>a+s.n,0) || 1;
+    const cx=90, cy=90, r=84; let a0=-Math.PI/2, paths='';
+    const attr = s => (s.clk?` class="clk${s.team===sel?' sel':''}" data-champ="${escA(s.team)}"`
+                            :' class="oth"');
+    if(slices.length===1){
+      const s0=slices[0];
+      paths=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${s0.color}"${attr(s0)}></circle>`;
+    } else {
+      slices.forEach(s=>{ const a1=a0+(s.n/sum)*2*Math.PI;
+        paths+=`<path d="${pieSlice(cx,cy,r,a0,a1)}" fill="${s.color}" `+
+               `stroke="#fff" stroke-width="1.5"${attr(s)}>`+
+               `<title>${s.label}: ${(s.n).toLocaleString('en-US')}</title></path>`;
+        a0=a1; }); }
+    const svg=`<svg class="pathpie-svg" viewBox="0 0 180 180" width="172" height="172" role="img">${paths}</svg>`;
+    const legend = slices.map(s=>{ const pct=(s.n/total*100);
+      const cls = s.clk ? ` clk${s.team===sel?' sel':''}` : '';
+      const dc = s.clk ? ` data-champ="${escA(s.team)}"` : '';
+      return `<div class="pathpie-leg-row${cls}"${dc}><span class="pathpie-sw" style="background:${s.color}"></span>`+
+        (s.flag?`<span class="pathpie-fl">${s.flag}</span>`:'')+
+        `<span class="pathpie-nm">${s.label}</span>`+
+        `<span class="pathpie-val">${(s.n).toLocaleString('en-US')} (${pct.toFixed(1)}%)</span></div>`;
+    }).join('');
+    return `<div class="pathchamps-hint">${t('path.champs.hint')}</div>`+
+           `<div class="pathpie-wrap"><div class="pathpie-chart">${svg}</div>`+
+           `<div class="pathpie-leg">${legend}</div></div>`;
+  }
+
+  const result = document.getElementById('pathResult');
+  const hint   = document.getElementById('pathHint');
+  const summ   = document.getElementById('pathSummary');
+  const champsEl = document.getElementById('pathChamps');
+  const lead   = document.getElementById('pathLead');
+  const champW = document.getElementById('pathChampWrap');
+  const board  = document.getElementById('pathBoard');
+  const boardT = document.getElementById('pathBoardTitle');
+  const brWrap = document.getElementById('pathBracket');
+  const brTitle= document.getElementById('pathBracketTitle');
+  const boardWrap = board.closest('.standwrap') || board.parentElement;
+
+  let animTimer = null, curName = null, curChamp = null;
+
+  // ---- read-only bracket (NBA-style, two-sided), forked from What-If ------ //
+  function childMatches(m){ const b=bm[m]; const r=[];
+    if(b) [b.hr,b.ar].forEach(ref=>{ if(ref && ref.type==='match_winner') r.push(ref.match); });
+    return r; }
+  function sideRounds(root){ const byRc={};
+    (function rec(m){ const b=bm[m]; if(!b) return; childMatches(m).forEach(rec);
+      (byRc[b.rc]=byRc[b.rc]||[]).push(m); })(root);
+    return byRc; }
+  function teamRow(team, win, score){
+    const tbd=!team;
+    const nm = tbd ? '<span class="wibr-nm tbd">—</span>'
+      : `<span class="wibr-fl">${flagChar(team)}</span><span class="wibr-nm" title="${team}">${heT(team)}</span>`;
+    const cls = win ? (win===team?'win':'lose') : '';
+    const val = (score!=null)?score:'';
+    return `<div class="wibr-trow ${cls}">${nm}<span class="wibr-sc">${val}</span></div>`;
+  }
+  function nodeHtml(m, full, extraCls){
+    const tm=full.teamsByMatch[m]||[null,null];
+    const ko=full.koByMatch[m]||null; const win=full.winByMatch[m]||null;
+    const hg=ko?ko.hg:null, ag=ko?ko.ag:null;
+    return `<div class="wibr-node${win?' decided':''} ${extraCls||''}" data-m="${m}">`+
+      `<span class="wibr-mno">M${m}</span>`+
+      teamRow(tm[0],win,hg)+teamRow(tm[1],win,ag)+`</div>`;
+  }
+  function colHtml(matches, full, rc){
+    return `<div class="wibr-round"><div class="wibr-rndhd">${t('wi.rc.'+rc)}</div>`+
+      `<div class="wibr-col">${matches.map(m=> nodeHtml(m, full)).join('')}</div></div>`;
+  }
+  function renderBracket(full){
+    const L=sideRounds(101), Rt=sideRounds(102);
+    let h='';
+    [1,2,3,4].forEach(rc=> h+=colHtml((L[rc]||[]), full, rc));
+    h+=`<div class="wibr-round fin"><div class="wibr-rndhd">${t('wi.rc.6')}</div>`+
+       `<div class="wibr-col cen">${nodeHtml(104, full, 'fin')}`+
+       `<div class="wibr-rndhd" style="margin-top:8px">${t('wi.rc.5')}</div>${nodeHtml(103, full, 'tp')}</div></div>`;
+    [4,3,2,1].forEach(rc=> h+=colHtml((Rt[rc]||[]), full, rc));
+    brWrap.innerHTML=`<div class="wibracket">${h}</div>`;
+  }
+  function animateBracket(){
+    if(animTimer){ clearTimeout(animTimer); animTimer=null; }
+    const nodes = Array.from(brWrap.querySelectorAll('.wibr-node'));
+    const byRc={}; nodes.forEach(n=>{ const rc=(bm[+n.dataset.m]||{}).rc||0;
+      (byRc[rc]=byRc[rc]||[]).push(n); });
+    const order=[1,2,3,4,5,6];
+    (function reveal(k){
+      if(k>=order.length) return;
+      (byRc[order[k]]||[]).forEach(n=> n.classList.add('show'));
+      animTimer=setTimeout(()=>reveal(k+1), 650);
+    })(0);
+  }
+
+  function renderBoard(lb, name){
+    board.innerHTML = (lb||[]).map(r=>{
+      const me = r.name===name ? ' class="me"' : '';
+      const e = EBYN[r.name]||{}; const bd = r.bd||[];
+      const picks = [e.a, e.b, e.c, e.d, e.scorer, e.conceder, e.goalKing];
+      const cells = picks.map((pk,i)=>
+        `<td class="pick">${pk!=null?pk:'—'} <small>(${g2(bd[i]!=null?bd[i]:0)})</small></td>`).join('');
+      return `<tr${me}><td class="rk">${r.rank}</td>`+
+        `<td class="nm" title="${r.name}">${r.name}</td>`+
+        `<td class="pts">${g2(r.pts)}</td>${cells}</tr>`;
+    }).join('');
+  }
+
+  function renderScenario(name, champTeam){
+    const ent = (P.vp||{})[name]; if(!ent) return;
+    const scs = ent.scenarios||{};
+    let ch = (champTeam && scs[champTeam]) ? champTeam
+           : (scs[ent.champion] ? ent.champion : Object.keys(scs)[0]);
+    const sc = ch ? scs[ch] : null;
+    if(!sc){ lead.style.display='none'; champW.style.display='none';
+      boardT.style.display='none'; boardWrap.style.display='none';
+      brTitle.style.display='none'; brWrap.style.display='none'; brWrap.innerHTML=''; return; }
+    curChamp = ch;
+    lead.style.display=''; lead.textContent = I.fmt('path.lead', {name});
+    champW.style.display='';
+    let badge = `<span class="pathchamp">${flagChar(ch)} ${I.fmt('path.champ', {team:heT(ch)})}</span>`;
+    if(sc.sole===false) badge += `<span class="pathsplit">${t('path.split')}</span>`;
+    champW.innerHTML = badge;
+    boardT.style.display=''; boardWrap.style.display='';
+    renderBoard(sc.leaderboard, name);
+    brTitle.style.display=''; brWrap.style.display='';
+    const full={teamsByMatch:{}, winByMatch:{}, koByMatch:{}};
+    for(const m in (sc.bracket||{})){ const d=sc.bracket[m];
+      full.teamsByMatch[m]=[d.home||null, d.away||null];
+      full.winByMatch[m]=d.winner||null;
+      full.koByMatch[m]={hg:d.hg, ag:d.ag};
+    }
+    renderBracket(full);
+    animateBracket();
+    champsEl.querySelectorAll('[data-champ]').forEach(el=>
+      el.classList.toggle('sel', el.getAttribute('data-champ')===ch));
+  }
+
+  function show(name){
+    const ent = (P.vp||{})[name];
+    if(!name || !ent){ result.hidden=true; hint.hidden=false; return; }
+    hint.hidden=true; result.hidden=false;
+    curName = name;
+    const y = ent.y||0;
+    if(y===0){
+      summ.className='pathsummary none';
+      summ.textContent = I.fmt('path.none', {name, n_sims:nSimsTxt});
+      champsEl.style.display='none'; champsEl.innerHTML=''; curChamp=null;
+      lead.style.display='none'; champW.style.display='none';
+      boardT.style.display='none'; boardWrap.style.display='none';
+      brTitle.style.display='none'; brWrap.style.display='none';
+      brWrap.innerHTML='';
+      return;
+    }
+    summ.className='pathsummary';
+    const yTxt = (y).toLocaleString('en-US');
+    const pctTxt = (P.nSims>0 ? (y/P.nSims*100) : 0).toFixed(2);
+    summ.textContent = I.fmt(y===1?'path.summary.one':'path.summary.many',
+                             {name, y:yTxt, n_sims:nSimsTxt, pct:pctTxt});
+    const cl = ent.champs||[];
+    if(cl.length){
+      champsEl.style.display='';
+      champsEl.innerHTML = `<div class="pathchamps-t">${t('path.champs.title')}</div>`+
+        champPie(cl, y, ent.champion);
+    } else { champsEl.style.display='none'; champsEl.innerHTML=''; }
+    renderScenario(name, ent.champion);
+  }
+
+  btn.addEventListener('click', ()=> show(sel.value));
+  champsEl.addEventListener('click', (ev)=>{
+    const el = ev.target.closest('[data-champ]'); if(!el || !curName) return;
+    const ch = el.getAttribute('data-champ'); if(ch) renderScenario(curName, ch);
+  });
+  document.addEventListener('langchange', ()=>{ if(!result.hidden && curName) show(curName); });
+})();
+""".replace("__PATHDATA__", data)
+
+
 def main() -> None:
     data = json.loads((WC_ROOT / "results" / "live_latest.json").read_text())
     state = _load_state()
@@ -2978,7 +3318,7 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS])
+    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
@@ -2993,6 +3333,7 @@ def main() -> None:
     html = replace_region(html, ODDS_START, ODDS_END, odds_html())
     html = replace_region(html, CHEER_START, CHEER_END, cheer_html(data))
     html = replace_region(html, STAGES_START, STAGES_END, stages_html(data))
+    html = replace_region(html, PATH_START, PATH_END, path_html(data))
 
     # 4) All injected JS in one managed block before </script>.
     wi_payload = whatif_payload(data, state)
@@ -3003,7 +3344,7 @@ def main() -> None:
         i18n_js(team_he, pl_he),
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
         LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload),
-        race_js(rc_payload), CHEER_JS, STAGES_JS,
+        race_js(rc_payload), CHEER_JS, STAGES_JS, path_js(path_payload(data)),
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
 

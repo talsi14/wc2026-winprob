@@ -30,6 +30,15 @@ HOST_NATIONS = ("United States", "Canada", "Mexico")
 N_SIMULATIONS = 50_000
 RANDOM_SEED = 26
 
+# Per-player goal plausibility caps. Each candidate's tournament goals are drawn
+# binomial(team_goals_in_sim, player_share); with a fixed share the tail can
+# over-attribute goals to a single star in deep, high-scoring runs (e.g. 17 of a
+# team's 19 goals). Cap each candidate's per-sim total both as a fraction of the
+# team's goals and in absolute terms, so simulated top-scorer tallies stay
+# realistic (the modern-era record is ~8; the all-time record is 13).
+MAX_PLAYER_GOAL_SHARE = 0.60     # no candidate scores >60% of the team's goals
+MAX_PLAYER_GOALS = 12            # nor more than this many in any single sim
+
 # Round indices recorded per team (max round the team *reached*).
 ROUND_GROUP = 0      # eliminated in group stage
 ROUND_R32 = 1        # reached Round of 32

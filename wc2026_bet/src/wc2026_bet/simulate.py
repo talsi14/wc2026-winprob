@@ -17,7 +17,8 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from .bracket import precompute_thirds_table, third_slots
-from .config import (GROUPS, HOST_NATIONS, PEN_EDGE, ROUND_FINAL, ROUND_QF,
+from .config import (GROUPS, HOST_NATIONS, MAX_PLAYER_GOAL_SHARE,
+                     MAX_PLAYER_GOALS, PEN_EDGE, ROUND_FINAL, ROUND_QF,
                      ROUND_R16, ROUND_R32, ROUND_SF, ROUND_WINNER)
 from .data_io import Dataset
 from .model import MatchModel
@@ -151,7 +152,8 @@ class Simulator:
     # ---- main driver ------------------------------------------------------- #
     def run(self, n_sims: int, known: "KnownState | None" = None,
             track_matches: "set[int] | None" = None,
-            track_opponents: bool = False) -> dict:
+            track_opponents: bool = False,
+            track_bracket: bool = False) -> dict:
         known = known or KnownState.empty()
         S, T = n_sims, self.n_teams
         track_matches = track_matches or set()
@@ -168,6 +170,11 @@ class Simulator:
         # the per-sim participants so the caller can map a real fixture to a slot.
         game_outcomes: dict[int, np.ndarray] = {}
         ko_participants: dict[int, tuple] = {}
+        # optional full per-sim knockout bracket capture (participants, winner,
+        # scoreline and penalty flag for EVERY bracket match). Lets the caller
+        # reconstruct one concrete sim's complete bracket (e.g. a "path to
+        # victory" scenario). ~6 small int16 arrays [S] per KO match -> cheap.
+        bracket_track: dict[int, dict] = {}
         z_i = lambda: np.zeros((S, T), dtype=np.int32)
         reg_wins, group_draws, reg_losses = z_i(), z_i(), z_i()
         pen_wins, pen_losses = z_i(), z_i()
@@ -362,6 +369,14 @@ class Simulator:
             cur_h = round_reached[rows, hi]; round_reached[rows, hi] = np.maximum(cur_h, lvl)
             cur_a = round_reached[rows, ai]; round_reached[rows, ai] = np.maximum(cur_a, lvl)
             ko_win[mno] = winner; ko_lose[mno] = loser
+            if track_bracket:
+                bracket_track[mno] = {
+                    "rc": int(rc),
+                    "home": hi.astype(np.int16), "away": ai.astype(np.int16),
+                    "win": winner.astype(np.int16), "lose": loser.astype(np.int16),
+                    "gh": gh.astype(np.int16), "ga": ag.astype(np.int16),
+                    "pen": pen.astype(bool),
+                }
             if track_opponents and rc in opp_meet:
                 M, B = opp_meet[rc], opp_beat[rc]
                 np.add.at(M, (hi, ai), 1)           # symmetric: count both perspectives
@@ -396,6 +411,14 @@ class Simulator:
         player_known = (known.player_known if known.player_known is not None
                         else np.zeros(len(self.player_names), dtype=np.int64))
         player_goals = sampled + player_known[None, :].astype(np.int32)
+        # plausibility caps: with a fixed share, the binomial tail can hand one
+        # star an implausible haul in deep/high-scoring runs. Cap each candidate's
+        # per-sim total to a fraction of the team's goals and an absolute ceiling
+        # (but never below goals already scored in locked matches).
+        cap = np.minimum(np.floor(team_gf_total * MAX_PLAYER_GOAL_SHARE),
+                         MAX_PLAYER_GOALS).astype(np.int32)
+        cap = np.maximum(cap, player_known[None, :].astype(np.int32))
+        player_goals = np.minimum(player_goals, cap)
         gb_noise = self.rng.random(player_goals.shape) * 0.5
         golden_boot = np.argmax(player_goals + gb_noise, axis=1)  # [S] player idx
 
@@ -411,4 +434,5 @@ class Simulator:
             game_outcomes=game_outcomes,
             ko_participants=ko_participants,
             opp_meet=opp_meet, opp_beat=opp_beat,
+            bracket_track=bracket_track,
         )
