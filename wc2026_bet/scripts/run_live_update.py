@@ -122,6 +122,14 @@ def build_victory_paths(O, ranks, scores, ds, entries, contrib) -> dict:
     bt = O.get("bracket_track") or {}
     idx2team = {i: t for t, i in ds.team_index.items()}
 
+    # per-sim group-stage tallies, to rebuild each scenario's group tables (the
+    # standings that feed the bracket). Groups in fixed A..L order.
+    gfin = O.get("group_finish")
+    adv = O.get("advanced")
+    g_pts, g_gd, g_gf = O.get("group_pts"), O.get("group_gd"), O.get("group_gf")
+    have_groups = all(x is not None for x in (gfin, adv, g_pts, g_gd, g_gf))
+    groups_def = {g: list(ds.groups[g]) for g in sorted(ds.groups)}
+
     # per-scenario point breakdown by pick slot, mirroring the main standings
     # table (tierA-D, scoring, conceding, top-scorer). Picks are fixed per entry,
     # so only the points change between scenarios.
@@ -163,7 +171,18 @@ def build_victory_paths(O, ranks, scores, ds, entries, contrib) -> dict:
         order = sorted(range(len(names)), key=lambda j: int(rk[j]))
         leaderboard = [{"name": names[j], "pts": round(float(scores[s][j]), 1),
                         "rank": int(rk[j]), "bd": breakdown(j, s)} for j in order]
-        return {"bracket": bracket, "leaderboard": leaderboard,
+        groups = []
+        if have_groups:
+            for g, tnames in groups_def.items():
+                rows = [{"team": tn,
+                         "pos": int(gfin[s, tidx[tn]]),
+                         "pts": int(g_pts[s, tidx[tn]]),
+                         "gd": int(g_gd[s, tidx[tn]]),
+                         "gf": int(g_gf[s, tidx[tn]]),
+                         "adv": bool(adv[s, tidx[tn]])} for tn in tnames]
+                rows.sort(key=lambda r: r["pos"])
+                groups.append({"g": g, "rows": rows})
+        return {"bracket": bracket, "groups": groups, "leaderboard": leaderboard,
                 "sole": bool(sole_sim[s])}
 
     def scen_for(win_mask, champ_idx: int) -> dict | None:

@@ -435,4 +435,10 @@ class Simulator:
             ko_participants=ko_participants,
             opp_meet=opp_meet, opp_beat=opp_beat,
             bracket_track=bracket_track,
+            # per-sim group-stage tallies, needed to reconstruct a scenario's
+            # group tables (the standings that feed the bracket). Only kept when
+            # tracking brackets, since that is the only consumer.
+            group_pts=gp if track_bracket else None,
+            group_gd=ggd if track_bracket else None,
+            group_gf=ggf if track_bracket else None,
         )

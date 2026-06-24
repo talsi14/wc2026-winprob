@@ -48,6 +48,7 @@ STRINGS: dict[str, tuple[str, str]] = {
     "path.champ": ("האלופה בתרחיש: {{team}}", "Champion in this scenario: {{team}}"),
     "path.board.title": ("טבלת הדירוג הסופית בתרחיש זה", "Final standings in this scenario"),
     "path.bracket.title": ("מסלול הנוק‑אאוט", "The knockout path"),
+    "path.groups.title": ("טבלאות הבתים בתרחיש זה", "Group tables in this scenario"),
     "path.replay": ("הצג שוב", "Replay"),
     "pts.abbr": ("נק׳", "pts"),
     "live.badge": ("חי", "LIVE"),
@@ -221,6 +222,7 @@ STRINGS: dict[str, tuple[str, str]] = {
     "wi.gt.p": ("מ׳", "P"),
     "wi.gt.pts": ("נק׳", "Pts"),
     "wi.gt.gd": ("הפרש", "GD"),
+    "wi.gt.gf": ("שערים", "GF"),
     "wi.gt.third": ("שלישי מעפיל", "Best third (advances)"),
     # What-If: knockout bracket
     "wi.bracket_title": ("עץ הנוק‑אאוט — בתרחיש שלכם", "Knockout bracket — your scenario"),
@@ -486,6 +488,16 @@ window.I18N = (function(){{
   }}
   function team(en) {{ return lang==='he' ? (D.teamHe[en]||en) : en; }}
   function player(en) {{ return lang==='he' ? (D.playerHe[en]||en) : en; }}
+  // shorten a long name to initials + surname ("Johan Manzambi" -> "J. Manzambi")
+  // so the compact scorer popover keeps its goal column visible. Mirrors the
+  // server-side _abbrev_name() in build_friends_report.py.
+  function abbrevName(s, limit) {{
+    s = (s||'').trim(); limit = limit||12;
+    if (s.length <= limit) return s;
+    const parts = s.split(' ').filter(Boolean);
+    if (parts.length < 2) return s;
+    return parts.slice(0,-1).map(p => p.charAt(0)+'.').join(' ') + ' ' + parts[parts.length-1];
+  }}
 
   function applyStatic() {{
     document.querySelectorAll('[data-i18n]').forEach(el => {{
@@ -517,7 +529,9 @@ window.I18N = (function(){{
     document.querySelectorAll('.i18npl').forEach(el => {{
       const en = el.getAttribute('data-en');
       if (!en) return;
-      el.textContent = player(en);
+      const full = player(en);
+      if (el.classList.contains('ltsc')) {{ el.textContent = abbrevName(full); el.title = full; }}
+      else el.textContent = full;
     }});
     const btn = document.getElementById('langToggle');
     if (btn) btn.textContent = t('lang.toggle');

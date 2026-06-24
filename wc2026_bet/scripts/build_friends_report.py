@@ -124,6 +124,31 @@ def _tp(en: str, pl_map: dict | None = None) -> str:
             f'{html_mod.escape(he)}</span>')
 
 
+def _abbrev_name(name: str, limit: int = 12) -> str:
+    """Shorten an over-long display name by reducing all but the surname to
+    initials ("Johan Manzambi" -> "J. Manzambi"), so the scorer popover's goals
+    column stays visible. Mirrors abbrevName() in the i18n JS so the initial
+    server render and the language toggle agree."""
+    name = (name or "").strip()
+    if len(name) <= limit:
+        return name
+    parts = [p for p in name.split() if p]
+    if len(parts) < 2:
+        return name
+    return " ".join(p[0] + "." for p in parts[:-1]) + " " + parts[-1]
+
+
+def _tp_sc(en: str, pl_map: dict | None = None) -> str:
+    """Player span for the compact scorer popover: renders an abbreviated name
+    (full name kept in data-en + title) so the goal count is not pushed out of
+    view by long Latin names. The 'ltsc' class tells the lang toggle to keep
+    abbreviating after a Hebrew/English switch."""
+    he_full = (pl_map or _player_he_map()).get(en, en)
+    return (f'<span class="i18npl ltsc" data-en="{html_mod.escape(en, quote=True)}" '
+            f'title="{html_mod.escape(he_full, quote=True)}">'
+            f'{html_mod.escape(_abbrev_name(he_full))}</span>')
+
+
 def _g(x) -> str:
     """Compact number: 3.0 -> '3', 2.5 -> '2.5'."""
     return f"{x:g}"
@@ -237,6 +262,11 @@ def leaders_html(data: dict) -> str:
     sel_scoring = {e["picks"]["scoring"] for e in ents}
     sel_conceding = {e["picks"]["conceding"] for e in ents}
     sel_scorer = {e["picks"]["top_scorer"] for e in ents}
+    # tie-break the goal ranking: a scorer picked by at least one entry as "top
+    # scorer" sorts above equal-goal scorers nobody picked (then alphabetically).
+    scorers = sorted(scorers, key=lambda s: (-int(s.get("goals", 0) or 0),
+                                             0 if s.get("scorer") in sel_scorer else 1,
+                                             s.get("scorer", "")))
     live_teams = set(data.get("live_teams") or [])     # teams playing right now
     _dot = ('<span class="lt-dot" data-i18n-title="live.match"></span>')
 
@@ -245,8 +275,10 @@ def leaders_html(data: dict) -> str:
 
     played = [(t, int(v.get("gf", 0)), int(v.get("ga", 0)))
               for t, v in tp.items() if int(v.get("games", 0)) > 0]
-    gf_rank = sorted(played, key=lambda x: (-x[1], x[0]))
-    ga_rank = sorted(played, key=lambda x: (-x[2], x[0]))
+    # same tie-break as the scorers list: a team picked by >=1 entry for this
+    # category sorts above equal-tally teams nobody picked (then alphabetically).
+    gf_rank = sorted(played, key=lambda x: (-x[1], 0 if x[0] in sel_scoring else 1, x[0]))
+    ga_rank = sorted(played, key=lambda x: (-x[2], 0 if x[0] in sel_conceding else 1, x[0]))
 
     def team_rows(rank, val_i, sel):
         body = ""
@@ -262,8 +294,13 @@ def leaders_html(data: dict) -> str:
         for s in scorers:
             raw_tm = s.get("team", "") or ""
             hit = ' class="hit"' if s["scorer"] in sel_scorer else ''
-            body += (f'<tr{hit}><td class="nm">{_tp(s["scorer"], pl_he)}{live_mark(raw_tm)}</td>'
-                     f'<td class="tm">{_te(raw_tm, team_he)}</td>'
+            # flag only (the team name was dropped to keep the row compact); the
+            # team is still available on hover via the title.
+            tm_he = team_he.get(raw_tm, raw_tm)
+            flag = (f'<span class="lt-fl" title="{html_mod.escape(tm_he, quote=True)}">'
+                    f'{_flag(raw_tm)}</span>') if raw_tm else ''
+            body += (f'<tr{hit}><td class="nm">{_tp_sc(s["scorer"], pl_he)}{live_mark(raw_tm)}</td>'
+                     f'<td class="tm">{flag}</td>'
                      f'<td class="v">{s["goals"]}</td></tr>')
         return body or '<tr><td class="nm" colspan="3" data-i18n="na">טרם זמין</td></tr>'
 
@@ -505,10 +542,16 @@ CMTBL_CSS = """
   table.standtbl td{padding:6px 8px; border-bottom:1px solid #f1f5f9; white-space:nowrap;
             text-align:center; color:#475569;}
   table.standtbl td.rk{font-weight:800; color:#334155;}
-  table.standtbl td.nm{text-align:right; font-weight:700; color:var(--ink); position:sticky;
-            right:0; z-index:1; background:#fff; box-shadow:-6px 0 6px -6px rgba(0,0,0,.10);
-            max-width:160px; overflow:hidden; text-overflow:ellipsis;}
-  table.standtbl thead th.nm{z-index:3; right:0; position:sticky;}
+  table.standtbl td.nm{text-align:right; font-weight:700; color:var(--ink);
+            position:-webkit-sticky; position:sticky; right:0; z-index:1; background:#fff;
+            box-shadow:-6px 0 6px -6px rgba(0,0,0,.10); max-width:160px; overflow:hidden;
+            text-overflow:ellipsis;
+            /* iOS Safari: sticky cells stay blank until a scroll repaint; promoting
+               them to their own layer forces an immediate paint. */
+            -webkit-transform:translateZ(0); transform:translateZ(0);
+            -webkit-backface-visibility:hidden;}
+  table.standtbl thead th.nm{z-index:3; right:0; position:-webkit-sticky; position:sticky;
+            -webkit-transform:translateZ(0); transform:translateZ(0);}
   table.standtbl td.pts{font-weight:800; color:var(--ink);}
   table.standtbl td.p1{font-weight:700; color:var(--blue);}
   table.standtbl td.pm{font-weight:700; color:var(--green);}
@@ -526,8 +569,10 @@ CMTBL_CSS = """
   .lcard{position:relative; border-radius:16px; padding:15px 18px 22px; color:#e5e7eb;
             cursor:pointer; border:1px solid rgba(255,255,255,.09); min-height:92px;
             user-select:none; transition:border-color .15s, box-shadow .15s;}
-  /* NB: avoid filter/transform on hover/active - they create a stacking context
-     that would trap .lpop's z-index beneath the standings table's sticky cells. */
+  /* NB: avoid filter/transform on .lcard hover/active - they create a stacking
+     context that would trap .lpop's z-index beneath the standings table's sticky
+     cells. (.lpop itself is composited below so it stays above those cells, which
+     are GPU-promoted to work around an iOS Safari sticky-cell paint bug.) */
   .lcard:hover{border-color:rgba(255,255,255,.28);
             box-shadow:0 10px 26px -14px rgba(0,0,0,.55);}
   .lcard.open{border-color:rgba(255,255,255,.35);}
@@ -556,14 +601,18 @@ CMTBL_CSS = """
   .lpop{display:none; position:absolute; top:calc(100% + 8px); right:0; left:0; z-index:60;
             background:#fff; color:#0f172a; border:1px solid var(--line); border-radius:12px;
             box-shadow:0 18px 44px -16px rgba(0,0,0,.5); max-height:320px; overflow:auto;
-            direction:rtl; text-align:right;}
+            direction:rtl; text-align:right;
+            /* keep this popover on its own layer so it stays above the GPU-promoted
+               sticky name cells of the standings table it overlaps. */
+            -webkit-transform:translateZ(0); transform:translateZ(0);}
   .lcard.open .lpop{display:block;}
   table.ltbl{width:100%; border-collapse:separate; border-spacing:0; font-size:.9rem;
             font-variant-numeric:tabular-nums;}
   table.ltbl td{padding:8px 12px; border-bottom:1px solid #f1f5f9; color:#475569;}
   table.ltbl tr:last-child td{border-bottom:0;}
-  table.ltbl td.nm{text-align:right; color:var(--ink);}
-  table.ltbl td.tm{text-align:right; color:#64748b;}
+  table.ltbl td.nm{text-align:right; color:var(--ink); white-space:nowrap;}
+  table.ltbl td.tm{text-align:center; color:#64748b; white-space:nowrap; width:44px;}
+  .lt-fl{font-size:1.2em; line-height:1;}
   /* red dot next to a team/player whose match is in progress right now */
   .lt-dot{display:inline-block; width:8px; height:8px; border-radius:50%;
             background:#ef4444; margin-inline-start:7px; vertical-align:middle;
@@ -582,9 +631,12 @@ CMTBL_CSS = """
               border-bottom:1px solid var(--line); font-weight:700; color:#334155;}
   table.cmtbl th.ch .t{font-size:.72rem; color:var(--muted); font-weight:600;}
   table.cmtbl th.sum{color:#334155;}
-  table.cmtbl th.nm, table.cmtbl td.nm{position:sticky; right:0; z-index:1; background:#fff;
-              text-align:right; font-weight:600; max-width:150px; overflow:hidden;
-              text-overflow:ellipsis; box-shadow:-6px 0 6px -6px rgba(0,0,0,.12);}
+  table.cmtbl th.nm, table.cmtbl td.nm{position:-webkit-sticky; position:sticky; right:0;
+              z-index:1; background:#fff; text-align:right; font-weight:600; max-width:150px;
+              overflow:hidden; text-overflow:ellipsis; box-shadow:-6px 0 6px -6px rgba(0,0,0,.12);
+              /* iOS Safari sticky-cell paint fix (see standtbl td.nm) */
+              -webkit-transform:translateZ(0); transform:translateZ(0);
+              -webkit-backface-visibility:hidden;}
   table.cmtbl thead th.nm{z-index:3;}
   table.cmtbl td.cell{min-width:34px; color:#0f172a; font-weight:600;}
   table.cmtbl td.sum{font-weight:700;}
@@ -3082,6 +3134,8 @@ def path_html(data: dict) -> str:
         '</tr></thead><tbody id="pathBoard"></tbody></table></div>'
         '<div class="pathsec-title" id="pathBracketTitle" data-i18n="path.bracket.title"></div>'
         '<div class="wibracket-wrap pathbr" id="pathBracket"></div>'
+        '<div class="pathsec-title" id="pathGroupsTitle" data-i18n="path.groups.title"></div>'
+        '<div class="wggrid pathgroups" id="pathGroups"></div>'
         '</div>'
         '</div>'
     )
@@ -3161,6 +3215,8 @@ def path_js(payload: dict) -> str:
   const boardT = document.getElementById('pathBoardTitle');
   const brWrap = document.getElementById('pathBracket');
   const brTitle= document.getElementById('pathBracketTitle');
+  const grpEl  = document.getElementById('pathGroups');
+  const grpTitle = document.getElementById('pathGroupsTitle');
   const boardWrap = board.closest('.standwrap') || board.parentElement;
 
   let animTimer = null, curName = null, curChamp = null;
@@ -3229,6 +3285,30 @@ def path_js(payload: dict) -> str:
     }).join('');
   }
 
+  // ---- group tables that fed this scenario's bracket --------------------- //
+  function renderGroups(groups){
+    if(!grpEl) return;
+    const gs = groups||[];
+    if(!gs.length){ grpEl.innerHTML=''; return; }
+    grpEl.innerHTML = gs.map(gr=>{
+      const rows = (gr.rows||[]).map(r=>{
+        const pos=r.pos; let cls=''; if(pos<=2) cls='q'+pos; else if(pos===3 && r.adv) cls='q3';
+        const fl=flagChar(r.team);
+        return `<tr class="${cls}"><td class="pos">${pos}</td>`+
+          `<td class="nm" title="${r.team}">${fl?`<span class="wgfl">${fl}</span>`:''}${heT(r.team)}</td>`+
+          `<td class="pts">${r.pts}</td>`+
+          `<td dir="ltr">${r.gd>0?'+':''}${r.gd}</td>`+
+          `<td>${r.gf}</td></tr>`;
+      }).join('');
+      return `<div class="wgcard">`+
+        `<div class="wgh"><span>${t('groups.group')} ${gr.g}</span></div>`+
+        `<table class="wgtbl"><thead><tr>`+
+          `<th>${t('wi.gt.pos')}</th><th class="nm">${t('wi.gt.team')}</th>`+
+          `<th>${t('wi.gt.pts')}</th><th>${t('wi.gt.gd')}</th><th>${t('wi.gt.gf')}</th>`+
+        `</tr></thead><tbody>${rows}</tbody></table></div>`;
+    }).join('');
+  }
+
   function renderScenario(name, champTeam){
     const ent = (P.vp||{})[name]; if(!ent) return;
     const scs = ent.scenarios||{};
@@ -3237,7 +3317,8 @@ def path_js(payload: dict) -> str:
     const sc = ch ? scs[ch] : null;
     if(!sc){ lead.style.display='none'; champW.style.display='none';
       boardT.style.display='none'; boardWrap.style.display='none';
-      brTitle.style.display='none'; brWrap.style.display='none'; brWrap.innerHTML=''; return; }
+      brTitle.style.display='none'; brWrap.style.display='none'; brWrap.innerHTML='';
+      grpTitle.style.display='none'; grpEl.style.display='none'; grpEl.innerHTML=''; return; }
     curChamp = ch;
     lead.style.display=''; lead.textContent = I.fmt('path.lead', {name});
     champW.style.display='';
@@ -3255,6 +3336,8 @@ def path_js(payload: dict) -> str:
     }
     renderBracket(full);
     animateBracket();
+    grpTitle.style.display=''; grpEl.style.display='';
+    renderGroups(sc.groups);
     champsEl.querySelectorAll('[data-champ]').forEach(el=>
       el.classList.toggle('sel', el.getAttribute('data-champ')===ch));
   }
@@ -3273,6 +3356,7 @@ def path_js(payload: dict) -> str:
       boardT.style.display='none'; boardWrap.style.display='none';
       brTitle.style.display='none'; brWrap.style.display='none';
       brWrap.innerHTML='';
+      grpTitle.style.display='none'; grpEl.style.display='none'; grpEl.innerHTML='';
       return;
     }
     summ.className='pathsummary';

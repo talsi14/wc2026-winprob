@@ -4,7 +4,7 @@
 #
 # Runs the two-step chain in order:
 #   1. wc2026_bet/scripts/run_live_pipeline.py --recalibrate
-#        -> fetches live ESPN state + odds, runs 50k conditioned sims,
+#        -> fetches live ESPN state + odds, runs 200k conditioned sims,
 #           writes wc2026_bet/results/live_latest.json (+ report/live.html)
 #   2. wc2026_bet/scripts/build_friends_report.py
 #        -> injects the win-prob sections into the shareable page
