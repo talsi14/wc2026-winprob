@@ -620337,6 +620337,11 @@
       "goals": 3
     },
     {
+      "scorer": "Matheus Cunha",
+      "team": "Brazil",
+      "goals": 3
+    },
+    {
       "scorer": "Ayase Ueda",
       "team": "Japan",
       "goals": 2
@@ -620404,11 +620409,6 @@
     {
       "scorer": "Kai Havertz",
       "team": "Germany",
-      "goals": 2
-    },
-    {
-      "scorer": "Matheus Cunha",
-      "team": "Brazil",
       "goals": 2
     },
     {
@@ -620864,7 +620864,7 @@
       "games": 3
     },
     "Brazil": {
-      "gf": 6,
+      "gf": 7,
       "ga": 1,
       "games": 3
     },
@@ -620880,7 +620880,7 @@
     },
     "Scotland": {
       "gf": 1,
-      "ga": 3,
+      "ga": 4,
       "games": 3
     },
     "Australia": {
