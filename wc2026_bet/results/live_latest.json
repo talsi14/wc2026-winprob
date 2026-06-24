@@ -620317,6 +620317,11 @@
       "goals": 3
     },
     {
+      "scorer": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 3
+    },
+    {
       "scorer": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 3
@@ -620389,11 +620394,6 @@
     {
       "scorer": "Harry Kane",
       "team": "England",
-      "goals": 2
-    },
-    {
-      "scorer": "Ismael Saibari",
-      "team": "Morocco",
       "goals": 2
     },
     {
@@ -620869,13 +620869,13 @@
       "games": 3
     },
     "Morocco": {
-      "gf": 3,
+      "gf": 4,
       "ga": 3,
       "games": 3
     },
     "Haiti": {
       "gf": 2,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "Scotland": {
