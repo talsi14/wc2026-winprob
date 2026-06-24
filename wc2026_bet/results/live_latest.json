@@ -9897,6 +9897,11 @@
       "goals": 2
     },
     {
+      "scorer": "Daniel Muñoz",
+      "team": "Colombia",
+      "goals": 2
+    },
+    {
       "scorer": "Elijah Just",
       "team": "New Zealand",
       "goals": 2
@@ -10029,11 +10034,6 @@
     {
       "scorer": "Connor Metcalfe",
       "team": "Australia",
-      "goals": 1
-    },
-    {
-      "scorer": "Daniel Muñoz",
-      "team": "Colombia",
       "goals": 1
     },
     {
@@ -10535,7 +10535,7 @@
     },
     "DR Congo": {
       "gf": 1,
-      "ga": 1,
+      "ga": 2,
       "games": 2
     },
     "England": {
@@ -10564,7 +10564,7 @@
       "games": 2
     },
     "Colombia": {
-      "gf": 3,
+      "gf": 4,
       "ga": 1,
       "games": 2
     }
