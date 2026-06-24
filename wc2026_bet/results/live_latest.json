@@ -9927,6 +9927,11 @@
       "goals": 2
     },
     {
+      "scorer": "Rubén Vargas",
+      "team": "Switzerland",
+      "goals": 2
+    },
+    {
       "scorer": "Vinícius Júnior",
       "team": "Brazil",
       "goals": 2
@@ -10282,11 +10287,6 @@
       "goals": 1
     },
     {
-      "scorer": "Rubén Vargas",
-      "team": "Switzerland",
-      "goals": 1
-    },
-    {
       "scorer": "Teboho Mokoena",
       "team": "South Africa",
       "goals": 1
@@ -10335,7 +10335,7 @@
     },
     "Canada": {
       "gf": 7,
-      "ga": 1,
+      "ga": 2,
       "games": 3
     },
     "Bosnia and Herzegovina": {
@@ -10359,7 +10359,7 @@
       "games": 3
     },
     "Switzerland": {
-      "gf": 5,
+      "gf": 6,
       "ga": 2,
       "games": 3
     },
