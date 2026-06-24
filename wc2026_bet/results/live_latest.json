@@ -10107,6 +10107,11 @@
       "goals": 1
     },
     {
+      "scorer": "Kerim Alajbegovic",
+      "team": "Bosnia and Herzegovina",
+      "goals": 1
+    },
+    {
       "scorer": "Kevin Pina",
       "team": "Cape Verde",
       "goals": 1
@@ -10329,7 +10334,7 @@
       "games": 3
     },
     "Bosnia and Herzegovina": {
-      "gf": 2,
+      "gf": 3,
       "ga": 5,
       "games": 3
     },
@@ -10345,7 +10350,7 @@
     },
     "Qatar": {
       "gf": 1,
-      "ga": 7,
+      "ga": 8,
       "games": 3
     },
     "Switzerland": {
