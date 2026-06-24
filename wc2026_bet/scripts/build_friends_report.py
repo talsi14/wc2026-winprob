@@ -208,6 +208,8 @@ def standings_table_html(data: dict) -> str:
         'כל הטפסים מדורגים לפי הניקוד בפועל. '
         'העמודות <b>זכייה</b> ו<b>תוך הכסף</b> הן הסתברויות מהסימולציה (מקום 1, ומקום 1–2). '
         'בכל בחירה מוצג בסוגריים מספר הנקודות שצברה עד כה.</p>\n'
+        '    <button type="button" class="racebtn" data-race="leaderboard" '
+        'data-i18n="race.btn.leaderboard">מרוץ הנקודות — 10 המובילים</button>\n'
         f'    <div class="standwrap"><table class="standtbl"><thead>{head}</thead>'
         f'<tbody>{"".join(trs)}</tbody></table></div>\n  </section>\n')
 
@@ -405,6 +407,7 @@ def explanation_html(n_ent: int, n_sims: int, coverage: str = "") -> str:
   <section>
     <h2 style="margin-top:6px" data-i18n="matrix.title">סיכויי ניצחון בהתערבות - מותנה בזהות האלופה</h2>
     <p class="sub" data-i18n="matrix.sub" data-i18n-html></p>
+    <button type="button" class="racebtn" data-race="p1" data-i18n="race.btn.p1">מרוץ סיכויי הזכייה — 10 המובילים</button>
     <div class="scrollbox"><div id="cmMatrix"></div></div>
     <p class="sub" style="margin-top:8px" data-i18n="matrix.gold" data-i18n-html></p>
   </section>
@@ -783,6 +786,41 @@ ODDS_CSS = """
   .odhistctrls .stmode button{font-size:.84rem;}
 """
 
+RACE_CSS = """
+  /* Bar-chart-race trigger button + overlay */
+  .racebtn{display:inline-flex; align-items:center; gap:7px; margin:6px 0 12px;
+           background:linear-gradient(135deg,#1d4ed8,#7c3aed); color:#fff; border:0;
+           border-radius:12px; padding:9px 16px; font-size:.9rem; font-weight:800;
+           cursor:pointer; box-shadow:0 2px 8px rgba(29,78,216,.28);}
+  .racebtn::before{content:"▶"; font-size:.72rem;}
+  .racebtn:hover{filter:brightness(1.06);}
+  .racebtn:active{transform:translateY(1px);}
+  #raceModal{position:fixed; inset:0; z-index:9999; display:none;
+             background:rgba(15,23,42,.62); backdrop-filter:blur(3px);
+             align-items:center; justify-content:center; padding:16px;}
+  #raceModal.open{display:flex;}
+  .racecard{background:#fff; border-radius:18px; width:min(960px,100%);
+            max-height:94vh; overflow:auto; box-shadow:0 24px 60px rgba(2,6,23,.45);
+            padding:18px 18px 14px;}
+  .racehd{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px;}
+  .racehd h3{margin:0; font-size:1.12rem; font-weight:900; color:var(--ink);}
+  .raceclose{background:#f1f5f9; border:0; border-radius:10px; width:34px; height:34px;
+             font-size:1.2rem; line-height:1; cursor:pointer; color:#334155;}
+  .raceclose:hover{background:#e2e8f0;}
+  .racecanvaswrap{width:100%;}
+  #raceCanvas{width:100%; height:auto; display:block;}
+  .racectrls{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .raceplay{background:#1d4ed8; color:#fff; border:0; border-radius:10px; padding:8px 16px;
+            font-weight:800; cursor:pointer; min-width:92px;}
+  .raceplay:hover{filter:brightness(1.07);}
+  .racescrub{flex:1 1 200px; min-width:160px; accent-color:#1d4ed8;}
+  .racedate{font-variant-numeric:tabular-nums; font-weight:800; color:#334155; min-width:118px;
+            text-align:center; font-size:.92rem;}
+  .racespeed{border:1px solid var(--line); border-radius:10px; padding:6px 8px; font-weight:700;
+             color:#334155; background:#fff;}
+  .racefoot{color:var(--muted); font-size:.8rem; margin:8px 2px 0;}
+"""
+
 CHEER_CSS = """
   /* "Who to root for?" tab */
   .rfnote{border-right-color:var(--amber); background:#fffbeb;}
@@ -1149,6 +1187,50 @@ def odds_payload(data: dict) -> dict:
     }
 
 
+def race_payload(data: dict) -> dict:
+    """Time-series feeding the three bar-chart-race overlays.
+
+    * entryHist — per-run participant points + P(1st)         (entry_history.jsonl)
+    * simTitle  — per-run model title probability per team     (metrics_history.jsonl)
+    * titleHe / iso — Hebrew names + flag ISO codes for the team race.
+    """
+    team_he = _team_he_map()
+
+    entry_hist = []
+    ehf = DATA_HISTORY / "entry_history.jsonl"
+    if ehf.exists():
+        for line in ehf.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    entry_hist.append(json.loads(line))
+                except json.JSONDecodeError:
+                    pass
+
+    sim_hist, teams = [], set()
+    mhf = DATA_HISTORY / "metrics_history.jsonl"
+    if mhf.exists():
+        for line in mhf.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            sim = rec.get("sim_title") or {}
+            if sim:
+                sim_hist.append({"ts": rec.get("ts"), "sim": sim})
+                teams.update(sim.keys())
+
+    return {
+        "entryHist": entry_hist,
+        "simHist": sim_hist,
+        "titleHe": {t: team_he.get(t, t) for t in teams},
+        "iso": {t: _TEAM_ISO.get(t, "") for t in teams},
+    }
+
+
 def odds_html() -> str:
     return """
   <h2 class="bigsec" data-i18n="od.title">הימורי השוק ודירוגי הכוח (ELO)</h2>
@@ -1168,6 +1250,7 @@ def odds_html() -> str:
     </section>
     <section><div class="panel-title" data-i18n="od.title_title">סיכויי תואר — שוק מול סימולציה</div>
       <p class="panel-cap" data-i18n="od.title_cap">P(זכייה בגביע): השוק (הסתברות גלומה) מול הסימולציה שלנו</p>
+      <button type="button" class="racebtn" data-race="title" data-i18n="race.btn.title">מרוץ סיכויי התואר (סימולציה) — 10 המובילות</button>
       <div class="scrollbox"><table class="odtbl"><thead><tr>
         <th class="nm" data-i18n="od.th.team">נבחרת</th><th data-i18n="od.th.market">שוק</th>
         <th data-i18n="od.th.sim">סימולציה</th></tr></thead>
@@ -2606,6 +2689,263 @@ STAGES_JS = r"""
 """
 
 
+def race_modal_html() -> str:
+    """Single reusable overlay shared by all three race buttons."""
+    return """
+  <div id="raceModal" aria-hidden="true">
+    <div class="racecard" role="dialog" aria-modal="true">
+      <div class="racehd">
+        <h3 id="raceTitle"></h3>
+        <button type="button" class="raceclose" id="raceClose" aria-label="Close">×</button>
+      </div>
+      <div class="racecanvaswrap"><canvas id="raceCanvas"></canvas></div>
+      <div class="racectrls">
+        <button type="button" class="raceplay" id="racePlay"></button>
+        <input type="range" class="racescrub" id="raceScrub" min="0" max="1000" value="0">
+        <span class="racedate" id="raceDate"></span>
+        <select class="racespeed" id="raceSpeed" aria-label="speed">
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+          <option value="4">4×</option>
+        </select>
+      </div>
+      <p class="racefoot" id="raceFoot"></p>
+    </div>
+  </div>
+"""
+
+
+def race_js(payload: dict) -> str:
+    data = json.dumps(payload, ensure_ascii=False)
+    return r"""
+(function(){
+  const RD = __RACEDATA__;
+  const I = window.I18N;
+  const TOPN = 10;
+  const MODAL = document.getElementById('raceModal');
+  if(!MODAL || !I) return;
+  const canvas = document.getElementById('raceCanvas');
+  const ctx = canvas.getContext('2d');
+  const titleEl = document.getElementById('raceTitle');
+  const playBtn = document.getElementById('racePlay');
+  const scrub   = document.getElementById('raceScrub');
+  const dateEl  = document.getElementById('raceDate');
+  const speedSel= document.getElementById('raceSpeed');
+  const footEl  = document.getElementById('raceFoot');
+
+  function hue(s){ let h=0; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h%360; }
+  function colorFor(k){ return 'hsl('+hue(k)+' 62% 50%)'; }
+  // Golden-angle palette: spacing hues by ~137.5° (plus small S/L variation) keeps
+  // even value-adjacent bars far apart in colour, avoiding clusters of similar greens.
+  function paletteColor(i){ const h=(i*137.508)%360, s=60+(i%3)*6, l=45+(i%2)*9;
+    return 'hsl('+h.toFixed(1)+' '+s+'% '+l+'%)'; }
+  function assignColors(frames){
+    const peak={};
+    for(const f of frames) for(const k in f.map){ const v=f.map[k].value;
+      if(!(k in peak) || v>peak[k]) peak[k]=v; }
+    const ordered=Object.keys(peak).sort((a,b)=> peak[b]-peak[a] || (a<b?-1:1));
+    const cmap={}; ordered.forEach((k,i)=> cmap[k]=paletteColor(i));
+    for(const f of frames) for(const k in f.map) f.map[k].color=cmap[k];
+  }
+  function flagOf(en){ const iso=(RD.iso||{})[en]; if(!iso||iso.length!==2) return '';
+    return String.fromCodePoint(...[...iso.toUpperCase()].map(c=>0x1F1E6+c.charCodeAt(0)-65)); }
+  function fmtTs(ts){ if(!ts) return ''; const m=String(ts).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2})(\d{2})/);
+    if(!m) return ts; const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2]-1];
+    return (+m[3])+' '+mo+' '+m[4]+':'+m[5]; }
+  function roundRect(c,x,y,w,h,r){ r=Math.min(r,h/2,w/2); c.beginPath();
+    c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+    c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+
+  function buildFrames(kind){
+    let frames=[], fmtVal, title;
+    // valuePaced: percentage races also stretch transition time by how much the
+    // value moves (not just rank), so odds visibly climb (e.g. 5%->6%) instead
+    // of snapping. The points race stays rank-paced to keep dead time compressed.
+    let valuePaced=false;
+    if(kind==='title'){
+      title = I.t('race.title.title'); valuePaced=true;
+      fmtVal = v => v.toFixed(1)+'%';
+      for(const rec of (RD.simHist||[])){
+        const map={};
+        for(const tm in rec.sim) map[tm]={label:I.team(tm), value:(rec.sim[tm]||0)*100, flag:flagOf(tm), color:colorFor(tm)};
+        frames.push({ts:rec.ts, map});
+      }
+    } else {
+      const usePts = (kind==='leaderboard'); valuePaced=!usePts;
+      title  = I.t(usePts?'race.title.leaderboard':'race.title.p1');
+      fmtVal = usePts ? (v=> (Math.round(v*10)/10).toFixed(1)) : (v=> v.toFixed(1)+'%');
+      for(const rec of (RD.entryHist||[])){
+        const map={};
+        for(const nm in rec.entries){ const e=rec.entries[nm];
+          map[nm]={label:nm, value: usePts?(e.pts||0):((e.p1||0)*100), flag:'', color:colorFor(nm)}; }
+        frames.push({ts:rec.ts, map});
+      }
+    }
+    assignColors(frames);
+    return {frames, fmtVal, title, valuePaced};
+  }
+
+  // Per-race state. `clock` is the master timeline in ms; `pos` is the derived
+  // fractional frame index. Timing is variable: transitions with no standings
+  // movement are compressed to a short slide, while transitions with overtakes
+  // are stretched and eased so each pass is clearly readable (Flourish-style).
+  let cur=null, playing=false, raf=0, lastT=0, pos=0, clock=0, totalMs=0;
+  let frameRanks=[], phases=[], dispY={};   // dispY: smoothed vertical slot per key
+  const MIN_SEG=420, MAX_SEG=2900, HOLD=700, CAP_MS=70000;  // ms: slide bounds / rest / total cap
+  const RANK_TAU=190;   // ms time-constant for a bar to glide one slot when overtaking
+  function speed(){ return parseFloat(speedSel.value)||1; }
+  // gentle sine ease: steadier mid-transition so values visibly climb (5%->6%)
+  // rather than snapping through the middle the way a cubic ease does.
+  function easeInOut(t){ return -(Math.cos(Math.PI*t)-1)/2; }
+  function allKeys(){ const s=new Set(); for(const f of cur.frames) for(const k in f.map) s.add(k); return [...s]; }
+
+  function ranksOf(frame){ const arr=Object.keys(frame.map)
+      .map(k=>({k,v:frame.map[k].value})).sort((a,b)=> b.v-a.v || (a.k<b.k?-1:1));
+    const r={}; arr.forEach((o,i)=> r[o.k]=i); return r; }
+  // Per-transition movement, split into rank change (overtakes) and summed
+  // value change across the visible bars, so each can drive pacing separately.
+  function movement(i){ const a=frameRanks[i], b=frameRanks[i+1];
+    const fa=cur.frames[i].map, fb=cur.frames[i+1].map; let rankM=0, valM=0;
+    const ks=new Set([...Object.keys(a),...Object.keys(b)]);
+    for(const k of ks){ const ra=(k in a)?a[k]:TOPN, rb=(k in b)?b[k]:TOPN;
+      if(ra<TOPN || rb<TOPN){
+        rankM+=Math.abs(Math.min(ra,TOPN)-Math.min(rb,TOPN));
+        valM +=Math.abs((fb[k]?fb[k].value:0)-(fa[k]?fa[k].value:0));
+      } }
+    return {rankM, valM}; }
+
+  function buildTimeline(){
+    frameRanks = cur.frames.map(ranksOf);
+    phases=[]; totalMs=0;
+    const F=cur.frames; if(F.length<2) return;
+    const mv=[]; let rMax=0, vMax=0;
+    for(let i=0;i<F.length-1;i++){ const m=movement(i); mv.push(m);
+      if(m.rankM>rMax) rMax=m.rankM; if(m.valM>vMax) vMax=m.valM; }
+    for(let i=0;i<F.length-1;i++){
+      const rR = rMax>0 ? mv[i].rankM/rMax : 0;
+      const vR = vMax>0 ? mv[i].valM/vMax : 0;
+      // value races: a big % swing earns as much time as a big rank swing.
+      const score = cur.valuePaced ? Math.max(rR, vR) : rR;
+      const dur = MIN_SEG + (MAX_SEG-MIN_SEG)*Math.pow(score, 0.6);   // perceptual
+      phases.push({seg:i, dur}); totalMs+=dur;
+      if(mv[i].rankM > 0){ phases.push({hold:i+1, dur:HOLD}); totalMs+=HOLD; } // rest to read overtakes
+    }
+    // Keep autoplay reasonable for long histories without losing the relative
+    // slow/fast contrast — scale the whole timeline down if it exceeds the cap.
+    if(totalMs > CAP_MS){ const s=CAP_MS/totalMs; phases.forEach(p=> p.dur*=s); totalMs=CAP_MS; }
+  }
+  function posFromClock(c){
+    if(!phases.length) return 0;
+    if(c>=totalMs) return cur.frames.length-1;
+    let acc=0;
+    for(const ph of phases){
+      if(c < acc+ph.dur){ const lt=(c-acc)/ph.dur;
+        return ('seg' in ph) ? ph.seg + easeInOut(lt) : ph.hold; }
+      acc+=ph.dur;
+    }
+    return cur.frames.length-1;
+  }
+
+  function valAt(k,p){ const i=Math.floor(p), t=p-i, j=Math.min(i+1,cur.frames.length-1);
+    const a=cur.frames[i]&&cur.frames[i].map[k], b=cur.frames[j]&&cur.frames[j].map[k];
+    const va=a?a.value:0, vb=b?b.value:0; return va+(vb-va)*t; }
+  // Instantaneous slot by interpolated value (with stable name tiebreak). As a
+  // climbing bar's value passes each rival's at a different moment, its target
+  // slot drops one step at a time -> sequential overtakes rather than one leap.
+  function instRanks(p){ const arr=allKeys().map(k=>({k, v:valAt(k,p)}))
+      .sort((a,b)=> b.v-a.v || (a.k<b.k?-1:1));
+    const r={}; arr.forEach((o,i)=> r[o.k]=i); return r; }
+  function snapDisp(p){ dispY=instRanks(p); }
+  function easeDisp(p, dtMs){ const target=instRanks(p);
+    const a=Math.min(1, 1-Math.exp(-dtMs/RANK_TAU));
+    for(const k in target){ if(!(k in dispY)) dispY[k]=target[k];
+      dispY[k] += (target[k]-dispY[k])*a; } }
+  function metaOf(k,p){ const i=Math.min(Math.round(p),cur.frames.length-1);
+    return (cur.frames[i]&&cur.frames[i].map[k]) || (cur.frames[Math.max(0,i-1)]&&cur.frames[Math.max(0,i-1)].map[k])
+        || {label:k,flag:'',color:colorFor(k)}; }
+
+  function draw(p){
+    if(!cur || !cur.frames.length) return;
+    // Position each bar at its smoothed slot (dispY) so it physically slides past
+    // rivals one at a time on an overtake; width/label use the interpolated value.
+    const items=allKeys().map(k=>({key:k, value:valAt(k,p), yr:(k in dispY?dispY[k]:TOPN+2)}))
+                         .filter(o=> o.yr < TOPN + 0.6)
+                         .sort((a,b)=> a.yr-b.yr);
+    const maxV=Math.max(...items.filter(o=> o.yr<TOPN).map(o=>o.value), 1e-6);
+    const cssW=canvas.clientWidth||900, rowH=38, gap=10, padT=14, padB=8;
+    const cssH=padT+padB + TOPN*rowH + (TOPN-1)*gap;
+    const dpr=window.devicePixelRatio||1;
+    if(canvas.width!==Math.round(cssW*dpr) || canvas.height!==Math.round(cssH*dpr)){
+      canvas.width=Math.round(cssW*dpr); canvas.height=Math.round(cssH*dpr); canvas.style.height=cssH+'px'; }
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,cssW,cssH);
+    const x0=8, padR=14, maxBarW=cssW-x0-padR-64;
+    ctx.textBaseline='middle';
+    for(const it of items){
+      const meta=metaOf(it.key,p), y=padT+it.yr*(rowH+gap), cy=y+rowH/2;
+      const w=Math.max(3, maxBarW*(it.value/maxV));
+      ctx.globalAlpha = it.yr<TOPN ? 1 : Math.max(0, 1-(it.yr-TOPN)/0.6);  // slide-in/out fade
+      ctx.fillStyle=meta.color; roundRect(ctx,x0,y,w,rowH,8); ctx.fill();
+      const lbl=(meta.flag?meta.flag+' ':'')+meta.label;
+      ctx.font='700 15px system-ui,Arial'; ctx.textAlign='left';
+      const tw=ctx.measureText(lbl).width; let tipX=x0+w+8;
+      if(tw+18<w){ ctx.fillStyle='#fff'; ctx.fillText(lbl, x0+10, cy); }
+      else { ctx.fillStyle='#334155'; ctx.fillText(lbl, tipX, cy); tipX+=tw+8; }
+      ctx.fillStyle='#0f172a'; ctx.font='800 14px system-ui,Arial';
+      ctx.fillText(cur.fmtVal(it.value), tipX, cy);
+      ctx.globalAlpha=1;
+    }
+    const ts=cur.frames[Math.min(Math.round(p),cur.frames.length-1)].ts;
+    dateEl.textContent=fmtTs(ts);
+    if(document.activeElement!==scrub)
+      scrub.value=String(Math.round((totalMs>0? clock/totalMs : 0)*1000));
+  }
+
+  function tick(now){
+    if(!playing) return;
+    if(!lastT) lastT=now;
+    const stepDt=(now-lastT)*speed(); clock += stepDt; lastT=now;
+    if(clock>=totalMs){ clock=totalMs; pos=cur.frames.length-1; easeDisp(pos,stepDt); draw(pos); stop(); return; }
+    pos=posFromClock(clock); easeDisp(pos, stepDt); draw(pos); raf=requestAnimationFrame(tick);
+  }
+  function play(){ if(!cur||cur.frames.length<2||totalMs<=0) return;
+    if(clock>=totalMs) clock=0;
+    playing=true; lastT=0; playBtn.textContent=I.t('race.pause');
+    cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); }
+  function stop(){ playing=false; cancelAnimationFrame(raf); playBtn.textContent=I.t('race.play'); }
+
+  function open(kind){
+    cur=buildFrames(kind); MODAL.dataset.kind=kind; buildTimeline();
+    titleEl.textContent=cur.title;
+    footEl.textContent=I.fmt('race.foot', {n: cur.frames.length});
+    clock=0; pos=0; stop(); scrub.value='0'; snapDisp(0);
+    MODAL.classList.add('open'); MODAL.setAttribute('aria-hidden','false');
+    requestAnimationFrame(()=>{ draw(0); play(); });
+  }
+  function close(){ stop(); MODAL.classList.remove('open'); MODAL.setAttribute('aria-hidden','true'); }
+
+  // The modal must live directly under <body>; otherwise it is nested inside a
+  // .tabpanel that gets display:none on other tabs (e.g. the title-race button
+  // sits in the Odds tab), which would hide the overlay entirely.
+  if(MODAL.parentNode!==document.body) document.body.appendChild(MODAL);
+
+  document.querySelectorAll('.racebtn').forEach(b=> b.addEventListener('click', ()=> open(b.dataset.race)));
+  document.getElementById('raceClose').addEventListener('click', close);
+  MODAL.addEventListener('click', e=>{ if(e.target===MODAL) close(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && MODAL.classList.contains('open')) close(); });
+  playBtn.addEventListener('click', ()=> playing?stop():play());
+  scrub.addEventListener('input', ()=>{ stop(); clock=(scrub.value/1000)*totalMs; pos=posFromClock(clock); snapDisp(pos); draw(pos); });
+  speedSel.addEventListener('change', ()=>{ if(playing) lastT=0; });
+  window.addEventListener('resize', ()=>{ if(MODAL.classList.contains('open')) draw(pos); });
+  document.addEventListener('langchange', ()=>{ if(!MODAL.classList.contains('open')) return;
+    const c=clock, kind=MODAL.dataset.kind; cur=buildFrames(kind); buildTimeline();
+    titleEl.textContent=cur.title; footEl.textContent=I.fmt('race.foot',{n:cur.frames.length});
+    playBtn.textContent=I.t(playing?'race.pause':'race.play'); clock=c; pos=posFromClock(clock); snapDisp(pos); draw(pos); });
+})();
+""".replace("__RACEDATA__", data)
+
+
 def main() -> None:
     data = json.loads((WC_ROOT / "results" / "live_latest.json").read_text())
     state = _load_state()
@@ -2625,12 +2965,14 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, CHEER_CSS, STAGES_CSS])
+    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
+    #    The race overlay is a global fixed element shared by all three buttons.
     main_body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
-                 + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data))
+                 + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data)
+                 + race_modal_html())
     html = replace_region(html, HTML_START, HTML_END, main_body)
 
     # 3) What-If + Odds tab bodies.
@@ -2642,11 +2984,13 @@ def main() -> None:
     # 4) All injected JS in one managed block before </script>.
     wi_payload = whatif_payload(data, state)
     od_payload = odds_payload(data)
+    rc_payload = race_payload(data)
     team_he, pl_he = _team_he_map(), _player_he_map()
     all_js = "\n".join([
         i18n_js(team_he, pl_he),
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
-        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload), CHEER_JS, STAGES_JS,
+        LEADERS_JS, TABS_JS, whatif_js(wi_payload), odds_js(od_payload),
+        race_js(rc_payload), CHEER_JS, STAGES_JS,
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
 

@@ -29,6 +29,9 @@ RESULTS = WC_ROOT / "results" / "live_latest.json"
 TEAMS = WC_ROOT / "data" / "processed" / "teams.csv"
 HIST_DIR = WC_ROOT / "data" / "history"
 HIST = HIST_DIR / "metrics_history.jsonl"
+# Per-entry points + P(1st) over time, feeding the bar-chart-race visualisations
+# on the shareable page. Committed (like metrics_history) so it accumulates.
+ENTRY_HIST = HIST_DIR / "entry_history.jsonl"
 
 TOP_N = 12
 
@@ -64,6 +67,46 @@ def _fingerprint(rec: dict) -> str:
                                      ensure_ascii=False).encode()).hexdigest()
 
 
+def _entry_record(data: dict, ts: str) -> dict:
+    """Compact per-entry snapshot: name -> {pts, p1} for the race charts."""
+    ent = {}
+    for e in data.get("entries") or []:
+        nm = e.get("name")
+        if not nm:
+            continue
+        try:
+            ent[nm] = {"pts": round(float(e.get("current_points", 0)), 3),
+                       "p1": round(float(e.get("P_first", 0)), 5)}
+        except (TypeError, ValueError):
+            pass
+    return {"ts": ts, "generated_at": datetime.now(timezone.utc).isoformat(),
+            "entries": ent}
+
+
+def _append_entry_history(rec: dict, ts: str) -> None:
+    """Append the per-entry snapshot, skipping if identical to the last one."""
+    ENTRY_HIST.parent.mkdir(parents=True, exist_ok=True)
+    fp = hashlib.sha256(json.dumps(rec["entries"], sort_keys=True,
+                                   ensure_ascii=False).encode()).hexdigest()
+    prev_fp = None
+    if ENTRY_HIST.exists():
+        lines = [ln for ln in ENTRY_HIST.read_text(encoding="utf-8").splitlines() if ln.strip()]
+        if lines:
+            try:
+                prev = json.loads(lines[-1])
+                prev_fp = hashlib.sha256(json.dumps(prev.get("entries", {}), sort_keys=True,
+                                                    ensure_ascii=False).encode()).hexdigest()
+            except json.JSONDecodeError:
+                prev_fp = None
+    if fp == prev_fp:
+        print(f"snapshot_metrics: entry history unchanged; skipping ({ts}).")
+        return
+    with ENTRY_HIST.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"snapshot_metrics: appended entry-history record for {ts} "
+          f"({len(rec['entries'])} entries).")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ts", default=None)
@@ -90,6 +133,10 @@ def main() -> None:
         "market_title_prob": mkt_top,
         "elo_blended": elo_top,
     }
+
+    # Per-entry race history is independent of the metrics fingerprint below, so
+    # snapshot it first (its own dedup guards against idle duplicate runs).
+    _append_entry_history(_entry_record(data, ts), ts)
 
     HIST_DIR.mkdir(parents=True, exist_ok=True)
     prev_fp = None
