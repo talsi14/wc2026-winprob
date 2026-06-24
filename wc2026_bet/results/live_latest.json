@@ -436863,22 +436863,22 @@
     "Brazil": {
       "gf": 4,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Morocco": {
       "gf": 2,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Haiti": {
       "gf": 0,
       "ga": 4,
-      "games": 2
+      "games": 3
     },
     "Scotland": {
       "gf": 1,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Australia": {
       "gf": 2,
@@ -445272,6 +445272,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Brazil",
+    "Haiti",
+    "Morocco",
+    "Scotland"
+  ]
 }
