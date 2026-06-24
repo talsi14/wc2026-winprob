@@ -620442,6 +620442,11 @@
       "goals": 1
     },
     {
+      "scorer": "Achraf Hakimi",
+      "team": "Morocco",
+      "goals": 1
+    },
+    {
       "scorer": "Agustín Canobbio",
       "team": "Uruguay",
       "goals": 1
@@ -620859,13 +620864,13 @@
       "games": 3
     },
     "Morocco": {
-      "gf": 2,
+      "gf": 3,
       "ga": 2,
       "games": 3
     },
     "Haiti": {
       "gf": 1,
-      "ga": 4,
+      "ga": 5,
       "games": 3
     },
     "Scotland": {
