@@ -574629,6 +574629,11 @@
       "goals": 1
     },
     {
+      "scorer": "Gonzalo Plata",
+      "team": "Ecuador",
+      "goals": 1
+    },
+    {
       "scorer": "Granit Xhaka",
       "team": "Switzerland",
       "goals": 1
@@ -575012,7 +575017,7 @@
     },
     "Germany": {
       "gf": 10,
-      "ga": 3,
+      "ga": 4,
       "games": 3
     },
     "Curaçao": {
@@ -575036,7 +575041,7 @@
       "games": 3
     },
     "Ecuador": {
-      "gf": 1,
+      "gf": 2,
       "ga": 2,
       "games": 3
     },
