@@ -88,11 +88,25 @@ def known_team_stats(ds: Dataset, state: dict) -> dict[str, dict]:
         else:
             stats[w]["reg_wins"] += 1; stats[l]["reg_losses"] += 1
 
-    if state.get("group_stage_complete"):
-        for _g, rows in (state.get("standings") or {}).items():
-            for r in rows:
-                stats[r["team"]]["group_finish"] = r["rank"]
+    gsc = bool(state.get("group_stage_complete"))
+    for _g, rows in (state.get("standings") or {}).items():
+        # A group is settled once all four teams have played their 3 matches.
+        group_done = bool(rows) and all(r.get("played", 0) >= 3 for r in rows)
+        for r in rows:
+            rank = r.get("rank", 0)
+            if gsc:
+                # Full group stage over: final standings + best-third
+                # qualification are known; trust the official advanced flag.
+                stats[r["team"]]["group_finish"] = rank
                 stats[r["team"]]["advanced"] = bool(r["advanced"])
+            elif group_done:
+                # This group is decided but the whole stage isn't. A top-2
+                # finish guarantees advancement regardless of the other groups,
+                # so credit its bonus now. Third place depends on the 8-best-
+                # thirds race (needs every group complete), so 3rd/4th wait.
+                stats[r["team"]]["group_finish"] = rank
+                if rank <= 2:
+                    stats[r["team"]]["advanced"] = True
     return stats
 
 
