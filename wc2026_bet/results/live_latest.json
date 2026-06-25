@@ -574819,6 +574819,16 @@
       "goals": 1
     },
     {
+      "scorer": "Nicolas Pépé",
+      "team": "Ivory Coast",
+      "goals": 1
+    },
+    {
+      "scorer": "Nilson Angulo",
+      "team": "Ecuador",
+      "goals": 1
+    },
+    {
       "scorer": "Nizar Al-Rashdan",
       "team": "Jordan",
       "goals": 1
@@ -575002,7 +575012,7 @@
     },
     "Germany": {
       "gf": 10,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Curaçao": {
@@ -575026,7 +575036,7 @@
       "games": 3
     },
     "Ecuador": {
-      "gf": 0,
+      "gf": 1,
       "ga": 2,
       "games": 3
     },
