@@ -574504,6 +574504,11 @@
       "goals": 2
     },
     {
+      "scorer": "Nicolas Pépé",
+      "team": "Ivory Coast",
+      "goals": 2
+    },
+    {
       "scorer": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -574819,11 +574824,6 @@
       "goals": 1
     },
     {
-      "scorer": "Nicolas Pépé",
-      "team": "Ivory Coast",
-      "goals": 1
-    },
-    {
       "scorer": "Nilson Angulo",
       "team": "Ecuador",
       "goals": 1
@@ -575017,7 +575017,7 @@
     },
     "Curaçao": {
       "gf": 1,
-      "ga": 8,
+      "ga": 9,
       "games": 3
     },
     "Netherlands": {
@@ -575031,7 +575031,7 @@
       "games": 2
     },
     "Ivory Coast": {
-      "gf": 3,
+      "gf": 4,
       "ga": 2,
       "games": 3
     },
