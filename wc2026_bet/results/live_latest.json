@@ -620794,22 +620794,22 @@
     "Mexico": {
       "gf": 3,
       "ga": 0,
-      "games": 2
+      "games": 3
     },
     "South Africa": {
       "gf": 1,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "South Korea": {
       "gf": 2,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Czech Republic": {
       "gf": 2,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "Canada": {
       "gf": 8,
@@ -628699,6 +628699,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Czech Republic",
+    "Mexico",
+    "South Africa",
+    "South Korea"
+  ]
 }
