@@ -620375,6 +620375,11 @@
       "goals": 2
     },
     {
+      "scorer": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 2
+    },
+    {
       "scorer": "Kai Havertz",
       "team": "Germany",
       "goals": 2
@@ -620557,11 +620562,6 @@
     {
       "scorer": "Jude Bellingham",
       "team": "England",
-      "goals": 1
-    },
-    {
-      "scorer": "Julián Quiñones",
-      "team": "Mexico",
       "goals": 1
     },
     {
@@ -620797,7 +620797,7 @@
   ],
   "team_played": {
     "Mexico": {
-      "gf": 4,
+      "gf": 5,
       "ga": 0,
       "games": 3
     },
@@ -620813,7 +620813,7 @@
     },
     "Czech Republic": {
       "gf": 2,
-      "ga": 4,
+      "ga": 5,
       "games": 3
     },
     "Canada": {
