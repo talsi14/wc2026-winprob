@@ -574714,6 +574714,11 @@
       "goals": 1
     },
     {
+      "scorer": "Leroy Sané",
+      "team": "Germany",
+      "goals": 1
+    },
+    {
       "scorer": "Livano Comenencia",
       "team": "Curaçao",
       "goals": 1
@@ -574996,7 +575001,7 @@
       "games": 2
     },
     "Germany": {
-      "gf": 9,
+      "gf": 10,
       "ga": 2,
       "games": 3
     },
@@ -575022,7 +575027,7 @@
     },
     "Ecuador": {
       "gf": 0,
-      "ga": 1,
+      "ga": 2,
       "games": 3
     },
     "Sweden": {
