@@ -620798,11 +620798,16 @@
       "scorer": "Yoane Wissa",
       "team": "DR Congo",
       "goals": 1
+    },
+    {
+      "scorer": "Álvaro Fidalgo",
+      "team": "Mexico",
+      "goals": 1
     }
   ],
   "team_played": {
     "Mexico": {
-      "gf": 5,
+      "gf": 6,
       "ga": 0,
       "games": 3
     },
@@ -620818,7 +620823,7 @@
     },
     "Czech Republic": {
       "gf": 2,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "Canada": {
