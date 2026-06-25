@@ -620770,6 +620770,11 @@
       "goals": 1
     },
     {
+      "scorer": "Thapelo Maseko",
+      "team": "South Africa",
+      "goals": 1
+    },
+    {
       "scorer": "Trézéguet",
       "team": "Egypt",
       "goals": 1
@@ -620802,13 +620807,13 @@
       "games": 3
     },
     "South Africa": {
-      "gf": 1,
+      "gf": 2,
       "ga": 3,
       "games": 3
     },
     "South Korea": {
       "gf": 2,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Czech Republic": {
