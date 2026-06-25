@@ -620640,6 +620640,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mateo Chávez",
+      "team": "Mexico",
+      "goals": 1
+    },
+    {
       "scorer": "Mattias Svanberg",
       "team": "Sweden",
       "goals": 1
@@ -620792,7 +620797,7 @@
   ],
   "team_played": {
     "Mexico": {
-      "gf": 3,
+      "gf": 4,
       "ga": 0,
       "games": 3
     },
@@ -620808,7 +620813,7 @@
     },
     "Czech Republic": {
       "gf": 2,
-      "ga": 3,
+      "ga": 4,
       "games": 3
     },
     "Canada": {
