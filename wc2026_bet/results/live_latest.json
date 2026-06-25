@@ -585259,12 +585259,12 @@
     "Netherlands": {
       "gf": 7,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "Japan": {
       "gf": 6,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Ivory Coast": {
       "gf": 4,
@@ -585279,12 +585279,12 @@
     "Sweden": {
       "gf": 6,
       "ga": 6,
-      "games": 2
+      "games": 3
     },
     "Tunisia": {
       "gf": 1,
       "ga": 9,
-      "games": 2
+      "games": 3
     },
     "Spain": {
       "gf": 4,
@@ -593074,6 +593074,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Japan",
+    "Netherlands",
+    "Sweden",
+    "Tunisia"
+  ]
 }
