@@ -574998,12 +574998,12 @@
     "Germany": {
       "gf": 9,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Curaçao": {
       "gf": 1,
       "ga": 7,
-      "games": 2
+      "games": 3
     },
     "Netherlands": {
       "gf": 7,
@@ -575018,12 +575018,12 @@
     "Ivory Coast": {
       "gf": 2,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Ecuador": {
       "gf": 0,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Sweden": {
       "gf": 6,
@@ -582269,6 +582269,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Curaçao",
+    "Ecuador",
+    "Germany",
+    "Ivory Coast"
+  ]
 }
