@@ -559018,6 +559018,11 @@
       "goals": 2
     },
     {
+      "scorer": "Ousmane Dembélé",
+      "team": "France",
+      "goals": 2
+    },
+    {
       "scorer": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -559398,11 +559403,6 @@
       "goals": 1
     },
     {
-      "scorer": "Ousmane Dembélé",
-      "team": "France",
-      "goals": 1
-    },
-    {
       "scorer": "Petar Musa",
       "team": "Croatia",
       "goals": 1
@@ -559645,7 +559645,7 @@
       "games": 2
     },
     "France": {
-      "gf": 6,
+      "gf": 7,
       "ga": 1,
       "games": 3
     },
@@ -559661,7 +559661,7 @@
     },
     "Norway": {
       "gf": 7,
-      "ga": 3,
+      "ga": 4,
       "games": 3
     },
     "Argentina": {
