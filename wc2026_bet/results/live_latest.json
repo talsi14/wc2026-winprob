@@ -584875,6 +584875,11 @@
       "goals": 1
     },
     {
+      "scorer": "Hazem Mastouri",
+      "team": "Tunisia",
+      "goals": 1
+    },
+    {
       "scorer": "Hwang In-Beom",
       "team": "South Korea",
       "goals": 1
@@ -585258,7 +585263,7 @@
     },
     "Netherlands": {
       "gf": 9,
-      "ga": 3,
+      "ga": 4,
       "games": 3
     },
     "Japan": {
@@ -585282,7 +585287,7 @@
       "games": 3
     },
     "Tunisia": {
-      "gf": 1,
+      "gf": 2,
       "ga": 11,
       "games": 3
     },
