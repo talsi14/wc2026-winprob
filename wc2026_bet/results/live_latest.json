@@ -584655,6 +584655,11 @@
       "goals": 3
     },
     {
+      "scorer": "Anthony Elanga",
+      "team": "Sweden",
+      "goals": 2
+    },
+    {
       "scorer": "Ayase Ueda",
       "team": "Japan",
       "goals": 2
@@ -584797,11 +584802,6 @@
     {
       "scorer": "Ante Budimir",
       "team": "Croatia",
-      "goals": 1
-    },
-    {
-      "scorer": "Anthony Elanga",
-      "team": "Sweden",
       "goals": 1
     },
     {
@@ -585278,7 +585278,7 @@
     },
     "Japan": {
       "gf": 7,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Ivory Coast": {
@@ -585292,7 +585292,7 @@
       "games": 3
     },
     "Sweden": {
-      "gf": 6,
+      "gf": 7,
       "ga": 7,
       "games": 3
     },
