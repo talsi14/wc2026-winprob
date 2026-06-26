@@ -559163,6 +559163,11 @@
       "goals": 1
     },
     {
+      "scorer": "Habib Diarra",
+      "team": "Senegal",
+      "goals": 1
+    },
+    {
       "scorer": "Hassan Al-Haydos",
       "team": "Qatar",
       "goals": 1
@@ -559645,13 +559650,13 @@
       "games": 3
     },
     "Senegal": {
-      "gf": 3,
+      "gf": 4,
       "ga": 6,
       "games": 3
     },
     "Iraq": {
       "gf": 1,
-      "ga": 7,
+      "ga": 8,
       "games": 3
     },
     "Norway": {
