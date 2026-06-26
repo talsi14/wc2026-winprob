@@ -558918,6 +558918,11 @@
       "goals": 3
     },
     {
+      "scorer": "Ismaïla Sarr",
+      "team": "Senegal",
+      "goals": 3
+    },
+    {
       "scorer": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 3
@@ -558990,11 +558995,6 @@
     {
       "scorer": "Harry Kane",
       "team": "England",
-      "goals": 2
-    },
-    {
-      "scorer": "Ismaïla Sarr",
-      "team": "Senegal",
       "goals": 2
     },
     {
@@ -559655,13 +559655,13 @@
       "games": 3
     },
     "Senegal": {
-      "gf": 4,
+      "gf": 5,
       "ga": 6,
       "games": 3
     },
     "Iraq": {
       "gf": 1,
-      "ga": 8,
+      "ga": 9,
       "games": 3
     },
     "Norway": {
