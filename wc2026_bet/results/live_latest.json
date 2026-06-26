@@ -559203,6 +559203,11 @@
       "goals": 1
     },
     {
+      "scorer": "Iliman Ndiaye",
+      "team": "Senegal",
+      "goals": 1
+    },
+    {
       "scorer": "Jamal Musiala",
       "team": "Germany",
       "goals": 1
@@ -559660,13 +559665,13 @@
       "games": 3
     },
     "Senegal": {
-      "gf": 7,
+      "gf": 8,
       "ga": 6,
       "games": 3
     },
     "Iraq": {
       "gf": 1,
-      "ga": 11,
+      "ga": 12,
       "games": 3
     },
     "Norway": {
