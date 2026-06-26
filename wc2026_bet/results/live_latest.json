@@ -559642,7 +559642,7 @@
     "France": {
       "gf": 6,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Senegal": {
       "gf": 3,
@@ -559657,7 +559657,7 @@
     "Norway": {
       "gf": 7,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "Argentina": {
       "gf": 5,
@@ -566279,6 +566279,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "France",
+    "Norway"
+  ]
 }
