@@ -558083,12 +558083,12 @@
     "United States": {
       "gf": 6,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Paraguay": {
       "gf": 2,
       "ga": 4,
-      "games": 2
+      "games": 3
     },
     "Qatar": {
       "gf": 2,
@@ -558123,12 +558123,12 @@
     "Australia": {
       "gf": 2,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Turkey": {
       "gf": 0,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "Germany": {
       "gf": 10,
@@ -565404,6 +565404,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Australia",
+    "Paraguay",
+    "Turkey",
+    "United States"
+  ]
 }
