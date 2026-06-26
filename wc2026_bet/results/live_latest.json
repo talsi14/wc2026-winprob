@@ -558928,6 +558928,11 @@
       "goals": 3
     },
     {
+      "scorer": "Ousmane Dembélé",
+      "team": "France",
+      "goals": 3
+    },
+    {
       "scorer": "Anthony Elanga",
       "team": "Sweden",
       "goals": 2
@@ -559015,11 +559020,6 @@
     {
       "scorer": "Nicolas Pépé",
       "team": "Ivory Coast",
-      "goals": 2
-    },
-    {
-      "scorer": "Ousmane Dembélé",
-      "team": "France",
       "goals": 2
     },
     {
@@ -559645,8 +559645,8 @@
       "games": 2
     },
     "France": {
-      "gf": 7,
-      "ga": 1,
+      "gf": 8,
+      "ga": 2,
       "games": 3
     },
     "Senegal": {
@@ -559660,8 +559660,8 @@
       "games": 3
     },
     "Norway": {
-      "gf": 7,
-      "ga": 4,
+      "gf": 8,
+      "ga": 5,
       "games": 3
     },
     "Argentina": {
