@@ -559647,12 +559647,12 @@
     "Senegal": {
       "gf": 3,
       "ga": 6,
-      "games": 2
+      "games": 3
     },
     "Iraq": {
       "gf": 1,
       "ga": 7,
-      "games": 2
+      "games": 3
     },
     "Norway": {
       "gf": 7,
@@ -566282,6 +566282,8 @@
   "live_widgets": true,
   "live_teams": [
     "France",
-    "Norway"
+    "Iraq",
+    "Norway",
+    "Senegal"
   ]
 }
