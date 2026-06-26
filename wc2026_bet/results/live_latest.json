@@ -558019,6 +558019,11 @@
       "goals": 1
     },
     {
+      "scorer": "Sebastian Berhalter",
+      "team": "United States",
+      "goals": 1
+    },
+    {
       "scorer": "Soufiane Rahimi",
       "team": "Morocco",
       "goals": 1
@@ -558096,7 +558101,7 @@
       "games": 3
     },
     "United States": {
-      "gf": 7,
+      "gf": 8,
       "ga": 3,
       "games": 3
     },
@@ -558142,7 +558147,7 @@
     },
     "Turkey": {
       "gf": 2,
-      "ga": 4,
+      "ga": 5,
       "games": 3
     },
     "Germany": {
