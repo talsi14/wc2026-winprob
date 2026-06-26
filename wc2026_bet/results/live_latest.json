@@ -559023,6 +559023,11 @@
       "goals": 2
     },
     {
+      "scorer": "Pape Gueye",
+      "team": "Senegal",
+      "goals": 2
+    },
+    {
       "scorer": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -559403,11 +559408,6 @@
       "goals": 1
     },
     {
-      "scorer": "Pape Gueye",
-      "team": "Senegal",
-      "goals": 1
-    },
-    {
       "scorer": "Petar Musa",
       "team": "Croatia",
       "goals": 1
@@ -559660,13 +559660,13 @@
       "games": 3
     },
     "Senegal": {
-      "gf": 6,
+      "gf": 7,
       "ga": 6,
       "games": 3
     },
     "Iraq": {
       "gf": 1,
-      "ga": 10,
+      "ga": 11,
       "games": 3
     },
     "Norway": {
