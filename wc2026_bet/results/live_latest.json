@@ -557674,6 +557674,11 @@
       "goals": 1
     },
     {
+      "scorer": "Arda Güler",
+      "team": "Turkey",
+      "goals": 1
+    },
+    {
       "scorer": "Auston Trusty",
       "team": "United States",
       "goals": 1
@@ -558087,7 +558092,7 @@
     },
     "United States": {
       "gf": 7,
-      "ga": 1,
+      "ga": 2,
       "games": 3
     },
     "Paraguay": {
@@ -558131,7 +558136,7 @@
       "games": 3
     },
     "Turkey": {
-      "gf": 0,
+      "gf": 1,
       "ga": 4,
       "games": 3
     },
