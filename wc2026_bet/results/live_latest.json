@@ -584830,6 +584830,11 @@
       "goals": 1
     },
     {
+      "scorer": "Daizen Maeda",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
       "scorer": "Emam Ashour",
       "team": "Egypt",
       "goals": 1
@@ -585267,7 +585272,7 @@
       "games": 3
     },
     "Japan": {
-      "gf": 6,
+      "gf": 7,
       "ga": 2,
       "games": 3
     },
@@ -585283,7 +585288,7 @@
     },
     "Sweden": {
       "gf": 6,
-      "ga": 6,
+      "ga": 7,
       "games": 3
     },
     "Tunisia": {
