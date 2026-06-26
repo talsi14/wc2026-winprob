@@ -557979,6 +557979,11 @@
       "goals": 1
     },
     {
+      "scorer": "Orkun Kökçü",
+      "team": "Turkey",
+      "goals": 1
+    },
+    {
       "scorer": "Ousmane Dembélé",
       "team": "France",
       "goals": 1
@@ -558092,7 +558097,7 @@
     },
     "United States": {
       "gf": 7,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Paraguay": {
@@ -558136,7 +558141,7 @@
       "games": 3
     },
     "Turkey": {
-      "gf": 1,
+      "gf": 2,
       "ga": 4,
       "games": 3
     },
