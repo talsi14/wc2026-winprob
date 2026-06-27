@@ -492416,22 +492416,22 @@
     "England": {
       "gf": 4,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Croatia": {
       "gf": 3,
       "ga": 4,
-      "games": 2
+      "games": 3
     },
     "Ghana": {
       "gf": 1,
       "ga": 0,
-      "games": 2
+      "games": 3
     },
     "Panama": {
       "gf": 0,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Uzbekistan": {
       "gf": 1,
@@ -499225,6 +499225,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Croatia",
+    "England",
+    "Ghana",
+    "Panama"
+  ]
 }
