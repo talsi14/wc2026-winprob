@@ -471958,6 +471958,11 @@
       "goals": 1
     },
     {
+      "scorer": "Eldor Shomurodov",
+      "team": "Uzbekistan",
+      "goals": 1
+    },
+    {
       "scorer": "Emam Ashour",
       "team": "Egypt",
       "goals": 1
@@ -472551,7 +472556,7 @@
     },
     "DR Congo": {
       "gf": 1,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "England": {
@@ -472575,7 +472580,7 @@
       "games": 3
     },
     "Uzbekistan": {
-      "gf": 1,
+      "gf": 2,
       "ga": 8,
       "games": 3
     },
