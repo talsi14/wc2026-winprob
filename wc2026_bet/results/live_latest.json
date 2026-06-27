@@ -486598,6 +486598,11 @@
       "goals": 1
     },
     {
+      "scorer": "Leandro Trossard",
+      "team": "Belgium",
+      "goals": 1
+    },
+    {
       "scorer": "Leo Østigard",
       "team": "Norway",
       "goals": 1
@@ -486955,7 +486960,7 @@
       "games": 3
     },
     "Belgium": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 3
     },
@@ -486981,7 +486986,7 @@
     },
     "New Zealand": {
       "gf": 3,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "France": {
