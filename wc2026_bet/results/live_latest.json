@@ -486318,6 +486318,11 @@
       "goals": 2
     },
     {
+      "scorer": "Leandro Trossard",
+      "team": "Belgium",
+      "goals": 2
+    },
+    {
       "scorer": "Maxi Araújo",
       "team": "Uruguay",
       "goals": 2
@@ -486595,11 +486600,6 @@
     {
       "scorer": "Lamine Yamal",
       "team": "Spain",
-      "goals": 1
-    },
-    {
-      "scorer": "Leandro Trossard",
-      "team": "Belgium",
       "goals": 1
     },
     {
@@ -486960,7 +486960,7 @@
       "games": 3
     },
     "Belgium": {
-      "gf": 2,
+      "gf": 3,
       "ga": 1,
       "games": 3
     },
@@ -486986,7 +486986,7 @@
     },
     "New Zealand": {
       "gf": 3,
-      "ga": 6,
+      "ga": 7,
       "games": 3
     },
     "France": {
