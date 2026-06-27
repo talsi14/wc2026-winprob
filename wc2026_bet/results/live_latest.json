@@ -492092,6 +492092,11 @@
       "goals": 1
     },
     {
+      "scorer": "Nikola Vlasic",
+      "team": "Croatia",
+      "goals": 1
+    },
+    {
       "scorer": "Nilson Angulo",
       "team": "Ecuador",
       "goals": 1
@@ -492429,13 +492434,13 @@
       "games": 3
     },
     "Croatia": {
-      "gf": 4,
+      "gf": 5,
       "ga": 5,
       "games": 3
     },
     "Ghana": {
       "gf": 2,
-      "ga": 1,
+      "ga": 2,
       "games": 3
     },
     "Panama": {
