@@ -486618,6 +486618,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mahmoud Saber",
+      "team": "Egypt",
+      "goals": 1
+    },
+    {
       "scorer": "Marcus Holmgren Pedersen",
       "team": "Norway",
       "goals": 1
@@ -486955,7 +486960,7 @@
       "games": 3
     },
     "Egypt": {
-      "gf": 4,
+      "gf": 5,
       "ga": 2,
       "games": 3
     },
@@ -486971,7 +486976,7 @@
     },
     "Iran": {
       "gf": 2,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "New Zealand": {
