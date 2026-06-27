@@ -472547,12 +472547,12 @@
     "Portugal": {
       "gf": 6,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "DR Congo": {
       "gf": 1,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "England": {
       "gf": 6,
@@ -472577,12 +472577,12 @@
     "Uzbekistan": {
       "gf": 1,
       "ga": 8,
-      "games": 2
+      "games": 3
     },
     "Colombia": {
       "gf": 4,
       "ga": 1,
-      "games": 2
+      "games": 3
     }
   },
   "cheer": {
@@ -479048,6 +479048,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Colombia",
+    "DR Congo",
+    "Portugal",
+    "Uzbekistan"
+  ]
 }
