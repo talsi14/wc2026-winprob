@@ -486223,6 +486223,11 @@
       "goals": 3
     },
     {
+      "scorer": "Elijah Just",
+      "team": "New Zealand",
+      "goals": 3
+    },
+    {
       "scorer": "Ismael Saibari",
       "team": "Morocco",
       "goals": 3
@@ -486285,11 +486290,6 @@
     {
       "scorer": "Daniel Muñoz",
       "team": "Colombia",
-      "goals": 2
-    },
-    {
-      "scorer": "Elijah Just",
-      "team": "New Zealand",
       "goals": 2
     },
     {
@@ -486966,7 +486966,7 @@
     },
     "Belgium": {
       "gf": 4,
-      "ga": 1,
+      "ga": 2,
       "games": 3
     },
     "Egypt": {
@@ -486990,7 +486990,7 @@
       "games": 3
     },
     "New Zealand": {
-      "gf": 3,
+      "gf": 4,
       "ga": 8,
       "games": 3
     },
