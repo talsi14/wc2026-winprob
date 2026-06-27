@@ -491667,6 +491667,11 @@
       "goals": 2
     },
     {
+      "scorer": "Jude Bellingham",
+      "team": "England",
+      "goals": 2
+    },
+    {
       "scorer": "Julián Quiñones",
       "team": "Mexico",
       "goals": 2
@@ -491919,11 +491924,6 @@
     {
       "scorer": "João Neves",
       "team": "Portugal",
-      "goals": 1
-    },
-    {
-      "scorer": "Jude Bellingham",
-      "team": "England",
       "goals": 1
     },
     {
@@ -492419,7 +492419,7 @@
       "games": 2
     },
     "England": {
-      "gf": 4,
+      "gf": 5,
       "ga": 2,
       "games": 3
     },
@@ -492435,7 +492435,7 @@
     },
     "Panama": {
       "gf": 0,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Uzbekistan": {
