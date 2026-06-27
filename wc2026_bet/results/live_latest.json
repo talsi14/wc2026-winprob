@@ -486773,6 +486773,11 @@
       "goals": 1
     },
     {
+      "scorer": "Romelu Lukaku",
+      "team": "Belgium",
+      "goals": 1
+    },
+    {
       "scorer": "Sebastian Berhalter",
       "team": "United States",
       "goals": 1
@@ -486965,7 +486970,7 @@
       "games": 3
     },
     "Belgium": {
-      "gf": 4,
+      "gf": 5,
       "ga": 2,
       "games": 3
     },
@@ -486991,7 +486996,7 @@
     },
     "New Zealand": {
       "gf": 4,
-      "ga": 8,
+      "ga": 9,
       "games": 3
     },
     "France": {
