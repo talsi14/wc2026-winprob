@@ -486952,12 +486952,12 @@
     "Belgium": {
       "gf": 1,
       "ga": 1,
-      "games": 2
+      "games": 3
     },
     "Egypt": {
       "gf": 4,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Saudi Arabia": {
       "gf": 1,
@@ -486972,12 +486972,12 @@
     "Iran": {
       "gf": 2,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "New Zealand": {
       "gf": 3,
       "ga": 5,
-      "games": 2
+      "games": 3
     },
     "France": {
       "gf": 10,
@@ -494396,6 +494396,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Belgium",
+    "Egypt",
+    "Iran",
+    "New Zealand"
+  ]
 }
