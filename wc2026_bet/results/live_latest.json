@@ -551749,12 +551749,12 @@
     "Spain": {
       "gf": 4,
       "ga": 0,
-      "games": 2
+      "games": 3
     },
     "Cape Verde": {
       "gf": 2,
       "ga": 2,
-      "games": 2
+      "games": 3
     },
     "Belgium": {
       "gf": 1,
@@ -551769,12 +551769,12 @@
     "Saudi Arabia": {
       "gf": 1,
       "ga": 5,
-      "games": 2
+      "games": 3
     },
     "Uruguay": {
       "gf": 3,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "Iran": {
       "gf": 2,
@@ -559757,6 +559757,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Cape Verde",
+    "Saudi Arabia",
+    "Spain",
+    "Uruguay"
+  ]
 }
