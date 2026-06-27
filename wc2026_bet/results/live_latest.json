@@ -551620,6 +551620,11 @@
       "goals": 1
     },
     {
+      "scorer": "Álex Baena",
+      "team": "Spain",
+      "goals": 1
+    },
+    {
       "scorer": "Álvaro Fidalgo",
       "team": "Mexico",
       "goals": 1
@@ -551747,7 +551752,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 4,
+      "gf": 5,
       "ga": 0,
       "games": 3
     },
@@ -551773,7 +551778,7 @@
     },
     "Uruguay": {
       "gf": 3,
-      "ga": 3,
+      "ga": 4,
       "games": 3
     },
     "Iran": {
