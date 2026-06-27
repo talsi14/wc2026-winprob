@@ -491822,6 +491822,11 @@
       "goals": 1
     },
     {
+      "scorer": "Derrick Luckassen",
+      "team": "Ghana",
+      "goals": 1
+    },
+    {
       "scorer": "Désiré Doué",
       "team": "France",
       "goals": 1
@@ -492425,11 +492430,11 @@
     },
     "Croatia": {
       "gf": 4,
-      "ga": 4,
+      "ga": 5,
       "games": 3
     },
     "Ghana": {
-      "gf": 1,
+      "gf": 2,
       "ga": 1,
       "games": 3
     },
