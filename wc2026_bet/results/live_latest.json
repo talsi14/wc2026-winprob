@@ -486388,6 +486388,11 @@
       "goals": 1
     },
     {
+      "scorer": "Alexis Saelemaekers",
+      "team": "Belgium",
+      "goals": 1
+    },
+    {
       "scorer": "Ali Olwan",
       "team": "Jordan",
       "goals": 1
@@ -486783,6 +486788,11 @@
       "goals": 1
     },
     {
+      "scorer": "Shoja Khalilzadeh",
+      "team": "Iran",
+      "goals": 1
+    },
+    {
       "scorer": "Soufiane Rahimi",
       "team": "Morocco",
       "goals": 1
@@ -486970,7 +486980,7 @@
       "games": 3
     },
     "Belgium": {
-      "gf": 5,
+      "gf": 6,
       "ga": 2,
       "games": 3
     },
@@ -486996,7 +487006,7 @@
     },
     "New Zealand": {
       "gf": 4,
-      "ga": 9,
+      "ga": 10,
       "games": 3
     },
     "France": {
