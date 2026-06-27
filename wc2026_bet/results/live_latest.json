@@ -486338,6 +486338,11 @@
       "goals": 2
     },
     {
+      "scorer": "Ramin Rezaeian",
+      "team": "Iran",
+      "goals": 2
+    },
+    {
       "scorer": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -486748,11 +486753,6 @@
       "goals": 1
     },
     {
-      "scorer": "Ramin Rezaeian",
-      "team": "Iran",
-      "goals": 1
-    },
-    {
       "scorer": "Raúl Jiménez",
       "team": "Mexico",
       "goals": 1
@@ -486961,7 +486961,7 @@
     },
     "Egypt": {
       "gf": 5,
-      "ga": 2,
+      "ga": 3,
       "games": 3
     },
     "Saudi Arabia": {
@@ -486975,7 +486975,7 @@
       "games": 3
     },
     "Iran": {
-      "gf": 2,
+      "gf": 3,
       "ga": 3,
       "games": 3
     },
