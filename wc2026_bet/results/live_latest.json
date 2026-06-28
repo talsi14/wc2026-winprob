@@ -411631,6 +411631,11 @@
       "goals": 2
     },
     {
+      "scorer": "Marko Arnautović",
+      "team": "Austria",
+      "goals": 2
+    },
+    {
       "scorer": "Maxi Araújo",
       "team": "Uruguay",
       "goals": 2
@@ -411973,11 +411978,6 @@
     {
       "scorer": "Marcus Rashford",
       "team": "England",
-      "goals": 1
-    },
-    {
-      "scorer": "Marko Arnautović",
-      "team": "Austria",
       "goals": 1
     },
     {
@@ -412359,11 +412359,11 @@
     },
     "Algeria": {
       "gf": 2,
-      "ga": 4,
+      "ga": 5,
       "games": 3
     },
     "Austria": {
-      "gf": 3,
+      "gf": 4,
       "ga": 3,
       "games": 3
     },
