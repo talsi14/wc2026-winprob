@@ -402763,6 +402763,11 @@
       "goals": 1
     },
     {
+      "scorer": "Stephen Eustáquio",
+      "team": "Canada",
+      "goals": 1
+    },
+    {
       "scorer": "Teboho Mokoena",
       "team": "South Africa",
       "goals": 1
@@ -402816,7 +402821,7 @@
     },
     "South Africa": {
       "gf": 2,
-      "ga": 3,
+      "ga": 4,
       "games": 4
     },
     "South Korea": {
@@ -402830,7 +402835,7 @@
       "games": 3
     },
     "Canada": {
-      "gf": 8,
+      "gf": 9,
       "ga": 3,
       "games": 4
     },
