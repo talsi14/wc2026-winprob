@@ -471983,6 +471983,11 @@
       "goals": 1
     },
     {
+      "scorer": "Fiston Mayele",
+      "team": "DR Congo",
+      "goals": 1
+    },
+    {
       "scorer": "Franck Kessié",
       "team": "Ivory Coast",
       "goals": 1
@@ -472555,7 +472560,7 @@
       "games": 3
     },
     "DR Congo": {
-      "gf": 2,
+      "gf": 3,
       "ga": 3,
       "games": 3
     },
@@ -472581,7 +472586,7 @@
     },
     "Uzbekistan": {
       "gf": 2,
-      "ga": 9,
+      "ga": 10,
       "games": 3
     },
     "Colombia": {
