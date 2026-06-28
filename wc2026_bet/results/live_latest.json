@@ -411811,6 +411811,11 @@
       "goals": 1
     },
     {
+      "scorer": "Giovani Lo Celso",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Giovanni Reyna",
       "team": "United States",
       "goals": 1
@@ -412348,7 +412353,7 @@
       "games": 3
     },
     "Argentina": {
-      "gf": 5,
+      "gf": 6,
       "ga": 0,
       "games": 3
     },
@@ -412364,7 +412369,7 @@
     },
     "Jordan": {
       "gf": 2,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "Portugal": {
