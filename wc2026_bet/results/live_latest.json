@@ -411941,6 +411941,11 @@
       "goals": 1
     },
     {
+      "scorer": "Lautaro Martínez",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Leo Østigard",
       "team": "Norway",
       "goals": 1
@@ -412353,7 +412358,7 @@
       "games": 3
     },
     "Argentina": {
-      "gf": 6,
+      "gf": 7,
       "ga": 0,
       "games": 3
     },
@@ -412369,7 +412374,7 @@
     },
     "Jordan": {
       "gf": 2,
-      "ga": 6,
+      "ga": 7,
       "games": 3
     },
     "Portugal": {
