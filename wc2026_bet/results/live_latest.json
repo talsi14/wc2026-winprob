@@ -411976,6 +411976,11 @@
       "goals": 1
     },
     {
+      "scorer": "Marcel Sabitzer",
+      "team": "Austria",
+      "goals": 1
+    },
+    {
       "scorer": "Marcus Holmgren Pedersen",
       "team": "Norway",
       "goals": 1
@@ -412028,6 +412033,11 @@
     {
       "scorer": "Mostafa Zico",
       "team": "Egypt",
+      "goals": 1
+    },
+    {
+      "scorer": "Mousa Al-Tamari",
+      "team": "Jordan",
       "goals": 1
     },
     {
@@ -412364,21 +412374,21 @@
     },
     "Argentina": {
       "gf": 7,
-      "ga": 0,
+      "ga": 1,
       "games": 3
     },
     "Algeria": {
       "gf": 3,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "Austria": {
-      "gf": 4,
+      "gf": 5,
       "ga": 4,
       "games": 3
     },
     "Jordan": {
-      "gf": 2,
+      "gf": 3,
       "ga": 7,
       "games": 3
     },
