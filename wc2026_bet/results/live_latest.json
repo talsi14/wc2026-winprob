@@ -471743,6 +471743,11 @@
       "goals": 3
     },
     {
+      "scorer": "Yoane Wissa",
+      "team": "DR Congo",
+      "goals": 3
+    },
+    {
       "scorer": "Anthony Elanga",
       "team": "Sweden",
       "goals": 2
@@ -471845,11 +471850,6 @@
     {
       "scorer": "Yasin Ayari",
       "team": "Sweden",
-      "goals": 2
-    },
-    {
-      "scorer": "Yoane Wissa",
-      "team": "DR Congo",
       "goals": 2
     },
     {
@@ -472560,7 +472560,7 @@
       "games": 3
     },
     "DR Congo": {
-      "gf": 3,
+      "gf": 4,
       "ga": 3,
       "games": 3
     },
@@ -472586,7 +472586,7 @@
     },
     "Uzbekistan": {
       "gf": 2,
-      "ga": 10,
+      "ga": 11,
       "games": 3
     },
     "Colombia": {
