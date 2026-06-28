@@ -412350,22 +412350,22 @@
     "Argentina": {
       "gf": 5,
       "ga": 0,
-      "games": 2
+      "games": 3
     },
     "Algeria": {
       "gf": 2,
       "ga": 4,
-      "games": 2
+      "games": 3
     },
     "Austria": {
       "gf": 3,
       "ga": 3,
-      "games": 2
+      "games": 3
     },
     "Jordan": {
       "gf": 2,
       "ga": 5,
-      "games": 2
+      "games": 3
     },
     "Portugal": {
       "gf": 6,
@@ -418317,6 +418317,11 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Algeria",
+    "Argentina",
+    "Austria",
+    "Jordan"
+  ]
 }
