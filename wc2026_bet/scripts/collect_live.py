@@ -176,16 +176,31 @@ def main() -> None:
             })
             played_ko += 1
 
-    group_stage_complete = played_group >= len(sched)
+    all_group_played = played_group >= len(sched)
 
     official_order, advanced_thirds_groups = {}, []
-    if group_stage_complete:
+    if all_group_played:
         for g, rows in standings.items():
             ordered = sorted(rows, key=lambda r: r["rank"] or 99)
             official_order[g] = [r["team"] for r in ordered]
             for r in ordered:
                 if r["rank"] == 3 and r["advanced"]:
                     advanced_thirds_groups.append(g)
+
+    # Only declare the group stage "complete" once the best-8-of-12 third-placed
+    # ranking has actually settled (exactly 8 advancing thirds). ESPN flips all 72
+    # games to "played" the instant the last whistle blows, but its cross-group
+    # qualification flags lag a few minutes; locking the bracket on that transient
+    # state seeded a corrupt knockout (2026-06-28T04:01). Until 8 thirds are known
+    # we leave the stage incomplete, and the simulator derives standings from the
+    # real recorded results via its normal (deterministic-once-all-played) path.
+    group_stage_complete = all_group_played and len(advanced_thirds_groups) == 8
+    if all_group_played and not group_stage_complete:
+        print(f"  WARNING: 72/72 group games played but only "
+              f"{len(advanced_thirds_groups)} advancing thirds flagged "
+              f"({advanced_thirds_groups}); deferring group_stage_complete until "
+              f"ESPN qualification settles (need 8).")
+        official_order, advanced_thirds_groups = {}, []
 
     state = {
         "timestamp": ts,

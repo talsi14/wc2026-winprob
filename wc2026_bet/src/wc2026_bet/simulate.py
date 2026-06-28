@@ -243,10 +243,22 @@ class Simulator:
                 advanced[:, known.official_pos[g][2]] = True
             combo = tuple(sorted(known.advanced_thirds_groups))
             assign = self.thirds_table.get(combo)
+            if assign is None:
+                # Guard against an internally inconsistent "complete" state - e.g.
+                # ESPN flips all 72 group games to played before its cross-group
+                # best-thirds ranking settles, yielding < 8 advancing thirds. The
+                # FIFA Annex C table is keyed strictly by 8-group combos, so a
+                # short combo would silently leave every third-slot at team 0 and
+                # corrupt the whole knockout bracket (observed 2026-06-28T04:01).
+                # Fail loudly instead of publishing a garbage simulation.
+                raise ValueError(
+                    "Inconsistent known state: group stage marked complete but "
+                    f"advanced_thirds_groups={list(combo)} has {len(combo)} groups "
+                    "(need exactly 8 with a FIFA Annex C entry). Refusing to seed a "
+                    "corrupt bracket - re-collect once qualification is finalized.")
             third_slot_team = np.zeros((8, S), dtype=np.int64)
-            if assign is not None:
-                for slot_i, g in enumerate(assign):
-                    third_slot_team[slot_i, :] = known.official_pos[g][2]
+            for slot_i, g in enumerate(assign):
+                third_slot_team[slot_i, :] = known.official_pos[g][2]
         else:
             # --- sampled standings: FIFA 2026 group tie-break -------------------
             # Within a group, teams level on points are separated by head-to-head
