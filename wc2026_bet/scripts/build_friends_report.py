@@ -27,6 +27,10 @@ from pathlib import Path
 from i18n_strings import i18n_css, i18n_js
 
 WC_ROOT = Path(__file__).resolve().parents[1]          # .../wc2026_bet
+# Reuse the canonical (official FIFA Annex C) third-place seeding so the
+# client-side What-If/path bracket matches the simulation and the real draw.
+sys.path.insert(0, str(WC_ROOT / "src"))
+from wc2026_bet.bracket import precompute_thirds_table  # noqa: E402
 DATA_PROCESSED = WC_ROOT / "data" / "processed"
 DATA_LIVE = WC_ROOT / "data" / "live"
 DATA_HISTORY = WC_ROOT / "data" / "history"
@@ -464,6 +468,11 @@ def js_block(champs, champs_he, p_title, matrix, order, winprob) -> str:
     data = json.dumps(payload, ensure_ascii=False)
     return """
 const CMDATA = __DATA__;
+// Active sort for the champion-conditional matrix. Keys: 'nm' (entry name),
+// 'ch:<champion>' (P of winning the pool given that champion), or 'sum:<i>'
+// (i=0 P(1st), 1 P(in-money), 2 P(last)). dir: 1 asc, -1 desc.
+// Default: P(in-money), descending.
+let cmSort = {key:'sum:1', dir:-1};
 function renderMatrix(){
   const I = window.I18N;
   const t = k => I.t(k);
@@ -476,28 +485,54 @@ function renderMatrix(){
   const smax = cols.map(([_l,i])=> Math.max(...d.order.map(e=> (d.winprob[e]||[0,0,0])[i]), 1e-9));
   const gold = t => `rgba(217,119,6,${(0.06+0.78*Math.pow(t,0.6)).toFixed(3)})`;
   const tint = (rgb,t) => `rgba(${rgb},${(0.08+0.72*Math.pow(t,0.6)).toFixed(3)})`;
-  let h = '<table class="cmtbl"><thead><tr><th class="nm">'+t('matrix.entry')+'</th>';
+
+  // --- sorting -------------------------------------------------------------
+  const getVal = (e,k)=>{
+    if(k==='nm') return e;
+    if(k.indexOf('ch:')===0) return getp(k.slice(3), e);
+    if(k.indexOf('sum:')===0) return (d.winprob[e]||[0,0,0])[+k.slice(4)];
+    return 0;
+  };
+  const order = d.order.slice().sort((a,b)=>{
+    if(cmSort.key==='nm') return cmSort.dir * a.localeCompare(b,'he');
+    const va=getVal(a,cmSort.key), vb=getVal(b,cmSort.key);
+    return (cmSort.dir*(va-vb)) || a.localeCompare(b,'he');
+  });
+  const arrow = k => cmSort.key===k ? (cmSort.dir<0?' \\u25be':' \\u25b4') : '';
+  const sc = k => 'sortable'+(cmSort.key===k?' sorted':'');
+
+  let h = '<table class="cmtbl"><thead><tr>'+
+          `<th class="nm ${sc('nm')}" data-sk="nm">${t('matrix.entry')}${arrow('nm')}</th>`;
+  // summary columns first (rightmost in RTL, directly beside the entry name)
+  for(const [lbl,i,rgb] of cols)
+    h += `<th class="sum ${sc('sum:'+i)}" data-sk="sum:${i}" style="color:rgb(${rgb})">${lbl}${arrow('sum:'+i)}</th>`;
   for(const c of C){
-    h += `<th class="ch"><div>${T(c)}</div>`+
+    h += `<th class="ch ${sc('ch:'+c)}" data-sk="ch:${c}"><div>${T(c)}${arrow('ch:'+c)}</div>`+
          `<div class="t">${Math.round((d.pTitle[c]||0)*100)}%</div></th>`;
   }
-  for(const [lbl,_i,rgb] of cols) h += `<th class="sum" style="color:rgb(${rgb})">${lbl}</th>`;
   h += '</tr></thead><tbody>';
-  for(const e of d.order){
+  for(const e of order){
     h += `<tr><td class="nm" title="${e}">${e}</td>`;
+    const w = d.winprob[e]||[0,0,0];
+    cols.forEach(([_l,i,rgb])=>{
+      h += `<td class="cell sum" style="background:${tint(rgb, w[i]/smax[i])}">${(w[i]*100).toFixed(1)}%</td>`;
+    });
     for(const c of C){
       const p = getp(c,e);
       const bg = p>0 ? gold(p/mx) : 'transparent';
       h += `<td class="cell" style="background:${bg}">${p>=0.04? Math.round(p*100): ''}</td>`;
     }
-    const w = d.winprob[e]||[0,0,0];
-    cols.forEach(([_l,i,rgb])=>{
-      h += `<td class="cell sum" style="background:${tint(rgb, w[i]/smax[i])}">${(w[i]*100).toFixed(1)}%</td>`;
-    });
     h += '</tr>';
   }
   h += '</tbody></table>';
   host.innerHTML = h;
+  host.onclick = (ev)=>{
+    const th = ev.target.closest('th.sortable'); if(!th) return;
+    const k = th.dataset.sk;
+    if(cmSort.key===k) cmSort.dir = -cmSort.dir;
+    else { cmSort.key = k; cmSort.dir = (k==='nm') ? 1 : -1; }
+    renderMatrix();
+  };
 }
 renderMatrix();
 document.addEventListener('langchange', renderMatrix);
@@ -657,6 +692,11 @@ CMTBL_CSS = """
   table.cmtbl td.cell{min-width:34px; color:#0f172a; font-weight:600;}
   table.cmtbl td.sum{font-weight:700;}
   table.cmtbl tbody tr:hover td.nm{background:#f1f5f9;}
+  /* sortable column headers */
+  table.cmtbl thead th.sortable{cursor:pointer; user-select:none; -webkit-user-select:none;}
+  table.cmtbl thead th.sortable:hover{background:#eef2f7;}
+  table.cmtbl thead th.sorted{background:#e8eefc; color:#1e3a8a; box-shadow:inset 0 -2px 0 #1e3a8a;}
+  table.cmtbl thead th.nm.sorted{background:#e8eefc;}
   /* data-freshness / coverage strip */
   .freshness{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px;
              background:#0f172a; color:#e2e8f0; border-radius:0 0 12px 12px;
@@ -1208,6 +1248,13 @@ def whatif_payload(data: dict, state: dict) -> dict:
                 third_slots.append({"m": b["match"], "side": side,
                                     "eligible": list(b[side]["eligible"])})
 
+    # Official FIFA Annex C third-place assignment, keyed by the sorted combo of
+    # the 8 advancing groups -> group letters in third-slot (match) order, which
+    # matches `third_slots` above. The client looks this up instead of computing
+    # an arbitrary valid matching (which mis-seeded 4 of 8 slots).
+    thirds_table = {"".join(combo): "".join(assign)
+                    for combo, assign in precompute_thirds_table(bracket_raw).items()}
+
     rules = {
         "win": 3.0, "draw": 1.0, "loss": 0.0, "pen_win": 3.0, "pen_loss": 1.0,
         "b_r32_top2_D": 3.0, "b_r32_top2_C": 1.0, "b_r32_third_D": 1.0,
@@ -1245,6 +1292,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
         "rules": rules,
         "teamTier": team_tier, "teamGroup": team_group, "groups": groups,
         "groupMatches": group_matches, "bracket": bracket, "thirdSlots": third_slots,
+        "thirdsTable": thirds_table,
         "realGroupScores": {k: list(v) for k, v in (state.get("group_scores") or {}).items()},
         "predGroupScores": {k: list(v) for k, v in (data.get("pred_group_scores") or {}).items()},
         "predGroupScorers": {k: dict(v) for k, v in (data.get("pred_group_scorers") or {}).items()},
@@ -1920,6 +1968,14 @@ const WHATIF = __WHATIF__;
   }
 
   function matchThirds(groups8, slots){
+    // Official FIFA Annex C assignment (keyed by sorted combo). The table value
+    // is the group letters in third-slot order, aligned with W.thirdSlots.
+    const key = groups8.slice().sort().join('');
+    const tbl = W.thirdsTable && W.thirdsTable[key];
+    if(tbl && tbl.length===slots.length){
+      const a={}; for(let i=0;i<slots.length;i++) a[i]=tbl[i]; return a;
+    }
+    // Defensive fallback: any valid eligibility-respecting matching.
     const inEl = (s,g)=> s.eligible.indexOf(g)>=0;
     const order = slots.map((s,i)=>i).sort((a,b)=>
       groups8.filter(g=>inEl(slots[a],g)).length - groups8.filter(g=>inEl(slots[b],g)).length);
