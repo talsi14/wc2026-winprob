@@ -411661,6 +411661,11 @@
       "goals": 2
     },
     {
+      "scorer": "Riyad Mahrez",
+      "team": "Algeria",
+      "goals": 2
+    },
+    {
       "scorer": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -412126,11 +412131,6 @@
       "goals": 1
     },
     {
-      "scorer": "Riyad Mahrez",
-      "team": "Algeria",
-      "goals": 1
-    },
-    {
       "scorer": "Romano Schmid",
       "team": "Austria",
       "goals": 1
@@ -412383,13 +412383,13 @@
       "games": 3
     },
     "Algeria": {
-      "gf": 4,
+      "gf": 5,
       "ga": 6,
       "games": 3
     },
     "Austria": {
       "gf": 5,
-      "ga": 5,
+      "ga": 6,
       "games": 3
     },
     "Jordan": {
