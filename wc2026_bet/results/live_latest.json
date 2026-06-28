@@ -411488,7 +411488,7 @@
     {
       "scorer": "Lionel Messi",
       "team": "Argentina",
-      "goals": 5
+      "goals": 6
     },
     {
       "scorer": "Erling Haaland",
@@ -412378,7 +412378,7 @@
       "games": 3
     },
     "Argentina": {
-      "gf": 7,
+      "gf": 8,
       "ga": 1,
       "games": 3
     },
@@ -412394,7 +412394,7 @@
     },
     "Jordan": {
       "gf": 3,
-      "ga": 7,
+      "ga": 8,
       "games": 3
     },
     "Portugal": {
