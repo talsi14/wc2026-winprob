@@ -405402,6 +405402,11 @@
       "goals": 1
     },
     {
+      "scorer": "Kaishu Sano",
+      "team": "Japan",
+      "goals": 1
+    },
+    {
       "scorer": "Keito Nakamura",
       "team": "Japan",
       "goals": 1
@@ -405745,7 +405750,7 @@
     },
     "Brazil": {
       "gf": 7,
-      "ga": 1,
+      "ga": 2,
       "games": 4
     },
     "Morocco": {
@@ -405789,7 +405794,7 @@
       "games": 3
     },
     "Japan": {
-      "gf": 7,
+      "gf": 8,
       "ga": 3,
       "games": 4
     },
