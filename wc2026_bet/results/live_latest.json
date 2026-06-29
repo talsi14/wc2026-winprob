@@ -405252,6 +405252,11 @@
       "goals": 1
     },
     {
+      "scorer": "Casemiro",
+      "team": "Brazil",
+      "goals": 1
+    },
+    {
       "scorer": "Connor Metcalfe",
       "team": "Australia",
       "goals": 1
@@ -405749,7 +405754,7 @@
       "games": 3
     },
     "Brazil": {
-      "gf": 7,
+      "gf": 8,
       "ga": 2,
       "games": 4
     },
@@ -405795,7 +405800,7 @@
     },
     "Japan": {
       "gf": 8,
-      "ga": 3,
+      "ga": 4,
       "games": 4
     },
     "Ivory Coast": {
