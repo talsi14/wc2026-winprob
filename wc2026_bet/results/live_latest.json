@@ -378287,6 +378287,11 @@
       "goals": 1
     },
     {
+      "scorer": "Julio Enciso",
+      "team": "Paraguay",
+      "goals": 1
+    },
+    {
       "scorer": "Junya Ito",
       "team": "Japan",
       "goals": 1
@@ -378634,7 +378639,7 @@
       "games": 3
     },
     "Paraguay": {
-      "gf": 2,
+      "gf": 3,
       "ga": 4,
       "games": 4
     },
@@ -378680,7 +378685,7 @@
     },
     "Germany": {
       "gf": 10,
-      "ga": 4,
+      "ga": 5,
       "games": 4
     },
     "Curaçao": {
