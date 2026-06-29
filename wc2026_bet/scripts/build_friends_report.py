@@ -973,6 +973,61 @@ PATH_CSS = """
   .pathbr .wibr-node.show{opacity:1; transform:none;}
   .pathbr .wibr-node.fin.show{box-shadow:0 0 0 3px rgba(245,158,11,.35);}
   .pathbr .wibr-sc{pointer-events:none;}
+
+  /* ---- Odds pyramid (P(1st) tiers) — used on the main page and the path tab */
+  .pathpyr{margin:6px 0 22px;
+    --fav:#f59e0b; --chal:#16a34a; --dark:#2563eb; --dream:#7c3aed; --none:#0891b2;}
+  .pathpyr .pyr-head{text-align:center; margin-bottom:12px;}
+  .pathpyr .pyr-title{font-size:1.12rem; font-weight:900;}
+  .pathpyr .pyr-sub{display:block; font-size:.82rem; color:#64748b; margin-top:2px;}
+  /* stacked, centred bands -> triangular silhouette */
+  .pyr-band{position:relative; margin:4px auto; border-radius:12px; padding:8px 14px 10px;
+    border:1px solid var(--line); background:#fff; box-shadow:0 1px 2px rgba(15,23,42,.05);
+    display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .pyr-band[data-tier="fav"]  {max-width:34%; border-color:var(--fav);  background:linear-gradient(180deg,#fffbeb,#fef3c7);}
+  .pyr-band[data-tier="chal"] {max-width:50%; border-color:var(--chal); background:linear-gradient(180deg,#f0fdf4,#dcfce7);}
+  .pyr-band[data-tier="dark"] {max-width:68%; border-color:var(--dark); background:linear-gradient(180deg,#eff6ff,#dbeafe);}
+  .pyr-band[data-tier="dream"]{max-width:84%; border-color:var(--dream);background:linear-gradient(180deg,#f5f3ff,#ede9fe);}
+  .pyr-band[data-tier="none"] {max-width:100%;border-color:#67e8f9; background:linear-gradient(180deg,#ecfeff,#cffafe);}
+  .pyr-label{display:flex; align-items:center; gap:7px; flex-wrap:wrap; justify-content:center;}
+  .pyr-name{font-weight:900; font-size:1.32rem; letter-spacing:-.01em;
+    display:flex; align-items:center; gap:6px; color:#0f172a;}
+  .pyr-name .em{font-size:1.3rem;}
+  .pyr-range{display:inline-block; font-weight:800; padding:1px 8px; border-radius:999px;
+    color:#fff; font-size:.7rem;}
+  .pyr-cnt{font-size:.72rem; color:#64748b;}
+  .pyr-band[data-tier="fav"]  .pyr-range{background:var(--fav);}
+  .pyr-band[data-tier="chal"] .pyr-range{background:var(--chal);}
+  .pyr-band[data-tier="dark"] .pyr-range{background:var(--dark);}
+  .pyr-band[data-tier="dream"] .pyr-range{background:var(--dream);}
+  .pyr-band[data-tier="none"] .pyr-range{background:var(--none);}
+  .pyr-chips{display:flex; flex-wrap:wrap; gap:5px; justify-content:center;}
+  .pyr-chip{display:inline-flex; align-items:center; gap:5px; cursor:pointer;
+    background:#fff; border:1px solid rgba(15,23,42,.14); border-radius:999px;
+    padding:3px 9px; font-weight:700; color:#0f172a;
+    box-shadow:0 1px 1px rgba(15,23,42,.04); transition:transform .08s, box-shadow .12s;}
+  .pyr-chip:hover{transform:translateY(-1px); box-shadow:0 3px 8px rgba(15,23,42,.14);}
+  .pyr-chip .pct{font-variant-numeric:tabular-nums; font-weight:900; color:#fff;
+    padding:1px 6px; border-radius:999px;}
+  .pyr-band[data-tier="fav"]  .pyr-chip .pct{background:var(--fav);}
+  .pyr-band[data-tier="chal"] .pyr-chip .pct{background:var(--chal);}
+  .pyr-band[data-tier="dark"] .pyr-chip .pct{background:var(--dark);}
+  .pyr-band[data-tier="dream"] .pyr-chip .pct{background:var(--dream);}
+  .pyr-band[data-tier="none"] .pyr-chip .pct{background:var(--none);}
+  /* shrink entry text further down the pyramid */
+  .pyr-band[data-tier="fav"]  .pyr-chip{font-size:.84rem;} .pyr-band[data-tier="fav"]  .pyr-chip .pct{font-size:.78rem;}
+  .pyr-band[data-tier="chal"] .pyr-chip{font-size:.8rem;}  .pyr-band[data-tier="chal"] .pyr-chip .pct{font-size:.74rem;}
+  .pyr-band[data-tier="dark"] .pyr-chip{font-size:.76rem;} .pyr-band[data-tier="dark"] .pyr-chip .pct{font-size:.7rem;}
+  .pyr-band[data-tier="dream"] .pyr-chip{font-size:.72rem; padding:2px 8px;} .pyr-band[data-tier="dream"] .pyr-chip .pct{font-size:.66rem;}
+  .pyr-band[data-tier="none"] .pyr-chip{font-size:.68rem; padding:2px 7px;}  .pyr-band[data-tier="none"] .pyr-chip .pct{font-size:.63rem;}
+  .pyr-empty{color:#64748b; font-size:.8rem; font-style:italic;}
+  @media(max-width:760px){
+    .pyr-band[data-tier="fav"]  {max-width:62%;}
+    .pyr-band[data-tier="chal"] {max-width:74%;}
+    .pyr-band[data-tier="dark"] {max-width:86%;}
+    .pyr-band[data-tier="dream"]{max-width:94%;}
+    .pyr-name{font-size:1.12rem;} .pyr-name .em{font-size:1.1rem;}
+  }
 """
 
 ODDS_CSS = """
@@ -1136,13 +1191,16 @@ TABS_JS = """
   const tabs = Array.from(document.querySelectorAll('nav.tabs button[data-tab]'));
   const panels = Array.from(document.querySelectorAll('.tabpanel[data-tab]'));
   if(!tabs.length) return;
-  function show(name){
+  function show(name, opts){
+    opts = opts || {};
     tabs.forEach(b=> b.classList.toggle('active', b.dataset.tab===name));
     panels.forEach(p=> p.hidden = (p.dataset.tab!==name));
-    window.scrollTo({top:0, behavior:'instant' in window? 'instant':'auto'});
+    if(opts.scroll !== false)
+      window.scrollTo({top:0, behavior:'instant' in window? 'instant':'auto'});
     document.dispatchEvent(new CustomEvent('tabshow', {detail:{name:name}}));
   }
   tabs.forEach(b=> b.addEventListener('click', ()=> show(b.dataset.tab)));
+  window.Tabs = { show };
   show('main');
 })();
 """
@@ -3546,6 +3604,91 @@ def _path_names(data: dict) -> list[str]:
             sorted(ents, key=lambda e: (e.get("current_rank", 999), e["name"]))]
 
 
+def pyramid_block() -> str:
+    """Odds pyramid container (header is static/i18n; bands are filled by JS).
+    Rendered both on the main page (before the leaderboard) and atop the path
+    tab; every '[data-pyr]' element is populated by pyramid_js()."""
+    return (
+        '<section class="pathpyr" data-pyr>'
+        '<div class="pyr-head">'
+        '<span class="pyr-title" data-i18n="path.pyr.title">פירמידת הסיכויים</span>'
+        '<span class="pyr-sub" data-i18n="path.pyr.sub"></span>'
+        '</div>'
+        '<div class="pyr-body"></div>'
+        '</section>'
+    )
+
+
+def pyramid_payload(data: dict) -> dict:
+    ents = data.get("entries") or []
+    rows = sorted(({"name": e["name"], "p": round(float(e.get("P_first", 0)), 4)}
+                   for e in ents), key=lambda r: -r["p"])
+    return {"rows": rows}
+
+
+def pyramid_js(payload: dict) -> str:
+    data = json.dumps(payload, ensure_ascii=False)
+    return r"""
+(function(){
+  const PY = __PYRDATA__;
+  const I = window.I18N;
+  const conts = Array.from(document.querySelectorAll('[data-pyr]'));
+  if(!PY || !I || !conts.length) return;
+  const t = k => I.t(k);
+  // tiers top->bottom; ranges are language-independent labels.
+  const TIERS = [
+    {key:'fav',  em:'👑', min:0.15, max:Infinity, range:'15%+'},
+    {key:'chal', em:'🔥', min:0.05, max:0.15,     range:'5%–15%'},
+    {key:'dark', em:'🐎', min:0.01, max:0.05,     range:'1%–5%'},
+    {key:'dream',em:'🙏', min:1e-9, max:0.01,     range:'<1%'},
+    {key:'none', em:'⛱️', min:-1,   max:1e-9,     range:'0%'},
+  ];
+  const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const pct = v => { const x=v*100;
+    return (x>0 && x<0.05) ? '<0.1%' : x.toFixed(1)+'%'; };
+  function render(){
+    const rows = PY.rows||[];
+    let html='';
+    TIERS.forEach(tr=>{
+      const list = rows.filter(r=> r.p>=tr.min && r.p<tr.max);
+      const chips = list.length
+        ? list.map(r=>`<span class="pyr-chip" data-name="${esc(r.name)}" role="button" tabindex="0">`+
+            `${esc(r.name)}<span class="pct">${pct(r.p)}</span></span>`).join('')
+        : `<span class="pyr-empty">${t('path.pyr.empty')}</span>`;
+      html += `<div class="pyr-band" data-tier="${tr.key}">`+
+        `<div class="pyr-label"><span class="pyr-name"><span class="em">${tr.em}</span>`+
+        `${esc(t('path.pyr.'+tr.key))}</span>`+
+        `<span class="pyr-range">${tr.range}</span>`+
+        `<span class="pyr-cnt">${esc(I.fmt('path.pyr.count',{n:list.length}))}</span></div>`+
+        `<div class="pyr-chips">${chips}</div></div>`;
+    });
+    conts.forEach(c=>{ const b=c.querySelector('.pyr-body')||c; b.innerHTML=html; });
+  }
+  function goTo(name){
+    // Switch to the path tab WITHOUT scrolling the page, and load the entry.
+    // Keeps the viewport where the user clicked (no jump to top).
+    if(window.Tabs && window.Tabs.show) window.Tabs.show('path', {scroll:false});
+    else { const nav=document.querySelector('nav.tabs button[data-tab="path"]'); if(nav) nav.click(); }
+    const sel=document.getElementById('pathSel'), btn=document.getElementById('pathBtn');
+    if(sel) sel.value=name;
+    if(btn) btn.click();
+  }
+  document.addEventListener('click', e=>{
+    const c=e.target.closest && e.target.closest('.pyr-chip[data-name]'); if(!c) return;
+    goTo(c.getAttribute('data-name'));
+  });
+  document.addEventListener('keydown', e=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const c=e.target.closest && e.target.closest('.pyr-chip[data-name]'); if(!c) return;
+    e.preventDefault(); goTo(c.getAttribute('data-name'));
+  });
+  render();
+  document.addEventListener('langchange', render);
+})();
+""".replace("__PYRDATA__", data)
+
+
 def path_payload(data: dict) -> dict:
     team_he = _team_he_map()
     meta = _teams_meta()
@@ -3570,6 +3713,7 @@ def path_html(data: dict) -> str:
     return (
         '<div class="pathwrap">'
         '<h2 class="bigsec" data-i18n="tab.path">המסלול שלי לניצחון</h2>'
+        + pyramid_block() +
         '<div class="pathctrls">'
         '<select id="pathSel" class="pathsel">'
         '<option value="" data-i18n="path.pick">בחרו טופס</option>'
@@ -3889,7 +4033,8 @@ def main() -> None:
 
     # 2) Main-tab live body (podium / leaders / standings / KO bracket / sim / groups).
     #    The race overlay is a global fixed element shared by all three buttons.
-    main_body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
+    main_body = (pyramid_block() + podium_html(data) + leaders_html(data)
+                 + standings_table_html(data)
                  + bracket_html()
                  + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data)
                  + race_modal_html())
@@ -3914,6 +4059,7 @@ def main() -> None:
         bracket_js(bracket_payload(wi_payload)),
         whatif_js(wi_payload), odds_js(od_payload),
         race_js(rc_payload), CHEER_JS, STAGES_JS, path_js(path_payload(data)),
+        pyramid_js(pyramid_payload(data)),
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
 
