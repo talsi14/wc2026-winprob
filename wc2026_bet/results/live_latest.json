@@ -405746,7 +405746,7 @@
     "Brazil": {
       "gf": 7,
       "ga": 1,
-      "games": 3
+      "games": 4
     },
     "Morocco": {
       "gf": 6,
@@ -405791,7 +405791,7 @@
     "Japan": {
       "gf": 7,
       "ga": 3,
-      "games": 3
+      "games": 4
     },
     "Ivory Coast": {
       "gf": 4,
@@ -411723,6 +411723,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Brazil",
+    "Japan"
+  ]
 }
