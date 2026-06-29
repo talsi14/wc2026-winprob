@@ -1237,6 +1237,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
     teams = sorted(meta)
     team_tier = {t: meta[t]["tier"] for t in teams}
     team_group = {t: meta[t]["group"] for t in teams}
+    team_elo = {t: meta[t]["elo"] for t in teams if meta[t]["elo"] is not None}
     groups: dict[str, list[str]] = {}
     for t in teams:
         groups.setdefault(meta[t]["group"], []).append(t)
@@ -1303,7 +1304,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
 
     return {
         "rules": rules,
-        "teamTier": team_tier, "teamGroup": team_group, "groups": groups,
+        "teamTier": team_tier, "teamElo": team_elo, "teamGroup": team_group, "groups": groups,
         "groupMatches": group_matches, "bracket": bracket, "thirdSlots": third_slots,
         "thirdsTable": thirds_table,
         "realGroupScores": {k: list(v) for k, v in (state.get("group_scores") or {}).items()},
@@ -1328,7 +1329,7 @@ def whatif_html() -> str:
     <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;"
          data-i18n="wi.callout" data-i18n-html></div>
     <div class="wibar">
-      <button type="button" id="wiFillKo" class="wibtn" data-i18n="wi.fill_ko">מלא נוק‑אאוט לפי המועדפות</button>
+      <button type="button" id="wiFillKo" class="wibtn" data-i18n="wi.fill_ko">מלא את הסבב הנוכחי לפי המועדפות</button>
       <button type="button" id="wiReset" class="wibtn" data-i18n="wi.reset">איפוס כל התרחישים</button>
       <span id="wiCount" class="wihint"></span>
     </div>
@@ -2421,31 +2422,35 @@ const WHATIF = __WHATIF__;
   document.getElementById('wiReset').addEventListener('click', function(){
     hypoGroup={}; hypoKo={}; hypoScorers={}; recompute(true);
   });
-  // one-click: advance the "favorite" of every still-open KO match (a 1-0 win),
-  // round by round, so the whole bracket fills with the chalk result. Favorite =
-  // stronger tier (A>B>C>D), then alphabetical (no per-team strength on client).
+  // "favorite" = the stronger team by the model's blended ELO; falls back to the
+  // bet tier (A>B>C>D) and then alphabetical when ELO is missing/tied.
+  const ELO = W.teamElo || {};
   function favorite(a, b){
+    const ea = ELO[a], eb = ELO[b];
+    if(ea!=null && eb!=null && ea!==eb) return ea>eb ? a : b;
     const ta = (a in W.teamTier)? TIERV[W.teamTier[a]] : 9;
     const tb = (b in W.teamTier)? TIERV[W.teamTier[b]] : 9;
     if(ta!==tb) return ta<tb ? a : b;
     return a.localeCompare(b)<=0 ? a : b;
   }
+  // one-click: advance the favorite (a 1-0 win) in every open match of the
+  // CURRENT round only (the earliest round still awaiting results). Deeper
+  // rounds open as their feeders resolve, so the user fills stage by stage.
   const fillBtn = document.getElementById('wiFillKo');
   if(fillBtn){
     fillBtn.addEventListener('click', function(){
-      for(let pass=0; pass<8; pass++){
-        const full = evaluate(true);
-        let changed = false;
-        full.fillable.forEach(f=>{
-          if(!f.home || !f.away) return;
-          const k = hypoKo[f.m];
-          if(k && k.hg!=null && k.ag!=null) return;     // already filled
-          const fav = favorite(f.home, f.away);
-          hypoKo[f.m] = (fav===f.home)? {hg:1, ag:0, so:undefined} : {hg:0, ag:1, so:undefined};
-          changed = true;
-        });
-        if(!changed) break;
-      }
+      const full = evaluate(true);
+      const open = full.fillable.filter(f=>{
+        if(!f.home || !f.away) return false;
+        const k = hypoKo[f.m];
+        return !(k && k.hg!=null && k.ag!=null);     // not already filled
+      });
+      if(!open.length) return;
+      const minRc = Math.min.apply(null, open.map(f=> f.rc));   // current stage
+      open.filter(f=> f.rc===minRc).forEach(f=>{
+        const fav = favorite(f.home, f.away);
+        hypoKo[f.m] = (fav===f.home)? {hg:1, ag:0, so:undefined} : {hg:0, ag:1, so:undefined};
+      });
       recompute(true);
     });
   }

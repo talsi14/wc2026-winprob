@@ -200,7 +200,7 @@ STRINGS: dict[str, tuple[str, str]] = {
     "wi.group_stage": ("שלב הבתים", "Group stage"),
     "wi.ko": ("נוק‑אאוט", "Knockout"),
     "wi.no_group": ("כל משחקי הבתים כבר שוחקו.", "All group matches already played."),
-    "wi.fill_ko": ("מלא נוק‑אאוט לפי המועדפות", "Fill KO with favorites"),
+    "wi.fill_ko": ("מלא את הסבב הנוכחי לפי המועדפות", "Fill current round with favorites"),
     "wi.ko_matches": ("משחקי נוק‑אאוט למילוי", "Knockout matches to fill"),
     "wi.no_ko": (
         "אין כרגע משחקי נוק‑אאוט פתוחים למילוי.",
