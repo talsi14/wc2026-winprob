@@ -155,6 +155,11 @@ STRINGS: dict[str, tuple[str, str]] = {
     "matrix.in_money": ("In money", "In money"),
     "matrix.p_last": ("P(last)", "P(last)"),
     "groups.title": ("טבלאות הבתים — סיכויי העפלה", "Group tables — advance odds"),
+    "bracket.live_title": ("עץ הנוק‑אאוט", "Knockout bracket"),
+    "bracket.live_sub": (
+        "המנצחות מתקדמות אוטומטית לשלב הבא ככל שמשחקים מסתיימים.",
+        "Winners advance automatically to the next round as matches finish.",
+    ),
     "groups.sub": (
         "לכל בית: מספר משחקים ששוחקו (מ׳), נקודות (נק׳), הפרש שערים, וההסתברות "
         "להעפיל לשלב הנוק‑אאוט לפי הסימולציה (העפלה). שתי הנבחרות המודגשות הן "
@@ -195,6 +200,23 @@ STRINGS: dict[str, tuple[str, str]] = {
     "wi.group_stage": ("שלב הבתים", "Group stage"),
     "wi.ko": ("נוק‑אאוט", "Knockout"),
     "wi.no_group": ("כל משחקי הבתים כבר שוחקו.", "All group matches already played."),
+    "wi.fill_ko": ("מלא נוק‑אאוט לפי המועדפות", "Fill KO with favorites"),
+    "wi.ko_matches": ("משחקי נוק‑אאוט למילוי", "Knockout matches to fill"),
+    "wi.no_ko": (
+        "אין כרגע משחקי נוק‑אאוט פתוחים למילוי.",
+        "No knockout matches are open to fill right now.",
+    ),
+    "wi.ko_cap": (
+        "כל סבב נפתח ברגע ששתי הקבוצות בו נקבעות. מלאו תוצאה (ובתיקו — בחרו מנצחת בפנדלים) "
+        "והעץ והדירוג יתעדכנו.",
+        "Each round opens once both teams are set. Enter a score (and a shootout winner on a "
+        "draw) and the bracket and standings update.",
+    ),
+    "wi.intro_ko": (
+        "מלאו את תוצאות הנוק‑אאוט מימין, צפו בעץ מתעדכן במרכז, ובדירוג שמתקבל למטה.",
+        "Fill knockout results on the right, watch the bracket update in the centre, and the "
+        "resulting standings below.",
+    ),
     "wi.ko_hint": (
         "משחקי נוק‑אאוט נפתחים אוטומטית ברגע ששתי הקבוצות בהם נקבעות — מלאו תוצאות "
         "בתים (או משחקי נוק‑אאוט מוקדמים יותר) כדי לפתוח אותם. שיבוץ מקומות השלישי "

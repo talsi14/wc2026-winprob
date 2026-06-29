@@ -792,6 +792,19 @@ WHATIF_CSS = """
   table.witbl td.pts{font-weight:800; color:var(--ink);}
   table.witbl tbody tr:nth-child(odd){background:#fcfcfd;}
 
+  /* What-If: 3-zone layout (matches on the right, bracket center/left) */
+  .wi3{display:grid; grid-template-columns:330px minmax(0,1fr); gap:18px; align-items:start; margin-top:10px;}
+  .wi3-matches{min-width:0;} .wi3-bracket{min-width:0;}
+  #wiKoMatches{max-height:640px; overflow:auto; border:1px solid var(--line); border-radius:12px; padding:6px 10px;}
+  .wikorndhd{font-weight:800; color:#1e3a8a; margin:10px 4px 6px; font-size:.9rem;
+             border-bottom:2px solid #e2e8f0; padding-bottom:4px;}
+  .wikorndhd:first-child{margin-top:2px;}
+  @media (max-width:820px){
+    .wi3{grid-template-columns:1fr; gap:12px;}
+    .wi3-bracket{order:-1;}
+    #wiKoMatches{max-height:none;}
+  }
+
   /* What-If: section blocks + group-stage split */
   .wisec{margin-top:18px;}
   .wisub2{font-weight:700; color:#1e3a8a; margin:4px 4px 8px; font-size:.92rem;}
@@ -1303,6 +1316,7 @@ def whatif_payload(data: dict, state: dict) -> dict:
         "entries": entries, "trackedPlayers": tracked_players,
         "teamHe": he_teams, "playerHe": he_players,
         "iso": {t: _TEAM_ISO.get(t, "") for t in teams},
+        "flagImg": {t: _FLAG_IMG[t] for t in teams if t in _FLAG_IMG},
     }
 
 
@@ -1310,35 +1324,29 @@ def whatif_html() -> str:
     return """
   <h2 class="bigsec" data-i18n="tab.whatif">What If..?</h2>
   <section>
-    <p class="sub" style="margin-top:4px" data-i18n="wi.intro" data-i18n-html></p>
+    <p class="sub" style="margin-top:4px" data-i18n="wi.intro_ko" data-i18n-html></p>
     <div class="callout" style="border-right-color:var(--amber); background:#fffbeb;"
          data-i18n="wi.callout" data-i18n-html></div>
     <div class="wibar">
-      <button type="button" id="wiFillGroups" class="wibtn" data-i18n="wi.fill">מלא משחקי בתים בתוצאה הסבירה ביותר</button>
+      <button type="button" id="wiFillKo" class="wibtn" data-i18n="wi.fill_ko">מלא נוק‑אאוט לפי המועדפות</button>
       <button type="button" id="wiReset" class="wibtn" data-i18n="wi.reset">איפוס כל התרחישים</button>
       <span id="wiCount" class="wihint"></span>
     </div>
   </section>
 
   <section class="wisec">
-    <div class="wicolhd" data-i18n="wi.group_stage">שלב הבתים</div>
-    <div class="wigs">
-      <div class="wicol">
-        <div class="wisub2" data-i18n="wi.matches">משחקים למילוי</div>
-        <div id="wiMatches"></div>
+    <div class="wi3">
+      <div class="wi3-matches">
+        <div class="wicolhd" data-i18n="wi.ko_matches">משחקי נוק‑אאוט למילוי</div>
+        <p class="panel-cap" data-i18n="wi.ko_cap"></p>
+        <div id="wiKoMatches"></div>
       </div>
-      <div class="wicol">
-        <div class="wisub2" data-i18n="wi.groups_title">טבלאות הבתים — בתרחיש שלכם</div>
-        <p class="panel-cap" data-i18n="wi.groups_cap"></p>
-        <div id="wiGroups" class="wggrid"></div>
+      <div class="wi3-bracket">
+        <div class="wicolhd" data-i18n="wi.bracket_title">עץ הנוק‑אאוט — בתרחיש שלכם</div>
+        <p class="panel-cap" data-i18n="wi.bracket_cap"></p>
+        <div id="wiBracket"></div>
       </div>
     </div>
-  </section>
-
-  <section class="wisec">
-    <div class="wicolhd" data-i18n="wi.bracket_title">עץ הנוק‑אאוט — בתרחיש שלכם</div>
-    <p class="panel-cap" data-i18n="wi.bracket_cap"></p>
-    <div id="wiBracket" class="wibracket-wrap"></div>
   </section>
 
   <section class="wisec">
@@ -1596,6 +1604,20 @@ def _flag(team: str) -> str:
     if not iso or len(iso) != 2:
         return "🏳️"
     return chr(0x1F1E6 + ord(iso[0]) - 65) + chr(0x1F1E6 + ord(iso[1]) - 65)
+
+
+def _load_flag_imgs() -> dict:
+    """Team -> base64 PNG data URI, from the committed assets cache (built once by
+    scripts/_gen_flags_b64.py). Lets the ONE-style bracket show crisp image flags
+    while keeping the page self-contained (no runtime network)."""
+    f = WC_ROOT / "assets" / "flags_b64.json"
+    try:
+        return json.loads(f.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+_FLAG_IMG = _load_flag_imgs()
 
 
 def cheer_html(data: dict) -> str:
@@ -1870,8 +1892,9 @@ const WHATIF = __WHATIF__;
 (function(){
   const W = WHATIF;
   const board = document.getElementById('wiBoard');
-  const matchesEl = document.getElementById('wiMatches');
+  const matchesEl = document.getElementById('wiKoMatches');
   if(!W || !W.entries || !board || !matchesEl) return;
+  const TIERV = {A:0, B:1, C:2, D:3};
   // common ancestor for delegated events (covers matches list + bracket + board)
   const root = board.closest('.tabpanel') || document;
   const R = W.rules;
@@ -2201,28 +2224,15 @@ const WHATIF = __WHATIF__;
       `<button type="button" class="wibr-pill${rc===cur?' on':''}" data-mrc="${rc}">${t(k)}</button>`
     ).join('')+`</div>`;
   }
+  // ONE-style bracket, rendered by the shared window.BR from this scenario's
+  // resolved matchups (teamsByMatch) + filled scores (koByMatch).
   function renderBracket(full){
-    const wrap=document.getElementById('wiBracket'); if(!wrap) return;
-    const prevLeft=wrap.scrollLeft;
-    const cur=wrap.getAttribute('data-mrc')||'F';   // remember pill across re-renders
-    const L=sideRounds(101), Rt=sideRounds(102);
-    let h='';
-    [1,2,3,4].forEach(rc=> h+=colHtml((L[rc]||[]), full, rc));
-    h+=`<div class="wibr-round fin"><div class="wibr-rndhd">${t('wi.rc.6')}</div>`+
-       `<div class="wibr-col cen">${nodeHtml(104, full, 'fin')}`+
-       `<div class="wibr-rndhd" style="margin-top:8px">${t('wi.rc.5')}</div>${nodeHtml(103, full, 'tp')}</div></div>`;
-    [4,3,2,1].forEach(rc=> h+=colHtml((Rt[rc]||[]), full, rc));
-    wrap.setAttribute('data-mrc', cur);
-    wrap.innerHTML=pillBar(cur)+`<div class="wibracket" data-mrc="${cur}">${h}</div>`;
-    wrap.scrollLeft=prevLeft;
-    if(!wrap.__pillsBound){ wrap.__pillsBound=true;
-      wrap.addEventListener('click', e=>{
-        const p=e.target.closest('.wibr-pill'); if(!p) return;
-        const rc=p.dataset.mrc; wrap.setAttribute('data-mrc', rc);
-        wrap.querySelectorAll('.wibr-pill').forEach(b=> b.classList.toggle('on', b.dataset.mrc===rc));
-        const bk=wrap.querySelector('.wibracket'); if(bk) bk.setAttribute('data-mrc', rc);
-      });
-    }
+    const wrap=document.getElementById('wiBracket'); if(!wrap || !window.BR) return;
+    const mp={}; const tbm=full.teamsByMatch||{}, kbm=full.koByMatch||{};
+    for(const m in tbm){ const tm=tbm[m]||[null,null]; const k=kbm[m]||{};
+      mp[m]={home:tm[0], away:tm[1], hg:(k.hg!=null?k.hg:null), ag:(k.ag!=null?k.ag:null),
+             winner:k.winner||null, so:!!k.so, real:!!k.real}; }
+    BR.renderOne(wrap, mp, W, {});
   }
 
   // scenario points = site baseline + (engine(real+hypo) - engine(real)), per slot,
@@ -2307,16 +2317,26 @@ const WHATIF = __WHATIF__;
       </div>${so}${scr}${adv}</div>`;
   }
 
-  function renderMatches(full){
-    // only group matches still open (no real result yet); KO lives in the bracket
-    const openGroup = W.groupMatches.filter(m=> W.realGroupScores[m.no]===undefined)
-      .sort((a,b)=> a.no-b.no);
+  // KO match cards (right panel), grouped by round; rounds appear as their
+  // feeders resolve, so deeper rounds reveal themselves once filled.
+  function renderKoMatches(full){
+    const el = document.getElementById('wiKoMatches'); if(!el) return;
+    const top = el.scrollTop;
+    const byRc = {};
+    full.fillable.forEach(f=>{ (byRc[f.rc]=byRc[f.rc]||[]).push(f); });
+    const rounds = Object.keys(byRc).map(Number).sort((a,b)=> a-b);
     let html = '';
-    if(!openGroup.length) html = '<div class="wihint">'+t('wi.no_group')+'</div>';
-    else openGroup.forEach(m=> html += matchRow('g', m.no, m.home, m.away, hypoGroup[m.no]||null, 'group'));
-    const top = matchesEl.scrollTop;     // keep the scroll position across re-renders
-    matchesEl.innerHTML = html;
-    matchesEl.scrollTop = top;
+    if(!rounds.length){ html = '<div class="wihint">'+t('wi.no_ko')+'</div>'; }
+    rounds.forEach(rc=>{
+      html += '<div class="wikorndhd">'+t('wi.rc.'+rc)+'</div>';
+      byRc[rc].sort((a,b)=> a.m-b.m).forEach(f=>{
+        const k = hypoKo[f.m];
+        const score = k ? [ (k.hg!=null?k.hg:null), (k.ag!=null?k.ag:null) ] : null;
+        html += matchRow('k', f.m, f.home, f.away, score, f.stage, f.winner);
+      });
+    });
+    el.innerHTML = html;
+    el.scrollTop = top;
   }
 
   function sigOf(full){
@@ -2328,20 +2348,19 @@ const WHATIF = __WHATIF__;
     const full = evaluate(true);
     lastFull = full;
     renderBoard(full);
-    renderGroups(full);
     // remember which score input is focused so we can restore it after rebuilding
-    // (group list + bracket both rebuild on edits, otherwise typing loses focus)
+    // (matches list + bracket both rebuild on edits, otherwise typing loses focus)
     const a = document.activeElement;
     const desc = (a && a.classList && a.classList.contains('wiscore'))
       ? {m:a.dataset.m, kind:a.dataset.kind, side:a.dataset.side} : null;
     const sig = sigOf(full);
-    if(forceMatches || sig!==lastSig){ renderMatches(full); lastSig = sig; }
+    if(forceMatches || sig!==lastSig){ renderKoMatches(full); lastSig = sig; }
     renderBracket(full);
     if(desc){
       const el = root.querySelector('.wiscore[data-m="'+desc.m+'"][data-kind="'+desc.kind+'"][data-side="'+desc.side+'"]');
       if(el && el!==document.activeElement){ el.focus(); const v=el.value; try{ el.value=''; el.value=v; }catch(e){} }
     }
-    const nHypo = Object.keys(hypoGroup).length + Object.keys(hypoKo).length;
+    const nHypo = Object.keys(hypoKo).length;
     document.getElementById('wiCount').textContent = nHypo? I.fmt('wi.count.n', {n: nHypo}) : t('wi.count.none');
   }
 
@@ -2402,23 +2421,31 @@ const WHATIF = __WHATIF__;
   document.getElementById('wiReset').addEventListener('click', function(){
     hypoGroup={}; hypoKo={}; hypoScorers={}; recompute(true);
   });
-  // one-click: fill every still-open group match with the model's most-probable
-  // scoreline (KO matches are left alone - they then open as their feeders resolve).
-  const fillBtn = document.getElementById('wiFillGroups');
+  // one-click: advance the "favorite" of every still-open KO match (a 1-0 win),
+  // round by round, so the whole bracket fills with the chalk result. Favorite =
+  // stronger tier (A>B>C>D), then alphabetical (no per-team strength on client).
+  function favorite(a, b){
+    const ta = (a in W.teamTier)? TIERV[W.teamTier[a]] : 9;
+    const tb = (b in W.teamTier)? TIERV[W.teamTier[b]] : 9;
+    if(ta!==tb) return ta<tb ? a : b;
+    return a.localeCompare(b)<=0 ? a : b;
+  }
+  const fillBtn = document.getElementById('wiFillKo');
   if(fillBtn){
-    const pred = W.predGroupScores||{};
-    if(!Object.keys(pred).length){ fillBtn.disabled = true; }
     fillBtn.addEventListener('click', function(){
-      const predSc = W.predGroupScorers||{};
-      W.groupMatches.forEach(m=>{
-        if(W.realGroupScores[m.no]!==undefined) return;   // already played for real
-        const mk = 'g'+m.no;
-        const p = pred[m.no];
-        if(p) hypoGroup[m.no] = [p[0], p[1]];
-        const sc = predSc[m.no];
-        if(sc && Object.keys(sc).length) hypoScorers[mk] = Object.assign({}, sc);
-        else delete hypoScorers[mk];
-      });
+      for(let pass=0; pass<8; pass++){
+        const full = evaluate(true);
+        let changed = false;
+        full.fillable.forEach(f=>{
+          if(!f.home || !f.away) return;
+          const k = hypoKo[f.m];
+          if(k && k.hg!=null && k.ag!=null) return;     // already filled
+          const fav = favorite(f.home, f.away);
+          hypoKo[f.m] = (fav===f.home)? {hg:1, ag:0, so:undefined} : {hg:0, ag:1, so:undefined};
+          changed = true;
+        });
+        if(!changed) break;
+      }
       recompute(true);
     });
   }
@@ -2427,6 +2454,271 @@ const WHATIF = __WHATIF__;
   document.addEventListener('langchange', ()=> recompute(true));
 })();
 """
+
+
+# =========================================================================== #
+# ONE-style knockout bracket (vertical, two-sided, flag-based).               #
+#   * shared JS renderer/resolver in window.BR                                 #
+#   * read-only on the main page (#liveBracket), reflecting real results       #
+#   * reused by the What-If tab to mirror the user's hypothetical KO inputs    #
+# =========================================================================== #
+ONEBR_CSS = """
+  .obr-wrap{position:relative; width:100%; overflow:hidden; border-radius:14px; margin-top:8px;
+    background:
+      radial-gradient(900px 420px at 50% -10%, rgba(56,98,182,.30), transparent 60%),
+      radial-gradient(700px 380px at 50% 110%, rgba(176,138,42,.16), transparent 60%),
+      linear-gradient(180deg,#0a0f1c 0%,#070b16 60%,#05070d 100%);
+    box-shadow:inset 0 0 0 1px rgba(120,150,210,.14), 0 10px 30px rgba(0,0,0,.22);}
+  .obr-stage{position:absolute; top:0; left:0; transform-origin:top left;}
+  svg.obr-lines{position:absolute; inset:0; z-index:0;}
+  .obr-node{position:absolute; box-sizing:border-box; border-radius:8px; overflow:hidden; z-index:2;
+    background:linear-gradient(180deg,rgba(22,30,49,.96),rgba(15,21,36,.96));
+    border:1px solid rgba(120,150,210,.20);
+    box-shadow:0 6px 16px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.04);}
+  .obr-node.fin{border-color:rgba(245,200,80,.55);
+    box-shadow:0 0 0 2px rgba(245,158,11,.20), 0 8px 22px rgba(0,0,0,.5);}
+  .obr-node.tpn{opacity:.9;}
+  .obr-row{display:flex; align-items:center; gap:6px; height:50%; padding:0 6px; direction:ltr;}
+  .obr-row+.obr-row{border-top:1px solid rgba(120,150,210,.14);}
+  .obr-fl{width:26px; height:18px; object-fit:cover; border-radius:2px; flex:none;
+    box-shadow:0 0 0 1px rgba(255,255,255,.16),0 1px 3px rgba(0,0,0,.5);}
+  .obr-flx{font-size:18px; line-height:1; width:26px; text-align:center; flex:none;}
+  .obr-gl{margin-left:auto; font-weight:800; font-size:13px; color:#cdd8ee; min-width:14px; text-align:center;}
+  .obr-row.tbd{opacity:.4;}
+  .obr-row.win{background:rgba(34,197,94,.16);}
+  .obr-row.win .obr-gl{color:#fff;}
+  .obr-row.lose{opacity:.45;}
+  .obr-node.fin .obr-row.win{background:rgba(245,158,11,.24);}
+  .obr-lbl{position:absolute; transform:translateX(-50%); white-space:nowrap; z-index:3;
+    font-size:11px; font-weight:700; letter-spacing:.03em; color:#9fb4dd;
+    background:rgba(11,17,31,.82); border:1px solid rgba(120,150,210,.22);
+    border-radius:999px; padding:2px 9px;}
+  .obr-empty{padding:26px 12px; text-align:center; color:#7e8fb3; font-weight:600;}
+"""
+
+
+def bracket_html() -> str:
+    """Read-only live KO bracket for the main page (right after the standings)."""
+    return (
+        '\n  <section>\n'
+        '    <h2 class="bigsec" data-i18n="bracket.live_title">עץ הנוק‑אאוט</h2>\n'
+        '    <p class="sub" style="margin-top:4px" data-i18n="bracket.live_sub">'
+        'המנצחות מתקדמות אוטומטית לשלב הבא ככל שמשחקים מסתיימים.</p>\n'
+        '    <div id="liveBracket" class="obr-wrap"></div>\n'
+        '  </section>\n')
+
+
+def bracket_payload(wp: dict) -> dict:
+    """Slim subset of the What-If payload needed to resolve+render the real KO
+    bracket on the main page (no entries/scoring)."""
+    keys = ("bracket", "thirdSlots", "thirdsTable", "groups", "groupMatches",
+            "realGroupScores", "realKo", "iso", "flagImg")
+    return {k: wp[k] for k in keys if k in wp}
+
+
+_BRACKET_JS = r"""
+const BPAYLOAD = __BRACKET__;
+window.BR = (function(){
+  const I = window.I18N;
+  const t = k => (I ? I.t(k) : k);
+  const heT = en => (I ? I.team(en) : en);
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,
+    c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  const pairKey = (a,b)=> [a,b].slice().sort().join(' || ');
+
+  function flagImg(team, P){
+    const u = P && P.flagImg && P.flagImg[team];
+    if(u) return '<img class="obr-fl" src="'+u+'" alt="">';
+    const iso = P && P.iso && P.iso[team];
+    if(iso && iso.length===2) return '<span class="obr-flx">'+
+      String.fromCodePoint.apply(null, [...iso.toUpperCase()].map(c=>0x1F1E6+c.charCodeAt(0)-65))+'</span>';
+    return '<span class="obr-flx">\u{1F3F3}\uFE0F</span>';
+  }
+
+  // ---- bracket structure (pure, from payload.bracket) -------------------- //
+  function indexBracket(P){ const bm={}; (P.bracket||[]).forEach(b=> bm[b.m]=b); return bm; }
+  function childMatches(bm,m){ const b=bm[m]; const r=[];
+    if(b)[b.hr,b.ar].forEach(ref=>{ if(ref && ref.type==='match_winner') r.push(ref.match); }); return r; }
+  function sideRounds(bm,root){ const byRc={};
+    (function rec(m){ const b=bm[m]; if(!b) return; childMatches(bm,m).forEach(rec);
+      (byRc[b.rc]=byRc[b.rc]||[]).push(m); })(root); return byRc; }
+
+  // ---- real-only resolver (group standings -> KO matchups + winners) ----- //
+  function groupStandings(P, gs){
+    const gmByGroup={}; (P.groupMatches||[]).forEach(m=>{ (gmByGroup[m.group]=gmByGroup[m.group]||[]).push(m); });
+    const out={finish:{}, winner:{}, runner:{}, third:{}, tstats:{}, top8:null, allComplete:true};
+    for(const g of Object.keys(P.groups||{})){
+      const ms=gmByGroup[g]||[]; const done=ms.length>0 && ms.every(m=> gs[m.no]!==undefined);
+      if(!done){ out.allComplete=false; continue; }
+      const tab={}, hh={}; P.groups[g].forEach(tm=>{ tab[tm]={pts:0,gd:0,gf:0}; hh[tm]={}; });
+      ms.forEach(m=>{ const s=gs[m.no]; const hg=s[0], ag=s[1];
+        tab[m.home].gf+=hg; tab[m.away].gf+=ag; tab[m.home].gd+=hg-ag; tab[m.away].gd+=ag-hg;
+        if(hg>ag) tab[m.home].pts+=3; else if(ag>hg) tab[m.away].pts+=3; else { tab[m.home].pts++; tab[m.away].pts++; }
+        hh[m.home][m.away]={gf:hg,ga:ag,pts:hg>ag?3:(hg===ag?1:0)};
+        hh[m.away][m.home]={gf:ag,ga:hg,pts:ag>hg?3:(ag===hg?1:0)};
+      });
+      const mk={};
+      P.groups[g].forEach(tm=>{ let mp=0,mgd=0,mgf=0;
+        P.groups[g].forEach(o=>{ if(o===tm||tab[o].pts!==tab[tm].pts) return; const r=hh[tm][o]; if(!r) return;
+          mp+=r.pts; mgd+=r.gf-r.ga; mgf+=r.gf; }); mk[tm]=[mp,mgd,mgf]; });
+      const ord=P.groups[g].slice().sort((a,b)=> tab[b].pts-tab[a].pts
+        || mk[b][0]-mk[a][0] || mk[b][1]-mk[a][1] || mk[b][2]-mk[a][2]
+        || tab[b].gd-tab[a].gd || tab[b].gf-tab[a].gf || a.localeCompare(b));
+      ord.forEach((tm,i)=> out.finish[tm]=i+1);
+      out.winner[g]=ord[0]; out.runner[g]=ord[1]; out.third[g]=ord[2]; out.tstats[g]=tab[ord[2]];
+    }
+    if(out.allComplete){
+      const thirds=Object.keys(P.groups).map(g=>({g, t:out.third[g], s:out.tstats[g]}));
+      thirds.sort((a,b)=> b.s.pts-a.s.pts || b.s.gd-a.s.gd || b.s.gf-a.s.gf || a.g.localeCompare(b.g));
+      out.top8=thirds.slice(0,8).map(x=>x.g).sort();
+    }
+    return out;
+  }
+  function matchThirds(P, groups8, slots){
+    const key=groups8.slice().sort().join(''); const tbl=P.thirdsTable && P.thirdsTable[key];
+    const a={}; if(tbl && tbl.length===slots.length){ for(let i=0;i<slots.length;i++) a[i]=tbl[i]; }
+    return a;
+  }
+  function resolveReal(P){
+    const gs=Object.assign({}, P.realGroupScores||{});
+    const stand=groupStandings(P, gs);
+    const slotTeam={};
+    if(stand.allComplete && stand.top8){
+      const assign=matchThirds(P, stand.top8, P.thirdSlots||[]);
+      (P.thirdSlots||[]).forEach((s,i)=> slotTeam[s.m+'|'+s.side]= stand.third[assign[i]]);
+    }
+    const teamsByMatch={}, winByMatch={}, mp={};
+    const realByPair={}; (P.realKo||[]).forEach(k=> realByPair[pairKey(k.home,k.away)]=k);
+    const resolve=(ref,m,side)=>{
+      if(!ref) return null;
+      if(ref.type==='group_winner') return stand.winner[ref.group]||null;
+      if(ref.type==='group_runner') return stand.runner[ref.group]||null;
+      if(ref.type==='third') return slotTeam[m+'|'+side]||null;
+      if(ref.type==='match_winner') return winByMatch[ref.match]||null;
+      if(ref.type==='match_loser'){ const w=winByMatch[ref.match], tt=teamsByMatch[ref.match];
+        if(!w||!tt) return null; return tt[0]===w?tt[1]:tt[0]; }
+      return null;
+    };
+    // ascending match number resolves feeders (R32 < R16 < ... < final) first
+    (P.bracket||[]).slice().sort((a,b)=> a.m-b.m).forEach(b=>{
+      const home=resolve(b.hr,b.m,'home_ref'), away=resolve(b.ar,b.m,'away_ref');
+      teamsByMatch[b.m]=[home,away];
+      let hg=null,ag=null,winner=null,so=false,real=false;
+      const rk=(home&&away)? realByPair[pairKey(home,away)] : null;
+      if(rk && rk.winner){ real=true; hg=rk.home_goals; ag=rk.away_goals; so=!!rk.shootout;
+        if(home!==rk.home){ const x=hg; hg=ag; ag=x; } winner=rk.winner; winByMatch[b.m]=winner; }
+      mp[b.m]={home,away,hg,ag,winner,so,real};
+    });
+    return mp;
+  }
+
+  // ---- ONE-style two-sided renderer (display-only) ----------------------- //
+  function renderOne(el, mp, P, opts){
+    opts=opts||{};
+    const bm=indexBracket(P);
+    const L=sideRounds(bm,101), Rt=sideRounds(bm,102);
+    const CW=58, CH=54, VGAP=14, PADX=10, TOP=42, STEP=88, CSTEP=104, BOT=86;
+    const blockH=8*CH+7*VGAP;
+    const ys=()=>{ const a=[]; for(let i=0;i<8;i++) a.push(TOP+i*(CH+VGAP)+CH/2); return a; };
+    const pair=(arr)=>{ const o=[]; for(let i=0;i+1<arr.length;i+=2) o.push((arr[i]+arr[i+1])/2); return o; };
+    const yR32=ys(), yR16=pair(yR32), yQF=pair(yR16), ySF=pair(yQF);
+    const lx=[PADX, PADX+STEP, PADX+2*STEP, PADX+3*STEP];
+    const finX=lx[3]+CSTEP;
+    const rsf=finX+CSTEP, rqf=rsf+STEP, r16=rqf+STEP, r32=r16+STEP;
+    const Wd=r32+CW+PADX, Hd=TOP+blockH+BOT, finY=TOP+blockH/2, tpy=TOP+blockH+30;
+
+    function node(m,x,yc,cls){
+      const d=mp[m]||{}; const w=d.winner;
+      const hw=w&&d.home&&w===d.home, aw=w&&d.away&&w===d.away;
+      function row(team,gl,win,lose){
+        if(!team) return '<div class="obr-row tbd">'+flagImg(null,P)+'</div>';
+        return '<div class="obr-row'+(win?' win':'')+(lose?' lose':'')+'" title="'+
+          esc(heT(team))+(d.so&&win?' (\u05E4\u05E0\u05D3\u05DC\u05D9\u05DD)':'')+'">'+
+          flagImg(team,P)+(gl!=null?'<span class="obr-gl">'+gl+'</span>':'')+'</div>';
+      }
+      return '<div class="obr-node'+(w?' decided':'')+(cls?' '+cls:'')+
+        '" style="left:'+x+'px;top:'+(yc-CH/2)+'px;width:'+CW+'px;height:'+CH+'px" data-m="'+m+'">'+
+        row(d.home,d.hg,hw,w&&!hw)+row(d.away,d.ag,aw,w&&!aw)+'</div>';
+    }
+    let nodes='';
+    (L[1]||[]).forEach((m,i)=> nodes+=node(m,lx[0],yR32[i]));
+    (L[2]||[]).forEach((m,i)=> nodes+=node(m,lx[1],yR16[i]));
+    (L[3]||[]).forEach((m,i)=> nodes+=node(m,lx[2],yQF[i]));
+    (L[4]||[]).forEach((m,i)=> nodes+=node(m,lx[3],ySF[i]));
+    (Rt[1]||[]).forEach((m,i)=> nodes+=node(m,r32,yR32[i]));
+    (Rt[2]||[]).forEach((m,i)=> nodes+=node(m,r16,yR16[i]));
+    (Rt[3]||[]).forEach((m,i)=> nodes+=node(m,rqf,yQF[i]));
+    (Rt[4]||[]).forEach((m,i)=> nodes+=node(m,rsf,ySF[i]));
+    nodes+=node(104,finX,finY,'fin');
+    nodes+=node(103,finX,tpy,'tpn');
+
+    let paths='';
+    const elbow=(x1,y1,x2,y2)=>{ const mx=(x1+x2)/2;
+      paths+='<path d="M'+x1+' '+y1+' H'+mx+' V'+y2+' H'+x2+'" fill="none" '+
+        'stroke="rgba(120,150,210,.34)" stroke-width="1.4"/>'; };
+    const connL=(childYs,childRight,parentX)=>{ for(let i=0;i+1<childYs.length;i+=2){
+      const py=(childYs[i]+childYs[i+1])/2; elbow(childRight,childYs[i],parentX,py); elbow(childRight,childYs[i+1],parentX,py); } };
+    const connR=(childYs,childLeft,parentRight)=>{ for(let i=0;i+1<childYs.length;i+=2){
+      const py=(childYs[i]+childYs[i+1])/2; elbow(childLeft,childYs[i],parentRight,py); elbow(childLeft,childYs[i+1],parentRight,py); } };
+    connL(yR32,lx[0]+CW,lx[1]); connL(yR16,lx[1]+CW,lx[2]); connL(yQF,lx[2]+CW,lx[3]);
+    connR(yR32,r32,r16+CW); connR(yR16,r16,rqf+CW); connR(yQF,rqf,rsf+CW);
+    elbow(lx[3]+CW,ySF[0],finX,finY); elbow(rsf,ySF[0],finX+CW,finY);
+
+    const lbl=(x,y,txt)=> '<div class="obr-lbl" style="left:'+x+'px;top:'+y+'px">'+esc(txt)+'</div>';
+    let labels='';
+    const ytop=TOP-28;
+    labels+=lbl(lx[0]+CW/2,ytop,t('wi.rc.1'))+lbl(lx[1]+CW/2,ytop,t('wi.rc.2'))
+      +lbl(lx[2]+CW/2,ytop,t('wi.rc.3'))+lbl(lx[3]+CW/2,ytop,t('wi.rc.4'))
+      +lbl(finX+CW/2,ytop,'\u{1F3C6} '+t('wi.rc.6'))
+      +lbl(rsf+CW/2,ytop,t('wi.rc.4'))+lbl(rqf+CW/2,ytop,t('wi.rc.3'))
+      +lbl(r16+CW/2,ytop,t('wi.rc.2'))+lbl(r32+CW/2,ytop,t('wi.rc.1'))
+      +lbl(finX+CW/2,tpy+CH/2+8,t('wi.rc.5'));
+
+    const svg='<svg class="obr-lines" width="'+Wd+'" height="'+Hd+'" viewBox="0 0 '+Wd+' '+Hd+'">'+paths+'</svg>';
+    el.classList.add('obr-wrap');
+    el.__fw=-1;   // force a refit after re-render even if the width is unchanged
+    el.innerHTML='<div class="obr-stage" data-w="'+Wd+'" data-h="'+Hd+'" style="width:'+Wd+'px;height:'+Hd+'px">'
+      +svg+nodes+labels+'</div>';
+    if(RO){ try{ RO.unobserve(el); RO.observe(el); }catch(e){} }
+    requestAnimationFrame(()=> fit(el));
+  }
+
+  function fit(wrap){ const st=wrap.firstElementChild; if(!st) return;
+    const Wd=+st.dataset.w, Hd=+st.dataset.h, cw=wrap.clientWidth;
+    if(!cw || !Wd){ return; }
+    if(wrap.__fw===cw){ return; }   // width unchanged -> skip (avoids ResizeObserver loop)
+    wrap.__fw=cw;
+    let s=cw/Wd; if(s>1.15) s=1.15;
+    st.style.transform='scale('+s+')';
+    st.style.left=Math.max(0,(cw-Wd*s)/2)+'px';
+    wrap.style.height=(Hd*s)+'px';
+  }
+  function fitAll(){ document.querySelectorAll('.obr-wrap').forEach(w=>{ w.__fw=-1; fit(w); }); }
+  const RO = (typeof ResizeObserver!=='undefined')
+    ? new ResizeObserver(es=>{ es.forEach(e=> fit(e.target)); }) : null;
+  let _bound=false;
+  (function bind(){ if(_bound) return; _bound=true;
+    window.addEventListener('resize', fitAll);
+    window.addEventListener('load', ()=> setTimeout(fitAll,40));
+    document.addEventListener('tabshow', ()=> setTimeout(fitAll,40));
+  })();
+
+  return {flagImg, resolveReal, renderOne, fit, fitAll};
+})();
+
+// main-page read-only bracket
+(function(){
+  const el=document.getElementById('liveBracket');
+  if(!el || !window.BR || !BPAYLOAD || !BPAYLOAD.bracket || !BPAYLOAD.bracket.length) return;
+  function draw(){ BR.renderOne(el, BR.resolveReal(BPAYLOAD), BPAYLOAD, {readOnly:true}); }
+  draw();
+  document.addEventListener('langchange', draw);
+})();
+"""
+
+
+def bracket_js(payload: dict) -> str:
+    return _BRACKET_JS.replace("__BRACKET__", json.dumps(payload, ensure_ascii=False))
 
 
 _ODDS_JS = r"""
@@ -3587,12 +3879,13 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS])
+    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS, ONEBR_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
-    # 2) Main-tab live body (podium / leaders / standings / simulation / groups).
+    # 2) Main-tab live body (podium / leaders / standings / KO bracket / sim / groups).
     #    The race overlay is a global fixed element shared by all three buttons.
     main_body = (podium_html(data) + leaders_html(data) + standings_table_html(data)
+                 + bracket_html()
                  + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data)
                  + race_modal_html())
     html = replace_region(html, HTML_START, HTML_END, main_body)
@@ -3612,7 +3905,9 @@ def main() -> None:
     all_js = "\n".join([
         i18n_js(team_he, pl_he),
         js_block(champs, CHAMP_HE, cm["p_title"], matrix, order, winprob),
-        LEADERS_JS, TABS_JS, STICKY_FIX_JS, whatif_js(wi_payload), odds_js(od_payload),
+        LEADERS_JS, TABS_JS, STICKY_FIX_JS,
+        bracket_js(bracket_payload(wi_payload)),
+        whatif_js(wi_payload), odds_js(od_payload),
         race_js(rc_payload), CHEER_JS, STAGES_JS, path_js(path_payload(data)),
     ])
     html = replace_region(html, JS_START, JS_END, all_js)
