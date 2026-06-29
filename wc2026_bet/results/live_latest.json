@@ -377927,6 +377927,11 @@
       "goals": 3
     },
     {
+      "scorer": "Kai Havertz",
+      "team": "Germany",
+      "goals": 3
+    },
+    {
       "scorer": "Matheus Cunha",
       "team": "Brazil",
       "goals": 3
@@ -377994,11 +377999,6 @@
     {
       "scorer": "Julián Quiñones",
       "team": "Mexico",
-      "goals": 2
-    },
-    {
-      "scorer": "Kai Havertz",
-      "team": "Germany",
       "goals": 2
     },
     {
@@ -378640,7 +378640,7 @@
     },
     "Paraguay": {
       "gf": 3,
-      "ga": 4,
+      "ga": 5,
       "games": 4
     },
     "Qatar": {
@@ -378684,7 +378684,7 @@
       "games": 3
     },
     "Germany": {
-      "gf": 10,
+      "gf": 11,
       "ga": 5,
       "games": 4
     },
