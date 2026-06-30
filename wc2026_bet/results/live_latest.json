@@ -366769,7 +366769,7 @@
     "Morocco": {
       "gf": 6,
       "ga": 3,
-      "games": 3
+      "games": 4
     },
     "Haiti": {
       "gf": 2,
@@ -366804,7 +366804,7 @@
     "Netherlands": {
       "gf": 10,
       "ga": 4,
-      "games": 3
+      "games": 4
     },
     "Japan": {
       "gf": 8,
@@ -373187,6 +373187,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Morocco",
+    "Netherlands"
+  ]
 }
