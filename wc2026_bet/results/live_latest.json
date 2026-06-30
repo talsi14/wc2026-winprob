@@ -324486,7 +324486,7 @@
     "Sweden": {
       "gf": 7,
       "ga": 7,
-      "games": 3
+      "games": 4
     },
     "Tunisia": {
       "gf": 2,
@@ -324536,7 +324536,7 @@
     "France": {
       "gf": 10,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Senegal": {
       "gf": 8,
@@ -330402,6 +330402,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "France",
+    "Sweden"
+  ]
 }
