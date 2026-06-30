@@ -321681,7 +321681,7 @@
     "Ivory Coast": {
       "gf": 4,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Ecuador": {
       "gf": 2,
@@ -321756,7 +321756,7 @@
     "Norway": {
       "gf": 8,
       "ga": 7,
-      "games": 3
+      "games": 4
     },
     "Argentina": {
       "gf": 8,
@@ -327831,6 +327831,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Ivory Coast",
+    "Norway"
+  ]
 }
