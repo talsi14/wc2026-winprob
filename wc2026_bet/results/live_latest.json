@@ -321077,6 +321077,11 @@
       "goals": 1
     },
     {
+      "scorer": "Antonio Nusa",
+      "team": "Norway",
+      "goals": 1
+    },
+    {
       "scorer": "Arda Güler",
       "team": "Turkey",
       "goals": 1
@@ -321680,7 +321685,7 @@
     },
     "Ivory Coast": {
       "gf": 4,
-      "ga": 2,
+      "ga": 3,
       "games": 4
     },
     "Ecuador": {
@@ -321754,7 +321759,7 @@
       "games": 3
     },
     "Norway": {
-      "gf": 8,
+      "gf": 9,
       "ga": 7,
       "games": 4
     },
