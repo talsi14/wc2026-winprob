@@ -323634,7 +323634,7 @@
     {
       "scorer": "Kylian Mbappé",
       "team": "France",
-      "goals": 4
+      "goals": 5
     },
     {
       "scorer": "Ousmane Dembélé",
@@ -324485,7 +324485,7 @@
     },
     "Sweden": {
       "gf": 7,
-      "ga": 7,
+      "ga": 8,
       "games": 4
     },
     "Tunisia": {
@@ -324534,7 +324534,7 @@
       "games": 3
     },
     "France": {
-      "gf": 10,
+      "gf": 11,
       "ga": 2,
       "games": 4
     },
