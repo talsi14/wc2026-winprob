@@ -366000,6 +366000,11 @@
       "goals": 3
     },
     {
+      "scorer": "Cody Gakpo",
+      "team": "Netherlands",
+      "goals": 3
+    },
+    {
       "scorer": "Deniz Undav",
       "team": "Germany",
       "goals": 3
@@ -366057,11 +366062,6 @@
     {
       "scorer": "Ayase Ueda",
       "team": "Japan",
-      "goals": 2
-    },
-    {
-      "scorer": "Cody Gakpo",
-      "team": "Netherlands",
       "goals": 2
     },
     {
@@ -366768,7 +366768,7 @@
     },
     "Morocco": {
       "gf": 6,
-      "ga": 3,
+      "ga": 4,
       "games": 4
     },
     "Haiti": {
@@ -366802,7 +366802,7 @@
       "games": 3
     },
     "Netherlands": {
-      "gf": 10,
+      "gf": 11,
       "ga": 4,
       "games": 4
     },
