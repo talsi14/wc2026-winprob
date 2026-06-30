@@ -323622,6 +323622,11 @@
   },
   "scorers": [
     {
+      "scorer": "Kylian Mbappé",
+      "team": "France",
+      "goals": 6
+    },
+    {
       "scorer": "Lionel Messi",
       "team": "Argentina",
       "goals": 6
@@ -323629,11 +323634,6 @@
     {
       "scorer": "Erling Haaland",
       "team": "Norway",
-      "goals": 5
-    },
-    {
-      "scorer": "Kylian Mbappé",
-      "team": "France",
       "goals": 5
     },
     {
@@ -324485,7 +324485,7 @@
     },
     "Sweden": {
       "gf": 7,
-      "ga": 9,
+      "ga": 10,
       "games": 4
     },
     "Tunisia": {
@@ -324534,7 +324534,7 @@
       "games": 3
     },
     "France": {
-      "gf": 12,
+      "gf": 13,
       "ga": 2,
       "games": 4
     },
