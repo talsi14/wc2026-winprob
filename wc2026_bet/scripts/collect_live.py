@@ -168,11 +168,16 @@ def main() -> None:
                 group_scores[str(mno)] = [ag, hg]
             played_group += 1
         else:
-            winner = fx["home"] if hg > ag else (fx["away"] if ag > hg else None)
+            # Prefer ESPN's explicit winner flag so penalty-shootout games (a
+            # regulation draw) still resolve to the side that advanced; fall back
+            # to the regulation score for non-shootout results.
+            winner = fx.get("winner") or (
+                fx["home"] if hg > ag else (fx["away"] if ag > hg else None))
             ko_results.append({
                 "home": fx["home"], "away": fx["away"],
                 "home_goals": hg, "away_goals": ag,
-                "winner": winner, "shootout": hg == ag,
+                "winner": winner,
+                "shootout": bool(fx.get("shootout")) or hg == ag,
             })
             played_ko += 1
 

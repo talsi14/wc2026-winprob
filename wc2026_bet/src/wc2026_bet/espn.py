@@ -79,22 +79,35 @@ def fetch_fixtures(start: date = WC_START, end: date = WC_END) -> list[dict]:
             home = away = None
             hs = as_ = None
             hid = aid = None
+            hwin = awin = None       # ESPN winner flag (true for the side that advanced, incl. shootouts)
+            hso = aso = None         # penalty-shootout scores when the game went to spot-kicks
             for c in comp.get("competitors", []):
                 nm = _canon((c.get("team") or {}).get("displayName", ""))
                 sc = c.get("score")
                 sc = int(sc) if (sc is not None and str(sc).strip() != "") else None
+                so = c.get("shootoutScore")
+                so = int(so) if (so is not None and str(so).strip() != "") else None
+                win = c.get("winner")
                 if c.get("homeAway") == "home":
-                    home, hs, hid = nm, sc, (c.get("team") or {}).get("id")
+                    home, hs, hid, hwin, hso = nm, sc, (c.get("team") or {}).get("id"), win, so
                 else:
-                    away, as_, aid = nm, sc, (c.get("team") or {}).get("id")
+                    away, as_, aid, awin, aso = nm, sc, (c.get("team") or {}).get("id"), win, so
             notes = comp.get("notes") or []
             stage = notes[0].get("headline") if notes else ev.get("name")
+            # Winner per ESPN's own flag, so penalty-shootout results (regulation
+            # draw) still resolve to the side that advanced. Falls back to None
+            # for unplayed/ongoing games or unmapped teams.
+            winner = home if hwin else (away if awin else None)
+            shootout = (status.get("name") == "STATUS_FINAL_PEN"
+                        or hso is not None or aso is not None)
             out.append({
                 "espn_id": eid, "date": ev.get("date"), "state": state,
                 "completed": completed, "stage": stage,
                 "home": home, "away": away,
                 "home_score": hs, "away_score": as_,
                 "home_id": hid, "away_id": aid,
+                "winner": winner, "shootout": shootout,
+                "home_shootout": hso, "away_shootout": aso,
             })
         d += timedelta(days=1)
     return out
