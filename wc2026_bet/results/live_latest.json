@@ -323722,6 +323722,11 @@
       "goals": 2
     },
     {
+      "scorer": "Bradley Barcola",
+      "team": "France",
+      "goals": 2
+    },
+    {
       "scorer": "Cristiano Ronaldo",
       "team": "Portugal",
       "goals": 2
@@ -323889,11 +323894,6 @@
     {
       "scorer": "Baris Alper Yilmaz",
       "team": "Turkey",
-      "goals": 1
-    },
-    {
-      "scorer": "Bradley Barcola",
-      "team": "France",
       "goals": 1
     },
     {
@@ -324485,7 +324485,7 @@
     },
     "Sweden": {
       "gf": 7,
-      "ga": 8,
+      "ga": 9,
       "games": 4
     },
     "Tunisia": {
@@ -324534,7 +324534,7 @@
       "games": 3
     },
     "France": {
-      "gf": 11,
+      "gf": 12,
       "ga": 2,
       "games": 4
     },
