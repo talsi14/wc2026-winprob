@@ -319423,6 +319423,11 @@
       "goals": 3
     },
     {
+      "scorer": "Amad Diallo",
+      "team": "Ivory Coast",
+      "goals": 2
+    },
+    {
       "scorer": "Anthony Elanga",
       "team": "Sweden",
       "goals": 2
@@ -319565,11 +319570,6 @@
     {
       "scorer": "Ali Olwan",
       "team": "Jordan",
-      "goals": 1
-    },
-    {
-      "scorer": "Amad Diallo",
-      "team": "Ivory Coast",
       "goals": 1
     },
     {
@@ -320190,7 +320190,7 @@
       "games": 4
     },
     "Ivory Coast": {
-      "gf": 4,
+      "gf": 5,
       "ga": 3,
       "games": 4
     },
@@ -320266,7 +320266,7 @@
     },
     "Norway": {
       "gf": 9,
-      "ga": 7,
+      "ga": 8,
       "games": 4
     },
     "Argentina": {
