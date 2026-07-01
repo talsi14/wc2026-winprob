@@ -300840,6 +300840,11 @@
       "goals": 5
     },
     {
+      "scorer": "Harry Kane",
+      "team": "England",
+      "goals": 4
+    },
+    {
       "scorer": "Ousmane Dembélé",
       "team": "France",
       "goals": 4
@@ -300867,11 +300872,6 @@
     {
       "scorer": "Elijah Just",
       "team": "New Zealand",
-      "goals": 3
-    },
-    {
-      "scorer": "Harry Kane",
-      "team": "England",
       "goals": 3
     },
     {
