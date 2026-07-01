@@ -301451,7 +301451,7 @@
     "Belgium": {
       "gf": 6,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Egypt": {
       "gf": 5,
@@ -301486,7 +301486,7 @@
     "Senegal": {
       "gf": 8,
       "ga": 6,
-      "games": 3
+      "games": 4
     },
     "Iraq": {
       "gf": 1,
@@ -307125,6 +307125,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Belgium",
+    "Senegal"
+  ]
 }
