@@ -315184,7 +315184,7 @@
     "Mexico": {
       "gf": 6,
       "ga": 0,
-      "games": 3
+      "games": 4
     },
     "South Africa": {
       "gf": 2,
@@ -315289,7 +315289,7 @@
     "Ecuador": {
       "gf": 2,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Sweden": {
       "gf": 7,
@@ -321434,6 +321434,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Ecuador",
+    "Mexico"
+  ]
 }
