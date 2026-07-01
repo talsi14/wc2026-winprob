@@ -296256,6 +296256,11 @@
       "goals": 2
     },
     {
+      "scorer": "Habib Diarra",
+      "team": "Senegal",
+      "goals": 2
+    },
+    {
       "scorer": "Jude Bellingham",
       "team": "England",
       "goals": 2
@@ -296488,11 +296493,6 @@
     {
       "scorer": "Granit Xhaka",
       "team": "Switzerland",
-      "goals": 1
-    },
-    {
-      "scorer": "Habib Diarra",
-      "team": "Senegal",
       "goals": 1
     },
     {
@@ -296999,7 +296999,7 @@
     },
     "Belgium": {
       "gf": 6,
-      "ga": 2,
+      "ga": 3,
       "games": 4
     },
     "Egypt": {
@@ -297033,7 +297033,7 @@
       "games": 4
     },
     "Senegal": {
-      "gf": 8,
+      "gf": 9,
       "ga": 6,
       "games": 4
     },
