@@ -296131,6 +296131,11 @@
       "goals": 5
     },
     {
+      "scorer": "Ismaïla Sarr",
+      "team": "Senegal",
+      "goals": 4
+    },
+    {
       "scorer": "Ousmane Dembélé",
       "team": "France",
       "goals": 4
@@ -296163,11 +296168,6 @@
     {
       "scorer": "Ismael Saibari",
       "team": "Morocco",
-      "goals": 3
-    },
-    {
-      "scorer": "Ismaïla Sarr",
-      "team": "Senegal",
       "goals": 3
     },
     {
@@ -296999,7 +296999,7 @@
     },
     "Belgium": {
       "gf": 6,
-      "ga": 3,
+      "ga": 4,
       "games": 4
     },
     "Egypt": {
@@ -297033,7 +297033,7 @@
       "games": 4
     },
     "Senegal": {
-      "gf": 9,
+      "gf": 10,
       "ga": 6,
       "games": 4
     },
