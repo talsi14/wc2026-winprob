@@ -320,6 +320,34 @@ STRINGS: dict[str, tuple[str, str]] = {
         "לא מהותי ({{n}}) — המשחק כמעט לא משפיע",
         "Neutral ({{n}}) — match barely matters",
     ),
+    # Exact-score sandbox on the cheer cards (reuses the What-If scoring engine)
+    "cheer.wi.toggle": ("מה אם התוצאה תהיה…?", "What if the score is…?"),
+    "cheer.wi.scorers": ("מבקיעים בתוצאה הזו", "Goal scorers in this result"),
+    "cheer.wi.impact": ("שינוי בתוחלת הזכייה (₪)", "Change in expected winnings (₪)"),
+    "cheer.wi.cap": (
+        "הסכום (₪) נגזר מזהות המנצח/תיקו לפי הסימולציה; הניקוד שלצדו מדויק לתוצאה ולמבקיעים.",
+        "The ₪ figure is the simulated impact of the result (win/draw); the points beside it "
+        "reflect the exact score and scorers.",
+    ),
+    "cheer.wi.pts": ("נק׳", "pts"),
+    "cheer.wi.gain": ("מרוויחים מהתוצאה ({{n}})", "Gain from this result ({{n}})"),
+    "cheer.wi.lose": ("מפסידים מהתוצאה ({{n}})", "Lose from this result ({{n}})"),
+    "cheer.wi.neu": (
+        "שינוי זניח — פחות מ‑₪3 ({{n}})",
+        "Barely affected — under ₪3 ({{n}})",
+    ),
+    "cheer.wi.pickso": (
+        "בחרו את המנצח בפנדלים כדי לראות את ההשפעה.",
+        "Pick the shootout winner to see the impact.",
+    ),
+    "cheer.wi.enter": (
+        "הזינו תוצאה כדי לראות את ההשפעה על כל משתתף.",
+        "Enter a score to see each entry's impact.",
+    ),
+    "cheer.wi.none": (
+        "התוצאה הזו לא משנה משמעותית אף משתתף.",
+        "This result doesn't materially move any entry.",
+    ),
     # What If static copy
     "wi.intro": (
         "בחרו תוצאות למשחקים שטרם נגמרו וראו איך <b>טבלת הניקוד בפועל</b> של ההתערבות משתנה. "

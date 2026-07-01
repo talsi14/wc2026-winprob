@@ -1184,6 +1184,52 @@ CHEER_CSS = """
   .rfx-mini{color:#94a3b8; font-weight:800; margin:0 5px;}
   @media (max-width:760px){ .rfbuckets{grid-template-columns:1fr;} .rfbuckets.ko{grid-template-columns:1fr;}
     .rfvs{display:none;} .rfneutral .rfchips{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  /* exact-score sandbox */
+  .rfwi{margin-top:12px; border-top:1px dashed var(--line); padding-top:10px;}
+  .rfwi-toggle{background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; font:inherit;
+               font-size:.84rem; font-weight:800; padding:6px 12px; border-radius:999px; cursor:pointer;}
+  .rfwi-toggle:hover{background:#dbeafe;}
+  .rfwi-toggle.on{background:#1e40af; color:#fff; border-color:#1e40af;}
+  .rfwi-body{margin-top:12px;}
+  .rfwi-scrow{display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;}
+  .rfwi-tm{font-weight:700; min-width:84px;}
+  .rfwi-tm.h{text-align:end;} .rfwi-tm.a{text-align:start;}
+  .rfwi-sc{width:52px; padding:6px; text-align:center; font-size:1rem; font-weight:800;
+           border:1px solid var(--line); border-radius:8px;}
+  .rfwi-dash{font-weight:800; color:var(--muted);}
+  .rfwi-so{margin-top:10px; text-align:center; font-size:.85rem; color:var(--muted);}
+  .rfwi-sobtn{margin-inline-start:6px; background:#fff; border:1px solid var(--line); border-radius:999px;
+              font:inherit; font-size:.82rem; font-weight:700; padding:3px 10px; cursor:pointer;}
+  .rfwi-sobtn.on{background:var(--amber,#f59e0b); color:#fff; border-color:var(--amber,#f59e0b);}
+  .rfwi-scorers{margin-top:12px; border-top:1px dashed var(--line); padding-top:8px;}
+  .rfwi-schd,.rfwi-imphd{font-size:.78rem; font-weight:800; color:var(--muted);
+                         text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;}
+  .rfwi-scr{display:flex; align-items:center; justify-content:space-between; padding:3px 0;}
+  .rfwi-scnm{font-size:.9rem;} .rfwi-scnm small{color:var(--muted);}
+  .rfwi-step{display:inline-flex; align-items:center; gap:8px;}
+  .rfwi-inc,.rfwi-dec{width:26px; height:26px; border:1px solid var(--line); background:#fff;
+                      border-radius:7px; font-size:1rem; font-weight:800; cursor:pointer; line-height:1;}
+  .rfwi-inc:disabled,.rfwi-dec:disabled{opacity:.35; cursor:default;}
+  .rfwi-scv{min-width:14px; text-align:center; font-weight:800;}
+  .rfwi-impact{margin-top:12px; border-top:1px dashed var(--line); padding-top:8px;}
+  .rfwi-ipcap{color:var(--muted); font-size:.74rem; margin-bottom:8px; line-height:1.35;}
+  .rfwi-hint{color:var(--muted); font-size:.85rem; text-align:center; padding:4px 0;}
+  /* faceted impact: gainers | losers columns, same chip look as the buckets */
+  .rfwi-buckets{grid-template-columns:1fr 1fr;}
+  .rfwi-colhd{padding:6px 4px 8px; margin-bottom:8px; flex-direction:row; justify-content:center;
+              font-weight:800; font-size:.9rem; letter-spacing:.01em;}
+  .rfwi-colhd.pos{color:#16a34a; border-bottom-color:#86efac;}
+  .rfwi-colhd.neg{color:#dc2626; border-bottom-color:#fecaca;}
+  .rfwi-chip .rfwi-chip-pt{font-style:normal; flex:none; color:var(--muted);
+                           font-size:.68rem; font-weight:700;}
+  .rfwi-neu{margin-top:12px; border-top:1px dashed var(--line); padding-top:10px;}
+  .rfwi-neu>summary{cursor:pointer; color:var(--muted); font-size:.84rem; font-weight:700; list-style:none;}
+  .rfwi-neu>summary::-webkit-details-marker{display:none;}
+  .rfwi-neu>summary::before{content:'▸ '; color:#94a3b8;}
+  .rfwi-neu[open]>summary::before{content:'▾ ';}
+  .rfwi-neu .rfchips{margin-top:8px; grid-template-columns:repeat(3,minmax(0,1fr));}
+  @media (max-width:760px){ .rfwi-buckets{grid-template-columns:1fr;}
+    .rfwi-neu .rfchips{grid-template-columns:repeat(2,minmax(0,1fr));} }
 """
 
 TABS_JS = """
@@ -1755,6 +1801,7 @@ CHEER_JS = r"""
   const I = window.I18N;
   const t = k => I.t(k);
   const T = en => I.team(en);
+  const heP = en => I.player(en);
   const dataEl = document.getElementById('rfData');
   let C; try { C = JSON.parse(dataEl.textContent); } catch(e){ return; }
   const gamesEl = document.getElementById('rfGames');
@@ -1777,6 +1824,7 @@ CHEER_JS = r"""
   // ---- state ----
   const filt = new Set();   // selected participants (empty = everyone)
   const hi   = new Set();   // highlighted participants
+  const wiState = {};       // per-game (mno) exact-score sandbox: {h,a,so,scorers}
   let day = (dayByKey.today && dayByKey.today.games.length) ? 'today'
           : (dayByKey.tomorrow && dayByKey.tomorrow.games.length) ? 'tomorrow' : 'today';
 
@@ -1814,6 +1862,108 @@ CHEER_JS = r"""
     const chips = items.map(it=> chip(it.n, it.v, true, it.imp||0)).join('') ||
                   '<div class="rfempty">'+t('cheer.empty')+'</div>';
     return '<div class="rfcol rf-'+kind+'">'+headHtml+'<div class="rfchips">'+chips+'</div></div>';
+  }
+
+  // ---- "what if the exact score is..." sandbox (reuses the What-If engine) --- //
+  function getWrapState(wrap){ const k=wrap.dataset.mno;
+    return wiState[k] || (wiState[k]={h:null, a:null, so:'', scorers:{}}); }
+
+  // which precomputed outcome bucket does this exact score map to?
+  // group: 0=home win, 1=draw, 2=away win | ko: 0=home advances, 1=away advances
+  function outcomeIdx(type, home, away, S){
+    if(S.h==null || S.a==null) return null;
+    if(type==='grp') return S.h>S.a ? 0 : (S.h===S.a ? 1 : 2);
+    if(S.h>S.a) return 0; if(S.a>S.h) return 1;
+    if(S.so===home) return 0; if(S.so===away) return 1; return null;   // tie needs SO winner
+  }
+
+  function renderImpact(mno, type, home, away, S){
+    if(S.h==null || S.a==null) return '<div class="rfwi-hint">'+t('cheer.wi.enter')+'</div>';
+    const idx = outcomeIdx(type, home, away, S);
+    if(idx==null) return '<div class="rfwi-hint">'+t('cheer.wi.pickso')+'</div>';
+    // headline: expected-prize change (₪) — MC conditional on the match OUTCOME
+    const money = {};
+    names.forEach(n=>{ const v = deltas[n] && deltas[n][String(mno)]; money[n] = v ? (v[idx]||0) : 0; });
+    // secondary: exact-score + scorers point delta via the shared engine
+    const pts = {};
+    if(window.WIF){
+      let scn;
+      if(type==='grp'){ scn={hypoGroup:{}}; scn.hypoGroup[mno]=[S.h, S.a]; }
+      else { const so=(S.h===S.a)?(S.so||null):null; scn={hypoKo:{}}; scn.hypoKo[mno]={hg:S.h, ag:S.a, so:so};
+        if(Object.keys(S.scorers).length){ scn.hypoScorers={}; scn.hypoScorers['k'+mno]=S.scorers; } }
+      window.WIF.impact(scn).forEach(r=> pts[r.name]=r.delta);
+    }
+    const NEU = 3;   // |expected-prize change| below this (₪) = neutral
+    const all = names.map(n=>({n, m:money[n]||0, p:pts[n]||0}))
+      .filter(r=> Math.abs(r.m)>=0.05 || Math.abs(r.p)>=0.05);
+    if(!all.length) return '<div class="rfwi-hint">'+t('cheer.wi.none')+'</div>';
+    const pos = all.filter(r=> r.m>=NEU).sort((a,b)=> b.m-a.m || a.n.localeCompare(b.n));
+    const neg = all.filter(r=> r.m<=-NEU).sort((a,b)=> a.m-b.m || a.n.localeCompare(b.n));
+    const neu = all.filter(r=> Math.abs(r.m)<NEU)
+      .sort((a,b)=> Math.abs(b.m)-Math.abs(a.m) || b.p-a.p || a.n.localeCompare(b.n));
+    // same chip look as the outcome buckets above (name + ₪ + emphasis bar),
+    // with a small secondary points tag when the exact score/scorers move it.
+    const gMax = pos.concat(neg).reduce((mx,r)=> Math.max(mx, Math.abs(r.m)), 0);
+    const wiChip = r=>{
+      const bar = gMax>0 && Math.abs(r.m)>0
+        ? '<span class="rfbar '+(r.m>=0?'pos':'neg')+'" style="width:'+Math.round(Math.abs(r.m)/gMax*100)+'%"></span>' : '';
+      const pt = Math.abs(r.p)>=0.05
+        ? '<i class="rfwi-chip-pt">'+(r.p>=0?'+':'−')+(Math.round(Math.abs(r.p)*10)/10)+t('cheer.wi.pts')+'</i>' : '';
+      return '<span class="rfchip rfwi-chip'+(hi.has(r.n)?' hl':'')+'" data-name="'+esc(r.n)+'">'
+        + '<span class="rfnm">'+esc(r.n)+'</span>'+pt
+        + '<i class="rfdelta '+(r.m>=0?'pos':'neg')+'">'+fmtMoney(r.m)+'</i>'+bar+'</span>';
+    };
+    const col = (items, kind, tone, label)=>
+      '<div class="rfcol '+kind+'"><div class="rfcolhd rfwi-colhd '+tone+'">'+label+'</div>'
+      + '<div class="rfchips">'
+      + (items.length ? items.map(wiChip).join('') : '<div class="rfempty">'+t('cheer.empty')+'</div>')
+      + '</div></div>';
+    let out = '<div class="rfwi-imphd">'+t('cheer.wi.impact')+'</div>'
+      + '<div class="rfwi-ipcap">'+t('cheer.wi.cap')+'</div>'
+      + '<div class="rfbuckets rfwi-buckets">'
+      + col(pos, 'rf-win1', 'pos', I.fmt('cheer.wi.gain', {n: pos.length}))
+      + col(neg, 'rf-win2', 'neg', I.fmt('cheer.wi.lose', {n: neg.length}))
+      + '</div>';
+    if(neu.length) out += '<details class="rfneutral rfwi-neu"><summary>'
+      + I.fmt('cheer.wi.neu', {n: neu.length})+'</summary>'
+      + '<div class="rfchips">'+neu.map(wiChip).join('')+'</div></details>';
+    return out;
+  }
+
+  function buildWi(wrap){
+    const body = wrap.querySelector('.rfwi-body'); if(!body || !window.WIF) return;
+    const mno=wrap.dataset.mno, type=wrap.dataset.type, home=wrap.dataset.home, away=wrap.dataset.away;
+    const S = getWrapState(wrap);
+    const hv = S.h==null?'':S.h, av = S.a==null?'':S.a;
+    const both = (S.h!=null && S.a!=null), tie = both && S.h===S.a, goals = both ? (S.h+S.a) : 0;
+    let html = '<div class="rfwi-scrow">'
+      + '<span class="rfwi-tm h">'+esc(T(home))+'</span>'
+      + '<input class="rfwi-sc" type="number" min="0" inputmode="numeric" data-side="h" value="'+hv+'">'
+      + '<span class="rfwi-dash">:</span>'
+      + '<input class="rfwi-sc" type="number" min="0" inputmode="numeric" data-side="a" value="'+av+'">'
+      + '<span class="rfwi-tm a">'+esc(T(away))+'</span></div>';
+    if(type==='ko' && tie){
+      html += '<div class="rfwi-so">'+t('wi.so')
+        + '<button type="button" class="rfwi-sobtn'+(S.so===home?' on':'')+'" data-team="'+esc(home)+'">'+esc(T(home))+'</button>'
+        + '<button type="button" class="rfwi-sobtn'+(S.so===away?' on':'')+'" data-team="'+esc(away)+'">'+esc(T(away))+'</button></div>';
+    }
+    const cand = window.WIF.candidates(home, away);
+    if(cand.length && goals>0){
+      const cap={}; cap[home]=S.h||0; cap[away]=S.a||0;
+      const used={}; used[home]=0; used[away]=0;
+      for(const q in S.scorers){ const pc=cand.find(c=>c.name===q); if(pc) used[pc.team]=(used[pc.team]||0)+S.scorers[q]; }
+      const scr = cand.map(p=>{ const v=S.scorers[p.name]||0, tc=cap[p.team]||0, tu=used[p.team]||0;
+        return '<div class="rfwi-scr"><span class="rfwi-scnm">'+esc(heP(p.name))+' <small>· '+esc(T(p.team))+' ('+tu+'/'+tc+')</small></span>'
+          + '<span class="rfwi-step">'
+          + '<button type="button" class="rfwi-dec" data-p="'+esc(p.name)+'"'+(v<=0?' disabled':'')+'>−</button>'
+          + '<span class="rfwi-scv">'+v+'</span>'
+          + '<button type="button" class="rfwi-inc" data-p="'+esc(p.name)+'"'+(tu>=tc?' disabled':'')+'>+</button>'
+          + '</span></div>';
+      }).join('');
+      html += '<div class="rfwi-scorers"><div class="rfwi-schd">'+t('cheer.wi.scorers')+'</div>'+scr+'</div>';
+    }
+    html += '<div class="rfwi-impact">'+renderImpact(mno, type, home, away, S)+'</div>';
+    body.innerHTML = html;
   }
 
   function render(){
@@ -1908,6 +2058,13 @@ CHEER_JS = r"""
         card += '<details class="rfneutral"><summary>'+I.fmt('cheer.neutral_sum', {n: neutral.length})+'</summary>'
               + '<div class="rfchips">'+nb+'</div></details>';
       }
+      // exact-score sandbox: appears once the shared What-If engine is ready
+      if(window.WIF){
+        card += '<div class="rfwi" data-mno="'+esc(mno)+'" data-type="'+(isKo?'ko':'grp')+'"'
+              + ' data-home="'+esc(g.homeEn)+'" data-away="'+esc(g.awayEn)+'">'
+              + '<button type="button" class="rfwi-toggle">'+t('cheer.wi.toggle')+'</button>'
+              + '<div class="rfwi-body" hidden></div></div>';
+      }
       card += '</div>';
       html += card;
     });
@@ -1940,8 +2097,41 @@ CHEER_JS = r"""
     day=b.dataset.day; render(); });
   if(top3) top3.addEventListener('change', render);
   if(last) last.addEventListener('change', render);
+
+  // ---- exact-score sandbox events (delegated; survives gamesEl rebuilds) --- //
+  gamesEl.addEventListener('click', function(ev){
+    const tg = ev.target; if(!tg.closest) return;
+    const tgl = tg.closest('.rfwi-toggle');
+    if(tgl){ const wrap=tgl.closest('.rfwi'), body=wrap.querySelector('.rfwi-body');
+      if(body.hidden){ buildWi(wrap); body.hidden=false; tgl.classList.add('on'); }
+      else { body.hidden=true; tgl.classList.remove('on'); } return; }
+    const so = tg.closest('.rfwi-sobtn');
+    if(so){ const wrap=so.closest('.rfwi'); getWrapState(wrap).so=so.dataset.team; buildWi(wrap); return; }
+    const inc = tg.closest('.rfwi-inc');
+    if(inc){ const wrap=inc.closest('.rfwi'), S=getWrapState(wrap), p=inc.dataset.p;
+      const cand=window.WIF.candidates(wrap.dataset.home, wrap.dataset.away);
+      const pc=cand.find(c=>c.name===p); if(!pc) return;
+      const cap = pc.team===wrap.dataset.home ? (S.h||0) : (S.a||0);
+      let used=0; for(const q in S.scorers){ const qc=cand.find(c=>c.name===q); if(qc&&qc.team===pc.team) used+=S.scorers[q]; }
+      if(used<cap){ S.scorers[p]=(S.scorers[p]||0)+1; buildWi(wrap); } return; }
+    const dec = tg.closest('.rfwi-dec');
+    if(dec){ const wrap=dec.closest('.rfwi'), S=getWrapState(wrap), p=dec.dataset.p;
+      if(S.scorers[p]){ S.scorers[p]--; if(S.scorers[p]<=0) delete S.scorers[p]; buildWi(wrap); } return; }
+  });
+  gamesEl.addEventListener('input', function(ev){
+    const tg = ev.target; if(!tg.classList || !tg.classList.contains('rfwi-sc')) return;
+    const wrap = tg.closest('.rfwi'), S = getWrapState(wrap), side = tg.dataset.side;
+    const v = tg.value==='' ? null : Math.max(0, parseInt(tg.value,10)||0);
+    if(side==='h') S.h=v; else S.a=v;
+    if(S.h==null || S.a==null) S.scorers={};   // partial score -> drop scorers
+    buildWi(wrap);
+    const el = wrap.querySelector('.rfwi-sc[data-side="'+side+'"]');   // restore focus
+    if(el){ el.focus(); const val=el.value; try{ el.value=''; el.value=val; }catch(e){} }
+  });
+
   render();
   document.addEventListener('langchange', render);
+  document.addEventListener('wif-ready', render);   // reveal editors once engine loads
 })();
 """
 
@@ -1976,16 +2166,16 @@ const WHATIF = __WHATIF__;
   let lastFull = null;   // most recent evaluate(true) (for per-team goal caps)
   const playerTeam = {}; W.trackedPlayers.forEach(p=> playerTeam[p.name]=p.team);
 
-  function mergedGroupScores(){
+  function mergedGroupScores(hg){ hg = hg || hypoGroup;
     const o = {};
     for(const k in W.realGroupScores) o[k] = W.realGroupScores[k];
-    for(const k in hypoGroup) o[k] = hypoGroup[k];
+    for(const k in hg) o[k] = hg[k];
     return o;
   }
-  function mergedPlayerGoals(){
+  function mergedPlayerGoals(hs){ hs = hs || hypoScorers;
     const o = {};
     for(const k in (W.realPlayerGoals||{})) o[k] = W.realPlayerGoals[k];
-    for(const mk in hypoScorers) for(const p in hypoScorers[mk]) o[p] = (o[p]||0) + hypoScorers[mk][p];
+    for(const mk in hs) for(const p in hs[mk]) o[p] = (o[p]||0) + hs[mk][p];
     return o;
   }
 
@@ -2074,9 +2264,14 @@ const WHATIF = __WHATIF__;
     return assign;
   }
 
-  // evaluate one full world (real merged with hypotheticals when useHypo)
-  function evaluate(useHypo){
-    const gs = useHypo ? mergedGroupScores() : Object.assign({}, W.realGroupScores);
+  // evaluate one full world (real merged with hypotheticals when useHypo).
+  // `scn` (optional) supplies an explicit {hypoGroup,hypoKo,hypoScorers} instead
+  // of the tab's own edit state, so the shared engine can score an isolated
+  // scenario for the "Who to root for?" tab.
+  function evaluate(useHypo, scn){
+    const HK = scn ? (scn.hypoKo||{}) : hypoKo;
+    const gs = useHypo ? mergedGroupScores(scn ? (scn.hypoGroup||{}) : null)
+                       : Object.assign({}, W.realGroupScores);
     const stand = groupStandings(gs);
     const gtab = groupTable(gs);
     const koByMatch = {};       // match no -> {hg,ag,winner,so,real}
@@ -2125,7 +2320,7 @@ const WHATIF = __WHATIF__;
       // half-typed score never auto-progresses a team. The match stays in the editable
       // list either way (just like the group matches), so it never "disappears".
       let winner=null, hg=null, ag=null, so=false;
-      const h = (useHypo && hypoKo[bm.m]!==undefined) ? hypoKo[bm.m] : null;
+      const h = (useHypo && HK[bm.m]!==undefined) ? HK[bm.m] : null;
       if(h){ hg=(h.hg!=null?h.hg:null); ag=(h.ag!=null?h.ag:null); }
       if(hg!=null && ag!=null){
         if(hg>ag) winner=home; else if(ag>hg) winner=away; else { so=true; winner=h.so||null; } }
@@ -2155,7 +2350,8 @@ const WHATIF = __WHATIF__;
     for(const t in madeFinal) st[t].fin=true;
     if(wonCup) st[wonCup].won=true;
 
-    const pg = useHypo ? mergedPlayerGoals() : Object.assign({}, W.realPlayerGoals||{});
+    const pg = useHypo ? mergedPlayerGoals(scn ? (scn.hypoScorers||{}) : null)
+                       : Object.assign({}, W.realPlayerGoals||{});
     const tournComplete = Object.keys(gs).length>=72 && stand.allComplete && nUnresolved===0 && !!winByMatch[104];
     let gb = null;
     if(tournComplete){ let mx=-1, who=null, tie=false;
@@ -2189,6 +2385,28 @@ const WHATIF = __WHATIF__;
   const baseRank = {};
   W.entries.map(e=>e.name).sort((a,b)=> baseTotal[b]-baseTotal[a] || a.localeCompare(b))
     .forEach((n,i)=> baseRank[n]=i+1);
+
+  // ---- shared engine API (used by the "Who to root for?" tab) ------------- //
+  // Score an isolated scenario ({hypoGroup,hypoKo,hypoScorers}) with the exact
+  // same rules/tiebreakers and return each entry's point + rank delta vs the
+  // live baseline. Function decls above are hoisted, so this is safe here.
+  window.WIF = {
+    ready: true,
+    trackedPlayers: W.trackedPlayers,
+    baseRank: baseRank,
+    team: heT, player: heP,
+    candidates: function(homeEn, awayEn){
+      return W.trackedPlayers.filter(p=> p.team===homeEn || p.team===awayEn); },
+    impact: function(scn){
+      const full = evaluate(true, scn);
+      const rows = W.entries.map(e=>{ const d = dispBd(e.name, full);
+        return {name:e.name, picks:e.picks, base:baseTotal[e.name], total:d.total,
+                delta: Math.round((d.total - baseTotal[e.name])*10)/10}; });
+      rows.slice().sort((a,b)=> b.total-a.total || baseTotal[b.name]-baseTotal[a.name]
+          || a.name.localeCompare(b.name)).forEach((r,i)=> r.newRank=i+1);
+      return rows; }
+  };
+  document.dispatchEvent(new CustomEvent('wif-ready'));
 
   function fmtStage(s){ const m={'Round of 32':'1/16 גמר','Round of 16':'1/8 גמר',
     'Quarter-final':'רבע גמר','Semi-final':'חצי גמר','Third place':'מקום שלישי','Final':'גמר'}; return m[s]||s; }
