@@ -301110,6 +301110,11 @@
       "goals": 1
     },
     {
+      "scorer": "Brian Cipenga",
+      "team": "DR Congo",
+      "goals": 1
+    },
+    {
       "scorer": "Caleb Yirenkyi",
       "team": "Ghana",
       "goals": 1
@@ -301782,13 +301787,13 @@
       "games": 3
     },
     "DR Congo": {
-      "gf": 4,
+      "gf": 5,
       "ga": 3,
       "games": 4
     },
     "England": {
       "gf": 6,
-      "ga": 2,
+      "ga": 3,
       "games": 4
     },
     "Croatia": {
