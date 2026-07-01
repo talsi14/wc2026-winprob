@@ -314615,6 +314615,11 @@
       "goals": 2
     },
     {
+      "scorer": "Raúl Jiménez",
+      "team": "Mexico",
+      "goals": 2
+    },
+    {
       "scorer": "Riyad Mahrez",
       "team": "Algeria",
       "goals": 2
@@ -315100,11 +315105,6 @@
       "goals": 1
     },
     {
-      "scorer": "Raúl Jiménez",
-      "team": "Mexico",
-      "goals": 1
-    },
-    {
       "scorer": "Romano Schmid",
       "team": "Austria",
       "goals": 1
@@ -315182,7 +315182,7 @@
   ],
   "team_played": {
     "Mexico": {
-      "gf": 7,
+      "gf": 8,
       "ga": 0,
       "games": 4
     },
@@ -315288,7 +315288,7 @@
     },
     "Ecuador": {
       "gf": 2,
-      "ga": 3,
+      "ga": 4,
       "games": 4
     },
     "Sweden": {
