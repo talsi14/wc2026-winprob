@@ -296856,6 +296856,11 @@
       "goals": 1
     },
     {
+      "scorer": "Youri Tielemans",
+      "team": "Belgium",
+      "goals": 1
+    },
+    {
       "scorer": "Álex Baena",
       "team": "Spain",
       "goals": 1
@@ -296998,7 +297003,7 @@
       "games": 3
     },
     "Belgium": {
-      "gf": 7,
+      "gf": 8,
       "ga": 4,
       "games": 4
     },
@@ -297034,7 +297039,7 @@
     },
     "Senegal": {
       "gf": 10,
-      "ga": 7,
+      "ga": 8,
       "games": 4
     },
     "Iraq": {
