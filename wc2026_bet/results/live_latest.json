@@ -296311,6 +296311,11 @@
       "goals": 2
     },
     {
+      "scorer": "Romelu Lukaku",
+      "team": "Belgium",
+      "goals": 2
+    },
+    {
       "scorer": "Rubén Vargas",
       "team": "Switzerland",
       "goals": 2
@@ -296796,11 +296801,6 @@
       "goals": 1
     },
     {
-      "scorer": "Romelu Lukaku",
-      "team": "Belgium",
-      "goals": 1
-    },
-    {
       "scorer": "Sasa Kalajdzic",
       "team": "Austria",
       "goals": 1
@@ -296998,7 +296998,7 @@
       "games": 3
     },
     "Belgium": {
-      "gf": 6,
+      "gf": 7,
       "ga": 4,
       "games": 4
     },
@@ -297034,7 +297034,7 @@
     },
     "Senegal": {
       "gf": 10,
-      "ga": 6,
+      "ga": 7,
       "games": 4
     },
     "Iraq": {
