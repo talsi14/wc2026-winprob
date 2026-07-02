@@ -297428,6 +297428,11 @@
       "goals": 3
     },
     {
+      "scorer": "Folarin Balogun",
+      "team": "United States",
+      "goals": 3
+    },
+    {
       "scorer": "Ismael Saibari",
       "team": "Morocco",
       "goals": 3
@@ -297510,11 +297515,6 @@
     {
       "scorer": "Ermin Mahmic",
       "team": "Bosnia and Herzegovina",
-      "goals": 2
-    },
-    {
-      "scorer": "Folarin Balogun",
-      "team": "United States",
       "goals": 2
     },
     {
@@ -298161,11 +298161,11 @@
     },
     "Bosnia and Herzegovina": {
       "gf": 5,
-      "ga": 6,
+      "ga": 7,
       "games": 4
     },
     "United States": {
-      "gf": 8,
+      "gf": 9,
       "ga": 4,
       "games": 4
     },
