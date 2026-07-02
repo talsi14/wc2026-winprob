@@ -297918,6 +297918,11 @@
       "goals": 1
     },
     {
+      "scorer": "Malik Tillman",
+      "team": "United States",
+      "goals": 1
+    },
+    {
       "scorer": "Marcel Sabitzer",
       "team": "Austria",
       "goals": 1
@@ -298161,11 +298166,11 @@
     },
     "Bosnia and Herzegovina": {
       "gf": 5,
-      "ga": 7,
+      "ga": 8,
       "games": 4
     },
     "United States": {
-      "gf": 9,
+      "gf": 10,
       "ga": 4,
       "games": 4
     },
