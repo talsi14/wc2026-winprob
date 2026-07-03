@@ -207500,6 +207500,11 @@
       "goals": 1
     },
     {
+      "scorer": "Deroy Duarte",
+      "team": "Cape Verde",
+      "goals": 1
+    },
+    {
       "scorer": "Derrick Luckassen",
       "team": "Ghana",
       "goals": 1
@@ -208077,7 +208082,7 @@
       "games": 4
     },
     "Cape Verde": {
-      "gf": 2,
+      "gf": 3,
       "ga": 3,
       "games": 4
     },
@@ -208133,7 +208138,7 @@
     },
     "Argentina": {
       "gf": 9,
-      "ga": 1,
+      "ga": 2,
       "games": 4
     },
     "Algeria": {
