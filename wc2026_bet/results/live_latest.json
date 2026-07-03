@@ -278102,6 +278102,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ivan Perisic",
+      "team": "Croatia",
+      "goals": 1
+    },
+    {
       "scorer": "Jamal Musiala",
       "team": "Germany",
       "goals": 1
@@ -278645,7 +278650,7 @@
     },
     "Portugal": {
       "gf": 6,
-      "ga": 1,
+      "ga": 2,
       "games": 4
     },
     "DR Congo": {
@@ -278659,7 +278664,7 @@
       "games": 4
     },
     "Croatia": {
-      "gf": 5,
+      "gf": 6,
       "ga": 5,
       "games": 4
     },
