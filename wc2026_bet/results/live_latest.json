@@ -208079,7 +208079,7 @@
     "Cape Verde": {
       "gf": 2,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Belgium": {
       "gf": 9,
@@ -208134,7 +208134,7 @@
     "Argentina": {
       "gf": 8,
       "ga": 1,
-      "games": 3
+      "games": 4
     },
     "Algeria": {
       "gf": 5,
@@ -213757,6 +213757,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Argentina",
+    "Cape Verde"
+  ]
 }
