@@ -243920,7 +243920,7 @@
     "Australia": {
       "gf": 2,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Turkey": {
       "gf": 3,
@@ -243985,7 +243985,7 @@
     "Egypt": {
       "gf": 5,
       "ga": 3,
-      "games": 3
+      "games": 4
     },
     "Saudi Arabia": {
       "gf": 1,
@@ -249877,6 +249877,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Australia",
+    "Egypt"
+  ]
 }
