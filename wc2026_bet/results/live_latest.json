@@ -254493,7 +254493,7 @@
     "Switzerland": {
       "gf": 7,
       "ga": 3,
-      "games": 3
+      "games": 4
     },
     "Brazil": {
       "gf": 9,
@@ -254633,7 +254633,7 @@
     "Algeria": {
       "gf": 5,
       "ga": 7,
-      "games": 3
+      "games": 4
     },
     "Austria": {
       "gf": 6,
@@ -260698,6 +260698,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Algeria",
+    "Switzerland"
+  ]
 }
