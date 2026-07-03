@@ -277722,6 +277722,11 @@
       "goals": 3
     },
     {
+      "scorer": "Cristiano Ronaldo",
+      "team": "Portugal",
+      "goals": 3
+    },
+    {
       "scorer": "Deniz Undav",
       "team": "Germany",
       "goals": 3
@@ -277789,11 +277794,6 @@
     {
       "scorer": "Bradley Barcola",
       "team": "France",
-      "goals": 2
-    },
-    {
-      "scorer": "Cristiano Ronaldo",
-      "team": "Portugal",
       "goals": 2
     },
     {
@@ -278649,7 +278649,7 @@
       "games": 3
     },
     "Portugal": {
-      "gf": 6,
+      "gf": 7,
       "ga": 2,
       "games": 4
     },
@@ -278665,7 +278665,7 @@
     },
     "Croatia": {
       "gf": 6,
-      "ga": 5,
+      "ga": 6,
       "games": 4
     },
     "Ghana": {
