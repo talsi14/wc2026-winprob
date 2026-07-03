@@ -253789,6 +253789,11 @@
       "goals": 2
     },
     {
+      "scorer": "Breel Embolo",
+      "team": "Switzerland",
+      "goals": 2
+    },
+    {
       "scorer": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2
@@ -253956,11 +253961,6 @@
     {
       "scorer": "Baris Alper Yilmaz",
       "team": "Turkey",
-      "goals": 1
-    },
-    {
-      "scorer": "Breel Embolo",
-      "team": "Switzerland",
       "goals": 1
     },
     {
@@ -254491,7 +254491,7 @@
       "games": 3
     },
     "Switzerland": {
-      "gf": 7,
+      "gf": 8,
       "ga": 3,
       "games": 4
     },
@@ -254632,7 +254632,7 @@
     },
     "Algeria": {
       "gf": 5,
-      "ga": 7,
+      "ga": 8,
       "games": 4
     },
     "Austria": {
