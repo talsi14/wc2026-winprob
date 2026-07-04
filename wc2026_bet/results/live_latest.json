@@ -189806,7 +189806,7 @@
     "Canada": {
       "gf": 9,
       "ga": 3,
-      "games": 4
+      "games": 5
     },
     "Bosnia and Herzegovina": {
       "gf": 5,
@@ -189841,7 +189841,7 @@
     "Morocco": {
       "gf": 7,
       "ga": 4,
-      "games": 4
+      "games": 5
     },
     "Haiti": {
       "gf": 2,
@@ -195590,6 +195590,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Canada",
+    "Morocco"
+  ]
 }
