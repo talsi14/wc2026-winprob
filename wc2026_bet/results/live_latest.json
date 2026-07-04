@@ -207905,6 +207905,11 @@
       "goals": 1
     },
     {
+      "scorer": "Sidny Lopes Cabral",
+      "team": "Cape Verde",
+      "goals": 1
+    },
+    {
       "scorer": "Soufiane Rahimi",
       "team": "Morocco",
       "goals": 1
@@ -208087,7 +208092,7 @@
       "games": 4
     },
     "Cape Verde": {
-      "gf": 3,
+      "gf": 4,
       "ga": 4,
       "games": 4
     },
@@ -208143,7 +208148,7 @@
     },
     "Argentina": {
       "gf": 10,
-      "ga": 2,
+      "ga": 3,
       "games": 4
     },
     "Algeria": {
