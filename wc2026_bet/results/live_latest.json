@@ -200582,7 +200582,7 @@
     "Ghana": {
       "gf": 2,
       "ga": 2,
-      "games": 3
+      "games": 4
     },
     "Panama": {
       "gf": 0,
@@ -200597,7 +200597,7 @@
     "Colombia": {
       "gf": 4,
       "ga": 1,
-      "games": 3
+      "games": 4
     }
   },
   "cheer": {
@@ -206389,6 +206389,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Colombia",
+    "Ghana"
+  ]
 }
