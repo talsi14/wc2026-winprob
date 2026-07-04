@@ -207710,6 +207710,11 @@
       "goals": 1
     },
     {
+      "scorer": "Lisandro Martínez",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Livano Comenencia",
       "team": "Curaçao",
       "goals": 1
@@ -208083,7 +208088,7 @@
     },
     "Cape Verde": {
       "gf": 3,
-      "ga": 3,
+      "ga": 4,
       "games": 4
     },
     "Belgium": {
@@ -208137,7 +208142,7 @@
       "games": 4
     },
     "Argentina": {
-      "gf": 9,
+      "gf": 10,
       "ga": 2,
       "games": 4
     },
