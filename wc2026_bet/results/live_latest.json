@@ -182269,7 +182269,7 @@
     "Paraguay": {
       "gf": 3,
       "ga": 5,
-      "games": 4
+      "games": 5
     },
     "Qatar": {
       "gf": 2,
@@ -182394,7 +182394,7 @@
     "France": {
       "gf": 13,
       "ga": 2,
-      "games": 4
+      "games": 5
     },
     "Senegal": {
       "gf": 10,
@@ -187814,6 +187814,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "France",
+    "Paraguay"
+  ]
 }
