@@ -181420,14 +181420,14 @@
   },
   "scorers": [
     {
-      "scorer": "Lionel Messi",
-      "team": "Argentina",
+      "scorer": "Kylian Mbappé",
+      "team": "France",
       "goals": 7
     },
     {
-      "scorer": "Kylian Mbappé",
-      "team": "France",
-      "goals": 6
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 7
     },
     {
       "scorer": "Erling Haaland",
@@ -182268,7 +182268,7 @@
     },
     "Paraguay": {
       "gf": 3,
-      "ga": 5,
+      "ga": 6,
       "games": 5
     },
     "Qatar": {
@@ -182392,7 +182392,7 @@
       "games": 3
     },
     "France": {
-      "gf": 13,
+      "gf": 14,
       "ga": 2,
       "games": 5
     },
