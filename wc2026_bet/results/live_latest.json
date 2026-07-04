@@ -189097,6 +189097,11 @@
       "goals": 2
     },
     {
+      "scorer": "Azzedine Ounahi",
+      "team": "Morocco",
+      "goals": 2
+    },
+    {
       "scorer": "Bradley Barcola",
       "team": "France",
       "goals": 2
@@ -189274,11 +189279,6 @@
     {
       "scorer": "Aymen Hussein",
       "team": "Iraq",
-      "goals": 1
-    },
-    {
-      "scorer": "Azzedine Ounahi",
-      "team": "Morocco",
       "goals": 1
     },
     {
@@ -189810,7 +189810,7 @@
     },
     "Canada": {
       "gf": 9,
-      "ga": 4,
+      "ga": 5,
       "games": 5
     },
     "Bosnia and Herzegovina": {
@@ -189844,7 +189844,7 @@
       "games": 4
     },
     "Morocco": {
-      "gf": 8,
+      "gf": 9,
       "ga": 4,
       "games": 5
     },
