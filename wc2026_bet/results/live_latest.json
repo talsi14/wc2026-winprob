@@ -200018,6 +200018,11 @@
       "goals": 1
     },
     {
+      "scorer": "Jhon Arias",
+      "team": "Colombia",
+      "goals": 1
+    },
+    {
       "scorer": "John McGinn",
       "team": "Scotland",
       "goals": 1
@@ -200581,7 +200586,7 @@
     },
     "Ghana": {
       "gf": 2,
-      "ga": 2,
+      "ga": 3,
       "games": 4
     },
     "Panama": {
@@ -200595,7 +200600,7 @@
       "games": 3
     },
     "Colombia": {
-      "gf": 4,
+      "gf": 5,
       "ga": 1,
       "games": 4
     }
