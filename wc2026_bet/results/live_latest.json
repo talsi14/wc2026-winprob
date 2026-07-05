@@ -171739,7 +171739,7 @@
     "Brazil": {
       "gf": 9,
       "ga": 2,
-      "games": 4
+      "games": 5
     },
     "Morocco": {
       "gf": 10,
@@ -171864,7 +171864,7 @@
     "Norway": {
       "gf": 10,
       "ga": 8,
-      "games": 4
+      "games": 5
     },
     "Argentina": {
       "gf": 11,
@@ -177493,6 +177493,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Brazil",
+    "Norway"
+  ]
 }
