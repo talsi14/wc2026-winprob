@@ -171550,6 +171550,11 @@
       "goals": 1
     },
     {
+      "scorer": "Neymar",
+      "team": "Brazil",
+      "goals": 1
+    },
+    {
       "scorer": "Nico Schlotterbeck",
       "team": "Germany",
       "goals": 1
@@ -171737,7 +171742,7 @@
       "games": 4
     },
     "Brazil": {
-      "gf": 9,
+      "gf": 10,
       "ga": 4,
       "games": 5
     },
@@ -171863,7 +171868,7 @@
     },
     "Norway": {
       "gf": 12,
-      "ga": 8,
+      "ga": 9,
       "games": 5
     },
     "Argentina": {
