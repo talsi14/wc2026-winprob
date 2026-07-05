@@ -170875,6 +170875,11 @@
   },
   "scorers": [
     {
+      "scorer": "Erling Haaland",
+      "team": "Norway",
+      "goals": 7
+    },
+    {
       "scorer": "Kylian Mbappé",
       "team": "France",
       "goals": 7
@@ -170883,11 +170888,6 @@
       "scorer": "Lionel Messi",
       "team": "Argentina",
       "goals": 7
-    },
-    {
-      "scorer": "Erling Haaland",
-      "team": "Norway",
-      "goals": 6
     },
     {
       "scorer": "Harry Kane",
@@ -171738,7 +171738,7 @@
     },
     "Brazil": {
       "gf": 9,
-      "ga": 3,
+      "ga": 4,
       "games": 5
     },
     "Morocco": {
@@ -171862,7 +171862,7 @@
       "games": 3
     },
     "Norway": {
-      "gf": 11,
+      "gf": 12,
       "ga": 8,
       "games": 5
     },
