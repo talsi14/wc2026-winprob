@@ -151891,6 +151891,11 @@
       "goals": 1
     },
     {
+      "scorer": "Mikel Merino",
+      "team": "Spain",
+      "goals": 1
+    },
+    {
       "scorer": "Mohamed Salah",
       "team": "Egypt",
       "goals": 1
@@ -152193,7 +152198,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 8,
+      "gf": 9,
       "ga": 0,
       "games": 5
     },
@@ -152274,7 +152279,7 @@
     },
     "Portugal": {
       "gf": 8,
-      "ga": 2,
+      "ga": 3,
       "games": 5
     },
     "DR Congo": {
