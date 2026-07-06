@@ -156676,7 +156676,7 @@
     "Mexico": {
       "gf": 8,
       "ga": 0,
-      "games": 4
+      "games": 5
     },
     "South Africa": {
       "gf": 2,
@@ -156886,7 +156886,7 @@
     "England": {
       "gf": 8,
       "ga": 3,
-      "games": 4
+      "games": 5
     },
     "Croatia": {
       "gf": 6,
@@ -162926,6 +162926,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "England",
+    "Mexico"
+  ]
 }
