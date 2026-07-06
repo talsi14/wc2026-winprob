@@ -155942,6 +155942,11 @@
       "goals": 3
     },
     {
+      "scorer": "Jude Bellingham",
+      "team": "England",
+      "goals": 3
+    },
+    {
       "scorer": "Julián Quiñones",
       "team": "Mexico",
       "goals": 3
@@ -156024,11 +156029,6 @@
     {
       "scorer": "Habib Diarra",
       "team": "Senegal",
-      "goals": 2
-    },
-    {
-      "scorer": "Jude Bellingham",
-      "team": "England",
       "goals": 2
     },
     {
@@ -156675,7 +156675,7 @@
   "team_played": {
     "Mexico": {
       "gf": 8,
-      "ga": 0,
+      "ga": 1,
       "games": 5
     },
     "South Africa": {
@@ -156884,7 +156884,7 @@
       "games": 4
     },
     "England": {
-      "gf": 8,
+      "gf": 9,
       "ga": 3,
       "games": 5
     },
