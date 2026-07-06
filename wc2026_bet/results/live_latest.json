@@ -155882,6 +155882,11 @@
       "goals": 4
     },
     {
+      "scorer": "Jude Bellingham",
+      "team": "England",
+      "goals": 4
+    },
+    {
       "scorer": "Mikel Oyarzabal",
       "team": "Spain",
       "goals": 4
@@ -155939,11 +155944,6 @@
     {
       "scorer": "Jonathan David",
       "team": "Canada",
-      "goals": 3
-    },
-    {
-      "scorer": "Jude Bellingham",
-      "team": "England",
       "goals": 3
     },
     {
@@ -156675,7 +156675,7 @@
   "team_played": {
     "Mexico": {
       "gf": 8,
-      "ga": 1,
+      "ga": 2,
       "games": 5
     },
     "South Africa": {
@@ -156884,7 +156884,7 @@
       "games": 4
     },
     "England": {
-      "gf": 9,
+      "gf": 10,
       "ga": 3,
       "games": 5
     },
