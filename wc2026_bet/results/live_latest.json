@@ -155887,6 +155887,11 @@
       "goals": 4
     },
     {
+      "scorer": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 4
+    },
+    {
       "scorer": "Mikel Oyarzabal",
       "team": "Spain",
       "goals": 4
@@ -155944,11 +155949,6 @@
     {
       "scorer": "Jonathan David",
       "team": "Canada",
-      "goals": 3
-    },
-    {
-      "scorer": "Julián Quiñones",
-      "team": "Mexico",
       "goals": 3
     },
     {
@@ -156674,7 +156674,7 @@
   ],
   "team_played": {
     "Mexico": {
-      "gf": 8,
+      "gf": 9,
       "ga": 2,
       "games": 5
     },
@@ -156885,7 +156885,7 @@
     },
     "England": {
       "gf": 10,
-      "ga": 3,
+      "ga": 4,
       "games": 5
     },
     "Croatia": {
