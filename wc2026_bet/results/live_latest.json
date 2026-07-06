@@ -155874,7 +155874,7 @@
     {
       "scorer": "Harry Kane",
       "team": "England",
-      "goals": 5
+      "goals": 6
     },
     {
       "scorer": "Ismaïla Sarr",
@@ -156675,7 +156675,7 @@
   "team_played": {
     "Mexico": {
       "gf": 9,
-      "ga": 2,
+      "ga": 3,
       "games": 5
     },
     "South Africa": {
@@ -156884,7 +156884,7 @@
       "games": 4
     },
     "England": {
-      "gf": 10,
+      "gf": 11,
       "ga": 4,
       "games": 5
     },
