@@ -152203,7 +152203,7 @@
     "Spain": {
       "gf": 8,
       "ga": 0,
-      "games": 4
+      "games": 5
     },
     "Cape Verde": {
       "gf": 4,
@@ -152283,7 +152283,7 @@
     "Portugal": {
       "gf": 8,
       "ga": 2,
-      "games": 4
+      "games": 5
     },
     "DR Congo": {
       "gf": 5,
@@ -158110,6 +158110,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Portugal",
+    "Spain"
+  ]
 }
