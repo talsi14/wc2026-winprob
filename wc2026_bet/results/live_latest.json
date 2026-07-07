@@ -104915,11 +104915,6 @@
   },
   "scorers": [
     {
-      "scorer": "Lionel Messi",
-      "team": "Argentina",
-      "goals": 8
-    },
-    {
       "scorer": "Erling Haaland",
       "team": "Norway",
       "goals": 7
@@ -104927,6 +104922,11 @@
     {
       "scorer": "Kylian Mbappé",
       "team": "France",
+      "goals": 7
+    },
+    {
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
       "goals": 7
     },
     {
