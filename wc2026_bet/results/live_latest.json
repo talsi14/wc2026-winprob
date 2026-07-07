@@ -104915,6 +104915,11 @@
   },
   "scorers": [
     {
+      "scorer": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 8
+    },
+    {
       "scorer": "Erling Haaland",
       "team": "Norway",
       "goals": 7
@@ -104922,11 +104927,6 @@
     {
       "scorer": "Kylian Mbappé",
       "team": "France",
-      "goals": 7
-    },
-    {
-      "scorer": "Lionel Messi",
-      "team": "Argentina",
       "goals": 7
     },
     {
@@ -105893,7 +105893,7 @@
     },
     "Egypt": {
       "gf": 8,
-      "ga": 5,
+      "ga": 6,
       "games": 5
     },
     "Saudi Arabia": {
@@ -105937,7 +105937,7 @@
       "games": 5
     },
     "Argentina": {
-      "gf": 12,
+      "gf": 13,
       "ga": 5,
       "games": 5
     },
