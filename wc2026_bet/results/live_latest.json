@@ -105265,6 +105265,11 @@
       "goals": 1
     },
     {
+      "scorer": "Cristian Romero",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Daizen Maeda",
       "team": "Japan",
       "goals": 1
@@ -105888,7 +105893,7 @@
     },
     "Egypt": {
       "gf": 8,
-      "ga": 4,
+      "ga": 5,
       "games": 5
     },
     "Saudi Arabia": {
@@ -105932,7 +105937,7 @@
       "games": 5
     },
     "Argentina": {
-      "gf": 11,
+      "gf": 12,
       "ga": 5,
       "games": 5
     },
