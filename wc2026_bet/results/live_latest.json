@@ -105125,6 +105125,11 @@
       "goals": 2
     },
     {
+      "scorer": "Mostafa Zico",
+      "team": "Egypt",
+      "goals": 2
+    },
+    {
       "scorer": "Nicolas Pépé",
       "team": "Ivory Coast",
       "goals": 2
@@ -105575,11 +105580,6 @@
       "goals": 1
     },
     {
-      "scorer": "Mostafa Zico",
-      "team": "Egypt",
-      "goals": 1
-    },
-    {
       "scorer": "Mousa Al-Tamari",
       "team": "Jordan",
       "goals": 1
@@ -105887,7 +105887,7 @@
       "games": 5
     },
     "Egypt": {
-      "gf": 7,
+      "gf": 8,
       "ga": 4,
       "games": 5
     },
@@ -105933,7 +105933,7 @@
     },
     "Argentina": {
       "gf": 11,
-      "ga": 4,
+      "ga": 5,
       "games": 5
     },
     "Algeria": {
