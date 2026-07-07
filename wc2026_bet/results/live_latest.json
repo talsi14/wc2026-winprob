@@ -120759,7 +120759,7 @@
     "United States": {
       "gf": 10,
       "ga": 4,
-      "games": 4
+      "games": 5
     },
     "Paraguay": {
       "gf": 3,
@@ -120859,7 +120859,7 @@
     "Belgium": {
       "gf": 9,
       "ga": 4,
-      "games": 4
+      "games": 5
     },
     "Egypt": {
       "gf": 6,
@@ -126532,6 +126532,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Belgium",
+    "United States"
+  ]
 }
