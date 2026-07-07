@@ -105300,6 +105300,11 @@
       "goals": 1
     },
     {
+      "scorer": "Enzo Fernández",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Felix Nmecha",
       "team": "Germany",
       "goals": 1
@@ -105893,7 +105898,7 @@
     },
     "Egypt": {
       "gf": 8,
-      "ga": 6,
+      "ga": 7,
       "games": 5
     },
     "Saudi Arabia": {
@@ -105937,7 +105942,7 @@
       "games": 5
     },
     "Argentina": {
-      "gf": 13,
+      "gf": 14,
       "ga": 5,
       "games": 5
     },
