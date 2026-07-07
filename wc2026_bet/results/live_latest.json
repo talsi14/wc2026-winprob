@@ -120050,6 +120050,11 @@
       "goals": 2
     },
     {
+      "scorer": "Charles De Ketelaere",
+      "team": "Belgium",
+      "goals": 2
+    },
+    {
       "scorer": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2
@@ -120237,11 +120242,6 @@
     {
       "scorer": "Casemiro",
       "team": "Brazil",
-      "goals": 1
-    },
-    {
-      "scorer": "Charles De Ketelaere",
-      "team": "Belgium",
       "goals": 1
     },
     {
@@ -120763,7 +120763,7 @@
     },
     "United States": {
       "gf": 11,
-      "ga": 5,
+      "ga": 6,
       "games": 5
     },
     "Paraguay": {
@@ -120862,7 +120862,7 @@
       "games": 4
     },
     "Belgium": {
-      "gf": 10,
+      "gf": 11,
       "ga": 5,
       "games": 5
     },
