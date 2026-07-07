@@ -89297,7 +89297,7 @@
     "Switzerland": {
       "gf": 9,
       "ga": 3,
-      "games": 4
+      "games": 5
     },
     "Brazil": {
       "gf": 10,
@@ -89487,7 +89487,7 @@
     "Colombia": {
       "gf": 5,
       "ga": 1,
-      "games": 4
+      "games": 5
     }
   },
   "cheer": {
@@ -97208,6 +97208,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Colombia",
+    "Switzerland"
+  ]
 }
