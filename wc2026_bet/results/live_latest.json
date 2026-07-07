@@ -120015,6 +120015,11 @@
       "goals": 3
     },
     {
+      "scorer": "Romelu Lukaku",
+      "team": "Belgium",
+      "goals": 3
+    },
+    {
       "scorer": "Yoane Wissa",
       "team": "DR Congo",
       "goals": 3
@@ -120127,11 +120132,6 @@
     {
       "scorer": "Riyad Mahrez",
       "team": "Algeria",
-      "goals": 2
-    },
-    {
-      "scorer": "Romelu Lukaku",
-      "team": "Belgium",
       "goals": 2
     },
     {
@@ -120768,7 +120768,7 @@
     },
     "United States": {
       "gf": 11,
-      "ga": 7,
+      "ga": 8,
       "games": 5
     },
     "Paraguay": {
@@ -120867,7 +120867,7 @@
       "games": 4
     },
     "Belgium": {
-      "gf": 12,
+      "gf": 13,
       "ga": 5,
       "games": 5
     },
