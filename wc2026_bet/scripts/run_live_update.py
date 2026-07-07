@@ -322,7 +322,11 @@ def build_cheer(ds, days: list[dict], track: set[int], O: dict, M: dict,
     pv = np.asarray(prize_vector(N), dtype=np.float64)
     winnings = pv[ranks - 1]                         # [S,N] ILS per sim
     isfirst = (ranks == 1).astype(np.float64)        # [S,N] finished 1st (co-champs incl.)
-    inmoney = (winnings > 0).astype(np.float64)      # [S,N] finished in a paying place
+    # "in the money" = top-2 (the meaningful prize tiers, 1st/2nd), matching the
+    # P_top2 "תוך הכסף" column shown elsewhere on the site. 3rd/last pay only a
+    # token 50, so they're excluded — otherwise the baseline (and thus the deltas)
+    # wouldn't line up with what users read on the leaderboard.
+    inmoney = (ranks <= 2).astype(np.float64)        # [S,N] finished in a prize place
     base_w  = winnings.mean(0)                        # [N] unconditional E[prize]
     base_p1 = isfirst.mean(0)                         # [N] unconditional P(1st)
     base_im = inmoney.mean(0)                         # [N] unconditional P(in money)
