@@ -1101,12 +1101,18 @@ CHEER_CSS = """
              border-radius:12px; padding:12px 14px;}
   .rffl-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   /* today / tomorrow segmented toggle */
-  .rfdaytoggle{display:inline-flex; gap:0; background:#eef2f7; border:1px solid var(--line);
-               border-radius:10px; padding:3px; margin-bottom:10px;}
+  .rfdaytoggle{display:inline-flex; flex-wrap:wrap; gap:2px; background:#eef2f7; border:1px solid var(--line);
+               border-radius:10px; padding:3px; margin-bottom:10px; max-width:100%;}
   .rfday{appearance:none; border:0; background:none; font-family:inherit; font-weight:800;
-         font-size:.86rem; color:#64748b; cursor:pointer; padding:6px 16px; border-radius:8px;}
+         font-size:.86rem; color:#64748b; cursor:pointer; padding:6px 14px; border-radius:8px; white-space:nowrap;}
   .rfday.on{background:#fff; color:var(--ink); box-shadow:0 2px 8px -4px rgba(2,6,23,.4);}
   .rfday:disabled{color:#cbd5e1; cursor:not-allowed;}
+  /* metric toggle: expected ₪ vs P(1st) vs P(in money) */
+  .rfmetric{display:inline-flex; flex-wrap:wrap; gap:2px; background:#eef2f7; border:1px solid var(--line);
+            border-radius:10px; padding:3px; margin:0 0 10px 8px; max-width:100%; vertical-align:top;}
+  .rfmbtn{appearance:none; border:0; background:none; font-family:inherit; font-weight:800;
+          font-size:.86rem; color:#64748b; cursor:pointer; padding:6px 14px; border-radius:8px; white-space:nowrap;}
+  .rfmbtn.on{background:#fff; color:var(--ink); box-shadow:0 2px 8px -4px rgba(2,6,23,.4);}
   .rftoggle{display:inline-flex; align-items:center; gap:7px; font-size:.88rem; color:#475569; cursor:pointer;}
   /* searchable dropdowns (scale to 53+ participants) */
   .rfdd{position:relative;}
@@ -1743,9 +1749,12 @@ def cheer_html(data: dict) -> str:
                        "homeEn": g["home"], "awayEn": g["away"],
                        "t1": he.get(g["home"], g["home"]), "f1": _flag(g["home"]),
                        "t2": he.get(g["away"], g["away"]), "f2": _flag(g["away"])})
-        days.append({"key": day["key"], "date": day.get("date", ""), "games": gs})
+        days.append({"key": day["key"], "date": day.get("date", ""),
+                     "rel": day.get("rel", ""), "games": gs})
     cdata = {"days": days, "deltas": cheer.get("deltas", {}),
-             "thr": cheer.get("neutral_threshold", 1.0), "pmap": pmap}
+             "deltas_p1": cheer.get("deltas_p1", {}), "deltas_im": cheer.get("deltas_im", {}),
+             "thr": cheer.get("neutral_threshold", 1.0),
+             "thr_pp": cheer.get("neutral_pp", 0.5), "pmap": pmap}
 
     filt_opts = "".join(
         f'<label class="rfopt" data-name="{n}"><input type="checkbox" value="{n}">'
@@ -1764,6 +1773,11 @@ def cheer_html(data: dict) -> str:
       <div class="rfdaytoggle" id="rfDayToggle">
         <button type="button" class="rfday" data-day="today" data-i18n="cheer.today">היום</button>
         <button type="button" class="rfday" data-day="tomorrow" data-i18n="cheer.tomorrow">מחר</button>
+      </div>
+      <div class="rfmetric" id="rfMetric" role="group">
+        <button type="button" class="rfmbtn on" data-metric="prize" data-i18n="cheer.m.prize">רווח צפוי (₪)</button>
+        <button type="button" class="rfmbtn" data-metric="p1" data-i18n="cheer.m.p1">סיכוי לניצחון</button>
+        <button type="button" class="rfmbtn" data-metric="im" data-i18n="cheer.m.im">סיכוי לכסף</button>
       </div>
       <div class="rffl-row">
         <div class="rfdd">
@@ -1818,6 +1832,14 @@ CHEER_JS = r"""
   const pmap = C.pmap || {};
   const deltas = C.deltas || {};
   const names = Object.keys(deltas).length ? Object.keys(deltas) : Object.keys(pmap);
+  // metric views: expected prize (₪) | ΔP(1st) | ΔP(in money). The two probability
+  // views are stored in percentage points; all three share the name->mno->[out] shape.
+  const DELT = {prize: deltas, p1: (C.deltas_p1||{}), im: (C.deltas_im||{})};
+  const THRS = {prize: THR, p1: (C.thr_pp||0.5), im: (C.thr_pp||0.5)};
+  let metric = 'prize';
+  function AD(){ return DELT[metric] || {}; }          // active delta table
+  function curTHR(){ return THRS[metric]; }            // active neutral threshold
+  const metricToggle = document.getElementById('rfMetric');
   const dayByKey = {}; (C.days||[]).forEach(d=> dayByKey[d.key]=d);
   const esc = s => (s+'').replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
@@ -1825,13 +1847,43 @@ CHEER_JS = r"""
   const filt = new Set();   // selected participants (empty = everyone)
   const hi   = new Set();   // highlighted participants
   const wiState = {};       // per-game (mno) exact-score sandbox: {h,a,so,scorers}
-  let day = (dayByKey.today && dayByKey.today.games.length) ? 'today'
-          : (dayByKey.tomorrow && dayByKey.tomorrow.games.length) ? 'tomorrow' : 'today';
+  // default to the earliest day that has games (nearest fixtures)
+  let day = (function(){ const days = C.days||[];
+    const first = days.find(d=> d.games && d.games.length) || days[0];
+    return first ? first.key : null; })();
+
+  // day labels: "today"/"tomorrow" when applicable, else localized weekday.
+  const WD = {he:['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'],
+              en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat']};
+  function dayBase(d){
+    if(!d) return '';
+    if(d.rel==='today' || d.key==='today') return t('cheer.today');
+    if(d.rel==='tomorrow' || d.key==='tomorrow') return t('cheer.tomorrow');
+    const dt = new Date((d.date||'')+'T12:00:00');
+    return isNaN(dt) ? '' : (I.lang==='en'?WD.en:WD.he)[dt.getDay()];
+  }
+  function dayLabel(d){
+    const base = dayBase(d);
+    const dm = ((d&&d.date)||'').slice(5).split('-').reverse().join('.');
+    return base + (dm ? (base?' · ':'')+dm : '');
+  }
+  function buildDayToggle(){
+    if(!dayToggle) return;
+    dayToggle.innerHTML = (C.days||[]).map(d=>
+      '<button type="button" class="rfday" data-day="'+esc(d.key)+'"></button>').join('');
+  }
 
   function fmtMoney(v){
     const a = Math.abs(v);
     const s = a < 10 ? (Math.round(a*10)/10).toString() : Math.round(a).toString();
     return (v>=0 ? '+' : '−') + '₪' + s;
+  }
+  // active-metric value: ₪ for the prize view, signed percentage points otherwise.
+  function fmtVal(v){
+    if(metric === 'prize') return fmtMoney(v);
+    const a = Math.abs(v);
+    const s = a < 10 ? (Math.round(a*10)/10).toString() : Math.round(a).toString();
+    return (v>=0 ? '+' : '−') + s + t('cheer.pp');
   }
   function eligible(n){
     if(filt.size && !filt.has(n)) return false;
@@ -1843,7 +1895,7 @@ CHEER_JS = r"""
   function chip(n, v, showDelta, imp){
     const cls = 'rfchip' + (hi.has(n)?' hl':'');
     let d = '';
-    if(showDelta) d = ' <i class="rfdelta '+(v>=0?'pos':'neg')+'">'+fmtMoney(v)+'</i>';
+    if(showDelta) d = ' <i class="rfdelta '+(v>=0?'pos':'neg')+'">'+fmtVal(v)+'</i>';
     // within-game relative emphasis: bar width = |Δ| / max|Δ| in this game.
     let bar = '';
     if(showDelta && imp > 0){
@@ -1881,9 +1933,10 @@ CHEER_JS = r"""
     if(S.h==null || S.a==null) return '<div class="rfwi-hint">'+t('cheer.wi.enter')+'</div>';
     const idx = outcomeIdx(type, home, away, S);
     if(idx==null) return '<div class="rfwi-hint">'+t('cheer.wi.pickso')+'</div>';
-    // headline: expected-prize change (₪) — MC conditional on the match OUTCOME
+    // headline: active-metric change — MC conditional on the match OUTCOME
+    const AM = AD();
     const money = {};
-    names.forEach(n=>{ const v = deltas[n] && deltas[n][String(mno)]; money[n] = v ? (v[idx]||0) : 0; });
+    names.forEach(n=>{ const v = AM[n] && AM[n][String(mno)]; money[n] = v ? (v[idx]||0) : 0; });
     // secondary: exact-score + scorers point delta via the shared engine
     const pts = {};
     if(window.WIF){
@@ -1893,7 +1946,7 @@ CHEER_JS = r"""
         if(Object.keys(S.scorers).length){ scn.hypoScorers={}; scn.hypoScorers['k'+mno]=S.scorers; } }
       window.WIF.impact(scn).forEach(r=> pts[r.name]=r.delta);
     }
-    const NEU = 3;   // |expected-prize change| below this (₪) = neutral
+    const NEU = (metric==='prize') ? 3 : curTHR();   // below this = neutral (₪ or pp)
     const all = names.map(n=>({n, m:money[n]||0, p:pts[n]||0}))
       .filter(r=> Math.abs(r.m)>=0.05 || Math.abs(r.p)>=0.05);
     if(!all.length) return '<div class="rfwi-hint">'+t('cheer.wi.none')+'</div>';
@@ -1911,14 +1964,14 @@ CHEER_JS = r"""
         ? '<i class="rfwi-chip-pt">'+(r.p>=0?'+':'−')+(Math.round(Math.abs(r.p)*10)/10)+t('cheer.wi.pts')+'</i>' : '';
       return '<span class="rfchip rfwi-chip'+(hi.has(r.n)?' hl':'')+'" data-name="'+esc(r.n)+'">'
         + '<span class="rfnm">'+esc(r.n)+'</span>'+pt
-        + '<i class="rfdelta '+(r.m>=0?'pos':'neg')+'">'+fmtMoney(r.m)+'</i>'+bar+'</span>';
+        + '<i class="rfdelta '+(r.m>=0?'pos':'neg')+'">'+fmtVal(r.m)+'</i>'+bar+'</span>';
     };
     const col = (items, kind, tone, label)=>
       '<div class="rfcol '+kind+'"><div class="rfcolhd rfwi-colhd '+tone+'">'+label+'</div>'
       + '<div class="rfchips">'
       + (items.length ? items.map(wiChip).join('') : '<div class="rfempty">'+t('cheer.empty')+'</div>')
       + '</div></div>';
-    let out = '<div class="rfwi-imphd">'+t('cheer.wi.impact')+'</div>'
+    let out = '<div class="rfwi-imphd">'+t('cheer.hdimp.'+metric)+'</div>'
       + '<div class="rfwi-ipcap">'+t('cheer.wi.cap')+'</div>'
       + '<div class="rfbuckets rfwi-buckets">'
       + col(pos, 'rf-win1', 'pos', I.fmt('cheer.wi.gain', {n: pos.length}))
@@ -1973,15 +2026,14 @@ CHEER_JS = r"""
       const n = d ? d.games.length : 0;
       b.disabled = !n;
       b.classList.toggle('on', b.dataset.day===day);
-      const dayLbl = b.dataset.day==='today' ? t('cheer.today') : t('cheer.tomorrow');
-      b.textContent = dayLbl + (d ? ' · '+(d.date||'').slice(5).split('-').reverse().join('.') : '');
+      b.textContent = dayLabel(d);
     });
     if(fCnt) fCnt.textContent = filt.size ? '('+filt.size+')' : '';
     if(hCur) hCur.textContent = hi.size ? ' ('+hi.size+')' : '';
 
     const D = dayByKey[day];
     if(!D || !D.games.length){
-      const dayLbl = day==='today' ? t('cheer.today').toLowerCase() : t('cheer.tomorrow').toLowerCase();
+      const dayLbl = (dayBase(D) || t('cheer.today')).toLowerCase();
       gamesEl.innerHTML = '<div class="callout">'+I.fmt('cheer.no_games', {day: dayLbl})+'</div>';
       return;
     }
@@ -2010,9 +2062,10 @@ CHEER_JS = r"""
       // = the within-game scale for the relative-emphasis bars.
       const elig = [];
       let gMax = 0;
+      const AM = AD();
       names.forEach(n=>{
         if(!eligible(n)) return;
-        const dd = (deltas[n] && deltas[n][mno]) || new Array(nOut).fill(0);
+        const dd = (AM[n] && AM[n][mno]) || new Array(nOut).fill(0);
         let mx = 0; for(let k=0;k<nOut;k++) mx = Math.max(mx, Math.abs(dd[k]));
         gMax = Math.max(gMax, mx);
         elig.push({n, dd, mx});
@@ -2021,7 +2074,7 @@ CHEER_JS = r"""
       elig.forEach(({n, dd, mx})=>{
         if(focus){
           for(let k=0;k<nOut;k++) cols[k].push({n, v:dd[k], imp:impOf(dd[k])});
-        } else if(mx < THR){
+        } else if(mx < curTHR()){
           neutral.push(n);
         } else {
           let best=0; for(let k=1;k<nOut;k++) if(dd[k]>dd[best]) best=k;
@@ -2093,10 +2146,17 @@ CHEER_JS = r"""
   if(hClear) hClear.addEventListener('click', ()=>{ hi.clear();
     hList.querySelectorAll('.rfopt2').forEach(b=>b.classList.remove('cur')); render(); });
 
+  buildDayToggle();
   if(dayToggle) dayToggle.addEventListener('click', e=>{ const b=e.target.closest('.rfday'); if(!b||b.disabled) return;
     day=b.dataset.day; render(); });
   if(top3) top3.addEventListener('change', render);
   if(last) last.addEventListener('change', render);
+  if(metricToggle) metricToggle.addEventListener('click', e=>{
+    const b = e.target.closest('.rfmbtn'); if(!b || !DELT[b.dataset.metric]) return;
+    metric = b.dataset.metric;
+    metricToggle.querySelectorAll('.rfmbtn').forEach(x=> x.classList.toggle('on', x===b));
+    render();   // rebuilds cards (and closes any open exact-score editors)
+  });
 
   // ---- exact-score sandbox events (delegated; survives gamesEl rebuilds) --- //
   gamesEl.addEventListener('click', function(ev){

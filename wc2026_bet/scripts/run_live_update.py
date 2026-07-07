@@ -230,26 +230,33 @@ def previous_metrics(ts: str) -> dict | None:
 
 IL_TZ = ZoneInfo("Asia/Jerusalem")
 CHEER_NEUTRAL_ILS = 1.0          # |Delta| below this -> "doesn't matter" for that game
+CHEER_NEUTRAL_PP = 0.5           # same idea for the P(1st)/P(in-money) views, in pp
 
 
 def select_cheer_games(ds, played: set[int]) -> tuple[list[dict], set[int]]:
-    """Pick today's & tomorrow's (Israel time) unplayed fixtures - group AND
-    knockout - for the "who to root for" board.
+    """Pick *every* upcoming (Israel-time) fixture whose two teams are already
+    known - group AND knockout - for the "who to root for" board, grouped by
+    match day.
 
     A fixture maps to a *group* match if its (home, away) pair is one of the 72
     group fixtures; otherwise, if both teams are real (i.e. a knockout matchup
-    whose participants are already decided), it is a *knockout* game with two
-    outcomes (no draw). Returns the per-day structure (without per-entry deltas
-    yet) and the set of internal match numbers to condition the simulation on:
-    the specific group matches, plus - when any KO game is on the board - every
-    bracket slot, so build_cheer can map each real KO fixture to its slot via
-    the simulated participants. Degrades to nothing if ESPN is unreachable."""
+    whose participants are already decided, e.g. France-Morocco once the feeding
+    rounds are done), it is a *knockout* game with two outcomes (no draw).
+    Fixtures with an undecided participant (a bracket placeholder) are skipped
+    until both teams are settled. Returns the per-day structure (without
+    per-entry deltas yet) and the set of internal match numbers to condition the
+    simulation on: the specific group matches, plus - when any KO game is on the
+    board - every bracket slot, so build_cheer can map each real KO fixture to
+    its slot via the simulated participants. Degrades to nothing if ESPN is
+    unreachable."""
     today = datetime.now(IL_TZ).date()
     tomorrow = today + timedelta(days=1)
     try:
         from wc2026_bet.espn import fetch_fixtures
+        # Wide window so the whole current knockout round (spread over several
+        # days) shows up, not just today/tomorrow.
         fx = fetch_fixtures(start=today - timedelta(days=1),
-                            end=tomorrow + timedelta(days=1))
+                            end=today + timedelta(days=40))
     except Exception as exc:                       # network/parse: degrade gracefully
         print(f"cheer: fixture fetch failed ({exc}); skipping board")
         return [], set()
@@ -261,7 +268,7 @@ def select_cheer_games(ds, played: set[int]) -> tuple[list[dict], set[int]]:
     teams = set(ds.team_index)
     bracket_mnos = {int(m["match"]) for m in ds.bracket}
 
-    buckets = {"today": [], "tomorrow": []}
+    buckets: dict[str, list[dict]] = {}            # date iso -> games
     track: set[int] = set()
     need_ko = False
     for f in fx:
@@ -274,27 +281,31 @@ def select_cheer_games(ds, played: set[int]) -> tuple[list[dict], set[int]]:
             ko = datetime.fromisoformat(f["date"].replace("Z", "+00:00")).astimezone(IL_TZ)
         except ValueError:
             continue
-        key = "today" if ko.date() == today else "tomorrow" if ko.date() == tomorrow else None
-        if key is None:
+        if ko.date() < today:                       # ignore any pre-today straggler
             continue
+        key = ko.date().isoformat()
         mno = gpair.get((home, away))
         if mno is not None:                         # group fixture
             if mno in played:
                 continue
-            buckets[key].append({"mno": mno, "home": home, "away": away, "type": "group",
-                                 "ko": ko.strftime("%H:%M"), "_sort": ko.isoformat()})
+            buckets.setdefault(key, []).append(
+                {"mno": mno, "home": home, "away": away, "type": "group",
+                 "ko": ko.strftime("%H:%M"), "_sort": ko.isoformat()})
             track.add(mno)
         else:                                       # knockout fixture (teams decided)
-            buckets[key].append({"mno": None, "home": home, "away": away, "type": "ko",
-                                 "ko": ko.strftime("%H:%M"), "_sort": ko.isoformat()})
+            buckets.setdefault(key, []).append(
+                {"mno": None, "home": home, "away": away, "type": "ko",
+                 "ko": ko.strftime("%H:%M"), "_sort": ko.isoformat()})
             need_ko = True
     if need_ko:
         track |= bracket_mnos                       # record every KO slot for mapping
 
     days = []
-    for key, date in (("today", today), ("tomorrow", tomorrow)):
+    for key in sorted(buckets):                     # chronological
         games = sorted(buckets[key], key=lambda g: g.pop("_sort"))
-        days.append({"key": key, "date": date.isoformat(), "games": games})
+        rel = ("today" if key == today.isoformat()
+               else "tomorrow" if key == tomorrow.isoformat() else "")
+        days.append({"key": key, "date": key, "rel": rel, "games": games})
     return days, track
 
 
@@ -310,25 +321,35 @@ def build_cheer(ds, days: list[dict], track: set[int], O: dict, M: dict,
     S, N = ranks.shape
     pv = np.asarray(prize_vector(N), dtype=np.float64)
     winnings = pv[ranks - 1]                         # [S,N] ILS per sim
-    base = winnings.mean(0)                          # [N] unconditional E[prize]
+    isfirst = (ranks == 1).astype(np.float64)        # [S,N] finished 1st (co-champs incl.)
+    inmoney = (winnings > 0).astype(np.float64)      # [S,N] finished in a paying place
+    base_w  = winnings.mean(0)                        # [N] unconditional E[prize]
+    base_p1 = isfirst.mean(0)                         # [N] unconditional P(1st)
+    base_im = inmoney.mean(0)                         # [N] unconditional P(in money)
     go = O.get("game_outcomes", {})
     kopart = O.get("ko_participants", {})
 
-    deltas: dict[str, dict[str, list[float]]] = {nm: {} for nm in names}
+    # three parallel metric views, same shape: name -> str(mno) -> [per-outcome delta].
+    # expected prize is in ILS; the two probability views are in percentage points.
+    deltas:    dict[str, dict[str, list[float]]] = {nm: {} for nm in names}
+    deltas_p1: dict[str, dict[str, list[float]]] = {nm: {} for nm in names}
+    deltas_im: dict[str, dict[str, list[float]]] = {nm: {} for nm in names}
 
-    def buckets(masks: list[np.ndarray]) -> tuple[list[float], list]:
-        p, cond = [], []
-        for m in masks:
-            cnt = int(m.sum())
-            p.append(round(cnt / S, 4))
-            cond.append(winnings[m].mean(0) if cnt else None)
-        return p, cond
+    def probs(masks: list[np.ndarray]) -> list[float]:
+        return [round(int(m.sum()) / S, 4) for m in masks]
 
-    def store(mno: int, p: list[float], cond: list) -> None:
+    def store(mno: int, masks: list[np.ndarray]) -> None:
+        cw  = [winnings[m].mean(0) if int(m.sum()) else None for m in masks]
+        cp1 = [isfirst[m].mean(0)  if int(m.sum()) else None for m in masks]
+        cim = [inmoney[m].mean(0)  if int(m.sum()) else None for m in masks]
+        K = range(len(masks))
         for e, nm in enumerate(names):
-            deltas[nm][str(mno)] = [round(float(cond[k][e] - base[e]), 1)
-                                    if cond[k] is not None else 0.0
-                                    for k in range(len(cond))]
+            deltas[nm][str(mno)]    = [round(float(cw[k][e] - base_w[e]), 1)
+                                       if cw[k] is not None else 0.0 for k in K]
+            deltas_p1[nm][str(mno)] = [round(float((cp1[k][e] - base_p1[e]) * 100), 2)
+                                       if cp1[k] is not None else 0.0 for k in K]
+            deltas_im[nm][str(mno)] = [round(float((cim[k][e] - base_im[e]) * 100), 2)
+                                       if cim[k] is not None else 0.0 for k in K]
 
     def find_ko_mno(t1: int, t2: int) -> tuple[int | None, float]:
         """Bracket slot whose simulated participants are this {t1,t2} pair."""
@@ -348,18 +369,20 @@ def build_cheer(ds, days: list[dict], track: set[int], O: dict, M: dict,
                     g["mno"], g["p"], g["pending"] = -1, [0.0, 0.0], True
                     continue
                 winner = go[mno]
-                p, cond = buckets([winner == t1, winner == t2])
-                g["mno"], g["p"] = int(mno), p
-                store(mno, p, cond)
+                masks = [winner == t1, winner == t2]
+                g["mno"], g["p"] = int(mno), probs(masks)
+                store(mno, masks)
             else:
                 o = go.get(g["mno"])
                 if o is None:
                     g["p"] = [0.0, 0.0, 0.0]
                     continue
-                p, cond = buckets([o == 0, o == 1, o == 2])
-                g["p"] = p
-                store(g["mno"], p, cond)
-    return {"neutral_threshold": CHEER_NEUTRAL_ILS, "days": days, "deltas": deltas}
+                masks = [o == 0, o == 1, o == 2]
+                g["p"] = probs(masks)
+                store(g["mno"], masks)
+    return {"neutral_threshold": CHEER_NEUTRAL_ILS, "neutral_pp": CHEER_NEUTRAL_PP,
+            "days": days, "deltas": deltas,
+            "deltas_p1": deltas_p1, "deltas_im": deltas_im}
 
 
 def main() -> None:
@@ -390,8 +413,9 @@ def main() -> None:
 
     cheer_days, cheer_track = select_cheer_games(ds, {int(k) for k in (state.get("group_scores") or {})})
     if cheer_track:
-        print(f"cheer board: tracking {len(cheer_track)} upcoming game(s) "
-              f"(today+tomorrow, Israel time)")
+        n_games = sum(len(d["games"]) for d in cheer_days)
+        print(f"cheer board: {n_games} determined upcoming game(s) across "
+              f"{len(cheer_days)} day(s); tracking {len(cheer_track)} match slot(s)")
 
     print(f"Running {args.sims:,} conditioned simulations ...")
     O = Simulator(ds, model, seed=2026).run(args.sims, known=known,
