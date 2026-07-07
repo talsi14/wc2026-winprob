@@ -120090,6 +120090,11 @@
       "goals": 2
     },
     {
+      "scorer": "Malik Tillman",
+      "team": "United States",
+      "goals": 2
+    },
+    {
       "scorer": "Marko Arnautović",
       "team": "Austria",
       "goals": 2
@@ -120495,11 +120500,6 @@
       "goals": 1
     },
     {
-      "scorer": "Malik Tillman",
-      "team": "United States",
-      "goals": 1
-    },
-    {
       "scorer": "Marcel Sabitzer",
       "team": "Austria",
       "goals": 1
@@ -120762,7 +120762,7 @@
       "games": 4
     },
     "United States": {
-      "gf": 10,
+      "gf": 11,
       "ga": 5,
       "games": 5
     },
@@ -120863,7 +120863,7 @@
     },
     "Belgium": {
       "gf": 10,
-      "ga": 4,
+      "ga": 5,
       "games": 5
     },
     "Egypt": {
