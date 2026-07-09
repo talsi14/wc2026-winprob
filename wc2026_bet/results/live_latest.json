@@ -85281,6 +85281,11 @@
   },
   "scorers": [
     {
+      "scorer": "Kylian Mbappé",
+      "team": "France",
+      "goals": 8
+    },
+    {
       "scorer": "Lionel Messi",
       "team": "Argentina",
       "goals": 8
@@ -85288,11 +85293,6 @@
     {
       "scorer": "Erling Haaland",
       "team": "Norway",
-      "goals": 7
-    },
-    {
-      "scorer": "Kylian Mbappé",
-      "team": "France",
       "goals": 7
     },
     {
@@ -86184,7 +86184,7 @@
     },
     "Morocco": {
       "gf": 10,
-      "ga": 4,
+      "ga": 5,
       "games": 6
     },
     "Haiti": {
@@ -86288,7 +86288,7 @@
       "games": 3
     },
     "France": {
-      "gf": 14,
+      "gf": 15,
       "ga": 2,
       "games": 6
     },
