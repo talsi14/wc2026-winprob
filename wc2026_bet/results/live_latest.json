@@ -85301,6 +85301,11 @@
       "goals": 6
     },
     {
+      "scorer": "Ousmane Dembélé",
+      "team": "France",
+      "goals": 5
+    },
+    {
       "scorer": "Ismaïla Sarr",
       "team": "Senegal",
       "goals": 4
@@ -85318,11 +85323,6 @@
     {
       "scorer": "Mikel Oyarzabal",
       "team": "Spain",
-      "goals": 4
-    },
-    {
-      "scorer": "Ousmane Dembélé",
-      "team": "France",
       "goals": 4
     },
     {
@@ -86184,7 +86184,7 @@
     },
     "Morocco": {
       "gf": 10,
-      "ga": 5,
+      "ga": 6,
       "games": 6
     },
     "Haiti": {
@@ -86288,7 +86288,7 @@
       "games": 3
     },
     "France": {
-      "gf": 15,
+      "gf": 16,
       "ga": 2,
       "games": 6
     },
