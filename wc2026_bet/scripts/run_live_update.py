@@ -26,6 +26,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import numpy as np
+import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
@@ -35,7 +36,8 @@ from wc2026_bet.calibration import (apply_strength_offsets,
                                     compute_golden_boot_scale,
                                     golden_boot_target)
 from wc2026_bet.config import (DATA_LIVE, DATA_PROCESSED, HOST_NATIONS,
-                               N_SIMULATIONS, RESULTS_DIR, prize_vector)
+                               N_SIMULATIONS, RESULTS_DIR, WC_FIT_WEIGHT,
+                               prize_vector)
 from wc2026_bet.contributions import build_contributions
 from wc2026_bet.data_io import apply_share_factors, load_calibration
 from wc2026_bet.live import (current_points_breakdown, load_entries,
@@ -389,6 +391,41 @@ def build_cheer(ds, days: list[dict], track: set[int], O: dict, M: dict,
             "deltas_p1": deltas_p1, "deltas_im": deltas_im}
 
 
+def wc_fit_rows(ds, state: dict, weight: float) -> pd.DataFrame | None:
+    """Played 2026 WC-finals matches as goals-fit rows.
+
+    The curated ``results.csv`` is frozen to the pre-tournament prior; here we
+    build the played group + knockout games from the frozen live ``state`` so the
+    attack/defence fit also sees live tournament form ("latest results count the
+    most"). Rows are returned in ``ds.results`` schema and appended in-memory each
+    run - the file itself is never mutated. Each game carries ``weight`` (WC
+    importance is 1.0 and a one-month tournament decays negligibly, so a flat
+    weight is used). Penalty/ET knockouts contribute their recorded scoreline.
+    """
+    match_ha = {int(r.match): (r.home, r.away)
+                for r in ds.group_matches.itertuples()}
+    recs: list[tuple[str, str, int, int, str]] = []
+    for mno, sc in (state.get("group_scores") or {}).items():
+        try:
+            ha = match_ha.get(int(mno))
+        except (TypeError, ValueError):
+            ha = None
+        if ha is None or not sc or len(sc) < 2:
+            continue
+        recs.append((ha[0], ha[1], int(sc[0]), int(sc[1]), "FIFA World Cup"))
+    for kr in (state.get("ko_results") or []):
+        try:
+            recs.append((kr["home"], kr["away"], int(kr["home_goals"]),
+                         int(kr["away_goals"]), "FIFA World Cup KO"))
+        except (KeyError, TypeError, ValueError):
+            continue
+    if not recs:
+        return None
+    df = pd.DataFrame(recs, columns=["home", "away", "hg", "ag", "league"])
+    df["weight"] = float(weight)
+    return df.reindex(columns=ds.results.columns)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ts", default=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M"))
@@ -400,8 +437,18 @@ def main() -> None:
 
     ds = load_live_dataset()
     entries = load_entries()
+    state = json.loads(Path(args.state).read_text())
     elo = {r.team: r.elo for r in ds.teams.itertuples()}
-    model0 = fit_match_model(ds.results, elo)
+
+    # Fold the played WC-finals matches into the goals fit so attack/defence
+    # reflect live tournament form. results.csv stays the curated prior.
+    fit_results = ds.results
+    wc_rows = wc_fit_rows(ds, state, WC_FIT_WEIGHT)
+    if wc_rows is not None and len(wc_rows):
+        fit_results = pd.concat([ds.results, wc_rows], ignore_index=True)
+        print(f"goals fit: +{len(wc_rows)} played WC match(es) at weight "
+              f"{WC_FIT_WEIGHT} (base {len(ds.results)} historical rows)")
+    model0 = fit_match_model(fit_results, elo)
 
     cal = build_calibration(ds, model0, ts, args.recalibrate)
     apply_share_factors(ds, cal.get("player_share_factor", {}))
@@ -409,7 +456,6 @@ def main() -> None:
         replace(model0, spread=cal["strength_spread"]),
         cal.get("strength_offsets", {}))
 
-    state = json.loads(Path(args.state).read_text())
     known = KnownState.from_state(ds, state)
     print(f"Conditioning on state {ts}: group {state.get('n_group_played',0)}/72 "
           f"played, KO {state.get('n_ko_played',0)}, "

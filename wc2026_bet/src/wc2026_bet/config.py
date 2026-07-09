@@ -84,6 +84,14 @@ DEFAULT_MATCH_IMPORTANCE = 0.45
 # Reference date for time-decay weighting (tournament eve).
 REFERENCE_DATE = "2026-06-11"
 
+# Per-match weight given to *played 2026 WC-finals* games when they are folded
+# into the attack/defence fit at run time (the live engine appends them to the
+# curated results.csv so ratings reflect live tournament form; the file itself
+# stays static). The strongest pre-tournament games weigh ~0.61, so 1.5 lets a
+# WC result clearly outweigh any friendly/qualifier without letting a handful of
+# games (often vs weaker opponents) erase two years of evidence. Tunable knob.
+WC_FIT_WEIGHT = 1.5
+
 # Split ridge for the attack/defence fit:
 #   RIDGE_STRENGTH anchors (attack + defence) to the Elo-implied overall
 #     strength (high => respect the authoritative Elo ordering), while
