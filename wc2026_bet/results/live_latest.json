@@ -86185,7 +86185,7 @@
     "Morocco": {
       "gf": 10,
       "ga": 4,
-      "games": 5
+      "games": 6
     },
     "Haiti": {
       "gf": 2,
@@ -86290,7 +86290,7 @@
     "France": {
       "gf": 14,
       "ga": 2,
-      "games": 5
+      "games": 6
     },
     "Senegal": {
       "gf": 10,
@@ -94079,6 +94079,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "France",
+    "Morocco"
+  ]
 }
