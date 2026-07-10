@@ -62317,7 +62317,7 @@
     "Spain": {
       "gf": 9,
       "ga": 0,
-      "games": 5
+      "games": 6
     },
     "Cape Verde": {
       "gf": 4,
@@ -62327,7 +62327,7 @@
     "Belgium": {
       "gf": 13,
       "ga": 5,
-      "games": 5
+      "games": 6
     },
     "Egypt": {
       "gf": 8,
@@ -69492,6 +69492,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Belgium",
+    "Spain"
+  ]
 }
