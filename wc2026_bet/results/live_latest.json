@@ -61558,6 +61558,11 @@
       "goals": 2
     },
     {
+      "scorer": "Mikel Merino",
+      "team": "Spain",
+      "goals": 2
+    },
+    {
       "scorer": "Mostafa Zico",
       "team": "Egypt",
       "goals": 2
@@ -62013,11 +62018,6 @@
       "goals": 1
     },
     {
-      "scorer": "Mikel Merino",
-      "team": "Spain",
-      "goals": 1
-    },
-    {
       "scorer": "Mohamed Salah",
       "team": "Egypt",
       "goals": 1
@@ -62320,7 +62320,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 10,
+      "gf": 11,
       "ga": 1,
       "games": 6
     },
@@ -62331,7 +62331,7 @@
     },
     "Belgium": {
       "gf": 14,
-      "ga": 6,
+      "ga": 7,
       "games": 6
     },
     "Egypt": {
