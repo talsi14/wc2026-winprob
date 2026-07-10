@@ -61738,6 +61738,11 @@
       "goals": 1
     },
     {
+      "scorer": "Fabián Ruiz",
+      "team": "Spain",
+      "goals": 1
+    },
+    {
       "scorer": "Felix Nmecha",
       "team": "Germany",
       "goals": 1
@@ -62315,7 +62320,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 9,
+      "gf": 10,
       "ga": 0,
       "games": 6
     },
@@ -62326,7 +62331,7 @@
     },
     "Belgium": {
       "gf": 13,
-      "ga": 5,
+      "ga": 6,
       "games": 6
     },
     "Egypt": {
