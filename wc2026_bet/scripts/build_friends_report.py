@@ -194,6 +194,13 @@ def standings_table_html(data: dict) -> str:
     team_he, pl_he = _team_he_map(), _player_he_map()
     rows_sorted = sorted(ents, key=lambda e: e.get("current_rank") or 1e9)
 
+    # A pick is "out" once its team is eliminated. Alive teams = the still-title-
+    # capable set (at the knockout stage that's exactly the teams left in the
+    # bracket); a scorer is out when his team is out. Guard on a non-empty set so
+    # nothing is struck through before the champion matrix is populated.
+    alive = set((data.get("champion_matrix") or {}).get("champions") or [])
+    scorer_team = {s["scorer"]: s["team"] for s in (data.get("scorers") or [])}
+
     def chg(e) -> str:
         d = e.get("d_current_rank")
         if not d:
@@ -203,6 +210,9 @@ def standings_table_html(data: dict) -> str:
 
     def pick(name_en, pts, player=False) -> str:
         he = _tp(name_en, pl_he) if player else _te(name_en, team_he)
+        team = scorer_team.get(name_en) if player else name_en
+        if alive and team and team not in alive:
+            he = f'<span class="out">{he}</span>'
         return f'<td class="pick">{he} <small>({_g(pts)})</small></td>'
 
     trs = []
@@ -591,6 +601,9 @@ CMTBL_CSS = """
   table.standtbl td.p1{font-weight:700; color:var(--blue);}
   table.standtbl td.pm{font-weight:700; color:var(--green);}
   table.standtbl td.pick small{color:var(--muted); font-weight:700; font-size:.78em;}
+  /* eliminated team / scorer: strike the name (banked points stay legible). */
+  table.standtbl td.pick .out{color:#94a3b8; text-decoration:line-through;
+            text-decoration-color:#94a3b8; text-decoration-thickness:1.5px;}
   table.standtbl tbody tr:nth-child(odd){background:#fcfcfd;}
   table.standtbl tbody tr:nth-child(odd) td.nm{background:#fcfcfd;}
   table.standtbl tbody tr:hover td{background:#f1f5f9;}
