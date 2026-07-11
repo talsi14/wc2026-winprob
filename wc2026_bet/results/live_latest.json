@@ -44412,7 +44412,7 @@
     "Norway": {
       "gf": 12,
       "ga": 9,
-      "games": 5
+      "games": 6
     },
     "Argentina": {
       "gf": 14,
@@ -44447,7 +44447,7 @@
     "England": {
       "gf": 11,
       "ga": 5,
-      "games": 5
+      "games": 6
     },
     "Croatia": {
       "gf": 6,
@@ -51532,6 +51532,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "England",
+    "Norway"
+  ]
 }
