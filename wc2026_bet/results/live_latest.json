@@ -43403,6 +43403,11 @@
       "goals": 6
     },
     {
+      "scorer": "Jude Bellingham",
+      "team": "England",
+      "goals": 5
+    },
+    {
       "scorer": "Ousmane Dembélé",
       "team": "France",
       "goals": 5
@@ -43410,11 +43415,6 @@
     {
       "scorer": "Ismaïla Sarr",
       "team": "Senegal",
-      "goals": 4
-    },
-    {
-      "scorer": "Jude Bellingham",
-      "team": "England",
       "goals": 4
     },
     {
@@ -44416,7 +44416,7 @@
     },
     "Norway": {
       "gf": 13,
-      "ga": 9,
+      "ga": 10,
       "games": 6
     },
     "Argentina": {
@@ -44450,7 +44450,7 @@
       "games": 4
     },
     "England": {
-      "gf": 11,
+      "gf": 12,
       "ga": 6,
       "games": 6
     },
