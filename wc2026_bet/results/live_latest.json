@@ -43405,7 +43405,7 @@
     {
       "scorer": "Jude Bellingham",
       "team": "England",
-      "goals": 5
+      "goals": 6
     },
     {
       "scorer": "Ousmane Dembélé",
@@ -44416,7 +44416,7 @@
     },
     "Norway": {
       "gf": 13,
-      "ga": 10,
+      "ga": 11,
       "games": 6
     },
     "Argentina": {
@@ -44450,7 +44450,7 @@
       "games": 4
     },
     "England": {
-      "gf": 12,
+      "gf": 13,
       "ga": 6,
       "games": 6
     },
