@@ -43688,6 +43688,11 @@
       "goals": 1
     },
     {
+      "scorer": "Andreas Schjelderup",
+      "team": "Norway",
+      "goals": 1
+    },
+    {
       "scorer": "Ante Budimir",
       "team": "Croatia",
       "goals": 1
@@ -44410,7 +44415,7 @@
       "games": 3
     },
     "Norway": {
-      "gf": 12,
+      "gf": 13,
       "ga": 9,
       "games": 6
     },
@@ -44446,7 +44451,7 @@
     },
     "England": {
       "gf": 11,
-      "ga": 5,
+      "ga": 6,
       "games": 6
     },
     "Croatia": {
