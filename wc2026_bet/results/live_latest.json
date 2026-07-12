@@ -31561,6 +31561,11 @@
       "goals": 2
     },
     {
+      "scorer": "Lautaro Martínez",
+      "team": "Argentina",
+      "goals": 2
+    },
+    {
       "scorer": "Leandro Trossard",
       "team": "Belgium",
       "goals": 2
@@ -31966,11 +31971,6 @@
       "goals": 1
     },
     {
-      "scorer": "Lautaro Martínez",
-      "team": "Argentina",
-      "goals": 1
-    },
-    {
       "scorer": "Leo Østigard",
       "team": "Norway",
       "goals": 1
@@ -32279,7 +32279,7 @@
     },
     "Switzerland": {
       "gf": 10,
-      "ga": 5,
+      "ga": 6,
       "games": 6
     },
     "Brazil": {
@@ -32413,7 +32413,7 @@
       "games": 6
     },
     "Argentina": {
-      "gf": 16,
+      "gf": 17,
       "ga": 6,
       "games": 6
     },
