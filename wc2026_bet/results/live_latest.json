@@ -31911,6 +31911,11 @@
       "goals": 1
     },
     {
+      "scorer": "Julián Alvarez",
+      "team": "Argentina",
+      "goals": 1
+    },
+    {
       "scorer": "Junya Ito",
       "team": "Japan",
       "goals": 1
@@ -32274,7 +32279,7 @@
     },
     "Switzerland": {
       "gf": 10,
-      "ga": 4,
+      "ga": 5,
       "games": 6
     },
     "Brazil": {
@@ -32408,7 +32413,7 @@
       "games": 6
     },
     "Argentina": {
-      "gf": 15,
+      "gf": 16,
       "ga": 6,
       "games": 6
     },
