@@ -69,14 +69,18 @@ STRINGS: dict[str, tuple[str, str]] = {
     "t10.title": ("10 המובילים בתוחלת", "Top 10 by expectation"),
     "t10.sub": (
         "עשרת הטפסים המובילים לפי תוחלת הזכייה (₪), עם דגל נבחרת דרג א׳ שנבחרה "
-        "וההסתברויות לסיים במקומות המובילים.",
+        "וההסתברויות לסיים במקומות המובילים. אפשר למיין לפי תוחלת (₪) או לפי "
+        "הסיכוי למקום ראשון — הסדר עשוי להשתנות (תוחלת מתגמלת גם מקומות 2–3).",
         "The ten leading entries by expected winnings (₪), with the flag of their "
-        "tier-A pick and the probabilities of finishing in the top places."),
+        "tier-A pick and the probabilities of finishing in the top places. Sort by "
+        "expectation (₪) or by chance of 1st — the order can differ (EV also rewards "
+        "2nd/3rd)."),
     "t10.pos": ("#", "#"),
     "t10.entry": ("טופס", "Entry"),
     "t10.tierA": ("דרג א׳", "Tier A"),
     "t10.ev": ("תוחלת ₪", "E[₪]"),
     "t10.p1": ("מקום 1", "1st"),
+    "t10.sortby": ("מיין לפי:", "Sort by:"),
     "t10.p2": ("1–2", "Top 2"),
     "t10.p3": ("1–3", "Top 3"),
     "cf.title": ("מי יכול לזכות בגביע?", "Who can win the cup?"),

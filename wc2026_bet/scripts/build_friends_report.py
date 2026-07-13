@@ -31,6 +31,7 @@ WC_ROOT = Path(__file__).resolve().parents[1]          # .../wc2026_bet
 # client-side What-If/path bracket matches the simulation and the real draw.
 sys.path.insert(0, str(WC_ROOT / "src"))
 from wc2026_bet.bracket import precompute_thirds_table  # noqa: E402
+from wc2026_bet.config import MANUAL_STRENGTH_BONUS  # noqa: E402
 DATA_PROCESSED = WC_ROOT / "data" / "processed"
 DATA_LIVE = WC_ROOT / "data" / "live"
 DATA_HISTORY = WC_ROOT / "data" / "history"
@@ -1361,6 +1362,15 @@ def whatif_payload(data: dict, state: dict) -> dict:
     team_tier = {t: meta[t]["tier"] for t in teams}
     team_group = {t: meta[t]["group"] for t in teams}
     team_elo = {t: meta[t]["elo"] for t in teams if meta[t]["elo"] is not None}
+    # "Favorite" strength for the What-If auto-fill: the blended form-ELO shown in
+    # the strength graph does NOT include the manual per-team belief bonus that the
+    # simulation applies (config.MANUAL_STRENGTH_BONUS, in Elo/400 units), so on its
+    # own it would advance Spain over France / Argentina over England - contradicting
+    # the sim's own semifinal odds (France 54% / England 52%). Fold the bonus in here
+    # (x400 back to Elo) so the button matches the simulation; teamElo stays unchanged
+    # for the displayed strength chart.
+    team_fav_elo = {t: e + MANUAL_STRENGTH_BONUS.get(t, 0.0) * 400.0
+                    for t, e in team_elo.items()}
     groups: dict[str, list[str]] = {}
     for t in teams:
         groups.setdefault(meta[t]["group"], []).append(t)
@@ -1427,7 +1437,8 @@ def whatif_payload(data: dict, state: dict) -> dict:
 
     return {
         "rules": rules,
-        "teamTier": team_tier, "teamElo": team_elo, "teamGroup": team_group, "groups": groups,
+        "teamTier": team_tier, "teamElo": team_elo, "teamFavElo": team_fav_elo,
+        "teamGroup": team_group, "groups": groups,
         "groupMatches": group_matches, "bracket": bracket, "thirdSlots": third_slots,
         "thirdsTable": thirds_table,
         "realGroupScores": {k: list(v) for k, v in (state.get("group_scores") or {}).items()},
@@ -1769,7 +1780,7 @@ def top10_html(data: dict) -> str:
         p1 = e["P_first"] * 100
         ev_w = max(e["exp_winnings"], 0) / max_ev * 100
         rows.append(
-            '<tr>'
+            f'<tr data-ev="{e["exp_winnings"]:.4f}" data-p1="{e["P_first"]:.6f}">'
             f'<td class="t10-pos">{pos}</td>'
             f'<td class="t10-nm" title="{html_mod.escape(e["name"], quote=True)}">'
             f'{html_mod.escape(e["name"])}</td>'
@@ -1790,13 +1801,39 @@ def top10_html(data: dict) -> str:
             '<th data-i18n="t10.p1">מקום 1</th>'
             '<th data-i18n="t10.p2">1–2</th>'
             '<th data-i18n="t10.p3">1–3</th></tr>')
+    toggle = (
+        '    <div class="rfmetric t10sort">'
+        '<span class="t10sort-lbl" data-i18n="t10.sortby">מיין לפי:</span>'
+        '<button type="button" class="rfmbtn on" data-sort="ev" data-i18n="t10.ev">תוחלת ₪</button>'
+        '<button type="button" class="rfmbtn" data-sort="p1" data-i18n="t10.p1">מקום 1</button>'
+        '</div>\n')
     return (
         '\n  <section class="t10wrap">\n'
         '    <h2 class="bigsec" data-i18n="t10.title">10 המובילים בתוחלת</h2>\n'
         '    <p class="sub" data-i18n="t10.sub">עשרת הטפסים המובילים לפי תוחלת הזכייה (₪), '
-        'עם דגל נבחרת דרג א׳ שנבחרה וההסתברויות לסיים במקומות המובילים.</p>\n'
-        f'    <div class="t10box"><table class="t10tbl"><thead>{head}</thead>'
-        f'<tbody>{"".join(rows)}</tbody></table></div>\n  </section>\n')
+        'עם דגל נבחרת דרג א׳ שנבחרה וההסתברויות לסיים במקומות המובילים. '
+        'אפשר למיין לפי תוחלת (₪) או לפי הסיכוי למקום ראשון.</p>\n'
+        + toggle +
+        f'    <div class="t10box"><table class="t10tbl" id="t10tbl"><thead>{head}</thead>'
+        f'<tbody>{"".join(rows)}</tbody></table></div>\n'
+        '    <script>(function(){\n'
+        '      var tb=document.querySelector("#t10tbl tbody"); if(!tb) return;\n'
+        '      var sortWrap=document.querySelector(".t10sort"); if(!sortWrap) return;\n'
+        '      var MED=["🥇","🥈","🥉"];\n'
+        '      function apply(key){\n'
+        '        var rows=Array.prototype.slice.call(tb.querySelectorAll("tr"));\n'
+        '        rows.sort(function(a,b){ return parseFloat(b.dataset[key])-parseFloat(a.dataset[key]); });\n'
+        '        rows.forEach(function(r,i){ tb.appendChild(r);\n'
+        '          r.querySelector(".t10-pos").innerHTML = i<3 ? MED[i]\n'
+        '            : \'<span class="t10-num">\'+(i+1)+\'</span>\'; });\n'
+        '      }\n'
+        '      sortWrap.querySelectorAll(".rfmbtn").forEach(function(btn){\n'
+        '        btn.addEventListener("click", function(){\n'
+        '          sortWrap.querySelectorAll(".rfmbtn").forEach(function(x){ x.classList.toggle("on", x===btn); });\n'
+        '          apply(btn.dataset.sort==="p1" ? "p1" : "ev");\n'
+        '        });\n'
+        '      });\n'
+        '    })();</script>\n  </section>\n')
 
 
 def champ_facets_html(data: dict) -> str:
@@ -1839,6 +1876,8 @@ def champ_facets_html(data: dict) -> str:
 T10CF_CSS = """
   /* ---- Top-10 by EV + champion facets (under the odds pyramid) ---- */
   .t10wrap{margin:10px 0 4px;}
+  .t10sort{margin:0 0 8px; align-items:center;}
+  .t10sort-lbl{font-size:.82rem; font-weight:700; color:#64748b; padding:0 8px 0 4px; align-self:center;}
   .t10box{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-top:8px;}
   table.t10tbl{border-collapse:separate; border-spacing:0; width:100%;
             font-size:.86rem; font-variant-numeric:tabular-nums;}
@@ -2917,9 +2956,12 @@ const WHATIF = __WHATIF__;
   document.getElementById('wiReset').addEventListener('click', function(){
     hypoGroup={}; hypoKo={}; hypoScorers={}; recompute(true);
   });
-  // "favorite" = the stronger team by the model's blended ELO; falls back to the
-  // bet tier (A>B>C>D) and then alphabetical when ELO is missing/tied.
-  const ELO = W.teamElo || {};
+  // "favorite" = the stronger team by the sim's effective strength: the blended
+  // form-ELO PLUS the manual per-team belief bonus the simulation applies
+  // (teamFavElo), so the auto-fill matches the sim's semifinal odds (France over
+  // Spain, England over Argentina) instead of the raw ELO. Falls back to the bet
+  // tier (A>B>C>D) and then alphabetical when strength is missing/tied.
+  const ELO = W.teamFavElo || W.teamElo || {};
   function favorite(a, b){
     const ea = ELO[a], eb = ELO[b];
     if(ea!=null && eb!=null && ea!==eb) return ea>eb ? a : b;
