@@ -110,7 +110,7 @@
         "שמיגידי": 0.9821,
         "השלום מהתקווה": 0.0,
         "Camo": 0.0,
-        "צלילוש": 0.0002,
+        "צלילוש": 0.0001,
         "החיים שממול": 0.0
       },
       "England": {
@@ -663,8 +663,8 @@
               "home": "England",
               "away": "Argentina",
               "winner": "England",
-              "hg": 1,
-              "ag": 0,
+              "hg": 4,
+              "ag": 3,
               "pen": false
             },
             "103": {
@@ -683,6 +683,1768 @@
               "winner": "England",
               "hg": 1,
               "ag": 2,
+              "pen": false
+            },
+            "74": {
+              "rc": 1,
+              "home": "Germany",
+              "away": "Paraguay",
+              "winner": "Paraguay",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "75": {
+              "rc": 1,
+              "home": "Netherlands",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "76": {
+              "rc": 1,
+              "home": "Brazil",
+              "away": "Japan",
+              "winner": "Brazil",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "77": {
+              "rc": 1,
+              "home": "France",
+              "away": "Sweden",
+              "winner": "France",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "78": {
+              "rc": 1,
+              "home": "Ivory Coast",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "79": {
+              "rc": 1,
+              "home": "Mexico",
+              "away": "Ecuador",
+              "winner": "Mexico",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "80": {
+              "rc": 1,
+              "home": "England",
+              "away": "DR Congo",
+              "winner": "England",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "81": {
+              "rc": 1,
+              "home": "United States",
+              "away": "Bosnia and Herzegovina",
+              "winner": "United States",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "82": {
+              "rc": 1,
+              "home": "Belgium",
+              "away": "Senegal",
+              "winner": "Belgium",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "83": {
+              "rc": 1,
+              "home": "Portugal",
+              "away": "Croatia",
+              "winner": "Portugal",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "84": {
+              "rc": 1,
+              "home": "Spain",
+              "away": "Austria",
+              "winner": "Spain",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "85": {
+              "rc": 1,
+              "home": "Switzerland",
+              "away": "Algeria",
+              "winner": "Switzerland",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "86": {
+              "rc": 1,
+              "home": "Argentina",
+              "away": "Cape Verde",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "87": {
+              "rc": 1,
+              "home": "Colombia",
+              "away": "Ghana",
+              "winner": "Colombia",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            },
+            "88": {
+              "rc": 1,
+              "home": "Australia",
+              "away": "Egypt",
+              "winner": "Egypt",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "89": {
+              "rc": 2,
+              "home": "Paraguay",
+              "away": "France",
+              "winner": "France",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "90": {
+              "rc": 2,
+              "home": "Canada",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 0,
+              "ag": 3,
+              "pen": false
+            },
+            "91": {
+              "rc": 2,
+              "home": "Brazil",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "92": {
+              "rc": 2,
+              "home": "Mexico",
+              "away": "England",
+              "winner": "England",
+              "hg": 2,
+              "ag": 3,
+              "pen": false
+            },
+            "93": {
+              "rc": 2,
+              "home": "Portugal",
+              "away": "Spain",
+              "winner": "Spain",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "94": {
+              "rc": 2,
+              "home": "United States",
+              "away": "Belgium",
+              "winner": "Belgium",
+              "hg": 1,
+              "ag": 4,
+              "pen": false
+            },
+            "95": {
+              "rc": 2,
+              "home": "Argentina",
+              "away": "Egypt",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "96": {
+              "rc": 2,
+              "home": "Switzerland",
+              "away": "Colombia",
+              "winner": "Switzerland",
+              "hg": 0,
+              "ag": 0,
+              "pen": true
+            },
+            "97": {
+              "rc": 3,
+              "home": "France",
+              "away": "Morocco",
+              "winner": "France",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "98": {
+              "rc": 3,
+              "home": "Spain",
+              "away": "Belgium",
+              "winner": "Spain",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "99": {
+              "rc": 3,
+              "home": "Norway",
+              "away": "England",
+              "winner": "England",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "100": {
+              "rc": 3,
+              "home": "Argentina",
+              "away": "Switzerland",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 1,
+              "pen": false
+            },
+            "101": {
+              "rc": 4,
+              "home": "France",
+              "away": "Spain",
+              "winner": "France",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            },
+            "102": {
+              "rc": 4,
+              "home": "England",
+              "away": "Argentina",
+              "winner": "Argentina",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "103": {
+              "rc": 5,
+              "home": "Spain",
+              "away": "England",
+              "winner": "England",
+              "hg": 0,
+              "ag": 3,
+              "pen": false
+            },
+            "104": {
+              "rc": 6,
+              "home": "France",
+              "away": "Argentina",
+              "winner": "France",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            }
+          },
+          "groups": [
+            {
+              "g": "A",
+              "rows": [
+                {
+                  "team": "Mexico",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 6,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "South Africa",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": -1,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "South Korea",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": -1,
+                  "gf": 2,
+                  "adv": false
+                },
+                {
+                  "team": "Czech Republic",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -4,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "B",
+              "rows": [
+                {
+                  "team": "Switzerland",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 4,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Canada",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 5,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Bosnia and Herzegovina",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -1,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Qatar",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -8,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "C",
+              "rows": [
+                {
+                  "team": "Brazil",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 6,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Morocco",
+                  "pos": 2,
+                  "pts": 7,
+                  "gd": 3,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Scotland",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": -3,
+                  "gf": 1,
+                  "adv": false
+                },
+                {
+                  "team": "Haiti",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -6,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "D",
+              "rows": [
+                {
+                  "team": "United States",
+                  "pos": 1,
+                  "pts": 6,
+                  "gd": 4,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Australia",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Paraguay",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -2,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Turkey",
+                  "pos": 4,
+                  "pts": 3,
+                  "gd": -2,
+                  "gf": 3,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "E",
+              "rows": [
+                {
+                  "team": "Germany",
+                  "pos": 1,
+                  "pts": 6,
+                  "gd": 6,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Ivory Coast",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 2,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Ecuador",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Curaçao",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -8,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "F",
+              "rows": [
+                {
+                  "team": "Netherlands",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 6,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Japan",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 4,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Sweden",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Tunisia",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -10,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "G",
+              "rows": [
+                {
+                  "team": "Belgium",
+                  "pos": 1,
+                  "pts": 5,
+                  "gd": 4,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Egypt",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 2,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Iran",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": 0,
+                  "gf": 3,
+                  "adv": false
+                },
+                {
+                  "team": "New Zealand",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -6,
+                  "gf": 4,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "H",
+              "rows": [
+                {
+                  "team": "Spain",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 5,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Cape Verde",
+                  "pos": 2,
+                  "pts": 3,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Uruguay",
+                  "pos": 3,
+                  "pts": 2,
+                  "gd": -1,
+                  "gf": 3,
+                  "adv": false
+                },
+                {
+                  "team": "Saudi Arabia",
+                  "pos": 4,
+                  "pts": 2,
+                  "gd": -4,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "I",
+              "rows": [
+                {
+                  "team": "France",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 8,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Norway",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 1,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Senegal",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": 2,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Iraq",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -11,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "J",
+              "rows": [
+                {
+                  "team": "Argentina",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 7,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Austria",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Algeria",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -2,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Jordan",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -5,
+                  "gf": 3,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "K",
+              "rows": [
+                {
+                  "team": "Colombia",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 3,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Portugal",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 5,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "DR Congo",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 1,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Uzbekistan",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -9,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "L",
+              "rows": [
+                {
+                  "team": "England",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 4,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Croatia",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 0,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Ghana",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Panama",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -4,
+                  "gf": 0,
+                  "adv": false
+                }
+              ]
+            }
+          ],
+          "leaderboard": [
+            {
+              "name": "מיסטר לונדון",
+              "pts": 67.5,
+              "rank": 1,
+              "bd": [
+                20.0,
+                13.0,
+                9.0,
+                7.0,
+                8.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "שמיגידי",
+              "pts": 67.0,
+              "rank": 2,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                7.0,
+                9.0,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "דוד המלך",
+              "pts": 65.0,
+              "rank": 3,
+              "bd": [
+                23.0,
+                12.0,
+                7.0,
+                7.0,
+                9.0,
+                6.0,
+                1.0
+              ]
+            },
+            {
+              "name": "שגיא גנות",
+              "pts": 65.0,
+              "rank": 4,
+              "bd": [
+                27.0,
+                12.0,
+                9.0,
+                0.0,
+                9.0,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "Camo",
+              "pts": 64.5,
+              "rank": 5,
+              "bd": [
+                27.0,
+                6.0,
+                9.0,
+                7.0,
+                9.0,
+                2.5,
+                4.0
+              ]
+            },
+            {
+              "name": "צלילוש",
+              "pts": 64.0,
+              "rank": 6,
+              "bd": [
+                27.0,
+                6.0,
+                9.0,
+                5.0,
+                9.0,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "החיים שממול",
+              "pts": 64.0,
+              "rank": 7,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                5.0,
+                5.5,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "ניק דה דיק",
+              "pts": 61.0,
+              "rank": 8,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                5.0,
+                9.0,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "טלסי",
+              "pts": 60.5,
+              "rank": 9,
+              "bd": [
+                23.0,
+                12.0,
+                3.0,
+                5.0,
+                5.5,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "עיר של קיץ",
+              "pts": 58.5,
+              "rank": 10,
+              "bd": [
+                16.0,
+                11.0,
+                9.0,
+                7.0,
+                5.5,
+                6.0,
+                4.0
+              ]
+            },
+            {
+              "name": "הפועל חיפה",
+              "pts": 56.0,
+              "rank": 11,
+              "bd": [
+                16.0,
+                12.0,
+                7.0,
+                7.0,
+                5.5,
+                4.5,
+                4.0
+              ]
+            },
+            {
+              "name": "קלוד",
+              "pts": 56.0,
+              "rank": 12,
+              "bd": [
+                16.0,
+                5.0,
+                9.0,
+                7.0,
+                9.0,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "השלום מהתקווה",
+              "pts": 55.5,
+              "rank": 13,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                1.0,
+                5.0,
+                2.5,
+                4.0
+              ]
+            },
+            {
+              "name": "Guest",
+              "pts": 55.5,
+              "rank": 14,
+              "bd": [
+                16.0,
+                13.0,
+                9.0,
+                0.0,
+                9.0,
+                4.5,
+                4.0
+              ]
+            },
+            {
+              "name": "השדים האדומים",
+              "pts": 54.5,
+              "rank": 15,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                7.0,
+                9.0,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "שמוגודו",
+              "pts": 53.5,
+              "rank": 16,
+              "bd": [
+                16.0,
+                11.0,
+                9.0,
+                0.0,
+                5.5,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "ספיידרמן",
+              "pts": 53.0,
+              "rank": 17,
+              "bd": [
+                16.0,
+                13.0,
+                3.0,
+                7.0,
+                5.5,
+                4.5,
+                4.0
+              ]
+            },
+            {
+              "name": "והימור חסר אחריות",
+              "pts": 51.5,
+              "rank": 18,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                1.0,
+                5.5,
+                2.0,
+                4.0
+              ]
+            },
+            {
+              "name": "אני לא רובוט",
+              "pts": 51.5,
+              "rank": 19,
+              "bd": [
+                27.0,
+                2.0,
+                3.0,
+                6.0,
+                5.5,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "SaxoGuzito",
+              "pts": 51.5,
+              "rank": 20,
+              "bd": [
+                16.0,
+                11.0,
+                9.0,
+                7.0,
+                5.5,
+                2.5,
+                0.5
+              ]
+            },
+            {
+              "name": "פוס",
+              "pts": 51.0,
+              "rank": 21,
+              "bd": [
+                16.0,
+                13.0,
+                9.0,
+                1.0,
+                5.5,
+                2.5,
+                4.0
+              ]
+            },
+            {
+              "name": "ששל",
+              "pts": 51.0,
+              "rank": 22,
+              "bd": [
+                23.0,
+                11.0,
+                3.0,
+                0.0,
+                4.0,
+                6.0,
+                4.0
+              ]
+            },
+            {
+              "name": "צופיק",
+              "pts": 50.5,
+              "rank": 23,
+              "bd": [
+                8.0,
+                13.0,
+                9.0,
+                7.0,
+                4.0,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "יש לי חלום",
+              "pts": 50.0,
+              "rank": 24,
+              "bd": [
+                23.0,
+                5.0,
+                3.0,
+                0.0,
+                9.0,
+                6.0,
+                4.0
+              ]
+            },
+            {
+              "name": "Sir_SaxoGuz",
+              "pts": 50.0,
+              "rank": 25,
+              "bd": [
+                20.0,
+                9.0,
+                3.0,
+                0.0,
+                8.5,
+                3.5,
+                6.0
+              ]
+            },
+            {
+              "name": "השקעה סולידית",
+              "pts": 49.5,
+              "rank": 26,
+              "bd": [
+                16.0,
+                12.0,
+                7.0,
+                0.0,
+                5.5,
+                5.5,
+                3.5
+              ]
+            },
+            {
+              "name": "Killmachine",
+              "pts": 49.5,
+              "rank": 27,
+              "bd": [
+                27.0,
+                5.0,
+                3.0,
+                0.0,
+                9.0,
+                1.5,
+                4.0
+              ]
+            },
+            {
+              "name": "ליבליב",
+              "pts": 49.0,
+              "rank": 28,
+              "bd": [
+                8.0,
+                13.0,
+                7.0,
+                5.0,
+                5.5,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "יחסית רגשי ודי ריאלי",
+              "pts": 48.5,
+              "rank": 29,
+              "bd": [
+                20.0,
+                2.0,
+                7.0,
+                0.0,
+                9.0,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "שוקת",
+              "pts": 48.0,
+              "rank": 30,
+              "bd": [
+                8.0,
+                13.0,
+                9.0,
+                1.0,
+                9.0,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "צ׳וזמיניי",
+              "pts": 48.0,
+              "rank": 31,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                1.0,
+                9.0,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "Sodastream",
+              "pts": 47.5,
+              "rank": 32,
+              "bd": [
+                27.0,
+                2.0,
+                4.0,
+                1.0,
+                5.5,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "מלאך המוות",
+              "pts": 47.5,
+              "rank": 33,
+              "bd": [
+                16.0,
+                6.0,
+                9.0,
+                6.0,
+                5.5,
+                4.5,
+                0.5
+              ]
+            },
+            {
+              "name": "Loizou",
+              "pts": 47.5,
+              "rank": 34,
+              "bd": [
+                16.0,
+                11.0,
+                3.0,
+                0.0,
+                5.5,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "מלך הפורטנייט",
+              "pts": 47.5,
+              "rank": 35,
+              "bd": [
+                16.0,
+                13.0,
+                3.0,
+                0.0,
+                5.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "דפי גרובר",
+              "pts": 47.0,
+              "rank": 36,
+              "bd": [
+                16.0,
+                12.0,
+                6.0,
+                1.0,
+                5.5,
+                4.5,
+                2.0
+              ]
+            },
+            {
+              "name": "Slim Shady",
+              "pts": 46.5,
+              "rank": 37,
+              "bd": [
+                27.0,
+                2.0,
+                3.0,
+                0.0,
+                9.0,
+                1.5,
+                4.0
+              ]
+            },
+            {
+              "name": "פול התמנון",
+              "pts": 46.0,
+              "rank": 38,
+              "bd": [
+                16.0,
+                9.0,
+                4.0,
+                7.0,
+                5.5,
+                4.0,
+                0.5
+              ]
+            },
+            {
+              "name": "הפורטוגזית",
+              "pts": 46.0,
+              "rank": 39,
+              "bd": [
+                10.0,
+                13.0,
+                3.0,
+                6.0,
+                5.5,
+                4.5,
+                4.0
+              ]
+            },
+            {
+              "name": "User_1",
+              "pts": 45.0,
+              "rank": 40,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                0.0,
+                9.0,
+                4.0,
+                4.0
+              ]
+            },
+            {
+              "name": "טאטיניו",
+              "pts": 45.0,
+              "rank": 41,
+              "bd": [
+                16.0,
+                12.0,
+                3.0,
+                1.0,
+                5.5,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "בוא לא נתפזר",
+              "pts": 45.0,
+              "rank": 42,
+              "bd": [
+                27.0,
+                3.0,
+                3.0,
+                0.0,
+                5.5,
+                2.5,
+                4.0
+              ]
+            },
+            {
+              "name": "בני סלע",
+              "pts": 45.0,
+              "rank": 43,
+              "bd": [
+                16.0,
+                11.0,
+                3.0,
+                1.0,
+                5.5,
+                2.5,
+                6.0
+              ]
+            },
+            {
+              "name": "צ׳ופ",
+              "pts": 43.5,
+              "rank": 44,
+              "bd": [
+                16.0,
+                4.0,
+                9.0,
+                0.0,
+                5.5,
+                5.0,
+                4.0
+              ]
+            },
+            {
+              "name": "השחלה לברק",
+              "pts": 41.5,
+              "rank": 45,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                6.0,
+                5.5,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "רוח השם גורדון",
+              "pts": 36.5,
+              "rank": 46,
+              "bd": [
+                8.0,
+                9.0,
+                3.0,
+                1.0,
+                9.0,
+                4.0,
+                2.5
+              ]
+            },
+            {
+              "name": "מוזלי",
+              "pts": 35.0,
+              "rank": 47,
+              "bd": [
+                8.0,
+                2.0,
+                3.0,
+                7.0,
+                5.0,
+                6.0,
+                4.0
+              ]
+            },
+            {
+              "name": "01101110",
+              "pts": 33.5,
+              "rank": 48,
+              "bd": [
+                16.0,
+                2.0,
+                3.0,
+                0.0,
+                5.5,
+                3.0,
+                4.0
+              ]
+            },
+            {
+              "name": "אבאשלו",
+              "pts": 33.0,
+              "rank": 49,
+              "bd": [
+                10.0,
+                9.0,
+                3.0,
+                0.0,
+                5.0,
+                4.0,
+                2.0
+              ]
+            },
+            {
+              "name": "Lady Crab 🦀",
+              "pts": 33.0,
+              "rank": 50,
+              "bd": [
+                7.0,
+                6.0,
+                3.0,
+                7.0,
+                5.0,
+                3.5,
+                1.5
+              ]
+            },
+            {
+              "name": "The real slim shady",
+              "pts": 31.5,
+              "rank": 51,
+              "bd": [
+                16.0,
+                2.0,
+                3.0,
+                1.0,
+                5.5,
+                2.0,
+                2.0
+              ]
+            },
+            {
+              "name": "Neymar",
+              "pts": 30.0,
+              "rank": 52,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                0.0,
+                5.5,
+                2.5,
+                4.0
+              ]
+            },
+            {
+              "name": "עמרי קולברג",
+              "pts": 26.0,
+              "rank": 53,
+              "bd": [
+                7.0,
+                1.0,
+                3.0,
+                5.0,
+                5.5,
+                4.0,
+                0.5
+              ]
+            }
+          ],
+          "sole": true
+        },
+        "Spain": {
+          "bracket": {
+            "73": {
+              "rc": 1,
+              "home": "South Africa",
+              "away": "Canada",
+              "winner": "Canada",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "74": {
+              "rc": 1,
+              "home": "Germany",
+              "away": "Paraguay",
+              "winner": "Paraguay",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "75": {
+              "rc": 1,
+              "home": "Netherlands",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "76": {
+              "rc": 1,
+              "home": "Brazil",
+              "away": "Japan",
+              "winner": "Brazil",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "77": {
+              "rc": 1,
+              "home": "France",
+              "away": "Sweden",
+              "winner": "France",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "78": {
+              "rc": 1,
+              "home": "Ivory Coast",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "79": {
+              "rc": 1,
+              "home": "Mexico",
+              "away": "Ecuador",
+              "winner": "Mexico",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "80": {
+              "rc": 1,
+              "home": "England",
+              "away": "DR Congo",
+              "winner": "England",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "81": {
+              "rc": 1,
+              "home": "United States",
+              "away": "Bosnia and Herzegovina",
+              "winner": "United States",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "82": {
+              "rc": 1,
+              "home": "Belgium",
+              "away": "Senegal",
+              "winner": "Belgium",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "83": {
+              "rc": 1,
+              "home": "Portugal",
+              "away": "Croatia",
+              "winner": "Portugal",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "84": {
+              "rc": 1,
+              "home": "Spain",
+              "away": "Austria",
+              "winner": "Spain",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "85": {
+              "rc": 1,
+              "home": "Switzerland",
+              "away": "Algeria",
+              "winner": "Switzerland",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "86": {
+              "rc": 1,
+              "home": "Argentina",
+              "away": "Cape Verde",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "87": {
+              "rc": 1,
+              "home": "Colombia",
+              "away": "Ghana",
+              "winner": "Colombia",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            },
+            "88": {
+              "rc": 1,
+              "home": "Australia",
+              "away": "Egypt",
+              "winner": "Egypt",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "89": {
+              "rc": 2,
+              "home": "Paraguay",
+              "away": "France",
+              "winner": "France",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "90": {
+              "rc": 2,
+              "home": "Canada",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 0,
+              "ag": 3,
+              "pen": false
+            },
+            "91": {
+              "rc": 2,
+              "home": "Brazil",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "92": {
+              "rc": 2,
+              "home": "Mexico",
+              "away": "England",
+              "winner": "England",
+              "hg": 2,
+              "ag": 3,
+              "pen": false
+            },
+            "93": {
+              "rc": 2,
+              "home": "Portugal",
+              "away": "Spain",
+              "winner": "Spain",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "94": {
+              "rc": 2,
+              "home": "United States",
+              "away": "Belgium",
+              "winner": "Belgium",
+              "hg": 1,
+              "ag": 4,
+              "pen": false
+            },
+            "95": {
+              "rc": 2,
+              "home": "Argentina",
+              "away": "Egypt",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "96": {
+              "rc": 2,
+              "home": "Switzerland",
+              "away": "Colombia",
+              "winner": "Switzerland",
+              "hg": 0,
+              "ag": 0,
+              "pen": true
+            },
+            "97": {
+              "rc": 3,
+              "home": "France",
+              "away": "Morocco",
+              "winner": "France",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "98": {
+              "rc": 3,
+              "home": "Spain",
+              "away": "Belgium",
+              "winner": "Spain",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "99": {
+              "rc": 3,
+              "home": "Norway",
+              "away": "England",
+              "winner": "England",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "100": {
+              "rc": 3,
+              "home": "Argentina",
+              "away": "Switzerland",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 1,
+              "pen": false
+            },
+            "101": {
+              "rc": 4,
+              "home": "France",
+              "away": "Spain",
+              "winner": "Spain",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "102": {
+              "rc": 4,
+              "home": "England",
+              "away": "Argentina",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 3,
+              "pen": true
+            },
+            "103": {
+              "rc": 5,
+              "home": "France",
+              "away": "England",
+              "winner": "England",
+              "hg": 1,
+              "ag": 3,
+              "pen": false
+            },
+            "104": {
+              "rc": 6,
+              "home": "Spain",
+              "away": "Argentina",
+              "winner": "Spain",
+              "hg": 1,
+              "ag": 0,
               "pen": false
             }
           },
@@ -2631,31 +4393,31 @@
               ]
             },
             {
-              "name": "שמיגידי",
+              "name": "עיר של קיץ",
               "pts": 68.5,
               "rank": 2,
               "bd": [
-                27.0,
-                13.0,
-                3.0,
+                25.0,
+                11.0,
+                9.0,
                 7.0,
-                10.0,
-                4.0,
-                4.5
+                6.5,
+                6.0,
+                4.0
               ]
             },
             {
-              "name": "שגיא גנות",
-              "pts": 66.5,
+              "name": "הפועל חיפה",
+              "pts": 66.0,
               "rank": 3,
               "bd": [
-                27.0,
+                25.0,
                 12.0,
-                9.0,
-                0.0,
-                10.0,
-                4.0,
-                4.5
+                7.0,
+                7.0,
+                6.5,
+                4.5,
+                4.0
               ]
             },
             {
@@ -2737,7 +4499,7 @@
                 13.0,
                 9.0,
                 0.0,
-                10.0,
+                8.5,
                 4.5,
                 4.5
               ]
@@ -2785,6 +4547,20 @@
               ]
             },
             {
+              "name": "השדים האדומים",
+              "pts": 63.5,
+              "rank": 8,
+              "bd": [
+                25.0,
+                9.0,
+                3.0,
+                7.0,
+                8.5,
+                4.5,
+                6.5
+              ]
+            },
+            {
               "name": "ספיידרמן",
               "pts": 58.0,
               "rank": 13,
@@ -2795,7 +4571,7 @@
                 7.0,
                 7.0,
                 4.5,
-                4.5
+                4.0
               ]
             },
             {
@@ -2851,7 +4627,7 @@
                 7.0,
                 7.0,
                 2.5,
-                1.0
+                0.5
               ]
             },
             {
@@ -4436,6 +6212,20 @@
               ]
             },
             {
+              "name": "Camo",
+              "pts": 55.0,
+              "rank": 26,
+              "bd": [
+                18.0,
+                6.0,
+                9.0,
+                7.0,
+                8.5,
+                2.5,
+                4.0
+              ]
+            },
+            {
               "name": "טאטיניו",
               "pts": 55.5,
               "rank": 25,
@@ -4557,7 +6347,10 @@
                 3.0,
                 1.0,
                 5.0,
-                2.5,
+                3.0,
+                0.0,
+                8.5,
+                6.0,
                 4.0
               ]
             },
@@ -4614,6 +6407,20 @@
                 6.0,
                 7.0,
                 4.5,
+                4.0
+              ]
+            },
+            {
+              "name": "השלום מהתקווה",
+              "pts": 46.5,
+              "rank": 39,
+              "bd": [
+                18.0,
+                13.0,
+                3.0,
+                1.0,
+                5.0,
+                2.5,
                 4.0
               ]
             },
@@ -4825,6 +6632,1489 @@
                 7.0,
                 2.5,
                 4.0
+              ]
+            },
+            {
+              "name": "עמרי קולברג",
+              "pts": 26.0,
+              "rank": 53,
+              "bd": [
+                7.0,
+                1.0,
+                3.0,
+                5.0,
+                5.5,
+                4.0,
+                0.5
+              ]
+            }
+          ],
+          "sole": true
+        },
+        "Argentina": {
+          "bracket": {
+            "73": {
+              "rc": 1,
+              "home": "South Africa",
+              "away": "Canada",
+              "winner": "Canada",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "74": {
+              "rc": 1,
+              "home": "Germany",
+              "away": "Paraguay",
+              "winner": "Paraguay",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "75": {
+              "rc": 1,
+              "home": "Netherlands",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "76": {
+              "rc": 1,
+              "home": "Brazil",
+              "away": "Japan",
+              "winner": "Brazil",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "77": {
+              "rc": 1,
+              "home": "France",
+              "away": "Sweden",
+              "winner": "France",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "78": {
+              "rc": 1,
+              "home": "Ivory Coast",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "79": {
+              "rc": 1,
+              "home": "Mexico",
+              "away": "Ecuador",
+              "winner": "Mexico",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "80": {
+              "rc": 1,
+              "home": "England",
+              "away": "DR Congo",
+              "winner": "England",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "81": {
+              "rc": 1,
+              "home": "United States",
+              "away": "Bosnia and Herzegovina",
+              "winner": "United States",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "82": {
+              "rc": 1,
+              "home": "Belgium",
+              "away": "Senegal",
+              "winner": "Belgium",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "83": {
+              "rc": 1,
+              "home": "Portugal",
+              "away": "Croatia",
+              "winner": "Portugal",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "84": {
+              "rc": 1,
+              "home": "Spain",
+              "away": "Austria",
+              "winner": "Spain",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "85": {
+              "rc": 1,
+              "home": "Switzerland",
+              "away": "Algeria",
+              "winner": "Switzerland",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "86": {
+              "rc": 1,
+              "home": "Argentina",
+              "away": "Cape Verde",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "87": {
+              "rc": 1,
+              "home": "Colombia",
+              "away": "Ghana",
+              "winner": "Colombia",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            },
+            "88": {
+              "rc": 1,
+              "home": "Australia",
+              "away": "Egypt",
+              "winner": "Egypt",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "89": {
+              "rc": 2,
+              "home": "Paraguay",
+              "away": "France",
+              "winner": "France",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "90": {
+              "rc": 2,
+              "home": "Canada",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 0,
+              "ag": 3,
+              "pen": false
+            },
+            "91": {
+              "rc": 2,
+              "home": "Brazil",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "92": {
+              "rc": 2,
+              "home": "Mexico",
+              "away": "England",
+              "winner": "England",
+              "hg": 2,
+              "ag": 3,
+              "pen": false
+            },
+            "93": {
+              "rc": 2,
+              "home": "Portugal",
+              "away": "Spain",
+              "winner": "Spain",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "94": {
+              "rc": 2,
+              "home": "United States",
+              "away": "Belgium",
+              "winner": "Belgium",
+              "hg": 1,
+              "ag": 4,
+              "pen": false
+            },
+            "95": {
+              "rc": 2,
+              "home": "Argentina",
+              "away": "Egypt",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "96": {
+              "rc": 2,
+              "home": "Switzerland",
+              "away": "Colombia",
+              "winner": "Switzerland",
+              "hg": 0,
+              "ag": 0,
+              "pen": true
+            },
+            "97": {
+              "rc": 3,
+              "home": "France",
+              "away": "Morocco",
+              "winner": "France",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "98": {
+              "rc": 3,
+              "home": "Spain",
+              "away": "Belgium",
+              "winner": "Spain",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "99": {
+              "rc": 3,
+              "home": "Norway",
+              "away": "England",
+              "winner": "England",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "100": {
+              "rc": 3,
+              "home": "Argentina",
+              "away": "Switzerland",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 1,
+              "pen": false
+            },
+            "101": {
+              "rc": 4,
+              "home": "France",
+              "away": "Spain",
+              "winner": "France",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "102": {
+              "rc": 4,
+              "home": "England",
+              "away": "Argentina",
+              "winner": "Argentina",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "103": {
+              "rc": 5,
+              "home": "Spain",
+              "away": "England",
+              "winner": "England",
+              "hg": 2,
+              "ag": 6,
+              "pen": false
+            },
+            "104": {
+              "rc": 6,
+              "home": "France",
+              "away": "Argentina",
+              "winner": "Argentina",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            }
+          },
+          "groups": [
+            {
+              "g": "A",
+              "rows": [
+                {
+                  "team": "Mexico",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 6,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "South Africa",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": -1,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "South Korea",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": -1,
+                  "gf": 2,
+                  "adv": false
+                },
+                {
+                  "team": "Czech Republic",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -4,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "B",
+              "rows": [
+                {
+                  "team": "Switzerland",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 4,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Canada",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 5,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Bosnia and Herzegovina",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -1,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Qatar",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -8,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "C",
+              "rows": [
+                {
+                  "team": "Brazil",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 6,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Morocco",
+                  "pos": 2,
+                  "pts": 7,
+                  "gd": 3,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Scotland",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": -3,
+                  "gf": 1,
+                  "adv": false
+                },
+                {
+                  "team": "Haiti",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -6,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "D",
+              "rows": [
+                {
+                  "team": "United States",
+                  "pos": 1,
+                  "pts": 6,
+                  "gd": 4,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Australia",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Paraguay",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -2,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Turkey",
+                  "pos": 4,
+                  "pts": 3,
+                  "gd": -2,
+                  "gf": 3,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "E",
+              "rows": [
+                {
+                  "team": "Germany",
+                  "pos": 1,
+                  "pts": 6,
+                  "gd": 6,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Ivory Coast",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 2,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Ecuador",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Curaçao",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -8,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "F",
+              "rows": [
+                {
+                  "team": "Netherlands",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 6,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Japan",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 4,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Sweden",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Tunisia",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -10,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "G",
+              "rows": [
+                {
+                  "team": "Belgium",
+                  "pos": 1,
+                  "pts": 5,
+                  "gd": 4,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Egypt",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 2,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Iran",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": 0,
+                  "gf": 3,
+                  "adv": false
+                },
+                {
+                  "team": "New Zealand",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -6,
+                  "gf": 4,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "H",
+              "rows": [
+                {
+                  "team": "Spain",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 5,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Cape Verde",
+                  "pos": 2,
+                  "pts": 3,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Uruguay",
+                  "pos": 3,
+                  "pts": 2,
+                  "gd": -1,
+                  "gf": 3,
+                  "adv": false
+                },
+                {
+                  "team": "Saudi Arabia",
+                  "pos": 4,
+                  "pts": 2,
+                  "gd": -4,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "I",
+              "rows": [
+                {
+                  "team": "France",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 8,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Norway",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 1,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Senegal",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": 2,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Iraq",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -11,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "J",
+              "rows": [
+                {
+                  "team": "Argentina",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 7,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Austria",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Algeria",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -2,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Jordan",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -5,
+                  "gf": 3,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "K",
+              "rows": [
+                {
+                  "team": "Colombia",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 3,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Portugal",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 5,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "DR Congo",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 1,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Uzbekistan",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -9,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "L",
+              "rows": [
+                {
+                  "team": "England",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 4,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Croatia",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 0,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Ghana",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Panama",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -4,
+                  "gf": 0,
+                  "adv": false
+                }
+              ]
+            }
+          ],
+          "leaderboard": [
+            {
+              "name": "מיסטר לונדון",
+              "pts": 70.0,
+              "rank": 1,
+              "bd": [
+                20.0,
+                13.0,
+                9.0,
+                7.0,
+                10.0,
+                4.0,
+                7.0
+              ]
+            },
+            {
+              "name": "דוד המלך",
+              "pts": 69.5,
+              "rank": 2,
+              "bd": [
+                27.0,
+                12.0,
+                7.0,
+                7.0,
+                9.5,
+                6.0,
+                1.0
+              ]
+            },
+            {
+              "name": "טלסי",
+              "pts": 67.0,
+              "rank": 3,
+              "bd": [
+                27.0,
+                12.0,
+                3.0,
+                5.0,
+                7.0,
+                6.0,
+                7.0
+              ]
+            },
+            {
+              "name": "ניק דה דיק",
+              "pts": 65.5,
+              "rank": 4,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                5.0,
+                9.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "שמיגידי",
+              "pts": 63.5,
+              "rank": 5,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                7.0,
+                9.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "שגיא גנות",
+              "pts": 61.5,
+              "rank": 6,
+              "bd": [
+                23.0,
+                12.0,
+                9.0,
+                0.0,
+                9.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "צלילוש",
+              "pts": 61.0,
+              "rank": 7,
+              "bd": [
+                23.0,
+                6.0,
+                9.0,
+                5.0,
+                9.5,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "Camo",
+              "pts": 61.0,
+              "rank": 8,
+              "bd": [
+                23.0,
+                6.0,
+                9.0,
+                7.0,
+                9.0,
+                2.5,
+                4.5
+              ]
+            },
+            {
+              "name": "החיים שממול",
+              "pts": 61.0,
+              "rank": 9,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                5.0,
+                5.5,
+                4.5,
+                7.0
+              ]
+            },
+            {
+              "name": "עיר של קיץ",
+              "pts": 60.5,
+              "rank": 10,
+              "bd": [
+                16.0,
+                11.0,
+                9.0,
+                7.0,
+                7.0,
+                6.0,
+                4.5
+              ]
+            },
+            {
+              "name": "הפועל חיפה",
+              "pts": 58.0,
+              "rank": 11,
+              "bd": [
+                16.0,
+                12.0,
+                7.0,
+                7.0,
+                7.0,
+                4.5,
+                4.5
+              ]
+            },
+            {
+              "name": "והימור חסר אחריות",
+              "pts": 57.0,
+              "rank": 12,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                1.0,
+                7.0,
+                2.0,
+                4.0
+              ]
+            },
+            {
+              "name": "קלוד",
+              "pts": 57.0,
+              "rank": 13,
+              "bd": [
+                16.0,
+                5.0,
+                9.0,
+                7.0,
+                9.0,
+                4.0,
+                7.0
+              ]
+            },
+            {
+              "name": "Guest",
+              "pts": 56.0,
+              "rank": 14,
+              "bd": [
+                16.0,
+                13.0,
+                9.0,
+                0.0,
+                9.0,
+                4.5,
+                4.5
+              ]
+            },
+            {
+              "name": "שמוגודו",
+              "pts": 56.0,
+              "rank": 15,
+              "bd": [
+                16.0,
+                11.0,
+                9.0,
+                0.0,
+                7.0,
+                6.0,
+                7.0
+              ]
+            },
+            {
+              "name": "ששל",
+              "pts": 55.5,
+              "rank": 16,
+              "bd": [
+                27.0,
+                11.0,
+                3.0,
+                0.0,
+                4.0,
+                6.0,
+                4.5
+              ]
+            },
+            {
+              "name": "השדים האדומים",
+              "pts": 55.5,
+              "rank": 17,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                7.0,
+                9.0,
+                4.5,
+                7.0
+              ]
+            },
+            {
+              "name": "ספיידרמן",
+              "pts": 55.0,
+              "rank": 18,
+              "bd": [
+                16.0,
+                13.0,
+                3.0,
+                7.0,
+                7.0,
+                4.5,
+                4.5
+              ]
+            },
+            {
+              "name": "יש לי חלום",
+              "pts": 54.0,
+              "rank": 19,
+              "bd": [
+                27.0,
+                5.0,
+                3.0,
+                0.0,
+                9.0,
+                6.0,
+                4.0
+              ]
+            },
+            {
+              "name": "SaxoGuzito",
+              "pts": 53.5,
+              "rank": 20,
+              "bd": [
+                16.0,
+                11.0,
+                9.0,
+                7.0,
+                7.0,
+                2.5,
+                1.0
+              ]
+            },
+            {
+              "name": "פוס",
+              "pts": 53.0,
+              "rank": 21,
+              "bd": [
+                16.0,
+                13.0,
+                9.0,
+                1.0,
+                7.0,
+                2.5,
+                4.5
+              ]
+            },
+            {
+              "name": "Sir_SaxoGuz",
+              "pts": 52.5,
+              "rank": 22,
+              "bd": [
+                20.0,
+                9.0,
+                3.0,
+                0.0,
+                10.0,
+                3.5,
+                7.0
+              ]
+            },
+            {
+              "name": "השלום מהתקווה",
+              "pts": 52.0,
+              "rank": 23,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                1.0,
+                5.0,
+                2.5,
+                4.5
+              ]
+            },
+            {
+              "name": "ליבליב",
+              "pts": 51.5,
+              "rank": 24,
+              "bd": [
+                8.0,
+                13.0,
+                7.0,
+                5.0,
+                7.0,
+                4.5,
+                7.0
+              ]
+            },
+            {
+              "name": "השקעה סולידית",
+              "pts": 51.0,
+              "rank": 25,
+              "bd": [
+                16.0,
+                12.0,
+                7.0,
+                0.0,
+                7.0,
+                5.5,
+                3.5
+              ]
+            },
+            {
+              "name": "צופיק",
+              "pts": 50.5,
+              "rank": 26,
+              "bd": [
+                8.0,
+                13.0,
+                9.0,
+                7.0,
+                4.0,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "מלך הפורטנייט",
+              "pts": 50.0,
+              "rank": 27,
+              "bd": [
+                16.0,
+                13.0,
+                3.0,
+                0.0,
+                7.0,
+                4.0,
+                7.0
+              ]
+            },
+            {
+              "name": "Loizou",
+              "pts": 50.0,
+              "rank": 28,
+              "bd": [
+                16.0,
+                11.0,
+                3.0,
+                0.0,
+                7.0,
+                6.0,
+                7.0
+              ]
+            },
+            {
+              "name": "אני לא רובוט",
+              "pts": 49.5,
+              "rank": 29,
+              "bd": [
+                23.0,
+                2.0,
+                3.0,
+                6.0,
+                7.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "מלאך המוות",
+              "pts": 49.5,
+              "rank": 30,
+              "bd": [
+                16.0,
+                6.0,
+                9.0,
+                6.0,
+                7.0,
+                4.5,
+                1.0
+              ]
+            },
+            {
+              "name": "יחסית רגשי ודי ריאלי",
+              "pts": 49.5,
+              "rank": 31,
+              "bd": [
+                20.0,
+                2.0,
+                7.0,
+                0.0,
+                9.0,
+                4.5,
+                7.0
+              ]
+            },
+            {
+              "name": "צ׳וזמיניי",
+              "pts": 49.0,
+              "rank": 32,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                1.0,
+                9.0,
+                4.0,
+                7.0
+              ]
+            },
+            {
+              "name": "דפי גרובר",
+              "pts": 48.5,
+              "rank": 33,
+              "bd": [
+                16.0,
+                12.0,
+                6.0,
+                1.0,
+                7.0,
+                4.5,
+                2.0
+              ]
+            },
+            {
+              "name": "שוקת",
+              "pts": 48.5,
+              "rank": 34,
+              "bd": [
+                8.0,
+                13.0,
+                9.0,
+                1.0,
+                9.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "הפורטוגזית",
+              "pts": 48.0,
+              "rank": 35,
+              "bd": [
+                10.0,
+                13.0,
+                3.0,
+                6.0,
+                7.0,
+                4.5,
+                4.5
+              ]
+            },
+            {
+              "name": "פול התמנון",
+              "pts": 48.0,
+              "rank": 36,
+              "bd": [
+                16.0,
+                9.0,
+                4.0,
+                7.0,
+                7.0,
+                4.0,
+                1.0
+              ]
+            },
+            {
+              "name": "בני סלע",
+              "pts": 47.5,
+              "rank": 37,
+              "bd": [
+                16.0,
+                11.0,
+                3.0,
+                1.0,
+                7.0,
+                2.5,
+                7.0
+              ]
+            },
+            {
+              "name": "טאטיניו",
+              "pts": 46.5,
+              "rank": 38,
+              "bd": [
+                16.0,
+                12.0,
+                3.0,
+                1.0,
+                7.0,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "Killmachine",
+              "pts": 46.0,
+              "rank": 39,
+              "bd": [
+                23.0,
+                5.0,
+                3.0,
+                0.0,
+                9.0,
+                1.5,
+                4.5
+              ]
+            },
+            {
+              "name": "Sodastream",
+              "pts": 45.5,
+              "rank": 40,
+              "bd": [
+                23.0,
+                2.0,
+                4.0,
+                1.0,
+                7.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "User_1",
+              "pts": 45.5,
+              "rank": 41,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                0.0,
+                9.0,
+                4.0,
+                4.5
+              ]
+            },
+            {
+              "name": "צ׳ופ",
+              "pts": 45.5,
+              "rank": 42,
+              "bd": [
+                16.0,
+                4.0,
+                9.0,
+                0.0,
+                7.0,
+                5.0,
+                4.5
+              ]
+            },
+            {
+              "name": "Slim Shady",
+              "pts": 43.0,
+              "rank": 43,
+              "bd": [
+                23.0,
+                2.0,
+                3.0,
+                0.0,
+                9.0,
+                1.5,
+                4.5
+              ]
+            },
+            {
+              "name": "בוא לא נתפזר",
+              "pts": 43.0,
+              "rank": 44,
+              "bd": [
+                23.0,
+                3.0,
+                3.0,
+                0.0,
+                7.0,
+                2.5,
+                4.5
+              ]
+            },
+            {
+              "name": "השחלה לברק",
+              "pts": 42.5,
+              "rank": 45,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                6.0,
+                5.5,
+                6.0,
+                7.0
+              ]
+            },
+            {
+              "name": "רוח השם גורדון",
+              "pts": 36.5,
+              "rank": 46,
+              "bd": [
+                8.0,
+                9.0,
+                3.0,
+                1.0,
+                9.0,
+                4.0,
+                2.5
+              ]
+            },
+            {
+              "name": "01101110",
+              "pts": 35.5,
+              "rank": 47,
+              "bd": [
+                16.0,
+                2.0,
+                3.0,
+                0.0,
+                7.0,
+                3.0,
+                4.5
+              ]
+            },
+            {
+              "name": "מוזלי",
+              "pts": 35.5,
+              "rank": 48,
+              "bd": [
+                8.0,
+                2.0,
+                3.0,
+                7.0,
+                5.0,
+                6.0,
+                4.5
+              ]
+            },
+            {
+              "name": "Lady Crab 🦀",
+              "pts": 34.0,
+              "rank": 49,
+              "bd": [
+                7.0,
+                6.0,
+                3.0,
+                7.0,
+                5.0,
+                4.5,
+                1.5
+              ]
+            },
+            {
+              "name": "The real slim shady",
+              "pts": 33.0,
+              "rank": 50,
+              "bd": [
+                16.0,
+                2.0,
+                3.0,
+                1.0,
+                7.0,
+                2.0,
+                2.0
+              ]
+            },
+            {
+              "name": "אבאשלו",
+              "pts": 33.0,
+              "rank": 51,
+              "bd": [
+                10.0,
+                9.0,
+                3.0,
+                0.0,
+                5.0,
+                4.0,
+                2.0
+              ]
+            },
+            {
+              "name": "Neymar",
+              "pts": 32.0,
+              "rank": 52,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                0.0,
+                7.0,
+                2.5,
+                4.5
               ]
             },
             {
@@ -5144,8 +8434,8 @@
               "home": "Spain",
               "away": "England",
               "winner": "England",
-              "hg": 0,
-              "ag": 1,
+              "hg": 1,
+              "ag": 2,
               "pen": false
             },
             "104": {
@@ -5988,7 +9278,7 @@
               "pts": 47.0,
               "rank": 28,
               "bd": [
-                10.0,
+                8.0,
                 13.0,
                 3.0,
                 6.0,
@@ -6008,7 +9298,7 @@
                 5.0,
                 5.5,
                 4.5,
-                4.0
+                3.0
               ]
             },
             {
@@ -6294,7 +9584,7 @@
             {
               "name": "אבאשלו",
               "pts": 33.0,
-              "rank": 50,
+              "rank": 51,
               "bd": [
                 10.0,
                 9.0,
@@ -6609,7 +9899,7 @@
               "home": "France",
               "away": "Spain",
               "winner": "France",
-              "hg": 1,
+              "hg": 2,
               "ag": 0,
               "pen": false
             },
@@ -7104,7 +10394,7 @@
             },
             {
               "name": "שמיגידי",
-              "pts": 67.0,
+              "pts": 67.5,
               "rank": 2,
               "bd": [
                 27.0,
@@ -7292,7 +10582,7 @@
                 22.0,
                 13.0,
                 3.0,
-                1.0,
+                0.0,
                 6.5,
                 2.0,
                 6.5
@@ -7407,7 +10697,7 @@
                 0.0,
                 4.0,
                 6.0,
-                4.5
+                4.0
               ]
             },
             {
@@ -7513,13 +10803,27 @@
               "pts": 48.0,
               "rank": 31,
               "bd": [
+                21.0,
+                13.0,
+                3.0,
+                1.0,
+                5.0,
+                2.5,
+                4.0
+              ]
+            },
+            {
+              "name": "שוקת",
+              "pts": 47.5,
+              "rank": 35,
+              "bd": [
                 8.0,
                 13.0,
                 9.0,
                 1.0,
                 8.5,
                 4.0,
-                4.5
+                4.0
               ]
             },
             {
@@ -7743,7 +11047,21 @@
                 7.0,
                 5.0,
                 6.0,
-                4.5
+                4.0
+              ]
+            },
+            {
+              "name": "Lady Crab 🦀",
+              "pts": 35.0,
+              "rank": 50,
+              "bd": [
+                7.0,
+                6.0,
+                3.0,
+                7.0,
+                5.0,
+                5.5,
+                1.5
               ]
             },
             {
@@ -7804,7 +11122,7 @@
             },
             {
               "name": "Neymar",
-              "pts": 31.5,
+              "pts": 31.0,
               "rank": 52,
               "bd": [
                 10.0,
@@ -7813,7 +11131,7 @@
                 0.0,
                 6.5,
                 2.5,
-                4.5
+                4.0
               ]
             },
             {
@@ -8107,7 +11425,7 @@
             },
             "103": {
               "rc": 5,
-              "home": "France",
+              "home": "Spain",
               "away": "Argentina",
               "winner": "Argentina",
               "hg": 0,
@@ -8116,7 +11434,7 @@
             },
             "104": {
               "rc": 6,
-              "home": "Spain",
+              "home": "France",
               "away": "England",
               "winner": "Spain",
               "hg": 0,
@@ -8929,6 +12247,34 @@
                 25.0,
                 9.0,
                 3.0,
+                7.0,
+                9.0,
+                4.5,
+                3.0
+              ]
+            },
+            {
+              "name": "פוס",
+              "pts": 51.5,
+              "rank": 19,
+              "bd": [
+                16.0,
+                13.0,
+                9.0,
+                1.0,
+                5.5,
+                2.5,
+                4.5
+              ]
+            },
+            {
+              "name": "יש לי חלום",
+              "pts": 51.0,
+              "rank": 20,
+              "bd": [
+                22.0,
+                5.0,
+                3.0,
                 0.0,
                 8.0,
                 4.0,
@@ -8968,12 +12314,12 @@
               "pts": 52.0,
               "rank": 29,
               "bd": [
-                18.0,
-                13.0,
-                3.0,
-                5.0,
+                16.0,
+                11.0,
+                9.0,
+                0.0,
                 5.5,
-                4.5,
+                6.0,
                 3.0
               ]
             },
@@ -9008,7 +12354,7 @@
             {
               "name": "צופיק",
               "pts": 50.5,
-              "rank": 32,
+              "rank": 24,
               "bd": [
                 8.0,
                 13.0,
@@ -9178,7 +12524,7 @@
               "pts": 39.0,
               "rank": 44,
               "bd": [
-                18.0,
+                24.0,
                 2.0,
                 4.0,
                 1.0,
@@ -9297,6 +12643,34 @@
                 6.0,
                 2.5,
                 4.0
+              ]
+            },
+            {
+              "name": "The real slim shady",
+              "pts": 31.5,
+              "rank": 51,
+              "bd": [
+                16.0,
+                2.0,
+                3.0,
+                1.0,
+                5.5,
+                2.0,
+                2.0
+              ]
+            },
+            {
+              "name": "Neymar",
+              "pts": 30.5,
+              "rank": 52,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                0.0,
+                5.5,
+                2.5,
+                4.5
               ]
             },
             {
@@ -10174,7 +13548,21 @@
               ]
             },
             {
-              "name": "טלסי",
+              "name": "Camo",
+              "pts": 65.0,
+              "rank": 8,
+              "bd": [
+                22.0,
+                6.0,
+                9.0,
+                7.0,
+                11.5,
+                2.5,
+                7.0
+              ]
+            },
+            {
+              "name": "ספיידרמן",
               "pts": 63.0,
               "rank": 8,
               "bd": [
@@ -10360,9 +13748,9 @@
               "pts": 53.5,
               "rank": 21,
               "bd": [
-                8.0,
+                27.0,
                 13.0,
-                9.0,
+                3.0,
                 1.0,
                 12.0,
                 4.0,
@@ -10479,6 +13867,20 @@
                 12.0,
                 4.0,
                 4.0
+              ]
+            },
+            {
+              "name": "Killmachine",
+              "pts": 50.0,
+              "rank": 36,
+              "bd": [
+                22.0,
+                5.0,
+                3.0,
+                0.0,
+                11.5,
+                1.5,
+                7.0
               ]
             },
             {
@@ -10692,6 +14094,20 @@
               ]
             },
             {
+              "name": "Sir_SaxoGuz",
+              "pts": 42.5,
+              "rank": 45,
+              "bd": [
+                17.0,
+                9.0,
+                3.0,
+                0.0,
+                7.0,
+                3.5,
+                3.0
+              ]
+            },
+            {
               "name": "רוח השם גורדון",
               "pts": 39.5,
               "rank": 45,
@@ -10702,6 +14118,20 @@
                 1.0,
                 12.0,
                 4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "The real slim shady",
+              "pts": 39.0,
+              "rank": 47,
+              "bd": [
+                22.0,
+                2.0,
+                3.0,
+                1.0,
+                6.5,
+                2.0,
                 2.5
               ]
             },
@@ -11742,7 +15172,7 @@
                 7.0,
                 6.5,
                 2.5,
-                1.0
+                0.5
               ]
             },
             {
@@ -11764,8 +15194,10 @@
               "pts": 62.0,
               "rank": 9,
               "bd": [
-                25.0,
+                23.0,
                 13.0,
+                3.0,
+                5.0,
                 9.0,
                 1.0,
                 6.5,
@@ -11848,8 +15280,8 @@
               "pts": 58.0,
               "rank": 15,
               "bd": [
-                25.0,
-                6.0,
+                16.0,
+                13.0,
                 9.0,
                 6.0,
                 6.5,
@@ -12198,7 +15630,7 @@
               "pts": 44.5,
               "rank": 40,
               "bd": [
-                18.0,
+                21.0,
                 2.0,
                 3.0,
                 6.0,
@@ -12232,7 +15664,7 @@
                 1.0,
                 6.5,
                 2.0,
-                2.0
+                2.5
               ]
             },
             {
@@ -12240,8 +15672,22 @@
               "pts": 41.5,
               "rank": 43,
               "bd": [
-                18.0,
-                5.0,
+                16.0,
+                2.0,
+                7.0,
+                0.0,
+                9.0,
+                4.5,
+                3.5
+              ]
+            },
+            {
+              "name": "בוא לא נתפזר",
+              "pts": 42.0,
+              "rank": 45,
+              "bd": [
+                21.0,
+                3.0,
                 3.0,
                 0.0,
                 9.0,
@@ -12660,9 +16106,9 @@
               "home": "England",
               "away": "Argentina",
               "winner": "England",
-              "hg": 1,
+              "hg": 0,
               "ag": 0,
-              "pen": false
+              "pen": true
             },
             "103": {
               "rc": 5,
@@ -13146,7 +16592,7 @@
             },
             {
               "name": "מיסטר לונדון",
-              "pts": 69.0,
+              "pts": 67.5,
               "rank": 2,
               "bd": [
                 25.0,
@@ -13264,6 +16710,7 @@
                 22.0,
                 11.0,
                 9.0,
+                0.0,
                 7.0,
                 8.5,
                 2.5,
@@ -13360,7 +16807,7 @@
               "rank": 17,
               "bd": [
                 22.0,
-                9.0,
+                11.0,
                 3.0,
                 7.0,
                 9.5,
@@ -13482,8 +16929,8 @@
             },
             {
               "name": "מלך הפורטנייט",
-              "pts": 53.5,
-              "rank": 26,
+              "pts": 52.0,
+              "rank": 28,
               "bd": [
                 22.0,
                 13.0,
@@ -13597,13 +17044,13 @@
               "pts": 50.5,
               "rank": 34,
               "bd": [
-                8.0,
+                10.0,
                 13.0,
-                9.0,
-                7.0,
-                4.0,
+                3.0,
                 6.0,
-                3.5
+                7.0,
+                4.5,
+                6.0
               ]
             },
             {
@@ -13668,10 +17115,8 @@
               "rank": 39,
               "bd": [
                 18.0,
-                11.0,
+                2.0,
                 3.0,
-                0.0,
-                4.0,
                 6.0,
                 6.0
               ]
@@ -13694,6 +17139,20 @@
               "name": "יש לי חלום",
               "pts": 46.0,
               "rank": 41,
+              "bd": [
+                22.0,
+                2.0,
+                3.0,
+                0.0,
+                7.0,
+                3.0,
+                6.0
+              ]
+            },
+            {
+              "name": "Killmachine",
+              "pts": 42.5,
+              "rank": 42,
               "bd": [
                 18.0,
                 5.0,
@@ -13723,7 +17182,7 @@
               "pts": 44.5,
               "rank": 43,
               "bd": [
-                22.0,
+                18.0,
                 2.0,
                 3.0,
                 0.0,
@@ -14144,8 +17603,8 @@
               "away": "Argentina",
               "winner": "Argentina",
               "hg": 0,
-              "ag": 1,
-              "pen": false
+              "ag": 0,
+              "pen": true
             },
             "103": {
               "rc": 5,
@@ -14684,6 +18143,20 @@
               ]
             },
             {
+              "name": "טלסי",
+              "pts": 64.0,
+              "rank": 7,
+              "bd": [
+                27.0,
+                12.0,
+                3.0,
+                5.0,
+                7.5,
+                6.0,
+                3.5
+              ]
+            },
+            {
               "name": "ספיידרמן",
               "pts": 65.5,
               "rank": 6,
@@ -14759,7 +18232,7 @@
               "rank": 11,
               "bd": [
                 22.0,
-                11.0,
+                5.0,
                 9.0,
                 0.0,
                 10.5,
@@ -15120,7 +18593,7 @@
             {
               "name": "צופיק",
               "pts": 50.5,
-              "rank": 37,
+              "rank": 34,
               "bd": [
                 8.0,
                 13.0,
@@ -15164,9 +18637,9 @@
               "pts": 46.0,
               "rank": 40,
               "bd": [
-                22.0,
+                17.0,
                 2.0,
-                3.0,
+                7.0,
                 0.0,
                 10.5,
                 3.0,
@@ -15177,6 +18650,20 @@
               "name": "בוא לא נתפזר",
               "pts": 45.5,
               "rank": 41,
+              "bd": [
+                22.0,
+                2.0,
+                3.0,
+                0.0,
+                7.5,
+                3.0,
+                6.5
+              ]
+            },
+            {
+              "name": "בוא לא נתפזר",
+              "pts": 43.5,
+              "rank": 44,
               "bd": [
                 21.0,
                 3.0,
@@ -15212,7 +18699,7 @@
                 1.0,
                 10.5,
                 2.0,
-                2.5
+                3.0
               ]
             },
             {
@@ -15357,6 +18844,1489 @@
             }
           ],
           "sole": true
+        },
+        "France": {
+          "bracket": {
+            "73": {
+              "rc": 1,
+              "home": "South Africa",
+              "away": "Canada",
+              "winner": "Canada",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "74": {
+              "rc": 1,
+              "home": "Germany",
+              "away": "Paraguay",
+              "winner": "Paraguay",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "75": {
+              "rc": 1,
+              "home": "Netherlands",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "76": {
+              "rc": 1,
+              "home": "Brazil",
+              "away": "Japan",
+              "winner": "Brazil",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "77": {
+              "rc": 1,
+              "home": "France",
+              "away": "Sweden",
+              "winner": "France",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "78": {
+              "rc": 1,
+              "home": "Ivory Coast",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "79": {
+              "rc": 1,
+              "home": "Mexico",
+              "away": "Ecuador",
+              "winner": "Mexico",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "80": {
+              "rc": 1,
+              "home": "England",
+              "away": "DR Congo",
+              "winner": "England",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "81": {
+              "rc": 1,
+              "home": "United States",
+              "away": "Bosnia and Herzegovina",
+              "winner": "United States",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "82": {
+              "rc": 1,
+              "home": "Belgium",
+              "away": "Senegal",
+              "winner": "Belgium",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "83": {
+              "rc": 1,
+              "home": "Portugal",
+              "away": "Croatia",
+              "winner": "Portugal",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "84": {
+              "rc": 1,
+              "home": "Spain",
+              "away": "Austria",
+              "winner": "Spain",
+              "hg": 3,
+              "ag": 0,
+              "pen": false
+            },
+            "85": {
+              "rc": 1,
+              "home": "Switzerland",
+              "away": "Algeria",
+              "winner": "Switzerland",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "86": {
+              "rc": 1,
+              "home": "Argentina",
+              "away": "Cape Verde",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "87": {
+              "rc": 1,
+              "home": "Colombia",
+              "away": "Ghana",
+              "winner": "Colombia",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            },
+            "88": {
+              "rc": 1,
+              "home": "Australia",
+              "away": "Egypt",
+              "winner": "Egypt",
+              "hg": 1,
+              "ag": 1,
+              "pen": true
+            },
+            "89": {
+              "rc": 2,
+              "home": "Paraguay",
+              "away": "France",
+              "winner": "France",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "90": {
+              "rc": 2,
+              "home": "Canada",
+              "away": "Morocco",
+              "winner": "Morocco",
+              "hg": 0,
+              "ag": 3,
+              "pen": false
+            },
+            "91": {
+              "rc": 2,
+              "home": "Brazil",
+              "away": "Norway",
+              "winner": "Norway",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "92": {
+              "rc": 2,
+              "home": "Mexico",
+              "away": "England",
+              "winner": "England",
+              "hg": 2,
+              "ag": 3,
+              "pen": false
+            },
+            "93": {
+              "rc": 2,
+              "home": "Portugal",
+              "away": "Spain",
+              "winner": "Spain",
+              "hg": 0,
+              "ag": 1,
+              "pen": false
+            },
+            "94": {
+              "rc": 2,
+              "home": "United States",
+              "away": "Belgium",
+              "winner": "Belgium",
+              "hg": 1,
+              "ag": 4,
+              "pen": false
+            },
+            "95": {
+              "rc": 2,
+              "home": "Argentina",
+              "away": "Egypt",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 2,
+              "pen": false
+            },
+            "96": {
+              "rc": 2,
+              "home": "Switzerland",
+              "away": "Colombia",
+              "winner": "Switzerland",
+              "hg": 0,
+              "ag": 0,
+              "pen": true
+            },
+            "97": {
+              "rc": 3,
+              "home": "France",
+              "away": "Morocco",
+              "winner": "France",
+              "hg": 2,
+              "ag": 0,
+              "pen": false
+            },
+            "98": {
+              "rc": 3,
+              "home": "Spain",
+              "away": "Belgium",
+              "winner": "Spain",
+              "hg": 2,
+              "ag": 1,
+              "pen": false
+            },
+            "99": {
+              "rc": 3,
+              "home": "Norway",
+              "away": "England",
+              "winner": "England",
+              "hg": 1,
+              "ag": 2,
+              "pen": false
+            },
+            "100": {
+              "rc": 3,
+              "home": "Argentina",
+              "away": "Switzerland",
+              "winner": "Argentina",
+              "hg": 3,
+              "ag": 1,
+              "pen": false
+            },
+            "101": {
+              "rc": 4,
+              "home": "France",
+              "away": "Spain",
+              "winner": "France",
+              "hg": 2,
+              "ag": 2,
+              "pen": true
+            },
+            "102": {
+              "rc": 4,
+              "home": "England",
+              "away": "Argentina",
+              "winner": "Argentina",
+              "hg": 1,
+              "ag": 4,
+              "pen": false
+            },
+            "103": {
+              "rc": 5,
+              "home": "Spain",
+              "away": "England",
+              "winner": "Spain",
+              "hg": 8,
+              "ag": 0,
+              "pen": false
+            },
+            "104": {
+              "rc": 6,
+              "home": "France",
+              "away": "Argentina",
+              "winner": "France",
+              "hg": 1,
+              "ag": 0,
+              "pen": false
+            }
+          },
+          "groups": [
+            {
+              "g": "A",
+              "rows": [
+                {
+                  "team": "Mexico",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 6,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "South Africa",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": -1,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "South Korea",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": -1,
+                  "gf": 2,
+                  "adv": false
+                },
+                {
+                  "team": "Czech Republic",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -4,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "B",
+              "rows": [
+                {
+                  "team": "Switzerland",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 4,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Canada",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 5,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Bosnia and Herzegovina",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -1,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Qatar",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -8,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "C",
+              "rows": [
+                {
+                  "team": "Brazil",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 6,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Morocco",
+                  "pos": 2,
+                  "pts": 7,
+                  "gd": 3,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Scotland",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": -3,
+                  "gf": 1,
+                  "adv": false
+                },
+                {
+                  "team": "Haiti",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -6,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "D",
+              "rows": [
+                {
+                  "team": "United States",
+                  "pos": 1,
+                  "pts": 6,
+                  "gd": 4,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Australia",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Paraguay",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -2,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Turkey",
+                  "pos": 4,
+                  "pts": 3,
+                  "gd": -2,
+                  "gf": 3,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "E",
+              "rows": [
+                {
+                  "team": "Germany",
+                  "pos": 1,
+                  "pts": 6,
+                  "gd": 6,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Ivory Coast",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 2,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Ecuador",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Curaçao",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -8,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "F",
+              "rows": [
+                {
+                  "team": "Netherlands",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 6,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Japan",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 4,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Sweden",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 7,
+                  "adv": true
+                },
+                {
+                  "team": "Tunisia",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -10,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "G",
+              "rows": [
+                {
+                  "team": "Belgium",
+                  "pos": 1,
+                  "pts": 5,
+                  "gd": 4,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Egypt",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 2,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Iran",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": 0,
+                  "gf": 3,
+                  "adv": false
+                },
+                {
+                  "team": "New Zealand",
+                  "pos": 4,
+                  "pts": 1,
+                  "gd": -6,
+                  "gf": 4,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "H",
+              "rows": [
+                {
+                  "team": "Spain",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 5,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Cape Verde",
+                  "pos": 2,
+                  "pts": 3,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Uruguay",
+                  "pos": 3,
+                  "pts": 2,
+                  "gd": -1,
+                  "gf": 3,
+                  "adv": false
+                },
+                {
+                  "team": "Saudi Arabia",
+                  "pos": 4,
+                  "pts": 2,
+                  "gd": -4,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "I",
+              "rows": [
+                {
+                  "team": "France",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 8,
+                  "gf": 10,
+                  "adv": true
+                },
+                {
+                  "team": "Norway",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 1,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Senegal",
+                  "pos": 3,
+                  "pts": 3,
+                  "gd": 2,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Iraq",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -11,
+                  "gf": 1,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "J",
+              "rows": [
+                {
+                  "team": "Argentina",
+                  "pos": 1,
+                  "pts": 9,
+                  "gd": 7,
+                  "gf": 8,
+                  "adv": true
+                },
+                {
+                  "team": "Austria",
+                  "pos": 2,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Algeria",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": -2,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Jordan",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -5,
+                  "gf": 3,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "K",
+              "rows": [
+                {
+                  "team": "Colombia",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 3,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Portugal",
+                  "pos": 2,
+                  "pts": 5,
+                  "gd": 5,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "DR Congo",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 1,
+                  "gf": 4,
+                  "adv": true
+                },
+                {
+                  "team": "Uzbekistan",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -9,
+                  "gf": 2,
+                  "adv": false
+                }
+              ]
+            },
+            {
+              "g": "L",
+              "rows": [
+                {
+                  "team": "England",
+                  "pos": 1,
+                  "pts": 7,
+                  "gd": 4,
+                  "gf": 6,
+                  "adv": true
+                },
+                {
+                  "team": "Croatia",
+                  "pos": 2,
+                  "pts": 6,
+                  "gd": 0,
+                  "gf": 5,
+                  "adv": true
+                },
+                {
+                  "team": "Ghana",
+                  "pos": 3,
+                  "pts": 4,
+                  "gd": 0,
+                  "gf": 2,
+                  "adv": true
+                },
+                {
+                  "team": "Panama",
+                  "pos": 4,
+                  "pts": 0,
+                  "gd": -4,
+                  "gf": 0,
+                  "adv": false
+                }
+              ]
+            }
+          ],
+          "leaderboard": [
+            {
+              "name": "עיר של קיץ",
+              "pts": 69.5,
+              "rank": 1,
+              "bd": [
+                20.0,
+                11.0,
+                9.0,
+                7.0,
+                10.5,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "שמיגידי",
+              "pts": 69.5,
+              "rank": 2,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                7.0,
+                9.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "צלילוש",
+              "pts": 67.5,
+              "rank": 3,
+              "bd": [
+                27.0,
+                6.0,
+                9.0,
+                5.0,
+                10.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "שגיא גנות",
+              "pts": 67.5,
+              "rank": 4,
+              "bd": [
+                27.0,
+                12.0,
+                9.0,
+                0.0,
+                9.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "הפועל חיפה",
+              "pts": 67.0,
+              "rank": 5,
+              "bd": [
+                20.0,
+                12.0,
+                7.0,
+                7.0,
+                10.5,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "Camo",
+              "pts": 67.0,
+              "rank": 6,
+              "bd": [
+                27.0,
+                6.0,
+                9.0,
+                7.0,
+                9.5,
+                2.5,
+                6.0
+              ]
+            },
+            {
+              "name": "דוד המלך",
+              "pts": 66.5,
+              "rank": 7,
+              "bd": [
+                23.0,
+                12.0,
+                7.0,
+                7.0,
+                10.5,
+                6.0,
+                1.0
+              ]
+            },
+            {
+              "name": "ספיידרמן",
+              "pts": 64.0,
+              "rank": 8,
+              "bd": [
+                20.0,
+                13.0,
+                3.0,
+                7.0,
+                10.5,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "ניק דה דיק",
+              "pts": 63.5,
+              "rank": 9,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                5.0,
+                9.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "טלסי",
+              "pts": 63.0,
+              "rank": 10,
+              "bd": [
+                23.0,
+                12.0,
+                3.0,
+                5.0,
+                10.5,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "Guest",
+              "pts": 62.0,
+              "rank": 11,
+              "bd": [
+                20.0,
+                13.0,
+                9.0,
+                0.0,
+                9.5,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "פוס",
+              "pts": 62.0,
+              "rank": 12,
+              "bd": [
+                20.0,
+                13.0,
+                9.0,
+                1.0,
+                10.5,
+                2.5,
+                6.0
+              ]
+            },
+            {
+              "name": "החיים שממול",
+              "pts": 61.5,
+              "rank": 13,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                5.0,
+                5.5,
+                4.5,
+                3.5
+              ]
+            },
+            {
+              "name": "SaxoGuzito",
+              "pts": 61.0,
+              "rank": 14,
+              "bd": [
+                20.0,
+                11.0,
+                9.0,
+                7.0,
+                10.5,
+                2.5,
+                1.0
+              ]
+            },
+            {
+              "name": "שמוגודו",
+              "pts": 60.0,
+              "rank": 15,
+              "bd": [
+                20.0,
+                11.0,
+                9.0,
+                0.0,
+                10.5,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "מיסטר לונדון",
+              "pts": 59.5,
+              "rank": 16,
+              "bd": [
+                16.0,
+                13.0,
+                9.0,
+                7.0,
+                7.0,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "השקעה סולידית",
+              "pts": 58.5,
+              "rank": 17,
+              "bd": [
+                20.0,
+                12.0,
+                7.0,
+                0.0,
+                10.5,
+                5.5,
+                3.5
+              ]
+            },
+            {
+              "name": "אני לא רובוט",
+              "pts": 58.5,
+              "rank": 18,
+              "bd": [
+                27.0,
+                2.0,
+                3.0,
+                6.0,
+                10.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "קלוד",
+              "pts": 58.0,
+              "rank": 19,
+              "bd": [
+                20.0,
+                5.0,
+                9.0,
+                7.0,
+                9.5,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "השלום מהתקווה",
+              "pts": 57.5,
+              "rank": 20,
+              "bd": [
+                27.0,
+                13.0,
+                3.0,
+                1.0,
+                5.0,
+                2.5,
+                6.0
+              ]
+            },
+            {
+              "name": "והימור חסר אחריות",
+              "pts": 57.0,
+              "rank": 21,
+              "bd": [
+                23.0,
+                13.0,
+                3.0,
+                1.0,
+                10.5,
+                2.0,
+                4.5
+              ]
+            },
+            {
+              "name": "מלאך המוות",
+              "pts": 57.0,
+              "rank": 22,
+              "bd": [
+                20.0,
+                6.0,
+                9.0,
+                6.0,
+                10.5,
+                4.5,
+                1.0
+              ]
+            },
+            {
+              "name": "השדים האדומים",
+              "pts": 56.5,
+              "rank": 23,
+              "bd": [
+                20.0,
+                9.0,
+                3.0,
+                7.0,
+                9.5,
+                4.5,
+                3.5
+              ]
+            },
+            {
+              "name": "דפי גרובר",
+              "pts": 56.0,
+              "rank": 24,
+              "bd": [
+                20.0,
+                12.0,
+                6.0,
+                1.0,
+                10.5,
+                4.5,
+                2.0
+              ]
+            },
+            {
+              "name": "פול התמנון",
+              "pts": 55.5,
+              "rank": 25,
+              "bd": [
+                20.0,
+                9.0,
+                4.0,
+                7.0,
+                10.5,
+                4.0,
+                1.0
+              ]
+            },
+            {
+              "name": "צ׳ופ",
+              "pts": 54.5,
+              "rank": 26,
+              "bd": [
+                20.0,
+                4.0,
+                9.0,
+                0.0,
+                10.5,
+                5.0,
+                6.0
+              ]
+            },
+            {
+              "name": "Sodastream",
+              "pts": 54.5,
+              "rank": 27,
+              "bd": [
+                27.0,
+                2.0,
+                4.0,
+                1.0,
+                10.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "טאטיניו",
+              "pts": 54.0,
+              "rank": 28,
+              "bd": [
+                20.0,
+                12.0,
+                3.0,
+                1.0,
+                10.5,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "Loizou",
+              "pts": 54.0,
+              "rank": 29,
+              "bd": [
+                20.0,
+                11.0,
+                3.0,
+                0.0,
+                10.5,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "מלך הפורטנייט",
+              "pts": 54.0,
+              "rank": 30,
+              "bd": [
+                20.0,
+                13.0,
+                3.0,
+                0.0,
+                10.5,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "הפורטוגזית",
+              "pts": 53.0,
+              "rank": 31,
+              "bd": [
+                10.0,
+                13.0,
+                3.0,
+                6.0,
+                10.5,
+                4.5,
+                6.0
+              ]
+            },
+            {
+              "name": "ששל",
+              "pts": 53.0,
+              "rank": 32,
+              "bd": [
+                23.0,
+                11.0,
+                3.0,
+                0.0,
+                4.0,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "בוא לא נתפזר",
+              "pts": 52.0,
+              "rank": 33,
+              "bd": [
+                27.0,
+                3.0,
+                3.0,
+                0.0,
+                10.5,
+                2.5,
+                6.0
+              ]
+            },
+            {
+              "name": "Killmachine",
+              "pts": 52.0,
+              "rank": 34,
+              "bd": [
+                27.0,
+                5.0,
+                3.0,
+                0.0,
+                9.5,
+                1.5,
+                6.0
+              ]
+            },
+            {
+              "name": "בני סלע",
+              "pts": 51.5,
+              "rank": 35,
+              "bd": [
+                20.0,
+                11.0,
+                3.0,
+                1.0,
+                10.5,
+                2.5,
+                3.5
+              ]
+            },
+            {
+              "name": "ליבליב",
+              "pts": 51.5,
+              "rank": 36,
+              "bd": [
+                8.0,
+                13.0,
+                7.0,
+                5.0,
+                10.5,
+                4.5,
+                3.5
+              ]
+            },
+            {
+              "name": "User_1",
+              "pts": 51.5,
+              "rank": 37,
+              "bd": [
+                20.0,
+                9.0,
+                3.0,
+                0.0,
+                9.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "יש לי חלום",
+              "pts": 51.0,
+              "rank": 38,
+              "bd": [
+                23.0,
+                5.0,
+                3.0,
+                0.0,
+                9.5,
+                6.0,
+                4.5
+              ]
+            },
+            {
+              "name": "צופיק",
+              "pts": 50.5,
+              "rank": 39,
+              "bd": [
+                8.0,
+                13.0,
+                9.0,
+                7.0,
+                4.0,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "שוקת",
+              "pts": 50.5,
+              "rank": 40,
+              "bd": [
+                8.0,
+                13.0,
+                9.0,
+                1.0,
+                9.5,
+                4.0,
+                6.0
+              ]
+            },
+            {
+              "name": "צ׳וזמיניי",
+              "pts": 50.0,
+              "rank": 41,
+              "bd": [
+                20.0,
+                9.0,
+                3.0,
+                1.0,
+                9.5,
+                4.0,
+                3.5
+              ]
+            },
+            {
+              "name": "Slim Shady",
+              "pts": 49.0,
+              "rank": 42,
+              "bd": [
+                27.0,
+                2.0,
+                3.0,
+                0.0,
+                9.5,
+                1.5,
+                6.0
+              ]
+            },
+            {
+              "name": "01101110",
+              "pts": 44.5,
+              "rank": 43,
+              "bd": [
+                20.0,
+                2.0,
+                3.0,
+                0.0,
+                10.5,
+                3.0,
+                6.0
+              ]
+            },
+            {
+              "name": "יחסית רגשי ודי ריאלי",
+              "pts": 42.5,
+              "rank": 44,
+              "bd": [
+                16.0,
+                2.0,
+                7.0,
+                0.0,
+                9.5,
+                4.5,
+                3.5
+              ]
+            },
+            {
+              "name": "Sir_SaxoGuz",
+              "pts": 42.0,
+              "rank": 45,
+              "bd": [
+                16.0,
+                9.0,
+                3.0,
+                0.0,
+                7.0,
+                3.5,
+                3.5
+              ]
+            },
+            {
+              "name": "The real slim shady",
+              "pts": 40.5,
+              "rank": 46,
+              "bd": [
+                20.0,
+                2.0,
+                3.0,
+                1.0,
+                10.5,
+                2.0,
+                2.0
+              ]
+            },
+            {
+              "name": "השחלה לברק",
+              "pts": 39.0,
+              "rank": 47,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                6.0,
+                5.5,
+                6.0,
+                3.5
+              ]
+            },
+            {
+              "name": "Lady Crab 🦀",
+              "pts": 38.5,
+              "rank": 48,
+              "bd": [
+                7.0,
+                6.0,
+                3.0,
+                7.0,
+                5.0,
+                9.0,
+                1.5
+              ]
+            },
+            {
+              "name": "רוח השם גורדון",
+              "pts": 37.0,
+              "rank": 49,
+              "bd": [
+                8.0,
+                9.0,
+                3.0,
+                1.0,
+                9.5,
+                4.0,
+                2.5
+              ]
+            },
+            {
+              "name": "מוזלי",
+              "pts": 37.0,
+              "rank": 50,
+              "bd": [
+                8.0,
+                2.0,
+                3.0,
+                7.0,
+                5.0,
+                6.0,
+                6.0
+              ]
+            },
+            {
+              "name": "Neymar",
+              "pts": 37.0,
+              "rank": 51,
+              "bd": [
+                10.0,
+                5.0,
+                3.0,
+                0.0,
+                10.5,
+                2.5,
+                6.0
+              ]
+            },
+            {
+              "name": "אבאשלו",
+              "pts": 33.0,
+              "rank": 52,
+              "bd": [
+                10.0,
+                9.0,
+                3.0,
+                0.0,
+                5.0,
+                4.0,
+                2.0
+              ]
+            },
+            {
+              "name": "עמרי קולברג",
+              "pts": 26.0,
+              "rank": 53,
+              "bd": [
+                7.0,
+                1.0,
+                3.0,
+                5.0,
+                5.5,
+                4.0,
+                0.5
+              ]
+            }
+          ],
+          "sole": false
         }
       }
     },
@@ -15678,7 +20648,7 @@
               "home": "France",
               "away": "Spain",
               "winner": "France",
-              "hg": 2,
+              "hg": 1,
               "ag": 0,
               "pen": false
             },
@@ -16937,7 +21907,7 @@
               "away": "Japan",
               "winner": "Brazil",
               "hg": 2,
-              "ag": 1,
+              "ag": 0,
               "pen": false
             },
             "77": {
@@ -19608,8 +24578,8 @@
               "pts": 47.5,
               "rank": 34,
               "bd": [
-                27.0,
-                2.0,
+                16.0,
+                11.0,
                 3.0,
                 0.0,
                 9.0,
@@ -19835,7 +24805,7 @@
                 17.0,
                 2.0,
                 3.0,
-                1.0,
+                0.0,
                 6.5,
                 2.0,
                 2.0
@@ -19860,10 +24830,10 @@
               "pts": 32.0,
               "rank": 52,
               "bd": [
-                10.0,
-                5.0,
+                16.0,
+                2.0,
                 3.0,
-                0.0,
+                1.0,
                 6.5,
                 2.5,
                 5.0
@@ -22391,7 +27361,7 @@
     ],
     "65": [
       1,
-      1
+      0
     ],
     "66": [
       1,
