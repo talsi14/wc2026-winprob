@@ -1744,6 +1744,152 @@ def _load_flag_imgs() -> dict:
 _FLAG_IMG = _load_flag_imgs()
 
 
+def _flag_img(team: str, cls: str = "cflag") -> str:
+    """Crisp base64 PNG flag <img> when cached, else the emoji fallback span."""
+    u = _FLAG_IMG.get(team)
+    if u:
+        return f'<img class="{cls}" src="{u}" alt="" loading="lazy">'
+    return f'<span class="{cls} emo">{_flag(team)}</span>'
+
+
+def top10_html(data: dict) -> str:
+    """Top-10 entries by expected winnings, each with the flag of their tier-A
+    pick and bar-viz for EV and P(1st). Rendered on the main page under the
+    odds pyramid."""
+    ents = sorted(data.get("entries") or [], key=lambda e: -e["exp_winnings"])[:10]
+    if not ents:
+        return ""
+    team_he = _team_he_map()
+    max_ev = max((e["exp_winnings"] for e in ents), default=0) or 1.0
+    medal = {1: "🥇", 2: "🥈", 3: "🥉"}
+    rows = []
+    for i, e in enumerate(ents, 1):
+        pos = medal.get(i, f'<span class="t10-num">{i}</span>')
+        ta = e["picks"]["tierA"]
+        p1 = e["P_first"] * 100
+        ev_w = max(e["exp_winnings"], 0) / max_ev * 100
+        rows.append(
+            '<tr>'
+            f'<td class="t10-pos">{pos}</td>'
+            f'<td class="t10-nm" title="{html_mod.escape(e["name"], quote=True)}">'
+            f'{html_mod.escape(e["name"])}</td>'
+            f'<td class="t10-pick" title="{html_mod.escape(team_he.get(ta, ta), quote=True)}">'
+            f'{_flag_img(ta, "t10-fl")}</td>'
+            f'<td class="t10-ev"><span class="t10-bar ev" style="width:{ev_w:.1f}%"></span>'
+            f'<span class="t10-val">₪{e["exp_winnings"]:,.0f}</span></td>'
+            f'<td class="t10-p1"><span class="t10-bar p1" style="width:{min(p1,100):.1f}%"></span>'
+            f'<span class="t10-val">{p1:.1f}%</span></td>'
+            f'<td class="t10-p2">{e["P_top2"]*100:.1f}%</td>'
+            f'<td class="t10-p3">{e["P_top3"]*100:.1f}%</td>'
+            '</tr>')
+    head = ('<tr>'
+            '<th data-i18n="t10.pos">#</th>'
+            '<th class="t10-nm" data-i18n="t10.entry">טופס</th>'
+            '<th data-i18n="t10.tierA">דרג א׳</th>'
+            '<th data-i18n="t10.ev">תוחלת ₪</th>'
+            '<th data-i18n="t10.p1">מקום 1</th>'
+            '<th data-i18n="t10.p2">1–2</th>'
+            '<th data-i18n="t10.p3">1–3</th></tr>')
+    return (
+        '\n  <section class="t10wrap">\n'
+        '    <h2 class="bigsec" data-i18n="t10.title">10 המובילים בתוחלת</h2>\n'
+        '    <p class="sub" data-i18n="t10.sub">עשרת הטפסים המובילים לפי תוחלת הזכייה (₪), '
+        'עם דגל נבחרת דרג א׳ שנבחרה וההסתברויות לסיים במקומות המובילים.</p>\n'
+        f'    <div class="t10box"><table class="t10tbl"><thead>{head}</thead>'
+        f'<tbody>{"".join(rows)}</tbody></table></div>\n  </section>\n')
+
+
+def champ_facets_html(data: dict) -> str:
+    """Four facets — one per still-possible champion — showing the team flag,
+    its title probability, and the most-probable pool podium conditional on that
+    team winning the cup (from run_live_update's champion_podium)."""
+    pod = data.get("champion_podium") or []
+    if not pod:
+        return ""
+    team_he = _team_he_map()
+    medal = {1: "🥇", 2: "🥈", 3: "🥉"}
+    cards = []
+    for c in pod:
+        team = c["team"]
+        prows = "".join(
+            '<div class="cf-prow">'
+            f'<span class="cf-med">{medal.get(p["pos"], "")}</span>'
+            f'<span class="cf-ent" title="{html_mod.escape(p["name"], quote=True)}">'
+            f'{html_mod.escape(p["name"])}</span>'
+            f'<span class="cf-pct">{p["p"]*100:.0f}%</span>'
+            '</div>' for p in c["podium"])
+        cards.append(
+            '<div class="cf-card">'
+            f'<div class="cf-hd">{_flag_img(team, "cf-fl")}'
+            '<div class="cf-hdt">'
+            f'<span class="cf-tm">{_te(team, team_he)}</span>'
+            f'<span class="cf-tt">{c["p_title"]*100:.0f}% '
+            f'<span data-i18n="cf.tocup">לגביע</span></span></div></div>'
+            '<div class="cf-plabel" data-i18n="cf.podium">הפודיום הסביר בתרחיש זה</div>'
+            f'<div class="cf-body">{prows}</div>'
+            '</div>')
+    return (
+        '\n  <section class="cfwrap">\n'
+        '    <h2 class="bigsec real" data-i18n="cf.title">מי יכול לזכות בגביע?</h2>\n'
+        '    <p class="sub" data-i18n="cf.sub">ארבע הנבחרות שנותרו במרוץ לגביע. לצד כל אחת — '
+        'הפודיום הסביר ביותר של הטפסים אם אותה נבחרת תזכה באליפות (ההסתברות מותנית באותו אלוף).</p>\n'
+        f'    <div class="cfgrid">{"".join(cards)}</div>\n  </section>\n')
+
+
+T10CF_CSS = """
+  /* ---- Top-10 by EV + champion facets (under the odds pyramid) ---- */
+  .t10wrap{margin:10px 0 4px;}
+  .t10box{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-top:8px;}
+  table.t10tbl{border-collapse:separate; border-spacing:0; width:100%;
+            font-size:.86rem; font-variant-numeric:tabular-nums;}
+  table.t10tbl thead th{background:#f8fafc; border-bottom:1px solid var(--line);
+            font-weight:700; color:#334155; padding:8px 10px; white-space:nowrap; text-align:center;}
+  table.t10tbl th.t10-nm{text-align:right;}
+  table.t10tbl td{padding:7px 10px; border-bottom:1px solid #f1f5f9; text-align:center;
+            color:#475569; white-space:nowrap;}
+  table.t10tbl tbody tr:last-child td{border-bottom:0;}
+  table.t10tbl tbody tr:nth-child(odd){background:#fcfcfd;}
+  table.t10tbl tbody tr:hover td{background:#f1f5f9;}
+  .t10-pos{font-size:1.15rem; width:34px;}
+  .t10-pos .t10-num{font-weight:800; color:#64748b; font-size:.95rem;}
+  td.t10-nm{text-align:right; font-weight:800; color:var(--ink); max-width:150px;
+            overflow:hidden; text-overflow:ellipsis;}
+  .t10-pick{text-align:center;}
+  .t10-fl{width:28px; height:19px; object-fit:cover; border-radius:3px; vertical-align:middle;
+            box-shadow:0 0 0 1px rgba(0,0,0,.08);}
+  .t10-fl.emo{font-size:1.15rem; box-shadow:none;}
+  td.t10-ev,td.t10-p1{position:relative; min-width:96px;}
+  .t10-bar{position:absolute; inset-block:5px; inset-inline-start:6px; border-radius:6px;
+            opacity:.20; z-index:0; max-width:calc(100% - 12px);}
+  .t10-bar.ev{background:var(--green);}
+  .t10-bar.p1{background:var(--blue);}
+  .t10-val{position:relative; z-index:1; font-weight:800; color:var(--ink);}
+  td.t10-p2{color:var(--green); font-weight:700;}
+  td.t10-p3{color:var(--muted); font-weight:700;}
+
+  .cfwrap{margin:10px 0 4px;}
+  .cfgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:8px;}
+  .cf-card{border:1px solid var(--line); border-radius:14px; padding:12px; background:#fff;
+            box-shadow:0 6px 18px -14px rgba(15,23,42,.5);}
+  .cf-hd{display:flex; align-items:center; gap:10px; padding-bottom:8px;
+            border-bottom:1px solid #f1f5f9;}
+  .cf-fl{width:44px; height:30px; object-fit:cover; border-radius:5px; flex:0 0 auto;
+            box-shadow:0 0 0 1px rgba(0,0,0,.1);}
+  .cf-fl.emo{font-size:2rem; box-shadow:none;}
+  .cf-hdt{display:flex; flex-direction:column; min-width:0;}
+  .cf-tm{font-weight:800; color:var(--ink); font-size:1.02rem; overflow:hidden;
+            text-overflow:ellipsis; white-space:nowrap;}
+  .cf-tt{font-size:.82rem; color:var(--green); font-weight:700;}
+  .cf-plabel{font-size:.72rem; color:var(--muted); font-weight:700; margin:8px 0 4px;}
+  .cf-prow{display:flex; align-items:center; gap:8px; padding:4px 0;}
+  .cf-med{font-size:1.05rem; flex:0 0 auto;}
+  .cf-ent{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis;
+            white-space:nowrap; font-weight:700; color:#334155; font-size:.9rem;}
+  .cf-pct{flex:0 0 auto; font-weight:800; color:var(--blue); font-variant-numeric:tabular-nums;}
+  @media (max-width:760px){ .cfgrid{grid-template-columns:repeat(2,1fr);} }
+"""
+
+
 def cheer_html(data: dict) -> str:
     ents = data.get("entries") or []
     names = [e["name"] for e in ents]
@@ -4319,12 +4465,13 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS, ONEBR_CSS])
+    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS, ONEBR_CSS, T10CF_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / KO bracket / sim / groups).
     #    The race overlay is a global fixed element shared by all three buttons.
-    main_body = (pyramid_block() + podium_html(data) + leaders_html(data)
+    main_body = (pyramid_block() + top10_html(data) + champ_facets_html(data)
+                 + podium_html(data) + leaders_html(data)
                  + standings_table_html(data)
                  + bracket_html()
                  + explanation_html(n_ent, n_sims, coverage_html(data)) + groups_html(data)

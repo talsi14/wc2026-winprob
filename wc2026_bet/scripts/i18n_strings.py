@@ -66,6 +66,27 @@ STRINGS: dict[str, tuple[str, str]] = {
     "live.tooltip": ("כולל משחקים שמתנהלים כעת", "Includes matches currently in progress"),
     "live.match": ("משחק מתנהל כעת", "Match in progress"),
     "na": ("טרם זמין", "Not yet available"),
+    "t10.title": ("10 המובילים בתוחלת", "Top 10 by expectation"),
+    "t10.sub": (
+        "עשרת הטפסים המובילים לפי תוחלת הזכייה (₪), עם דגל נבחרת דרג א׳ שנבחרה "
+        "וההסתברויות לסיים במקומות המובילים.",
+        "The ten leading entries by expected winnings (₪), with the flag of their "
+        "tier-A pick and the probabilities of finishing in the top places."),
+    "t10.pos": ("#", "#"),
+    "t10.entry": ("טופס", "Entry"),
+    "t10.tierA": ("דרג א׳", "Tier A"),
+    "t10.ev": ("תוחלת ₪", "E[₪]"),
+    "t10.p1": ("מקום 1", "1st"),
+    "t10.p2": ("1–2", "Top 2"),
+    "t10.p3": ("1–3", "Top 3"),
+    "cf.title": ("מי יכול לזכות בגביע?", "Who can win the cup?"),
+    "cf.sub": (
+        "ארבע הנבחרות שנותרו במרוץ לגביע. לצד כל אחת — הפודיום הסביר ביותר של "
+        "הטפסים אם אותה נבחרת תזכה באליפות (ההסתברות מותנית באותו אלוף).",
+        "The four teams left in the race. Next to each — the most likely pool "
+        "podium if that team wins the title (probabilities conditional on that champion)."),
+    "cf.tocup": ("לגביע", "to win"),
+    "cf.podium": ("הפודיום הסביר בתרחיש זה", "Most likely podium in this scenario"),
     "podium.title": ("טבלת הדירוג", "Standings"),
     "leader.top_scorer": ("מלך השערים כרגע", "Top scorer now"),
     "leader.conceding": ("הסופגת המובילה", "Most goals conceded"),

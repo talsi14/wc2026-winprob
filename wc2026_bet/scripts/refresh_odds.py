@@ -29,6 +29,7 @@ from wc2026_bet.config import DATA_LIVE, DATA_PROCESSED
 import collect_data as cd  # noqa: E402  (same scripts dir)
 import eloratings_live as el  # noqa: E402
 import kalshi_odds as ko  # noqa: E402
+import match_odds_api as mo  # noqa: E402
 
 # Documented odds sources (same URLs recorded in collect_data.manifest).
 SOURCES = {
@@ -83,6 +84,19 @@ def main() -> None:
         print(f"  kalshi_title   fallback  [{kalshi_status['error']}]")
     statuses.append(kalshi_status)
 
+    # Per-match 1X2 + totals snapshot (the-odds-api) for the leakage-free market
+    # benchmark of the match-prediction backtest. No-ops unless ODDS_API_KEY is
+    # set, so CI without the secret is unaffected.
+    mo_status = mo.snapshot(ts=ts)
+    mo_status["source"] = "match_odds_api"
+    statuses.append(mo_status)
+    if mo_status["status"] == "fetched":
+        print(f"  match_odds     fetched  ({mo_status['n']} games, "
+              f"+{mo_status.get('added_to_history', 0)} to history)")
+    else:
+        print(f"  match_odds     {mo_status['status']}  "
+              f"[{mo_status.get('reason') or mo_status.get('error', '')}]")
+
     # Rebuild the de-vigged advance + Golden-Boot boards from the (possibly
     # refreshed) raw markdown; these reproduce data/processed if the markdown is
     # unchanged. Outright / Opta title boards come from collect_data's curated
@@ -92,7 +106,23 @@ def main() -> None:
     adv.to_csv(DATA_PROCESSED / "market_advance.csv", index=False)
     gb.to_csv(DATA_PROCESSED / "market_golden_boot.csv", index=False)
     print(f"  rebuilt market_advance ({len(adv)} teams) + "
-          f"market_golden_boot ({len(gb)} players) from raw markdown")
+          f"market_golden_boot ({len(gb)} players) from "
+          f"{cd._latest_golden_boot_md().name}")
+
+    # Push the live Golden-Boot board onto the candidate-scorer files so the
+    # goal-share calibration (golden_boot_target) tracks the current market. If a
+    # value moved, drop the cached power ranking so the shares re-fit next run
+    # (mirrors the Kalshi title-odds path; CI's --recalibrate refits regardless).
+    gb_changed = cd.sync_market_gb_to_players(gb)
+    top_gb = ", ".join(f"{r.player} {r.p_gb:.0%}"
+                       for r in gb.head(3).itertuples())
+    print(f"  synced Golden-Boot board -> players.csv/extra_players.csv "
+          f"({'changed' if gb_changed else 'unchanged'}); top: {top_gb}")
+    if gb_changed:
+        cal_cache = DATA_PROCESSED / "calibration.json"
+        if cal_cache.exists():
+            cal_cache.unlink()
+            print("  invalidated cached calibration (Golden-Boot board updated)")
 
     # Per-timestamp snapshots of the resulting processed market CSVs.
     for nm in ("market_advance", "market_golden_boot", "market_outright",
@@ -109,7 +139,9 @@ def main() -> None:
               "sources": statuses,
               "note": ("Title winner odds refreshed from Kalshi before each run; "
                        "advance / Golden Boot from data/raw markdown (drop an "
-                       "updated table there to move those lines).")}
+                       "updated table there to move those lines). The newest "
+                       "market_golden_boot_*.md is synced onto players.csv so the "
+                       "goal-share calibration tracks the live top-scorer market.")}
     (DATA_LIVE / f"odds_status_{ts}.json").write_text(
         json.dumps(status, indent=2, ensure_ascii=False))
     print(f"  refreshed: {refreshed or 'none'}; fell back: {fellback or 'none'}")

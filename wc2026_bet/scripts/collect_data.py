@@ -28,7 +28,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from wc2026_bet.config import (DATA_PROCESSED, DATA_RAW, HOST_NATIONS,
+from wc2026_bet.config import (DATA_LIVE, DATA_PROCESSED, DATA_RAW, HOST_NATIONS,
                                MATCH_IMPORTANCE, REFERENCE_DATE,
                                TIME_DECAY_HALFLIFE_YEARS)
 from wc2026_bet.names import (CANONICAL_TEAMS, _norm, resolve, resolve_any,
@@ -46,6 +46,14 @@ GOLDEN_BOOT_CSV = NADR / "output" / "golden_boot_probabilities.csv"
 # header for source URL / board / fetch date).
 MARKET_ADVANCE_MD = DATA_RAW / "market_advance_2026-06.md"
 MARKET_GOLDEN_BOOT_MD = DATA_RAW / "market_golden_boot_2026-06.md"
+
+
+def _latest_golden_boot_md() -> Path:
+    """Newest ``market_golden_boot_*.md`` board in data/raw (dated filenames sort
+    chronologically), so dropping a fresh dated copy moves the live line without a
+    code change. Falls back to the pre-tournament 2026-06 full-field board."""
+    boards = sorted(DATA_RAW.glob("market_golden_boot_*.md"))
+    return boards[-1] if boards else MARKET_GOLDEN_BOOT_MD
 
 
 def parse_md_odds(path: Path) -> list[tuple]:
@@ -431,8 +439,11 @@ def build_market_advance() -> pd.DataFrame:
 
 
 def build_market_golden_boot() -> pd.DataFrame:
-    """De-vigged market P(win Golden Boot) per player (normalized to sum 1)."""
-    rows = parse_md_odds(MARKET_GOLDEN_BOOT_MD)
+    """De-vigged market P(win Golden Boot) per player (normalized to sum 1).
+
+    Reads the newest dated Golden-Boot board (see ``_latest_golden_boot_md``) so
+    the live line tracks the current market as the field narrows."""
+    rows = parse_md_odds(_latest_golden_boot_md())
     recs = []
     for player, country, odds in rows:
         recs.append({"player": player, "country": resolve(country) or country,
@@ -459,6 +470,45 @@ def build_players(market_gb: pd.DataFrame) -> pd.DataFrame:
     mkt = {_norm(r.player): r.p_gb for r in market_gb.itertuples()}
     gb["market_p_gb"] = gb["scorer"].apply(lambda s: mkt.get(_norm(s), 0.0))
     return gb
+
+
+def sync_market_gb_to_players(market_gb: pd.DataFrame) -> bool:
+    """Push the (live) de-vigged Golden-Boot board onto the candidate-scorer files
+    so the goal-share calibration (calibration.golden_boot_target) targets the
+    CURRENT market rather than the frozen pre-tournament board.
+
+    - ``data/processed/players.csv`` (base candidates): market_p_gb <- board
+      value, or 0.0 when a candidate is off the current board (same semantics as
+      ``build_players``; off-board players fall back to their model prior inside
+      ``golden_boot_target``).
+    - ``data/live/extra_players.csv`` (entry-picked extras): only overwrite names
+      that ARE on the board, so a hand-added pick keeps its seeded prior otherwise.
+
+    Called from the live odds refresh so the board flows into every run. Returns
+    True if any market_p_gb value actually moved (callers invalidate the cached
+    power ranking so the shares re-fit)."""
+    mkt = {_norm(r.player): round(float(r.p_gb), 5) for r in market_gb.itertuples()}
+    changed = False
+
+    players_csv = DATA_PROCESSED / "players.csv"
+    df = pd.read_csv(players_csv)
+    new = [mkt.get(_norm(s), 0.0) for s in df["scorer"]]
+    if [round(float(v), 5) for v in df["market_p_gb"]] != [round(v, 5) for v in new]:
+        changed = True
+    df["market_p_gb"] = new
+    df.to_csv(players_csv, index=False)
+
+    extra_csv = DATA_LIVE / "extra_players.csv"
+    if extra_csv.exists():
+        ex = pd.read_csv(extra_csv)
+        newx = [mkt.get(_norm(s), float(cur))
+                for s, cur in zip(ex["scorer"], ex["market_p_gb"])]
+        if [round(float(v), 5) for v in ex["market_p_gb"]] != [round(v, 5) for v in newx]:
+            changed = True
+        ex["market_p_gb"] = newx
+        ex.to_csv(extra_csv, index=False)
+
+    return changed
 
 
 def main() -> None:

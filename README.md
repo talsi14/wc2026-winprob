@@ -49,6 +49,29 @@ open friends_bet/report/index.html
   committed `wc2026_bet/data/raw/*.md` snapshots. Drop in an updated markdown table
   to genuinely move a line.
 
+### Per-match odds (market benchmark for the prediction backtest)
+
+The match-prediction backtest (`wc2026_bet/scripts/backtest_predictions.py`) can
+benchmark its exact-score product against the **bookmaker** line. This needs each
+game's **pre-kickoff** 1X2 + totals, which we snapshot leakage-free via
+[the-odds-api](https://the-odds-api.com) (`match_odds_api.py`). Correct-score isn't
+offered for the World Cup, so the market scoreline grid is derived from 1X2 + totals
+(supremacy/total Poisson solve).
+
+- **Setup:** create an API key and expose it as `ODDS_API_KEY` (a local env var and
+  a GitHub Actions **secret** of the same name). Everything no-ops without it, so CI
+  is unaffected when the secret is absent.
+- **Forward capture (free tier):** `refresh_odds.py` snapshots upcoming fixtures each
+  run and appends to `wc2026_bet/data/history/match_odds_history.jsonl`. Run it before
+  knockout kickoffs to grow the benchmark. Only snapshots observed *strictly before*
+  a game's kickoff are ever scored (no leakage).
+- **Backfill played games (paid historical tier):**
+  `ODDS_API_KEY=… python3 wc2026_bet/scripts/match_odds_api.py --backfill-kickoffs`
+  pulls the historical board ~2h before each completed fixture's kickoff.
+- The backtest auto-detects the history file: with coverage the green **Market**
+  curve appears on the exact-score product; without it, a leakage-free base-rate
+  prior is used as the benchmark.
+
 ## Relationship to the source project
 
 This repo is a self-contained, deployable copy of the live-tracker subset of a

@@ -108,6 +108,22 @@ PEN_EDGE = 0.05
 # simulated title odds line up with the market / Opta. Solved in calibration.
 STRENGTH_SPREAD = 1.0  # overwritten by data/processed/calibration.json at load.
 
+# Manual per-team strength "belief bonus" (raw pre-spread log-strength units, ie
+# Elo/400; +ve = stronger). Applied on top of the auto-calibrated offsets in the
+# live engine, AFTER calibration (calibrate_team_strengths freezes contenders, so
+# this is not fought). Use it to express a head-to-head belief the model doesn't
+# hold on its own. Solved so a single neutral knockout hits the target split:
+# France +0.183 -> P(France beats Spain)=0.54 and England +0.093 -> P(England
+# beats Argentina)=0.52. France & Spain then get a shared -0.0625 (-25 Elo) shave
+# to rebalance that bracket half against the England/Argentina side; shaving both
+# equally leaves the France-Spain H2H at 0.54 but lowers both their title odds.
+# NB: a team bonus lifts that team in EVERY match, so it also moves title odds.
+MANUAL_STRENGTH_BONUS: dict[str, float] = {
+    "France": 0.1202,     # +0.1827 belief bonus, -0.0625 rebalance shave
+    "Spain": -0.0625,     # rebalance shave only
+    "England": 0.0934,
+}
+
 
 # --------------------------------------------------------------------------- #
 # Bet scoring rules (encoded from the official PDF)

@@ -36,8 +36,8 @@ from wc2026_bet.calibration import (apply_strength_offsets,
                                     compute_golden_boot_scale,
                                     golden_boot_target)
 from wc2026_bet.config import (DATA_LIVE, DATA_PROCESSED, HOST_NATIONS,
-                               N_SIMULATIONS, RESULTS_DIR, WC_FIT_WEIGHT,
-                               prize_vector)
+                               MANUAL_STRENGTH_BONUS, N_SIMULATIONS,
+                               RESULTS_DIR, WC_FIT_WEIGHT, prize_vector)
 from wc2026_bet.contributions import build_contributions
 from wc2026_bet.data_io import apply_share_factors, load_calibration
 from wc2026_bet.live import (current_points_breakdown, load_entries,
@@ -98,6 +98,32 @@ def champion_matrix(ranks, O, ds, names, n_champ: int = 10) -> dict:
     return {"champions": list(mat.keys()),
             "p_title": {c: round(float(title[ds.team_index[c]]), 4) for c in mat},
             "matrix": mat}
+
+
+def champion_podium(ranks, O, ds, names, n_champ: int = 4) -> list:
+    """For each of the top ``n_champ`` still-possible champions, the most-probable
+    pool podium *conditional* on that team lifting the cup: the modal entry at
+    rank 1, 2 and 3 among the sims that team wins, with the conditional
+    probability. Powers the "who can win the cup" facets on the site."""
+    title = O["won_cup"].mean(0)
+    champs = [ds.team_list[i] for i in np.argsort(-title)[:n_champ] if title[i] > 0]
+    out = []
+    for c in champs:
+        ci = ds.team_index[c]
+        mask = O["won_cup"][:, ci]
+        m = int(mask.sum())
+        if m < 20:
+            continue
+        r = ranks[mask]                                  # [m, N] ranks | champ c
+        podium = []
+        for pos in (1, 2, 3):
+            p = (r == pos).mean(0)                        # [N] P(entry at pos | c)
+            j = int(np.argmax(p))
+            podium.append({"pos": pos, "name": names[j],
+                           "p": round(float(p[j]), 4)})
+        out.append({"team": c, "p_title": round(float(title[ci]), 4),
+                    "n": m, "podium": podium})
+    return out
 
 
 # how many of the top champions (by winning-scenario count) get a precomputed,
@@ -452,9 +478,18 @@ def main() -> None:
 
     cal = build_calibration(ds, model0, ts, args.recalibrate)
     apply_share_factors(ds, cal.get("player_share_factor", {}))
+    # Auto-calibrated offsets + the manual per-team belief bonus (config), merged
+    # additively. The manual bonus lands on contenders the auto-calibration froze,
+    # so it is not undone.
+    offsets = dict(cal.get("strength_offsets", {}))
+    for t, b in MANUAL_STRENGTH_BONUS.items():
+        offsets[t] = offsets.get(t, 0.0) + float(b)
+    if MANUAL_STRENGTH_BONUS:
+        print("manual strength bonus: " + ", ".join(
+            f"{t} {b:+.3f} (~{b*400:+.0f} Elo)"
+            for t, b in MANUAL_STRENGTH_BONUS.items()))
     model = apply_strength_offsets(
-        replace(model0, spread=cal["strength_spread"]),
-        cal.get("strength_offsets", {}))
+        replace(model0, spread=cal["strength_spread"]), offsets)
 
     known = KnownState.from_state(ds, state)
     print(f"Conditioning on state {ts}: group {state.get('n_group_played',0)}/72 "
@@ -478,6 +513,7 @@ def main() -> None:
     scores = score_entries(ds, contrib, O, entries)
     M = rank_and_metrics(scores)
     chmat = champion_matrix(M["ranks"], O, ds, list(entries["name"]))
+    chpod = champion_podium(M["ranks"], O, ds, list(entries["name"]))
     vpaths = build_victory_paths(O, M["ranks"], scores, ds, entries, contrib)
     cheer = build_cheer(ds, cheer_days, cheer_track, O, M, list(entries["name"]))
 
@@ -649,6 +685,7 @@ def main() -> None:
         "calibration": {"strength_spread": cal["strength_spread"],
                         "golden_boot_scale": round(gb_scale, 3)},
         "champion_matrix": chmat,
+        "champion_podium": chpod,
         "victory_paths": vpaths,
         "groups": groups_payload,
         "stages": stages_payload,

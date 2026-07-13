@@ -150,6 +150,10 @@ jobs:
 
       - name: Refresh win-probabilities + rebuild shareable page
         if: steps.detect.outputs.run == 'true'
+        env:
+          # Optional: per-match 1X2+totals snapshot for the match-prediction
+          # backtest's market benchmark. refresh_odds.py no-ops without it.
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: bash run_update.sh --skip-collect
 
       # After a full run, if a *different* match is still in progress, re-overlay the
@@ -244,6 +248,9 @@ jobs:
                   wc2026_bet/data/history/eloratings_weighted.json \
                   wc2026_bet/data/history/kalshi_title_history.json \
                   wc2026_bet/results/live_latest.json wc2026_bet/report/live.html
+          # persist per-match odds history only if it was captured (ODDS_API_KEY set)
+          [ -f wc2026_bet/data/history/match_odds_history.jsonl ] \
+            && git add wc2026_bet/data/history/match_odds_history.jsonl || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
