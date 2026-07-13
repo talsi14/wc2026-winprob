@@ -124,6 +124,22 @@ class Simulator:
         self.player_share = ds.players["blended_share"].to_numpy(float)
         self.player_names = list(ds.players["scorer"])
 
+        # Golden-Boot tie-break weight. The pool awards a *single* Golden Boot
+        # (FIFA's cascade: assists -> fewest minutes -> open-play goals), which we
+        # don't model directly. When candidates finish LEVEL on goals we resolve
+        # the tie *probabilistically* rather than by a coin flip or a hard winner:
+        # the tie is won by player i with probability w_i / sum(w over the tied
+        # set), where w is the live Golden-Boot market prob (fallback: the model's
+        # own top-scorer prior). This keeps the assist/minutes edge the book
+        # prices in - e.g. Mbappe over Messi - without pretending it is a
+        # certainty (his current assist lead can still be overturned). Floored at
+        # a tiny epsilon so off-board candidates keep a positive-but-negligible
+        # weight and equal-weight ties resolve uniformly at random.
+        gb_w = ds.players["market_p_gb"].to_numpy(float).copy()
+        prior = ds.players["p_top_scorer"].to_numpy(float).copy()
+        gb_w = np.where(gb_w > 0, gb_w, np.clip(prior, 0.0, None))
+        self.player_gb_weight = np.maximum(gb_w, 1e-9)
+
     # ---- low-level samplers ------------------------------------------------ #
     def _poisson_pair(self, hi, ai, hf):
         li = np.exp(self.mu + self.ATT[hi] - self.DEF[ai] + self.H * hf)
@@ -431,8 +447,16 @@ class Simulator:
                          MAX_PLAYER_GOALS).astype(np.int32)
         cap = np.maximum(cap, player_known[None, :].astype(np.int32))
         player_goals = np.minimum(player_goals, cap)
-        gb_noise = self.rng.random(player_goals.shape) * 0.5
-        golden_boot = np.argmax(player_goals + gb_noise, axis=1)  # [S] player idx
+        # Single Golden Boot per sim. Stage 1: the max goal tally wins outright.
+        # Stage 2 (ties only): among players level on the max, pick a winner by
+        # weighted-random draw with P(i) = w_i / sum(w_tied) via the exponential-
+        # race trick (argmax of w_i / Exp(1) is exactly that categorical). This
+        # honours the FIFA assist/minutes tie-break through the market weight
+        # without hard-locking it to the current leader.
+        is_max = player_goals == player_goals.max(axis=1, keepdims=True)  # [S,P]
+        expo = -np.log(self.rng.random(player_goals.shape) + 1e-12)       # Exp(1)
+        key = np.where(is_max, self.player_gb_weight[None, :] / expo, -np.inf)
+        golden_boot = np.argmax(key, axis=1)  # [S] player idx
 
         return dict(
             n_sims=S,
