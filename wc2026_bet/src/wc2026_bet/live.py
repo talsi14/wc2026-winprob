@@ -56,12 +56,22 @@ def score_entries(ds: Dataset, contrib: Contributions, O: dict,
     return scores
 
 
-def known_team_stats(ds: Dataset, state: dict) -> dict[str, dict]:
+def known_team_stats(ds: Dataset, state: dict,
+                     locked_final: set[str] | None = None,
+                     locked_cup: set[str] | None = None) -> dict[str, dict]:
     """Per-team locked stats from completed matches (group + knockout).
 
     Advancement / finish (tier C/D bonuses) and final/winner flags are only
     credited once actually determined (group complete, KO played). Shared by the
     live collector (reconciliation) and the win-prob engine (current points).
+
+    ``ko_results`` carry no round label, so reaching the final / winning the cup
+    cannot be inferred here from the results alone. Callers that have the
+    conditioned simulation (run_live_update) pass ``locked_final`` / ``locked_cup``
+    - the teams whose made-final / won-cup status is already certain (true in
+    every sim) - and we credit those tier bonuses (+2 reach final, +1 win cup)
+    so the live standings match the projection engine. Winning the cup implies
+    reaching the final.
     """
     stats = {t: {"reg_wins": 0, "group_draws": 0, "reg_losses": 0,
                  "pen_wins": 0, "pen_losses": 0, "group_finish": 0,
@@ -107,16 +117,30 @@ def known_team_stats(ds: Dataset, state: dict) -> dict[str, dict]:
                 stats[r["team"]]["group_finish"] = rank
                 if rank <= 2:
                     stats[r["team"]]["advanced"] = True
+
+    # Locked final / champion tier bonuses (from the conditioned sim, if given).
+    for t in (locked_final or set()) | (locked_cup or set()):
+        if t in stats:
+            stats[t]["made_final"] = True          # champion also reached the final
+    for t in (locked_cup or set()):
+        if t in stats:
+            stats[t]["won_cup"] = True
     return stats
 
 
 def current_points_breakdown(ds: Dataset, state: dict, entries: pd.DataFrame,
-                             golden_boot: str = "") -> dict[str, dict]:
+                             golden_boot: str = "",
+                             locked_final: set[str] | None = None,
+                             locked_cup: set[str] | None = None) -> dict[str, dict]:
     """Real locked points per entry from the actual results so far, using the
     canonical scoring engine. Returns {entry name: breakdown} where the
     breakdown has tier_a/b/c/d, scoring_team, conceding_team, top_scorer, total.
+
+    ``locked_final`` / ``locked_cup`` credit the +2 reach-final / +1 win-cup tier
+    bonuses for teams whose status is already certain (see ``known_team_stats``).
     """
-    stats = known_team_stats(ds, state)
+    stats = known_team_stats(ds, state, locked_final=locked_final,
+                             locked_cup=locked_cup)
     tp = state.get("team_played") or {}
     gf = {t: tp.get(t, {}).get("gf", 0) for t in ds.team_list}
     ga = {t: tp.get(t, {}).get("ga", 0) for t in ds.team_list}

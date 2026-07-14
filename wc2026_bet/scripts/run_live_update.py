@@ -519,7 +519,19 @@ def main() -> None:
 
     # real current (locked) points from the actual results so far, via the
     # canonical scoring engine (replaces the pool site's buggy/lagging totals).
-    bd_map = current_points_breakdown(ds, state, entries)
+    # Reaching the final (+2) / winning the cup (+1) aren't inferable from the
+    # round-less ko_results, so credit them for teams whose status is already
+    # CERTAIN in the conditioned sim (true in every simulation) - keeping the
+    # live standings consistent with the projection engine.
+    tl = ds.team_list
+    locked_final = {tl[i] for i in range(len(tl)) if O["made_final"][:, i].all()}
+    locked_cup = {tl[i] for i in range(len(tl)) if O["won_cup"][:, i].all()}
+    if locked_final or locked_cup:
+        print(f"locked tier bonuses: reach-final={sorted(locked_final)} "
+              f"won-cup={sorted(locked_cup)}")
+    bd_map = current_points_breakdown(ds, state, entries,
+                                      locked_final=locked_final,
+                                      locked_cup=locked_cup)
     name_idx = {r.name: i for i, r in enumerate(entries.itertuples())}
     totals = {nm: round(float(bd_map[nm]["total"]), 1) for nm in name_idx}
     # rank by current points; ties broken by model P(1st) so the leader is the
