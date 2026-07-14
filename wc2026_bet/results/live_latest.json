@@ -23936,6 +23936,11 @@
       "goals": 6
     },
     {
+      "scorer": "Mikel Oyarzabal",
+      "team": "Spain",
+      "goals": 5
+    },
+    {
       "scorer": "Ousmane Dembélé",
       "team": "France",
       "goals": 5
@@ -23948,11 +23953,6 @@
     {
       "scorer": "Julián Quiñones",
       "team": "Mexico",
-      "goals": 4
-    },
-    {
-      "scorer": "Mikel Oyarzabal",
-      "team": "Spain",
       "goals": 4
     },
     {
@@ -24898,7 +24898,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 11,
+      "gf": 12,
       "ga": 1,
       "games": 7
     },
@@ -24939,7 +24939,7 @@
     },
     "France": {
       "gf": 16,
-      "ga": 2,
+      "ga": 3,
       "games": 7
     },
     "Senegal": {
