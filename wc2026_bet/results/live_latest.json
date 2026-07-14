@@ -24900,7 +24900,7 @@
     "Spain": {
       "gf": 11,
       "ga": 1,
-      "games": 6
+      "games": 7
     },
     "Cape Verde": {
       "gf": 4,
@@ -24940,7 +24940,7 @@
     "France": {
       "gf": 16,
       "ga": 2,
-      "games": 6
+      "games": 7
     },
     "Senegal": {
       "gf": 10,
@@ -31428,6 +31428,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "France",
+    "Spain"
+  ]
 }
