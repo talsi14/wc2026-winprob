@@ -24151,6 +24151,11 @@
       "goals": 2
     },
     {
+      "scorer": "Pedro Porro",
+      "team": "Spain",
+      "goals": 2
+    },
+    {
       "scorer": "Ramin Rezaeian",
       "team": "Iran",
       "goals": 2
@@ -24671,11 +24676,6 @@
       "goals": 1
     },
     {
-      "scorer": "Pedro Porro",
-      "team": "Spain",
-      "goals": 1
-    },
-    {
       "scorer": "Petar Musa",
       "team": "Croatia",
       "goals": 1
@@ -24898,7 +24898,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 12,
+      "gf": 13,
       "ga": 1,
       "games": 7
     },
@@ -24939,7 +24939,7 @@
     },
     "France": {
       "gf": 16,
-      "ga": 3,
+      "ga": 4,
       "games": 7
     },
     "Senegal": {
