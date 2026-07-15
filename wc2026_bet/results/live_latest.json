@@ -16695,6 +16695,11 @@
       "goals": 1
     },
     {
+      "scorer": "Anthony Gordon",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Antonio Nusa",
       "team": "Norway",
       "goals": 1
@@ -17408,7 +17413,7 @@
     },
     "Argentina": {
       "gf": 17,
-      "ga": 6,
+      "ga": 7,
       "games": 7
     },
     "Algeria": {
@@ -17437,7 +17442,7 @@
       "games": 4
     },
     "England": {
-      "gf": 13,
+      "gf": 14,
       "ga": 6,
       "games": 7
     },
