@@ -42,6 +42,9 @@ OUT = Path(os.environ.get(
     "FRIENDS_REPORT_OUT",
     str(Path(__file__).resolve().parents[2] / "friends_bet" / "report" / "index.html"),
 ))
+# Standalone "identity reveal" page — a self-contained sibling of index.html so
+# the feature has its own shareable URL (defaults next to the main report).
+REVEAL_OUT = Path(os.environ.get("FRIENDS_REVEAL_OUT", str(OUT.parent / "reveal.html")))
 
 CHAMP_HE = {
     "Spain": "ספרד", "France": "צרפת", "Argentina": "ארגנטינה", "England": "אנגליה",
@@ -1763,6 +1766,32 @@ def _flag_img(team: str, cls: str = "cflag") -> str:
     return f'<span class="{cls} emo">{_flag(team)}</span>'
 
 
+def _load_entry_photos() -> dict:
+    """Entry nickname -> base64 JPEG data URI, from the committed assets cache
+    (built once by scripts/_gen_entry_photos_b64.py). Powers the identity-reveal
+    flip cards while keeping the page self-contained (no runtime network)."""
+    f = WC_ROOT / "assets" / "entry_photos_b64.json"
+    try:
+        return json.loads(f.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _load_real_names() -> dict:
+    """Entry nickname -> real name, from data/live/entry_real_names.csv."""
+    f = DATA_LIVE / "entry_real_names.csv"
+    try:
+        with f.open(encoding="utf-8") as fh:
+            return {r["name"]: r["real_name"] for r in csv.DictReader(fh)
+                    if r.get("real_name", "").strip()}
+    except Exception:
+        return {}
+
+
+_ENTRY_PHOTO = _load_entry_photos()
+_REAL_NAME = _load_real_names()
+
+
 def top10_html(data: dict) -> str:
     """Top-10 entries by expected winnings, each with the flag of their tier-A
     pick and bar-viz for EV and P(1st). Rendered on the main page under the
@@ -1873,6 +1902,97 @@ def champ_facets_html(data: dict) -> str:
         f'    <div class="cfgrid">{"".join(cards)}</div>\n  </section>\n')
 
 
+def identity_reveal_html(data: dict) -> str:
+    """Flip-card "identity reveal" for the live podium contenders: entries that
+    have a photo AND a positive expected prize (exp_winnings > 0), EV-ordered.
+    The front is a mystery (nickname + tier-A flag + podium odds); tapping flips
+    it to reveal the player's photo + real name. A "reveal all" button flips
+    them together. Self-updates each run as the field narrows.
+
+    A contender must have a photo and an expected prize that rounds to at least
+    ₪1 (so a ~₪0 EV entry like שמיגידי drops, matching what's shown on the card)."""
+    ents = [e for e in (data.get("entries") or [])
+            if _ENTRY_PHOTO.get(e["name"]) and round(float(e.get("exp_winnings", 0) or 0)) > 0]
+    if not ents:
+        return ""
+    ents.sort(key=lambda e: -e["exp_winnings"])
+    team_he = _team_he_map()
+    cards = []
+    for e in ents:
+        nm = e["name"]
+        ta = e["picks"]["tierA"]
+        photo = _ENTRY_PHOTO.get(nm, "")
+        real = _REAL_NAME.get(nm, "")
+        p1 = e["P_first"] * 100
+        p2 = float(e.get("P_top2", 0) or 0) * 100
+        p3 = float(e.get("P_top3", 0) or 0) * 100
+        # Back headline: the best (highest) place still realistically on the
+        # table — the tightest bracket whose chance still rounds to ≥1%. When
+        # 1st is gone we show the top-2 chance, else the podium (top-3) chance.
+        rank_val, rank_key, rank_he = p3, "idr.top3", "לפודיום"
+        for val, key, he in ((p2, "idr.top2", "לשניים הראשונים"),
+                             (p1, "idr.top1", "למקום ראשון")):
+            if round(val) > 0:
+                rank_val, rank_key, rank_he = val, key, he
+        cards.append(
+            '<div class="idr-card" tabindex="0" role="button" aria-pressed="false">'
+            '<div class="idr-inner">'
+            # ---- front: mystery ----
+            '<div class="idr-face idr-front">'
+            '<span class="idr-q" aria-hidden="true">?</span>'
+            f'<span class="idr-flag">{_flag_img(ta, "idr-fl")}</span>'
+            f'<span class="idr-nick" title="{html_mod.escape(nm, quote=True)}">'
+            f'{html_mod.escape(nm)}</span>'
+            '<span class="idr-odds">'
+            f'<span class="idr-ev">₪{e["exp_winnings"]:,.0f}</span>'
+            f'<span class="idr-p3">{p3:.0f}% <span data-i18n="idr.topodium">לפודיום</span></span>'
+            '</span>'
+            '<span class="idr-tap" data-i18n="idr.tap">הקישו לחשיפה</span>'
+            '</div>'
+            # ---- back: real identity ----
+            '<div class="idr-face idr-back">'
+            f'<img class="idr-photo" src="{photo}" alt="" loading="lazy">'
+            f'<span class="idr-real">{html_mod.escape(real) if real else html_mod.escape(nm)}</span>'
+            f'<span class="idr-nick2">{html_mod.escape(nm)}</span>'
+            f'<span class="idr-teamrow">{_flag_img(ta, "idr-fl2")}'
+            f'<span class="idr-tm">{_te(ta, team_he)}</span></span>'
+            f'<span class="idr-p1">{rank_val:.0f}% <span data-i18n="{rank_key}">{rank_he}</span></span>'
+            '</div>'
+            '</div></div>')
+    return (
+        '\n  <section class="idrwrap">\n'
+        '    <h2 class="bigsec real" data-i18n="idr.title">מי מסתתר על הפודיום?</h2>\n'
+        '    <p class="sub" data-i18n="idr.sub">המועמדים החיים לפודיום (טפסים עם סיכוי חיובי '
+        'לסיים במקומות 1–3), לפי סדר התוחלת. הקישו על קלף כדי לחשוף מי עומד מאחורי הכינוי.</p>\n'
+        '    <div class="idrbar">'
+        '<button type="button" class="idr-all" id="idrAll" aria-pressed="false" '
+        'data-i18n="idr.reveal_all">חשפו את כולם</button></div>\n'
+        f'    <div class="idrgrid">{"".join(cards)}</div>\n'
+        '    <script>(function(){\n'
+        '      var wrap=document.querySelector(".idrwrap"); if(!wrap) return;\n'
+        '      var cards=Array.prototype.slice.call(wrap.querySelectorAll(".idr-card"));\n'
+        '      function setCard(c,on){ c.classList.toggle("flipped",on);\n'
+        '        c.setAttribute("aria-pressed",on?"true":"false"); }\n'
+        '      cards.forEach(function(c){\n'
+        '        c.addEventListener("click", function(){ setCard(c,!c.classList.contains("flipped")); });\n'
+        '        c.addEventListener("keydown", function(ev){\n'
+        '          if(ev.key===" "||ev.key==="Enter"){ ev.preventDefault();\n'
+        '            setCard(c,!c.classList.contains("flipped")); } });\n'
+        '      });\n'
+        '      var btn=document.getElementById("idrAll"); if(!btn) return;\n'
+        '      btn.addEventListener("click", function(){\n'
+        '        var on=btn.getAttribute("aria-pressed")!=="true";\n'
+        '        btn.setAttribute("aria-pressed",on?"true":"false");\n'
+        '        btn.classList.toggle("on",on);\n'
+        '        var k=on?"idr.hide_all":"idr.reveal_all";\n'
+        '        btn.setAttribute("data-i18n",k);\n'
+        '        btn.textContent = (window.I18N&&window.I18N.t) ? window.I18N.t(k)\n'
+        '          : (on ? "הסתירו את כולם" : "חשפו את כולם");\n'
+        '        cards.forEach(function(c){ setCard(c,on); });\n'
+        '      });\n'
+        '    })();</script>\n  </section>\n')
+
+
 T10CF_CSS = """
   /* ---- Top-10 by EV + champion facets (under the odds pyramid) ---- */
   .t10wrap{margin:10px 0 4px;}
@@ -1927,6 +2047,113 @@ T10CF_CSS = """
   .cf-pct{flex:0 0 auto; font-weight:800; color:var(--blue); font-variant-numeric:tabular-nums;}
   @media (max-width:760px){ .cfgrid{grid-template-columns:repeat(2,1fr);} }
 """
+
+
+IDREVEAL_CSS = """
+  /* ---- Podium "identity reveal" flip cards ---- */
+  .idrwrap{margin:10px 0 4px;}
+  .idrbar{display:flex; justify-content:flex-start; margin:6px 0 10px;}
+  .idr-all{appearance:none; border:1px solid var(--line); background:#fff; cursor:pointer;
+            font:inherit; font-weight:800; color:#334155; padding:7px 14px; border-radius:999px;
+            box-shadow:0 4px 12px -8px rgba(15,23,42,.4); transition:background .15s,color .15s;}
+  .idr-all:hover{background:#f1f5f9;}
+  .idr-all.on{background:var(--ink,#0f172a); color:#fff; border-color:transparent;}
+  .idrgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:4px;}
+  .idr-card{perspective:1000px; cursor:pointer; aspect-ratio:3/4; outline:none;}
+  .idr-card:focus-visible .idr-inner{box-shadow:0 0 0 3px rgba(37,99,235,.55);}
+  .idr-inner{position:relative; width:100%; height:100%; transition:transform .6s cubic-bezier(.2,.7,.2,1);
+            transform-style:preserve-3d; border-radius:16px;}
+  .idr-card.flipped .idr-inner{transform:rotateY(180deg);}
+  .idr-face{position:absolute; inset:0; -webkit-backface-visibility:hidden; backface-visibility:hidden;
+            border-radius:16px; display:flex; flex-direction:column; align-items:center;
+            justify-content:center; text-align:center; padding:14px; overflow:hidden;
+            border:1px solid var(--line); box-shadow:0 8px 22px -16px rgba(15,23,42,.6);}
+  /* front: mystery */
+  .idr-front{background:linear-gradient(150deg,#1e293b 0%,#334155 55%,#475569 100%); color:#fff; gap:8px;}
+  .idr-q{font-size:2.6rem; font-weight:900; line-height:1; color:rgba(255,255,255,.9);
+            text-shadow:0 2px 10px rgba(0,0,0,.35);}
+  .idr-flag{display:inline-flex;}
+  .idr-fl{width:40px; height:27px; object-fit:cover; border-radius:4px;
+            box-shadow:0 0 0 1px rgba(255,255,255,.25);}
+  .idr-fl.emo{font-size:1.8rem; box-shadow:none;}
+  .idr-nick{font-weight:800; font-size:1.02rem; max-width:100%; overflow:hidden;
+            text-overflow:ellipsis; white-space:nowrap;}
+  .idr-odds{display:flex; flex-direction:column; gap:1px; line-height:1.25;}
+  .idr-ev{font-weight:900; font-size:1.05rem; color:#bbf7d0;}
+  .idr-p3{font-size:.78rem; color:rgba(255,255,255,.78); font-weight:700;}
+  .idr-tap{position:absolute; inset-block-end:8px; font-size:.68rem; letter-spacing:.02em;
+            color:rgba(255,255,255,.6); font-weight:700;}
+  /* back: real identity */
+  .idr-back{transform:rotateY(180deg); background:#fff; gap:6px;}
+  .idr-photo{width:88px; height:88px; object-fit:cover; border-radius:50%;
+            box-shadow:0 0 0 3px #fff,0 4px 14px -6px rgba(15,23,42,.5),0 0 0 4px var(--line);}
+  .idr-real{font-weight:900; font-size:1.06rem; color:var(--ink); max-width:100%;
+            overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .idr-nick2{font-size:.78rem; color:var(--muted); font-weight:700;}
+  .idr-teamrow{display:inline-flex; align-items:center; gap:6px; margin-top:2px;}
+  .idr-fl2{width:26px; height:18px; object-fit:cover; border-radius:3px;
+            box-shadow:0 0 0 1px rgba(0,0,0,.1);}
+  .idr-fl2.emo{font-size:1.1rem; box-shadow:none;}
+  .idr-tm{font-size:.82rem; font-weight:700; color:#334155;}
+  .idr-p1{font-size:.78rem; font-weight:800; color:var(--blue); margin-top:2px;}
+  @media (max-width:760px){ .idrgrid{grid-template-columns:repeat(2,1fr); gap:12px;} }
+"""
+
+
+# Minimal theme for the standalone reveal page (mirrors the base index.html
+# variables + section/title styles so the shared IDREVEAL_CSS renders identically).
+_REVEAL_BASE_CSS = """
+  :root{--ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f1f5f9; --card:#fff;
+        --blue:#2563eb; --green:#16a34a; --red:#dc2626; --amber:#d97706; --track:#eef2f7;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Rubik,Arial,sans-serif;
+       color:var(--ink); line-height:1.6; margin:0; background:var(--bg);}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 20px 70px;}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+          padding:20px 22px; margin-top:18px;}
+  h2.bigsec{font-size:1.9rem; margin:6px 0 8px; padding:16px 22px; color:#fff; line-height:1.2;
+            background:linear-gradient(135deg,#0b1220,#1e3a8a); border-radius:14px;
+            box-shadow:0 6px 20px -10px rgba(30,58,138,.6);}
+  h2.bigsec.real{background:linear-gradient(135deg,#052e26,#16a34a);
+            box-shadow:0 6px 20px -10px rgba(22,163,74,.6);}
+  .sub{color:var(--muted); margin:0 0 14px; font-size:.92rem;}
+  header.idr-hero{background:linear-gradient(135deg,#0b1220,#1e3a8a);}
+  .idr-hero-in{max-width:1040px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:12px;}
+  .idr-hero-t{color:#fff; font-weight:800; font-size:1.05rem;}
+  .idr-lang{margin-inline-start:auto; appearance:none; border:1px solid rgba(255,255,255,.35);
+            background:rgba(255,255,255,.12); color:#fff; font:inherit; font-weight:700;
+            padding:5px 12px; border-radius:999px; cursor:pointer; min-width:64px;}
+  .idr-lang:hover{background:rgba(255,255,255,.22);}
+"""
+
+
+def reveal_page_html(data: dict) -> str:
+    """A standalone, self-contained page carrying ONLY the podium
+    identity-reveal flip cards, so the feature can be shared at its own URL
+    (…/reveal.html) independently of the full report."""
+    team_he, pl_he = _team_he_map(), _player_he_map()
+    section = identity_reveal_html(data) or (
+        '\n  <section class="idrwrap">\n'
+        '    <h2 class="bigsec real" data-i18n="idr.title">מי מסתתר על הפודיום?</h2>\n'
+        '    <p class="sub" data-i18n="idr.empty">אין כרגע מועמדים חיים לפודיום.</p>\n'
+        '  </section>\n')
+    css = "\n".join([_REVEAL_BASE_CSS, i18n_css(), IDREVEAL_CSS])
+    js = i18n_js(team_he, pl_he)
+    return (
+        '<!doctype html>\n'
+        '<html lang="he" dir="rtl"><head><meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        '<title>מי מסתתר על הפודיום? — מונדיאל 2026</title>\n'
+        '<meta name="robots" content="noindex">\n'
+        f'<style>{css}</style>\n'
+        '</head><body>\n'
+        '<header class="idr-hero"><div class="idr-hero-in">\n'
+        '  <span class="idr-hero-t" data-i18n="idr.brand">התערבות חברים · מונדיאל 2026</span>\n'
+        '  <button id="langToggle" type="button" class="idr-lang"></button>\n'
+        '</div></header>\n'
+        f'<main class="wrap">{section}</main>\n'
+        f'<script>{js}</script>\n'
+        '</body></html>\n')
 
 
 def cheer_html(data: dict) -> str:
@@ -4507,12 +4734,13 @@ def main() -> None:
     # All regions are bounded by persistent markers in the base page and replaced
     # in place, so the build is idempotent and the static tab scaffold is kept.
     # 1) CSS: matrix/leaders/standings + the three new tabs, in one managed block.
-    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS, ONEBR_CSS, T10CF_CSS])
+    all_css = "\n".join([i18n_css(), CMTBL_CSS, TABS_CSS, WHATIF_CSS, ODDS_CSS, RACE_CSS, CHEER_CSS, STAGES_CSS, PATH_CSS, ONEBR_CSS, T10CF_CSS, IDREVEAL_CSS])
     html = replace_region(html, CSS_START, CSS_END, all_css)
 
     # 2) Main-tab live body (podium / leaders / standings / KO bracket / sim / groups).
     #    The race overlay is a global fixed element shared by all three buttons.
     main_body = (pyramid_block() + top10_html(data) + champ_facets_html(data)
+                 + identity_reveal_html(data)
                  + podium_html(data) + leaders_html(data)
                  + standings_table_html(data)
                  + bracket_html()
@@ -4546,6 +4774,11 @@ def main() -> None:
     OUT.write_text(html, encoding="utf-8")
     print(f"Updated {OUT}  ({len(html)//1024} KB) — {n_ent} entries, {n_sims:,} sims, "
           f"{len(wi_payload['entries'])} what-if rows")
+
+    # Standalone shareable page carrying only the identity-reveal cards.
+    reveal = reveal_page_html(data)
+    REVEAL_OUT.write_text(reveal, encoding="utf-8")
+    print(f"Updated {REVEAL_OUT}  ({len(reveal)//1024} KB) — identity-reveal page")
 
 
 if __name__ == "__main__":

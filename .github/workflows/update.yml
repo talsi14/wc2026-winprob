@@ -213,6 +213,8 @@ jobs:
           cp friends_bet/report/index.html public/index.html
           cp friends_bet/report/hero.png   public/hero.png
           cp wc2026_bet/report/live.html  public/live.html
+          # standalone "podium identity reveal" page - its own shareable URL
+          cp friends_bet/report/reveal.html public/reveal.html
           cp published/*.html public/history/ 2>/dev/null || true
 
           # auto-generated history index (newest first), separating the two pages
@@ -240,7 +242,7 @@ jobs:
           printf '%s' "${{ steps.detect.outputs.live_fp }}" > wc2026_bet/data/live/published.live.fingerprint
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add friends_bet/report/index.html published/ \
+          git add friends_bet/report/index.html friends_bet/report/reveal.html published/ \
                   wc2026_bet/data/live/published.fingerprint \
                   wc2026_bet/data/live/published.live.fingerprint \
                   wc2026_bet/data/history/metrics_history.jsonl \

@@ -91,6 +91,22 @@ STRINGS: dict[str, tuple[str, str]] = {
         "podium if that team wins the title (probabilities conditional on that champion)."),
     "cf.tocup": ("לגביע", "to win"),
     "cf.podium": ("הפודיום הסביר בתרחיש זה", "Most likely podium in this scenario"),
+    "idr.title": ("מי מסתתר על הפודיום?", "Who's hiding on the podium?"),
+    "idr.sub": (
+        "המועמדים החיים לפודיום (טפסים עם סיכוי חיובי לסיים במקומות 1–3), לפי סדר "
+        "התוחלת. הקישו על קלף כדי לחשוף מי עומד מאחורי הכינוי.",
+        "The live podium contenders (entries with a positive chance of finishing "
+        "1st–3rd), ordered by expected winnings. Tap a card to reveal who's behind "
+        "the nickname."),
+    "idr.reveal_all": ("חשפו את כולם", "Reveal all"),
+    "idr.hide_all": ("הסתירו את כולם", "Hide all"),
+    "idr.tap": ("הקישו לחשיפה", "Tap to reveal"),
+    "idr.topodium": ("לפודיום", "podium"),
+    "idr.top1": ("למקום ראשון", "to win"),
+    "idr.top2": ("לשניים הראשונים", "for top 2"),
+    "idr.top3": ("לפודיום", "for the podium"),
+    "idr.brand": ("התערבות חברים · מונדיאל 2026", "Friends' pool · World Cup 2026"),
+    "idr.empty": ("אין כרגע מועמדים חיים לפודיום.", "No live podium contenders right now."),
     "podium.title": ("טבלת הדירוג", "Standings"),
     "leader.top_scorer": ("מלך השערים כרגע", "Top scorer now"),
     "leader.conceding": ("הסופגת המובילה", "Most goals conceded"),
