@@ -14435,7 +14435,7 @@
     "Argentina": {
       "gf": 17,
       "ga": 6,
-      "games": 6
+      "games": 7
     },
     "Algeria": {
       "gf": 5,
@@ -14465,7 +14465,7 @@
     "England": {
       "gf": 13,
       "ga": 6,
-      "games": 6
+      "games": 7
     },
     "Croatia": {
       "gf": 6,
@@ -20249,6 +20249,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Argentina",
+    "England"
+  ]
 }
