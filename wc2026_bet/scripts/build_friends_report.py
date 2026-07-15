@@ -2068,6 +2068,9 @@ IDREVEAL_CSS = """
             border-radius:16px; display:flex; flex-direction:column; align-items:center;
             justify-content:center; text-align:center; padding:14px; overflow:hidden;
             border:1px solid var(--line); box-shadow:0 8px 22px -16px rgba(15,23,42,.6);}
+  /* Never let the flex column collapse a child (esp. .idr-real, which has
+     overflow:hidden and would otherwise shrink to 0px on narrow cards). */
+  .idr-front>*,.idr-back>*{flex:0 0 auto;}
   /* front: mystery */
   .idr-front{background:linear-gradient(150deg,#1e293b 0%,#334155 55%,#475569 100%); color:#fff; gap:8px;}
   .idr-q{font-size:2.6rem; font-weight:900; line-height:1; color:rgba(255,255,255,.9);
@@ -2096,7 +2099,15 @@ IDREVEAL_CSS = """
   .idr-fl2.emo{font-size:1.1rem; box-shadow:none;}
   .idr-tm{font-size:.82rem; font-weight:700; color:#334155;}
   .idr-p1{font-size:.78rem; font-weight:800; color:var(--blue); margin-top:2px;}
-  @media (max-width:760px){ .idrgrid{grid-template-columns:repeat(2,1fr); gap:12px;} }
+  @media (max-width:760px){
+    .idrgrid{grid-template-columns:repeat(2,1fr); gap:12px;}
+    /* taller cards + a slightly smaller photo so the 5-line back (photo, real
+       name, nickname, team, odds) fits without clipping on 2-up phones */
+    .idr-card{aspect-ratio:1/1.5;}
+    .idr-front,.idr-back{gap:5px;}
+    .idr-photo{width:74px; height:74px;}
+    .idr-q{font-size:2.2rem;}
+  }
 """
 
 
