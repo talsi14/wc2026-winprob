@@ -16545,6 +16545,11 @@
       "goals": 2
     },
     {
+      "scorer": "Enzo Fernández",
+      "team": "Argentina",
+      "goals": 2
+    },
+    {
       "scorer": "Ermin Mahmic",
       "team": "Bosnia and Herzegovina",
       "goals": 2
@@ -16772,11 +16777,6 @@
     {
       "scorer": "Eldor Shomurodov",
       "team": "Uzbekistan",
-      "goals": 1
-    },
-    {
-      "scorer": "Enzo Fernández",
-      "team": "Argentina",
       "goals": 1
     },
     {
@@ -17412,7 +17412,7 @@
       "games": 6
     },
     "Argentina": {
-      "gf": 17,
+      "gf": 18,
       "ga": 7,
       "games": 7
     },
@@ -17443,7 +17443,7 @@
     },
     "England": {
       "gf": 14,
-      "ga": 6,
+      "ga": 7,
       "games": 7
     },
     "Croatia": {
