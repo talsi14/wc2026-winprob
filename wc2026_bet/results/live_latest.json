@@ -8984,6 +8984,11 @@
       "goals": 2
     },
     {
+      "scorer": "Bukayo Saka",
+      "team": "England",
+      "goals": 2
+    },
+    {
       "scorer": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2
@@ -9196,11 +9201,6 @@
     {
       "scorer": "Brian Cipenga",
       "team": "DR Congo",
-      "goals": 1
-    },
-    {
-      "scorer": "Bukayo Saka",
-      "team": "England",
       "goals": 1
     },
     {
@@ -9872,7 +9872,7 @@
     },
     "France": {
       "gf": 16,
-      "ga": 7,
+      "ga": 8,
       "games": 8
     },
     "Senegal": {
@@ -9921,7 +9921,7 @@
       "games": 4
     },
     "England": {
-      "gf": 17,
+      "gf": 18,
       "ga": 8,
       "games": 8
     },
