@@ -8884,6 +8884,11 @@
       "goals": 3
     },
     {
+      "scorer": "Bukayo Saka",
+      "team": "England",
+      "goals": 3
+    },
+    {
       "scorer": "Charles De Ketelaere",
       "team": "Belgium",
       "goals": 3
@@ -8981,11 +8986,6 @@
     {
       "scorer": "Breel Embolo",
       "team": "Switzerland",
-      "goals": 2
-    },
-    {
-      "scorer": "Bukayo Saka",
-      "team": "England",
       "goals": 2
     },
     {
@@ -9872,7 +9872,7 @@
     },
     "France": {
       "gf": 19,
-      "ga": 8,
+      "ga": 9,
       "games": 8
     },
     "Senegal": {
@@ -9921,7 +9921,7 @@
       "games": 4
     },
     "England": {
-      "gf": 18,
+      "gf": 19,
       "ga": 11,
       "games": 8
     },
