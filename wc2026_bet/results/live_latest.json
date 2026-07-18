@@ -9224,6 +9224,11 @@
       "goals": 1
     },
     {
+      "scorer": "Declan Rice",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Deroy Duarte",
       "team": "Cape Verde",
       "goals": 1
@@ -9857,7 +9862,7 @@
     },
     "France": {
       "gf": 16,
-      "ga": 4,
+      "ga": 5,
       "games": 8
     },
     "Senegal": {
@@ -9906,7 +9911,7 @@
       "games": 4
     },
     "England": {
-      "gf": 14,
+      "gf": 15,
       "ga": 8,
       "games": 8
     },
