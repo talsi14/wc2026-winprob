@@ -9249,6 +9249,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ezri Konsa",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Fabián Ruiz",
       "team": "Spain",
       "goals": 1
@@ -9862,7 +9867,7 @@
     },
     "France": {
       "gf": 16,
-      "ga": 5,
+      "ga": 6,
       "games": 8
     },
     "Senegal": {
@@ -9911,7 +9916,7 @@
       "games": 4
     },
     "England": {
-      "gf": 15,
+      "gf": 16,
       "ga": 8,
       "games": 8
     },
