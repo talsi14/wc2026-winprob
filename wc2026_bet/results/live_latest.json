@@ -8874,6 +8874,11 @@
       "goals": 4
     },
     {
+      "scorer": "Bradley Barcola",
+      "team": "France",
+      "goals": 3
+    },
+    {
       "scorer": "Brian Brobbey",
       "team": "Netherlands",
       "goals": 3
@@ -8971,11 +8976,6 @@
     {
       "scorer": "Azzedine Ounahi",
       "team": "Morocco",
-      "goals": 2
-    },
-    {
-      "scorer": "Bradley Barcola",
-      "team": "France",
       "goals": 2
     },
     {
@@ -9871,7 +9871,7 @@
       "games": 3
     },
     "France": {
-      "gf": 17,
+      "gf": 18,
       "ga": 8,
       "games": 8
     },
@@ -9922,7 +9922,7 @@
     },
     "England": {
       "gf": 18,
-      "ga": 9,
+      "ga": 10,
       "games": 8
     },
     "Croatia": {
