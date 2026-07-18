@@ -8839,23 +8839,23 @@
       "goals": 7
     },
     {
+      "scorer": "Jude Bellingham",
+      "team": "England",
+      "goals": 7
+    },
+    {
       "scorer": "Harry Kane",
       "team": "England",
       "goals": 6
     },
     {
-      "scorer": "Jude Bellingham",
-      "team": "England",
+      "scorer": "Ousmane Dembélé",
+      "team": "France",
       "goals": 6
     },
     {
       "scorer": "Mikel Oyarzabal",
       "team": "Spain",
-      "goals": 5
-    },
-    {
-      "scorer": "Ousmane Dembélé",
-      "team": "France",
       "goals": 5
     },
     {
@@ -9871,8 +9871,8 @@
       "games": 3
     },
     "France": {
-      "gf": 19,
-      "ga": 9,
+      "gf": 20,
+      "ga": 10,
       "games": 8
     },
     "Senegal": {
@@ -9921,8 +9921,8 @@
       "games": 4
     },
     "England": {
-      "gf": 19,
-      "ga": 11,
+      "gf": 20,
+      "ga": 12,
       "games": 8
     },
     "Croatia": {
