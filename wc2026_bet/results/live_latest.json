@@ -9858,7 +9858,7 @@
     "France": {
       "gf": 16,
       "ga": 4,
-      "games": 7
+      "games": 8
     },
     "Senegal": {
       "gf": 10,
@@ -9908,7 +9908,7 @@
     "England": {
       "gf": 14,
       "ga": 8,
-      "games": 7
+      "games": 8
     },
     "Croatia": {
       "gf": 6,
@@ -16339,6 +16339,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "England",
+    "France"
+  ]
 }
