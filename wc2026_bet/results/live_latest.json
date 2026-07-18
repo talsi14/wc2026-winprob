@@ -8826,7 +8826,7 @@
     {
       "scorer": "Kylian Mbappé",
       "team": "France",
-      "goals": 9
+      "goals": 10
     },
     {
       "scorer": "Lionel Messi",
@@ -9871,7 +9871,7 @@
       "games": 3
     },
     "France": {
-      "gf": 18,
+      "gf": 19,
       "ga": 8,
       "games": 8
     },
@@ -9922,7 +9922,7 @@
     },
     "England": {
       "gf": 18,
-      "ga": 10,
+      "ga": 11,
       "games": 8
     },
     "Croatia": {
