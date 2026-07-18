@@ -9199,6 +9199,11 @@
       "goals": 1
     },
     {
+      "scorer": "Bukayo Saka",
+      "team": "England",
+      "goals": 1
+    },
+    {
       "scorer": "Caleb Yirenkyi",
       "team": "Ghana",
       "goals": 1
@@ -9867,7 +9872,7 @@
     },
     "France": {
       "gf": 16,
-      "ga": 6,
+      "ga": 7,
       "games": 8
     },
     "Senegal": {
@@ -9916,7 +9921,7 @@
       "games": 4
     },
     "England": {
-      "gf": 16,
+      "gf": 17,
       "ga": 8,
       "games": 8
     },
