@@ -6854,7 +6854,7 @@
     "Spain": {
       "gf": 13,
       "ga": 1,
-      "games": 7
+      "games": 8
     },
     "Cape Verde": {
       "gf": 4,
@@ -6914,7 +6914,7 @@
     "Argentina": {
       "gf": 19,
       "ga": 7,
-      "games": 7
+      "games": 8
     },
     "Algeria": {
       "gf": 5,
@@ -12728,6 +12728,9 @@
       ]
     }
   ],
-  "live_widgets": false,
-  "live_teams": []
+  "live_widgets": true,
+  "live_teams": [
+    "Argentina",
+    "Spain"
+  ]
 }
