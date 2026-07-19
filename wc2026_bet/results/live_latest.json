@@ -6290,6 +6290,11 @@
       "goals": 1
     },
     {
+      "scorer": "Ferran Torres",
+      "team": "Spain",
+      "goals": 1
+    },
+    {
       "scorer": "Finn Surman",
       "team": "New Zealand",
       "goals": 1
@@ -6852,7 +6857,7 @@
       "games": 3
     },
     "Spain": {
-      "gf": 13,
+      "gf": 14,
       "ga": 1,
       "games": 8
     },
@@ -6913,7 +6918,7 @@
     },
     "Argentina": {
       "gf": 19,
-      "ga": 7,
+      "ga": 8,
       "games": 8
     },
     "Algeria": {
