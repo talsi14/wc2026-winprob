@@ -1,6 +1,6 @@
 {
   "event_ticker": "KXMENWORLDCUP-26",
-  "updated_at": "2026-07-19T22:03:35.975320+00:00",
+  "updated_at": "2026-07-20T14:35:22.338741+00:00",
   "source_url": "https://kalshi.com/markets/kxmenworldcup/mens-world-cup-winner/kxmenworldcup-26",
   "series": [
     {
@@ -326,6 +326,10 @@
         {
           "ts": 1784433600,
           "p": 0.593
+        },
+        {
+          "ts": 1784520000,
+          "p": 0.999
         }
       ]
     },
